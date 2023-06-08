@@ -1,0 +1,5 @@
+env
+frontend/node_modules
+backend/matrigyan/migrations
+*/__pycache__
+*.pyc
