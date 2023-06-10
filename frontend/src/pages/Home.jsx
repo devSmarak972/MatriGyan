@@ -1,10 +1,13 @@
-
-import React from 'react'
+import { useState } from "react";
+import React from "react";
 
 const Home = () => {
+  let [phone, setPhone] = useState("");
   return (
-    <div>Home</div>
-  )
-}
+    <div>
+      
+    </div>
+  );
+};
 
-export default Home
+export default Home;

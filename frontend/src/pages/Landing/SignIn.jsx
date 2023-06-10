@@ -1,7 +1,13 @@
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { Button, TextInput, Checkbox, PasswordInput } from "@mantine/core";
+import {
+  Button,
+  TextInput,
+  Checkbox,
+  PasswordInput,
+} from "@mantine/core";
 import { motion } from "framer-motion";
 import "./Landing.css";
 
@@ -21,7 +27,14 @@ const SignIn = (props) => {
   return (
     <motion.div
       initial={false}
-      animate={{ x: props.page === 1 ? (window.innerWidth<1024?"-100vw":"-50vw") : 0 }}
+      animate={{
+        x:
+          props.page === 1
+            ? window.innerWidth < 1024
+              ? "-100vw"
+              : "-50vw"
+            : 0,
+      }}
       transition={{ duration: 0.7 }}
       className="signin"
     >
@@ -64,8 +77,15 @@ const SignIn = (props) => {
         </form>
         <div className="switch">
           <span>Don't have an account?</span>
-          
-          <Link className="switch-button" to="/signup" exact onClick={() => props.handleSwitch(-1)}>Sign up</Link>
+
+          <Link
+            className="switch-button"
+            to="/signup"
+            exact
+            onClick={() => props.handleSwitch(-1)}
+          >
+            Sign up
+          </Link>
           {/* <button onClick={() => props.handleSwitch(-1)}>Sign up</button> */}
         </div>
       </div>
