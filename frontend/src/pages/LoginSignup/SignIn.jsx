@@ -9,7 +9,7 @@ import {
   PasswordInput,
 } from "@mantine/core";
 import { motion } from "framer-motion";
-import "./Landing.css";
+import "./LoginSignup.css";
 
 const SignIn = (props) => {
   const form = useForm({

@@ -18,7 +18,7 @@ import { MoonLoader } from "react-spinners";
 import { auth } from "./firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { motion } from "framer-motion";
-import "./Landing.css";
+import "./LoginSignup.css";
 
 const SignUp = (props) => {
   const [active, setActive] = useState(0);
@@ -132,7 +132,7 @@ const SignUp = (props) => {
     if (form.validate().hasErrors) {
       setActive((prev) => prev);
     }
-    if (active === 2 && subactive === 0) setActive((prev) => prev);
+    else if (active === 2 && subactive === 0) setActive((prev) => prev);
     else if (active === 2 && subactive === 1) {
       let otp = form.values.otp;
       setOtpLoading(1);
@@ -155,7 +155,7 @@ const SignUp = (props) => {
     if (form.validate().hasErrors) {
       return setSubactive((prev) => prev);
     }
-    if (active === 2 && subactive === 0) {
+    else if (active === 2 && subactive === 0) {
       sendOTP();
     }
   };

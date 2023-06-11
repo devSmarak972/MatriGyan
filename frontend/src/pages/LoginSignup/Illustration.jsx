@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import "./Landing.css";
+import "./LoginSignup.css";
 
 const Illustration = (props) => {
   return (
@@ -27,7 +27,7 @@ const Illustration = (props) => {
           transition={{ duration: 0.7 }}
           className="title"
         >
-          MaitriGyan
+          MatriGyan
         </motion.span>
         <img src="/online-learning.svg" alt="studying-img"/>
       </motion.div>
