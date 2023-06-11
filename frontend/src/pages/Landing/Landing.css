@@ -190,6 +190,11 @@ body {
     display: none;
 }
 
+.signup-number-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 @media (max-width: 1024px) {
     .landing {}
 
@@ -244,5 +249,9 @@ body {
     .signup-content,
     .signin-content {
         width: calc(100vw - 6rem);
+    }
+    .signup-number-row{
+        display: flex;
+        flex-direction: column;
     }
 }

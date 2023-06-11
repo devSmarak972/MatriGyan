@@ -86,7 +86,6 @@ const SignIn = (props) => {
           >
             Sign up
           </Link>
-          {/* <button onClick={() => props.handleSwitch(-1)}>Sign up</button> */}
         </div>
       </div>
     </motion.div>

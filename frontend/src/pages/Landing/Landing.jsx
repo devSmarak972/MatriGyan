@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useEffect } from "react";
 import SignIn from "./SignIn";
 import Illustration from "./Illustration";
 import SignUp from "./SignUp";
@@ -9,7 +10,6 @@ const Landing = () => {
 
   const handleSwitch = (n) => {
     setPage((prev) => prev + n);
-    console.log(page);
   };
 
   return (
