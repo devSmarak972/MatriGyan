@@ -156,12 +156,13 @@ body {
 }
 
 .switch {
+    color: var(--grey-dark);
     font-size: 0.8rem;
     font-weight: 500;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 0.5rem;
+    margin: auto 1rem;
 }
 
 .switch .switch-button {
@@ -186,18 +187,34 @@ body {
     gap: 1.5rem;
 }
 
-.inner-stepper .mantine-Stepper-steps{
+.inner-stepper .mantine-Stepper-steps {
     display: none;
 }
 
-.signup-number-row{
+.signup-number-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
-@media (max-width: 1024px) {
-    .landing {}
+.resend-otp {
+    display: flex;
+    justify-content: center;
+}
 
+.resend-otp-span1{
+    margin-right: 0.3rem;
+    margin-bottom: 0;
+    color: var(--grey-dark);
+}
+
+.resend-otp-span2{
+    margin-top: 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+@media (max-width: 1024px) {
     .illustration img {
         display: none;
     }
@@ -250,7 +267,8 @@ body {
     .signin-content {
         width: calc(100vw - 6rem);
     }
-    .signup-number-row{
+
+    .signup-number-row {
         display: flex;
         flex-direction: column;
     }

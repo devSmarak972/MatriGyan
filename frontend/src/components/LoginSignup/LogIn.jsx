@@ -9,9 +9,9 @@ import {
   PasswordInput,
 } from "@mantine/core";
 import { motion } from "framer-motion";
-import "./LoginSignup.css";
+import "../../pages/LoginSignup/LoginSignup.css";
 
-const SignIn = (props) => {
+const LogIn = (props) => {
   const form = useForm({
     initialValues: {
       email: "",
@@ -92,4 +92,4 @@ const SignIn = (props) => {
   );
 };
 
-export default SignIn;
+export default LogIn;

@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { useEffect } from "react";
-import SignIn from "./SignIn";
-import Illustration from "./Illustration";
-import SignUp from "./SignUp";
+import LogIn from "../../components/LoginSignup/LogIn";
+import Illustration from "../../components/LoginSignup/Illustration";
+import SignUp from "../../components/LoginSignup/SignUp";
+
 
 const Landing = () => {
   const [page, setPage] = useState(1);
@@ -16,7 +16,7 @@ const Landing = () => {
     <div className="landing">
       <SignUp page={page} handleSwitch={handleSwitch} />
       <Illustration page={page} />
-      <SignIn page={page} handleSwitch={handleSwitch} />
+      <LogIn page={page} handleSwitch={handleSwitch} />
     </div>
   );
 };
