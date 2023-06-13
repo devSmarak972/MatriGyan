@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@600&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --white: #ffffff;
+    --black: #3a3a3a;
+    --grey-dark: #8c8c8c;
+    --grey-light: rgb(230, 230, 230);
+    --primary: #228be6;
+    --primary-hover: #1273c9;
+    --background-light: #f2f6ff;
+}
+
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    overflow-x: hidden;
+    /* overflow-y: hidden; */
+}
+
+.landing {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.illustration {
+    background-color: var(--background-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    min-width: 50vw;
+}
+
+.illustration img {
+    max-width: 30vw;
+    padding-top: 40px;
+}
+
+.title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    font-family: 'Maven Pro', sans-serif;
+    color: var(--primary);
+    font-size: 3rem;
+    padding: 1rem 1.5rem;
+    letter-spacing: -1px;
+}
+
+.signin,
+.signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+    min-width: 50vw;
+}
+
+.signin-content,
+.signup-content {
+    width: 55vmin;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* .signup-content {
+    min-width: 55vmin;
+    width: 45vmin;
+} */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.signin_inner-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.signin-heading,
+.signup-heading {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: -0.5rem;
+}
+
+.signin-subheading,
+.signup-subheading {
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    color: var(--grey-dark);
+    font-weight: 500;
+}
+
+.signin_inner-row a {
+    margin-top: 1rem;
+    color: var(--primary);
+    font-size: 0.8rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.5s ease all;
+}
+
+.google,
+.submit {
+    width: 100%;
+    transition: 0.5s ease all;
+}
+
+.signup-prev,
+.signup-next {
+    transition: 0.5s ease all;
+}
+
+.signup-next {
+    background-color: var(--primary);
+}
+
+.submit {
+    margin-top: 1rem;
+    background-color: var(--primary);
+}
+
+.google,
+.signup-prev {
+    background-color: var(--white);
+    color: #3a3a3a;
+    border: 1px solid var(--grey-light);
+}
+
+.submit:hover,
+.signup-next:hover {
+    background-color: var(--primary-hover);
+}
+
+.google:hover,
+.signup-prev:hover {
+    background-color: var(--grey-light);
+}
+
+.google img {
+    width: 25px;
+    margin-right: 1rem;
+}
+
+.switch {
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.switch .switch-button {
+    text-decoration: none;
+    color: var(--primary);
+    margin-left: 0.3rem;
+    transition: 0.5s ease all;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.switch a:hover,
+.signin_inner-row a:hover {
+    color: var(--primary-hover);
+}
+
+.name-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.inner-stepper .mantine-Stepper-steps{
+    display: none;
+}
+
+.signup-number-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 1024px) {
+    .landing {}
+
+    .illustration img {
+        display: none;
+    }
+
+    .illustration {
+        height: calc(2rem + 2.5rem);
+        width: 100%;
+        position: absolute;
+        top: 0;
+    }
+
+    .title {
+        font-size: 2rem;
+        position: inherit;
+        text-align: center;
+        width: 100%;
+        height: fit-content;
+    }
+
+    .signin,
+    .signup {
+        min-width: 100vw;
+        height: calc(100vh - 2rem - 2.5rem);
+        margin-top: calc(2rem + 2.5rem);
+        padding: 3rem;
+    }
+
+    .signin-heading,
+    .signup-heading {
+        font-size: 1.5rem;
+    }
+
+    .signin-subuheading,
+    .signup-subheading {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .mantine-Stepper-steps {
+        display: none;
+    }
+
+    .signup-subheading,
+    .signin-subheading {
+        margin: 0;
+    }
+
+    .signup-content,
+    .signin-content {
+        width: calc(100vw - 6rem);
+    }
+    .signup-number-row{
+        display: flex;
+        flex-direction: column;
+    }
+}
