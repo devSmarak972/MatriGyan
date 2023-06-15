@@ -22,15 +22,15 @@ const Home = () => {
                       <input
                         type="email"
                         className="form-control"
-                        placeholder="Search School, Online eductional centers, etc"
+                        placeholder="Search School, Topics, Courses etc"
                       />
                       <span className="drop-detail">
                         <select className="form-select pl-3 select">
                           <option>Category</option>
-                          <option>Angular</option>
-                          <option>Node Js</option>
-                          <option>React</option>
-                          <option>Python</option>
+                          <option>Schools</option>
+                          <option>Topics</option>
+                          <option>Courses</option>
+                          <option>Class</option>
                         </select>
                       </span>
                       <button className="btn btn-primary sub-btn" type="submit">

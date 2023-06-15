@@ -12,7 +12,7 @@ const Courses = () => {
             <h2>Featured Courses</h2>
           </div>
           <div className="all-btn all-category d-flex align-items-center">
-            <a href="course-list.html" className="btn btn-primary">
+            <a href="course-list" className="btn btn-primary">
               All Courses
             </a>
           </div>
