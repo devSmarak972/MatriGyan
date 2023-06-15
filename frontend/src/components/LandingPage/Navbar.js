@@ -17,17 +17,18 @@ const Navbar = () => {
                 </span>
               </a>
               <a href="index.html" className="navbar-brand logo">
-                <img src="/logo-bg.png" className="" alt="Logo" style={{"max-height":"100px"}}/>
+                <img
+                  src="/logo-bg.png"
+                  className=""
+                  alt="Logo"
+                  style={{ "max-height": "100px" }}
+                />
               </a>
             </div>
             <div className="main-menu-wrapper">
               <div className="menu-header">
                 <a href="index.html" className="menu-logo">
-                  <img
-                    src="/LandingPage/assets/img/logo.svg"
-                    className="img-fluid"
-                    alt="Logo"
-                  />
+                  <img src="/logo-bg.png" className="img-fluid" alt="Logo" />
                 </a>
                 <a
                   id="menu_close"
@@ -45,7 +46,7 @@ const Navbar = () => {
                     <li className="active">
                       <a href="index.html">Home</a>
                     </li>
-                    <li>
+                    {/* <li>
                       <a href="index-two.html">Home Two</a>
                     </li>
                     <li>
@@ -53,7 +54,7 @@ const Navbar = () => {
                     </li>
                     <li>
                       <a href="index-four.html">Home Four</a>
-                    </li>
+                    </li> */}
                   </ul>
                 </li>
                 <li className="has-submenu">
@@ -66,14 +67,7 @@ const Navbar = () => {
                     </li>
                     <li className="has-submenu">
                       <a href="instructor-list.html">Instructor</a>
-                      <ul className="submenu">
-                        <li>
-                          <a href="instructor-list.html">List</a>
-                        </li>
-                        <li>
-                          <a href="instructor-grid.html">Grid</a>
-                        </li>
-                      </ul>
+                      <ul className="submenu"></ul>
                     </li>
                     <li>
                       <a href="instructor-course.html">My Course</a>
@@ -81,48 +75,15 @@ const Navbar = () => {
                     <li>
                       <a href="instructor-reviews.html">Reviews</a>
                     </li>
-                    <li>
-                      <a href="instructor-earnings.html">Earnings</a>
-                    </li>
-                    <li>
-                      <a href="instructor-orders.html">Orders</a>
-                    </li>
-                    <li>
-                      <a href="instructor-payouts.html">Payouts</a>
-                    </li>
-                    <li>
-                      <a href="instructor-tickets.html">Support Ticket</a>
-                    </li>
+
                     <li>
                       <a href="instructor-edit-profile.html">
                         Instructor Profile
                       </a>
                     </li>
-                    <li>
-                      <a href="instructor-security.html">Security</a>
-                    </li>
-                    <li>
-                      <a href="instructor-social-profiles.html">
-                        Social Profiles
-                      </a>
-                    </li>
+
                     <li>
                       <a href="instructor-notification.html">Notifications</a>
-                    </li>
-                    <li>
-                      <a href="instructor-profile-privacy.html">
-                        Profile Privacy
-                      </a>
-                    </li>
-                    <li>
-                      <a href="instructor-delete-profile.html">
-                        Delete Profile
-                      </a>
-                    </li>
-                    <li>
-                      <a href="instructor-linked-account.html">
-                        Linked Accounts
-                      </a>
                     </li>
                   </ul>
                 </li>
@@ -131,56 +92,20 @@ const Navbar = () => {
                   <ul className="submenu first-submenu">
                     <li className="has-submenu ">
                       <a href="students-list.html">Student</a>
-                      <ul className="submenu">
-                        <li>
-                          <a href="students-list.html">List</a>
-                        </li>
-                        <li>
-                          <a href="students-grid.html">Grid</a>
-                        </li>
-                      </ul>
+                      <ul className="submenu"></ul>
                     </li>
                     <li>
                       <a href="setting-edit-profile.html">Student Profile</a>
                     </li>
-                    <li>
-                      <a href="setting-student-security.html">Security</a>
-                    </li>
-                    <li>
-                      <a href="setting-student-social-profile.html">
-                        Social profile
-                      </a>
-                    </li>
+
                     <li>
                       <a href="setting-student-notification.html">
                         Notification
                       </a>
                     </li>
-                    <li>
-                      <a href="setting-student-privacy.html">Profile Privacy</a>
-                    </li>
-                    <li>
-                      <a href="setting-student-accounts.html">Link Accounts</a>
-                    </li>
-                    <li>
-                      <a href="setting-student-referral.html">Referal</a>
-                    </li>
-                    <li>
-                      <a href="setting-student-subscription.html">
-                        Subscribtion
-                      </a>
-                    </li>
-                    <li>
-                      <a href="setting-student-billing.html">Billing</a>
-                    </li>
+
                     <li>
                       <a href="setting-student-payment.html">Payment</a>
-                    </li>
-                    <li>
-                      <a href="setting-student-invoice.html">Invoice</a>
-                    </li>
-                    <li>
-                      <a href="setting-support-tickets.html">Support Tickets</a>
                     </li>
                   </ul>
                 </li>
@@ -283,18 +208,18 @@ const Navbar = () => {
                   </ul>
                 </li> */}
                 <li className="login-link">
-                  <a href="login.html">Login / Signup</a>
+                  <a href="login">Login / Signup</a>
                 </li>
               </ul>
             </div>
             <ul className="nav header-navbar-rht">
               <li className="nav-item">
-                <a className="nav-link header-sign" href="login.html">
+                <a className="nav-link header-sign" href="login">
                   Signin
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link header-login" href="register.html">
+                <a className="nav-link header-login" href="signup">
                   Signup
                 </a>
               </li>
