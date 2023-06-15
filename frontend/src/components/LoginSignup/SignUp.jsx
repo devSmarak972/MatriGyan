@@ -15,16 +15,71 @@ import {
   MultiSelect,
 } from "@mantine/core";
 import { MoonLoader } from "react-spinners";
-import { auth } from "./firebase.config";
+import { auth } from "../../utils/Firebase/firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { motion } from "framer-motion";
-import "./LoginSignup.css";
+import "../../pages/LoginSignup/LoginSignup.css";
 
 const SignUp = (props) => {
   const [active, setActive] = useState(0);
   const [subactive, setSubactive] = useState(0);
 
   const [otpLoading, setOtpLoading] = useState(0);
+
+  const classes = ["Class IX", "Class X", "Class XI", "Class XII"];
+  const exams = ["Jee Main", "Jee Advanved", "NEET", "KVPY"];
+
+  const sendOTP = async () => {
+    let phone = form.values.phone;
+    let appVerifier = window.recaptchaVerifier;
+    const formatPh = "+" + phone;
+    console.log(appVerifier);
+
+    setOtpLoading(1);
+    if (!appVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: (response) => {
+            console.log(response);
+          },
+          "expired-callback": () => {},
+        },
+        auth
+      );
+      appVerifier = window.recaptchaVerifier;
+    }
+
+    signInWithPhoneNumber(auth, formatPh, appVerifier)
+      .then((confirmationResult) => {
+        window.confirmationResult = confirmationResult;
+        console.log("OTP sent successfully!");
+        setSubactive(1);
+        setOtpLoading(0);
+      })
+      .catch((error) => {
+        console.log(error);
+        setOtpLoading(0);
+      });
+  };
+
+  const verifyOTP = () => {
+    let otp = form.values.otp;
+    setOtpLoading(1);
+    window.confirmationResult
+      .confirm(otp)
+      .then(async (res) => {
+        console.log(res);
+        setActive((prev) => prev + 1);
+        setOtpLoading(0);
+      })
+      .catch((err) => {
+        console.log(err);
+        form.setFieldError("otp", "Incorrect OTP");
+        setOtpLoading(0);
+      });
+  };
 
   const form = useForm({
     initialValues: {
@@ -93,69 +148,21 @@ const SignUp = (props) => {
 
   //  //  //  //
 
-  const sendOTP = () => {
-    let phone = form.values.phone;
-    const appVerifier = window.recaptchaVerifier;
-
-    const formatPh = "+" + phone;
-    console.log(formatPh);
-
-    signInWithPhoneNumber(auth, formatPh, appVerifier)
-      .then((confirmationResult) => {
-        window.confirmationResult = confirmationResult;
-        console.log("OTP sent successfully!");
-        setSubactive(1);
-        setOtpLoading(0);
-      })
-      .catch((error) => {
-        console.log(error);
-        setOtpLoading(0);
-      });
-
-    setOtpLoading(1);
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        "recaptcha-container",
-        {
-          size: "invisible",
-          callback: (response) => {
-            console.log(response);
-          },
-          "expired-callback": () => {},
-        },
-        auth
-      );
-    }
-  };
-
   const nextStep = async () => {
+    console.log("Next Step");
     if (form.validate().hasErrors) {
       setActive((prev) => prev);
-    }
-    else if (active === 2 && subactive === 0) setActive((prev) => prev);
+    } else if (active === 2 && subactive === 0) setActive((prev) => prev);
     else if (active === 2 && subactive === 1) {
-      let otp = form.values.otp;
-      setOtpLoading(1);
-      window.confirmationResult
-        .confirm(otp)
-        .then(async (res) => {
-          console.log(res);
-          setActive((prev) => prev + 1);
-          setOtpLoading(0);
-        })
-        .catch((err) => {
-          console.log(err);
-          form.setFieldError("otp", "Incorrect OTP");
-          setOtpLoading(0);
-        });
+      verifyOTP();
     } else setActive((prev) => prev + 1);
 
     //  //  //  //  //
+    console.log("Next Step");
 
     if (form.validate().hasErrors) {
       return setSubactive((prev) => prev);
-    }
-    else if (active === 2 && subactive === 0) {
+    } else if (active === 2 && subactive === 0) {
       sendOTP();
     }
   };
@@ -260,7 +267,7 @@ const SignUp = (props) => {
               withAsterisk
               label="Class"
               placeholder="Select your class"
-              data={["Class IX", "Class X", "Class XI", "Class XII"]}
+              data={classes}
               transitionProps={{
                 transition: "pop-top-left",
                 duration: 100,
@@ -273,7 +280,7 @@ const SignUp = (props) => {
               withAsterisk
               label="Exam"
               placeholder="What are you preparing for?"
-              data={["Jee Main", "Jee Advanved", "NEET", "KVPY"]}
+              data={exams}
               transitionProps={{
                 transition: "pop-top-left",
                 duration: 100,
@@ -299,10 +306,7 @@ const SignUp = (props) => {
                     label="Mobile Number"
                     {...form.getInputProps("phone")}
                   />
-                  <span
-                    style={{ margin: "auto 1rem", color: "var(--grey-dark)" }}
-                    className="switch"
-                  >
+                  <span className="switch">
                     (We will send you a code via SMS text message to your phone
                     number)
                   </span>
@@ -317,27 +321,11 @@ const SignUp = (props) => {
                     {...form.getInputProps("otp")}
                   />
                 </Group>
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <span
-                    style={{
-                      marginRight: "0.3rem",
-                      marginBottom: 0,
-                      color: "var(--grey-dark)",
-                    }}
-                    className="switch"
-                  >
+                <div className="resend-otp">
+                  <span className="switch resend-otp-span1">
                     Did not receive OTP?
                   </span>
-                  <span
-                    style={{
-                      marginBottom: 0,
-                      cursor: "pointer",
-                      color: "var(--primary)",
-                      fontWeight: 600,
-                    }}
-                    className="switch"
-                    onClick={sendOTP}
-                  >
+                  <span className="switch resend-otp-span2" onClick={sendOTP}>
                     Resend
                   </span>
                 </div>
