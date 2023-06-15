@@ -820,7 +820,7 @@ button.bg-danger:hover {
 	font-size: 1.25rem !important;
 }
 .text-xl {
-	font-size: 1.5rem !important;
+	font-size: 1.5rem ;
 }
 .form-control:focus {
 	border-color: #bbb;

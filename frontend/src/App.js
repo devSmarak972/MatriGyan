@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import StudentDashboard from "./pages/StudentDashboard/StudentDashboard";
 import LoginSignup from "./pages/LoginSignup/LoginSignup";
 import LandingPage from "./pages/LandingPage";
 function App() {
@@ -10,7 +10,7 @@ function App() {
           <Route exact path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/signup" element={<LoginSignup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<StudentDashboard />} />
         </Routes>
       </div>
     </Router>
