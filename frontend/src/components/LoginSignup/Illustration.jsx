@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import "./LoginSignup.css";
+import "../../pages/LoginSignup/LoginSignup.css";
 
 const Illustration = (props) => {
   return (
