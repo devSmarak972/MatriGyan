@@ -3,13 +3,13 @@ import Test from "./Test";
 
 const Tests = () => {
   return (
-    <div class="col-span-12 flex flex-col sm:col-span-6 lg:col-span-4">
-      <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100">
+    <div className="col-span-12 flex flex-col sm:col-span-6 lg:col-span-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100">
           Attempted Tests
         </h2>
       </div>
-      <div class="mt-3 space-y-4 sm:mt-5 lg:mt-6">
+      <div className="mt-3 space-y-4 sm:mt-5 lg:mt-6">
         <Test
           title="Electrochemistry"
           questions={20}

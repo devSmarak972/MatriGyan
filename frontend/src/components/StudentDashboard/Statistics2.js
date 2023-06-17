@@ -7,15 +7,14 @@ import { faHourglassEnd } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import StatCard from "./StatCard";
 
-const Statistics = (props) => {
+const Statistics = props => {
   return (
-    <div class="grid-flow-row order-first col-span-12 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:mt-3 lg:order-none lg:col-span-6 lg:gap-6">
+    <div className="grid-flow-row order-first col-span-12 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:mt-3 lg:order-none lg:col-span-6 lg:gap-6">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
+        transition={{ duration: 0.5 }}>
         <StatCard
           title="Watching Time"
           value={props.watchtimehrs + "h"}
@@ -32,8 +31,7 @@ const Statistics = (props) => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
+        transition={{ duration: 0.5 }}>
         <StatCard
           title="Average Watch time per Day"
           value={props.watchtimehrs / 7 + "h"}
@@ -50,8 +48,7 @@ const Statistics = (props) => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
+        transition={{ duration: 0.5 }}>
         <StatCard
           title="Tests Attempted"
           value={props.tests}
@@ -68,8 +65,7 @@ const Statistics = (props) => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
+        transition={{ duration: 0.5 }}>
         <StatCard
           title="Average Test Score"
           value={props.avgtestscore}
