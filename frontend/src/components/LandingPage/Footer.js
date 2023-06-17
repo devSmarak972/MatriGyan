@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react";
 
 const Footer = () => {
   return (
-    <footer class="footer">
-      <div class="footer-top aos" data-aos="fade-up">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-4 col-md-6">
-              <div class="footer-widget footer-about">
-                <div class="footer-logo">
+    <footer className="footer">
+      <div className="footer-top aos" data-aos="fade-up">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-4 col-md-6">
+              <div className="footer-widget footer-about">
+                <div className="footer-logo">
                   <img src="/logo-bg.png" alt="logo" />
                 </div>
-                <div class="footer-about-content">
+                <div className="footer-about-content">
                   <p>
                     Our platform is a seamless blend of advanced technology and
                     exceptional education, empowering students to reach their
@@ -20,9 +20,9 @@ const Footer = () => {
                 </div>
               </div>
             </div>
-            <div class="col-lg-2 col-md-6">
-              <div class="footer-widget footer-menu">
-                <h2 class="footer-title">For Instructor</h2>
+            <div className="col-lg-2 col-md-6">
+              <div className="footer-widget footer-menu">
+                <h2 className="footer-title">For Instructor</h2>
                 <ul>
                   <li>
                     <a href="instructor-profile.html">Profile</a>
@@ -42,9 +42,9 @@ const Footer = () => {
                 </ul>
               </div>
             </div>
-            <div class="col-lg-2 col-md-6">
-              <div class="footer-widget footer-menu">
-                <h2 class="footer-title">For Student</h2>
+            <div className="col-lg-2 col-md-6">
+              <div className="footer-widget footer-menu">
+                <h2 className="footer-title">For Student</h2>
                 <ul>
                   <li>
                     <a href="student-profile.html">Profile</a>
@@ -64,25 +64,25 @@ const Footer = () => {
                 </ul>
               </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-              <div class="footer-widget footer-contact">
-                <h2 class="footer-title">News letter</h2>
-                <div class="news-letter">
+            <div className="col-lg-4 col-md-6">
+              <div className="footer-widget footer-contact">
+                <h2 className="footer-title">News letter</h2>
+                <div className="news-letter">
                   <form>
                     <input
                       type="text"
-                      class="form-control"
+                      className="form-control"
                       placeholder="Enter your email address"
                       name="email"
                     />
                   </form>
                 </div>
-                <div class="footer-contact-info">
-                  <div class="footer-address">
+                <div className="footer-contact-info">
+                  <div className="footer-address">
                     <img
                       src="/LandingPage/assets/img/icon/icon-20.svg"
                       alt
-                      class="img-fluid"
+                      className="img-fluid"
                     />
                     <p>
                       {" "}
@@ -95,20 +95,20 @@ const Footer = () => {
                     <img
                       src="/LandingPage/assets/img/icon/icon-19.svg"
                       alt
-                      class="img-fluid"
+                      className="img-fluid"
                     />
                     <a
                       href="/cdn-cgi/l/email-protection"
-                      class="__cf_email__"
+                      className="__cf_email__"
                       data-cfemail="16726473777b657a7b6556736e777b667a733875797b">
                       [email&#160;protected]
                     </a>
                   </p>
-                  <p class="mb-0">
+                  <p className="mb-0">
                     <img
                       src="/LandingPage/assets/img/icon/icon-21.svg"
                       alt
-                      class="img-fluid"
+                      className="img-fluid"
                     />
                     +91 9332487812
                   </p>
@@ -118,12 +118,12 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <div class="container">
-          <div class="copyright">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="privacy-policy">
+      <div className="footer-bottom">
+        <div className="container">
+          <div className="copyright">
+            <div className="row">
+              <div className="col-md-6">
+                <div className="privacy-policy">
                   <ul>
                     <li>
                       <a href="term-condition.html">Terms</a>
@@ -134,9 +134,9 @@ const Footer = () => {
                   </ul>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="copyright-text">
-                  <p class="mb-0">
+              <div className="col-md-6">
+                <div className="copyright-text">
+                  <p className="mb-0">
                     &copy; 2023 DreamsLMS. All rights reserved.
                   </p>
                 </div>
@@ -147,6 +147,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-}
+};
 
-export default Footer
+export default Footer;

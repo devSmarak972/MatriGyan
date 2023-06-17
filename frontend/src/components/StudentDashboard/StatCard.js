@@ -1,16 +1,16 @@
 import React from "react";
 
-const StatCard = (props) => {
+const StatCard = props => {
   return (
-    <div class="card justify-between px-4 py-3 m-0 bg-white h-32">
-      <p class="font-medium">{props.title}</p>
-      <div class="flex items-center justify-between pt-4">
+    <div className="card justify-between px-4 py-3 m-0 bg-white h-32">
+      <p className="font-medium">{props.title}</p>
+      <div className="flex items-center justify-between pt-4">
         <div>
-          <span class="text-3xl font-semibold text-slate-700 dark:text-navy-100">
+          <span className="text-3xl font-semibold text-slate-700 dark:text-navy-100">
             {props.value}
           </span>
           {props.subtitle && (
-            <span class="ml-1 text-xl font-semibold text-slate-700 dark:text-navy-100">
+            <span className="ml-1 text-xl font-semibold text-slate-700 dark:text-navy-100">
               {props.subtitle}
             </span>
           )}
@@ -18,7 +18,7 @@ const StatCard = (props) => {
         </div>
         {/* <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-10 w-10 text-primary dark:text-accent"
+          className="h-10 w-10 text-primary dark:text-accent"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

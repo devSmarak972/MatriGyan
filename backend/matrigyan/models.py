@@ -65,7 +65,7 @@ class Course(models.Model):
 	def __str__(self):
 		return self.title
 	@property
-	def duration(self):
+	def rating(self):
 		feedbacks=self.feedback_set.all()
 		print(feedbacks)
 		if len(feedbacks)==0:
@@ -81,4 +81,18 @@ class Notifications(models.Model):
 	def __str__(self) -> str:
 		return self.title+"_"+str(self.id)
 
+class ClassModel(models.Model):
+	title=models.CharField(default="",max_length=255)
+	students=models.ManyToManyField()
+	modes=((0,"English"),(1,"Hindi"))
+	mode=models.TextField(default=0,choices=modes)
+	teacher=models.ForeignKey("Educator",on_delete=models.CASCADE)
+	start=models.DateTimeField(auto_created=True)
+	end=models.DateTimeField()
+	def __str__(self):
+		return self.title+"_"+str(self.id)
+	
+	@property
+	def duration(self):
+		return "16h"
 	
