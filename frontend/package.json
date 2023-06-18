@@ -23,6 +23,7 @@
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1",
     "react-owl-carousel": "^2.3.3",
+    "react-owl-carousel-autoheight": "^1.0.1",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.12.1",
     "react-scripts": "5.0.1",

@@ -1,5 +1,5 @@
 import React from 'react'
-import OwlCarousel from "react-owl-carousel";
+import OwlCarousel from "react-owl-carousel-autoheight";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 const Category = () => {
@@ -49,10 +49,7 @@ const Category = () => {
             <div className="feature-bg">
               <div className="feature-header">
                 <div className="feature-icon">
-                  <img
-                    src="/LandingPage/assets/img/book.jpg"
-                    alt
-                  />
+                  <img src="/LandingPage/assets/img/book.jpg" alt />
                 </div>
                 <div className="feature-cont">
                   <div className="feature-text">JEE Advanced</div>
@@ -65,10 +62,7 @@ const Category = () => {
             <div className="feature-bg">
               <div className="feature-header">
                 <div className="feature-icon">
-                  <img
-                    src="/LandingPage/assets/img/hat.jpg"
-                    alt
-                  />
+                  <img src="/LandingPage/assets/img/hat.jpg" alt />
                 </div>
                 <div className="feature-cont">
                   <div className="feature-text">NEET</div>
@@ -81,10 +75,7 @@ const Category = () => {
             <div className="feature-bg">
               <div className="feature-header">
                 <div className="feature-icon">
-                  <img
-                    src="/LandingPage/assets/img/pen.jpg"
-                    alt
-                  />
+                  <img src="/LandingPage/assets/img/pen.jpg" alt />
                 </div>
                 <div className="feature-cont">
                   <div className="feature-text">JEE/NEET Foundation</div>
@@ -97,10 +88,7 @@ const Category = () => {
             <div className="feature-bg">
               <div className="feature-header">
                 <div className="feature-icon">
-                  <img
-                    src="/LandingPage/assets/img/pen.jpg"
-                    alt
-                  />
+                  <img src="/LandingPage/assets/img/pen.jpg" alt />
                 </div>
                 <div className="feature-cont">
                   <div className="feature-text">CBSE Class 11 PCM</div>
@@ -113,10 +101,7 @@ const Category = () => {
             <div className="feature-bg">
               <div className="feature-header">
                 <div className="feature-icon">
-                  <img
-                    src="/LandingPage/assets/img/pen.jpg"
-                    alt
-                  />
+                  <img src="/LandingPage/assets/img/pen.jpg" alt />
                 </div>
                 <div className="feature-cont">
                   <div className="feature-text">CBSE Class 12 PCM</div>
@@ -129,10 +114,7 @@ const Category = () => {
             <div className="feature-bg">
               <div className="feature-header">
                 <div className="feature-icon">
-                  <img
-                    src="/LandingPage/assets/img/pen.jpg"
-                    alt
-                  />
+                  <img src="/LandingPage/assets/img/pen.jpg" alt />
                 </div>
                 <div className="feature-cont">
                   <div className="feature-text">CBSE Class 10</div>
@@ -145,13 +127,12 @@ const Category = () => {
             <div className="feature-bg">
               <div className="feature-header">
                 <div className="feature-icon">
-                  <img
-                    src="/LandingPage/assets/img/hat.jpg"
-                    alt
-                  />
+                  <img src="/LandingPage/assets/img/hat.jpg" alt />
                 </div>
                 <div className="feature-cont">
-                  <div className="feature-text">JEE/NEET Foundation Class 9</div>
+                  <div className="feature-text">
+                    JEE/NEET Foundation Class 9
+                  </div>
                 </div>
               </div>
               <p>45 Instructors</p>
@@ -161,10 +142,7 @@ const Category = () => {
             <div className="feature-bg">
               <div className="feature-header">
                 <div className="feature-icon">
-                  <img
-                    src="/LandingPage/assets/img/book.jpg"
-                    alt
-                  />
+                  <img src="/LandingPage/assets/img/book.jpg" alt />
                 </div>
                 <div className="feature-cont">
                   <div className="feature-text">JEE Mains Crash Course</div>
@@ -177,10 +155,7 @@ const Category = () => {
             <div className="feature-bg">
               <div className="feature-header">
                 <div className="feature-icon">
-                  <img
-                    src="/LandingPage/assets/img/pen.jpg"
-                    alt
-                  />
+                  <img src="/LandingPage/assets/img/pen.jpg" alt />
                 </div>
                 <div className="feature-cont">
                   <div className="feature-text">CBSE Crash Course</div>
@@ -189,7 +164,6 @@ const Category = () => {
               <p>45 Instructors</p>
             </div>
           </div>
-
         </OwlCarousel>
       </div>
     </section>
