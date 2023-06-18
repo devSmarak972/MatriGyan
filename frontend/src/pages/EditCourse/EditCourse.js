@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { Accordion, createStyles } from "@mantine/core";
+import { createStyles } from "@mantine/core";
 import Sidebar from "../../components/StudentDashboard/Sidebar";
 import Title from "../../components/EditCourse/EditCourseHeading";
 import EditTitle from "../../components/EditCourse/EditTitle";
 import Quill from "../../components/EditCourse/Quill";
 import Sections from "../../components/EditCourse/Sections";
 import Save from "../../components/EditCourse/Save";
-import Video from "../../components/EditCourse/Video";
 import Options from "../../components/EditCourse/Options";
 
 const EditCourse = () => {
