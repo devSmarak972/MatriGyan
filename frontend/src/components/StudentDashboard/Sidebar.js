@@ -9,7 +9,6 @@ import {
   faFileLines,
   faHouse,
   faBars,
-  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = () => {
@@ -23,11 +22,16 @@ const Sidebar = () => {
           initial={false}
           animate={{ x: open === 0 ? 0 : 75 }}
           transition={{ duration: 0.5 }}
-          style={{position:"absolute", zIndex:1000}}
+          style={{ position: "absolute", zIndex: 1000 }}
         >
           <FontAwesomeIcon
             icon={faBars}
-            style={{ color: "#278bf0", zIndex: 1000, position:"absolute", top:0 }}
+            style={{
+              color: "#278bf0",
+              zIndex: 1000,
+              position: "absolute",
+              top: 0,
+            }}
             className="p-2 rounded-full bg-blue-100 w-[1.6rem] h-[1.6rem] m-3 cursor-pointer"
             onClick={() => setOpen((prev) => 1 - prev)}
           />
@@ -54,7 +58,8 @@ const Sidebar = () => {
           <div className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6">
             <Link
               to="#"
-              className={`flex h-11 w-11 items-center justify-center rounded-lg ${
+              title="Dashboard"
+              className={`relative flex h-11 w-11 items-center justify-center rounded-lg ${
                 sidebar === 0 ? `bg-[var(--background-light)]` : ``
               } text-primary outline-none transition-colors duration-200 hover:bg-[var(--background-light)] dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:active:bg-navy-450/90`}
               onClick={() => setSidebar(0)}

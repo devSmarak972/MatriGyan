@@ -5,18 +5,18 @@ const LiveLecture = (props) => {
   const status = today < props.start ? 2 : today > props.end ? 0 : 1;
 
   return (
-    <div class={`h-32 card p-4 mb-0.5 ${status===1?`border-2 border-red-200`:``}`}>
-      <p class="font-medium text-slate-700 dark:text-navy-100">
+    <div className={`h-32 card p-4 mb-0.5 ${status===1?`border-2 border-red-200`:``}`}>
+      <p className="font-medium text-slate-700 dark:text-navy-100">
         Basic Mathematics - II
       </p>
-      <p class="mt-1 text-xs">Abhijeet Dubey</p>
+      <p className="mt-1 text-xs">Abhijeet Dubey</p>
 
-      <div class="mt-2 flex items-end justify-between">
-        <p class="flex items-center space-x-2 text-slate-400 dark:text-navy-300">
+      <div className="mt-2 flex items-end justify-between">
+        <p className="flex items-center space-x-2 text-slate-400 dark:text-navy-300">
           {status !== 1 && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-4.5 w-4.5 text-slate-400 dark:text-navy-300"
+              className="h-4.5 w-4.5 text-slate-400 dark:text-navy-300"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -29,7 +29,7 @@ const LiveLecture = (props) => {
               />
             </svg>
           )}
-          <span class="text-xs">{`${
+          <span className="text-xs">{`${
             status === 0 ? `Streamed on` : status === 2 ? `Will go live on` : ``
           } ${
             status === 0
@@ -59,7 +59,7 @@ const LiveLecture = (props) => {
               : ``
           }`}</span>
           <span
-            class={`${status !== 1 ? `mx-3` : `m-0`} text-xs ${
+            className={`${status !== 1 ? `mx-3` : `m-0`} text-xs ${
               status === 0 ? `bg-slate-200` : status === 1 ? `` : `bg-blue-100`
             } ${
               status === 0
@@ -76,10 +76,10 @@ const LiveLecture = (props) => {
             }`}
           </span>
         </p>
-        <button class="btn h-7 w-7 rounded-full bg-slate-150 p-0 font-medium text-slate-800 hover:bg-slate-200 hover:shadow-lg hover:shadow-slate-200/50 focus:bg-slate-200 focus:shadow-lg focus:shadow-slate-200/50 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:hover:shadow-navy-450/50 dark:focus:bg-navy-450 dark:focus:shadow-navy-450/50 dark:active:bg-navy-450/90">
+        <button className="btn h-7 w-7 rounded-full bg-slate-150 p-0 font-medium text-slate-800 hover:bg-slate-200 hover:shadow-lg hover:shadow-slate-200/50 focus:bg-slate-200 focus:shadow-lg focus:shadow-slate-200/50 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:hover:shadow-navy-450/50 dark:focus:bg-navy-450 dark:focus:shadow-navy-450/50 dark:active:bg-navy-450/90">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 rotate-45"
+            className="h-5 w-5 rotate-45"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

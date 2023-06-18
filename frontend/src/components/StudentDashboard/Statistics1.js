@@ -7,10 +7,10 @@ import StatCard from "./StatCard";
 
 const Statistics = (props) => {
   return (
-    <div class="mt-3 order-first col-span-12 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:order-none lg:col-span-6 lg:gap-6">
-      <div class="m-auto px-1 col-span-1 row-span-2">
+    <div className="mt-3 order-first col-span-12 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:order-none lg:col-span-6 lg:gap-6">
+      <div className="m-auto px-1 col-span-1 row-span-2">
         <img
-          class="max-w-xs scale-125"
+          className="max-w-xs scale-125"
           src="dashboard.svg"
           alt="image"
           style={{ height: "17rem" }}

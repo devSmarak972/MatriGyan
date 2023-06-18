@@ -94,16 +94,16 @@ const Test = (props) => {
           </div>
         </div>
         {props.marks && (
-          <div class="single-chart justify-around">
-            <svg viewBox="0 0 36 36" class="w-20 circular-chart blue">
+          <div className="single-chart justify-around">
+            <svg viewBox="0 0 36 36" className="w-20 circular-chart blue">
               <path
-                class="circle-bg"
+                className="circle-bg"
                 d="M18 2.0845
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"
               />
               <path
-                class="circle"
+                className="circle"
                 stroke-dasharray={`${
                   (props.marks / props.totalmarks) * 100
                 }, 100`}
@@ -111,7 +111,7 @@ const Test = (props) => {
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"
               />
-              <text x="18" y="20.35" class="percentage">
+              <text x="18" y="20.35" className="percentage">
                 {props.marks + " / " + props.totalmarks}
               </text>
             </svg>
@@ -120,10 +120,10 @@ const Test = (props) => {
         {!props.marks && status === 1 && (
           <div className="w-20 flex flex-column items-center gap-2">
             <span className="font-semibold text-[var(--primary)]">ATTEMPT</span>
-            <button class="btn h-7 w-7 rounded-full bg-slate-150 p-0 font-medium text-slate-800 hover:bg-slate-200 hover:shadow-lg hover:shadow-slate-200/50 focus:bg-slate-200 focus:shadow-lg focus:shadow-slate-200/50 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:hover:shadow-navy-450/50 dark:focus:bg-navy-450 dark:focus:shadow-navy-450/50 dark:active:bg-navy-450/90">
+            <button className="btn h-7 w-7 rounded-full bg-slate-150 p-0 font-medium text-slate-800 hover:bg-slate-200 hover:shadow-lg hover:shadow-slate-200/50 focus:bg-slate-200 focus:shadow-lg focus:shadow-slate-200/50 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:hover:shadow-navy-450/50 dark:focus:bg-navy-450 dark:focus:shadow-navy-450/50 dark:active:bg-navy-450/90">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 rotate-45"
+                className="h-5 w-5 rotate-45"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
