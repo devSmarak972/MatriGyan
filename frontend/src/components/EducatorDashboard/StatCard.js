@@ -54,10 +54,10 @@ const StatCard = (props) => {
                 <VisibilitySensor onChange={start} delayedCall>
                   <div className="inline">
                     <span
-                      className="text-3xl font-semibold text-slate-700 dark:text-navy-100"
+                      className="ml-1 text-xl font-semibold text-slate-700 dark:text-navy-100"
                       ref={countUpRef}
                     />
-                    <span className="ml-1 text-xl font-semibold text-slate-700 dark:text-navy-100">
+                    <span className="text-xl font-semibold text-slate-700 dark:text-navy-100">
                       {["h", "m"].includes(subtitle[subtitle.length - 1])
                         ? subtitle[subtitle.length - 1]
                         : ""}

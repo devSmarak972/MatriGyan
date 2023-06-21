@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Amiray Guichon",
+    "video": 12,
+    "course": "Ketones",
+    "question": "Why are ketones more electrophilic than esters even though 'O' atom is more electronegative?",
+    "date": "27-01-2020",
+    "replies": 6,
+    "upvotes": 12
+  },
+  {
+    "name": "Sheldon Cooper",
+    "course": "Wave Optics",
+    "question": "Why are ketones more electrophilic than esters even though 'O' atom is more electronegative?",
+    "date": "27-01-2019",
+    "replies": 2,
+    "upvotes": 5
+  },
+  {
+    "name": "Isha Roy",
+    "course": "Qualitative Analysis",
+    "question": "Why are ketones more electrophilic than esters even though 'O' atom is more electronegative?",
+    "date": "27-01-2018",
+    "replies": 3,
+    "upvotes": 8
+  }
+]
