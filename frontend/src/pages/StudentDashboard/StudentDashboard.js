@@ -11,9 +11,9 @@ import LiveLectures from "../../components/StudentDashboard/LiveLectures";
 
 const StudentDashboard = () => {
   return (
-    <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900">
+    <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-page">
       <Sidebar />
-      <main className="main-content w-full pb-8">
+      <main className="main-content w-full pb-8 ml-5">
         <Welcome />
         <CurrentCourses />
         <div className="mt-4 grid grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">

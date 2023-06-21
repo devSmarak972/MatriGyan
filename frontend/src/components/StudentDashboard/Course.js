@@ -1,8 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import "../../pages/StudentDashboard/css/app.css";
+import "../../pages/StudentDashboard/css/studentDashboard.css";
 
 const Course = (props) => {
+  console.log(props)
   return (
     <div className="card m-0">
       <div className="flex justify-between space-x-2 max-h-40">
@@ -12,13 +13,13 @@ const Course = (props) => {
               href="#"
               className="font-medium text-slate-700 outline-none transition-colors line-clamp-2 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light"
             >
-              Basic Mathematics - IIBasic Mathematics - II
+              {props.coursename}
             </a>
             <a
               href="#"
               className="text-xs text-slate-400 hover:text-slate-800 dark:text-navy-300 dark:hover:text-navy-100"
             >
-              Alfredo Elliott
+              {props.educator}
             </a>
           </div>
           <div className="my-2">
@@ -64,15 +65,15 @@ const Course = (props) => {
                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <p>16h 14m</p>
+              <p class="mb-0">16h 14m</p>
             </div>
             <div className="mx-2 my-1 w-px self-stretch bg-slate-200 dark:bg-navy-500"></div>
             <span className="line-clamp-1">475 Students </span>
           </div>
         </div>
         <img
-          className="h-40 w-40 rounded-r-lg object-cover"
-          src="StudentDashboard/images/others/testing-sm.jpg"
+          className="h-40 w-40 rounded-r-lg object-contain"
+          src={props.image}
           alt="image"
         />
       </div>

@@ -21,7 +21,7 @@ const Home = () => {
                       <FontAwesomeIcon className="fas fa-magnifying-glass search-icon" />
                       <input
                         type="email"
-                        className="form-control"
+                        className="form-control justify-content-center"
                         placeholder="Search School, Topics, Courses etc"
                       />
                       <span className="drop-detail">
@@ -57,7 +57,8 @@ const Home = () => {
                       gap: "8px",
                       color: "gold",
                       "font-size": "1.2rem",
-                    }}>
+                    }}
+                  >
                     <h2 className="d-inline-block average-rating">5.0 </h2>
                     <FontAwesomeIcon icon={faStar} />
                     <FontAwesomeIcon icon={faStar} />
@@ -71,7 +72,11 @@ const Home = () => {
           </div>
           <div
             className="col-md-5 d-flex align-items-center"
-            style={{ background: "url(/LandingPage/assets/img/blob.svg)" }}>
+            style={{
+              background: "url(/LandingPage/assets/img/blob.svg)",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
             <div className="girl-slide-img aos" data-aos="fade-up">
               <img src="/LandingPage/assets/img/hero-graphic.png" alt />
             </div>

@@ -2,8 +2,9 @@ import React from "react";
 import Test from "./Test";
 
 const Tests = () => {
+ // col-span-12 flex flex-col sm:col-span-6 lg:col-span-4
   return (
-    <div className="col-span-12 flex flex-col sm:col-span-6 lg:col-span-4">
+    <div className="col-span-12 sm:col-span-6 lg:col-span-4">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100">
           Attempted Tests

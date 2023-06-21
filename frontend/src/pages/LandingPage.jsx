@@ -24,10 +24,10 @@ const LandingPage = () => {
   // useEffect(() => {
   //   AOS.init();
   // }, []);
-
+// import 
 
   return (
-    <div className="main-wrapper">
+    <div className="main-wrapper" id="landingpage">
            <Navbar></Navbar>
            <Home></Home>
            <Stats></Stats>
