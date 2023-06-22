@@ -8122,9 +8122,9 @@ button.gridjs-sort-desc {
     display: grid
 }
 
-/* .hidden {
+.hidden {
     display: none
-} */
+}
 
 .aspect-square {
     aspect-ratio: 1/1

@@ -5,10 +5,7 @@ const LiveLecture = props => {
   const status = today < props.start ? 2 : today > props.end ? 0 : 1;
 
   return (
-    <div
-      className={`h-32 card p-4 mb-0.5 ${
-        status === 1 ? `border-2 border-red-200` : ``
-      }`}>
+    <div className={`h-32 card p-4 mb-0.5 ${status===1?`border-2 border-red-200`:``}`}>
       <p className="font-medium text-slate-700 dark:text-navy-100">
         Basic Mathematics - II
       </p>

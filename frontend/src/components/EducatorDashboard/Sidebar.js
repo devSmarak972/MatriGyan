@@ -11,6 +11,7 @@ import {
   faFileLines,
   faHouse,
   faBars,
+  faTowerBroadcast,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = () => {
@@ -47,7 +48,7 @@ const Sidebar = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800">
-          <div className="pt-4">
+          <div className="flex pt-4">
             <Link to="/">
               <img
                 className="h-11 w-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
@@ -124,6 +125,23 @@ const Sidebar = () => {
                 className="scale-150"
               />
             </Link>
+
+            <Link
+              to="#"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Live Classes"
+              data-tooltip-place="right"
+              className={`flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 ${
+                sidebar === 4 ? `bg-[var(--background-light)]` : ``
+              } hover:bg-[var(--background-light)] active:bg-[var(--background-light)] dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25`}
+              onClick={() => setSidebar(4)}
+            >
+              <FontAwesomeIcon
+                icon={faTowerBroadcast}
+                style={{ color: sidebar === 4 ? "#228bf0" : "#B6B6B6" }}
+                className="scale-125"
+              />
+            </Link>
             <Tooltip
               id="my-tooltip"
               style={{
@@ -131,7 +149,7 @@ const Sidebar = () => {
                 color: "white",
                 marginTop: "0",
                 fontWeight: "500",
-                transition: "0.3s all ease"
+                transition: "0.2s all ease"
               }}
             />
           </div>
@@ -164,7 +182,7 @@ const Sidebar = () => {
               x-data="usePopper({placement:'right-end',offset:12})"
               className="flex"
             >
-              <button x-ref="popperRef" className="avatar h-12 w-12 border-0">
+              <button x-ref="popperRef" className="avatar h-12 w-12">
                 <img
                   className="rounded-full"
                   src="StudentDashboard/images/avatar/avatar-12.jpg"
