@@ -1,5 +1,5 @@
 import React from "react";
-import "../../pages/StudentDashboard/css/app.css";
+import "../../pages/StudentDashboard/css/Dashboard.css";
 import { Rating } from "@mantine/core";
 
 const Course = (props) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import "../../pages/StudentDashboard/css/studentDashboard.css";
+import "../../pages/StudentDashboard/css/Dashboard.css";
 
 const Course = (props) => {
   console.log(props)

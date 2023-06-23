@@ -8,7 +8,7 @@ const StatCard = (props) => {
   return (
     <div className="card justify-between px-4 py-3 m-0 bg-white h-32">
       <p className="font-medium">{props.title}</p>
-      <div className="flex items-center justify-between pt-4">
+      <div className="flex items-center justify-between">
         <div>
           <CountUp
             start={0}
