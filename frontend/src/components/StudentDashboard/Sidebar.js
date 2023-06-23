@@ -18,7 +18,7 @@ const Sidebar = () => {
   const [open, setOpen] = useState(0);
 
   return (
-    <div className="sidebar print:hidden">
+    <div className="sidebar print:hidden tw-dash-page">
       {window.innerWidth < 768 && (
         <motion.div
           initial={false}

@@ -10,7 +10,7 @@ import Doubts from "../../components/EducatorDashboard/Doubts";
 
 const EducatorDashboard = () => {
   return (
-    <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-page">
+    <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
       <Sidebar />
       <main className="main-content w-full pb-8">
         <Welcome />

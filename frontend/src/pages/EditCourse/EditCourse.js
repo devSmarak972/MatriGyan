@@ -93,8 +93,8 @@ const EditCourse = () => {
   }, [desc]);
 
   return (
-    <div>
-      <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900">
+    <div className="container p-8">
+      <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 p-8">
         <Sidebar />
         <main className="main-content w-full pb-8">
           <Title />
