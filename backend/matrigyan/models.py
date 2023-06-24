@@ -83,10 +83,10 @@ class Notifications(models.Model):
 
 class ClassModel(models.Model):
 	title=models.CharField(default="",max_length=255)
-	students=models.ManyToManyField()
+	# students=models.ManyToManyField()
 	modes=((0,"English"),(1,"Hindi"))
 	mode=models.TextField(default=0,choices=modes)
-	teacher=models.ForeignKey("Educator",on_delete=models.CASCADE)
+	# teacher=models.ForeignKey("Educator",on_delete=models.CASCADE)
 	start=models.DateTimeField(auto_created=True)
 	end=models.DateTimeField()
 	def __str__(self):
