@@ -1,8 +1,23 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Student(models.Model):
+	std=models.IntegerField(default=11)
+	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+	first_name=models.TextField(default="")
+	full_name=models.TextField(default="")
+	last_name=models.TextField(default="")
+	phone=models.TextField(default="000")
+	user_type=models.CharField(default="student",max_length=255)
+	def __str__(self) -> str:
+		return self.name
+
+class Educator(models.Model):
 	name=models.CharField(max_length=255)
 	std=models.IntegerField(default=11)
+	profile_pic = models.CharField(max_length=200, null=True, blank=True)
+	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+
 	def __str__(self) -> str:
 		return self.name
 # Create your models here.
@@ -27,7 +42,7 @@ class CourseTag(models.Model):
 		  return self.tagname
 
 class Comment(models.Model):
-	user=models.ForeignKey("Student",on_delete=models.CASCADE,related_name="user")
+	user=models.ForeignKey("Student",on_delete=models.CASCADE,related_name="commentor")
 	comment=models.TextField()
 	date_time=models.DateTimeField( auto_now=True)
 	likes=models.IntegerField(default=0)
@@ -83,7 +98,7 @@ class Notifications(models.Model):
 
 class ClassModel(models.Model):
 	title=models.CharField(default="",max_length=255)
-	students=models.ManyToManyField()
+	students=models.ManyToManyField(Student)
 	modes=((0,"English"),(1,"Hindi"))
 	mode=models.TextField(default=0,choices=modes)
 	teacher=models.ForeignKey("Educator",on_delete=models.CASCADE)

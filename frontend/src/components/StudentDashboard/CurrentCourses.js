@@ -67,32 +67,34 @@ const CurrentCourses = () => {
 
   return (
     <div transition={{ duration: 0.5, staggerChildren: 0.5 }}>
-      <div className="mt-5 px-[var(--margin-x)] transition-all duration-[.25s]">
+      <div className="flex justify-between mt-5 px-[var(--margin-x)] transition-all duration-[.25s]">
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100"
-        >
+          className="text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100">
           My Courses
         </motion.p>
+        <a
+          href="#"
+          class="pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">
+          View All
+        </a>
       </div>
       <div className="flex">
         <div
           ref={ref}
-          className="swiper mx-0 mt-4 px-[var(--margin-x)] transition-all duration-[.25s]"
-        >
+          className="swiper mx-0 mt-4 px-[var(--margin-x)] transition-all duration-[.25s]">
           <swiper-container
             className="swiper-wrapper"
             slides-per-view={slides}
-            space-between="25"
-          >
-            {
-              courses.map(el=>{
-                return <swiper-slide><Course {...el}/>
-                     </swiper-slide>;
-              })
-            }
-
+            space-between="25">
+            {courses.map(el => {
+              return (
+                <swiper-slide>
+                  <Course {...el} />
+                </swiper-slide>
+              );
+            })}
           </swiper-container>
         </div>
       </div>

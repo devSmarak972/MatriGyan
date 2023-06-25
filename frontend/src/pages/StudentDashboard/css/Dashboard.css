@@ -21968,3 +21968,16 @@ code.hljs {
   font-size: 0.5em;
   text-anchor: middle;
 }
+
+.noHoverCard:hover{
+    transform:none!important;
+    background-color:#fff !important;
+}
+.itemCard{
+  border-radius: 6px;
+  justify-content: space-between;
+}
+.itemCard:hover{
+  background-color: #f2f2f2!important;
+
+}
