@@ -2,9 +2,9 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Course from "./Course";
 
-const CurrentCourses = () => {
+const CurrentCourses = (type) => {
   const ref = useRef(null);
-  
+  console.log(type);
   const [slides, setSlides] = useState(0);
    var courses = [
      {
@@ -91,7 +91,7 @@ const CurrentCourses = () => {
             {courses.map(el => {
               return (
                 <swiper-slide>
-                  <Course {...el} />
+                  <Course {...el} type={type.type} />
                 </swiper-slide>
               );
             })}

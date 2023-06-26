@@ -9,8 +9,8 @@ import Tests from "../../components/StudentDashboard/Tests";
 import LiveLectures from "../../components/StudentDashboard/LiveLectures";
 import ItemCard from "../../components/StudentDashboard/ItemCard";
 import { Checkbox } from "@mantine/core";
-import CheckboxItem from "../../components/StudentDashboard/CheckboxItem";
 import DashboardCalendar from "../../components/StudentDashboard/DashboardCalendar";
+import Tasklist from "../../components/StudentDashboard/Tasklist";
 
 const StudentDashboard = () => {
   var classes = [
@@ -39,31 +39,7 @@ const StudentDashboard = () => {
       tags: ["Physics", "JEE"],
     },
   ];
-  var tasks = [
-    {
-      title: "Coordinate Geometry DPP",
-      date: "May 1, 2023",
-      message: "Due Tomorrow",
-      messagetype: "text-warning",
-    },
-    {
-      title: "Daily Physics Test",
-      date: "May 4, 2023",
-    },
-    {
-      title: "Solution of Triangles Revision",
-      date: "April 30, 2023",
-      message: "Due Today",
-      messagetype: "text-danger",
-    },
-    {
-      title: "JEE Mains Full Syllabus Test",
-      date: "May 1, 2023",
-      message: "Syllabus Completed",
-      messagetype: "text-success",
-    },
-    { title: "Doubt Clearing Session" },
-  ];
+
   return (
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
       <Sidebar />
@@ -85,12 +61,13 @@ const StudentDashboard = () => {
         </div>
         <div class="mt-4 grid col-4 grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6 w-100">
           <div class="flex flex-col  col-span-4">
-          <div class="flex justify-between">
-
-            <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
-              Classes
-            </h2>
-
+            <div class="flex justify-between">
+              <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
+                Classes
+              </h2>
+              <span class="px-3 text-2xl text-muted">
+                <i className="fas fa-plus"></i>
+              </span>
             </div>
             <div className="noHoverCard card px-4 py-2 mb-2 h-auto justify-center flex flex-col gap-y-2">
               {classes?.map(el => {
@@ -98,24 +75,7 @@ const StudentDashboard = () => {
               })}
             </div>
           </div>
-          <div class="flex flex-col col-span-4">
-            <div class="flex justify-between">
-              <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
-                Tasklist
-              </h2>
-
-            </div>
-            <div class="card noHoverCard px-4 py-3 mb-2 h-auto gap-y-2 ">
-              <div class="flex flex-col">
-                {tasks.map(el => {
-                  return <CheckboxItem props={{ ...el }}></CheckboxItem>;
-                })}
-              </div>
-              <div class="badge float-left mt-2 mr-auto bg-success/10 text-success dark:bg-success/15">
-                3/10 completed
-              </div>
-            </div>
-          </div>
+            <Tasklist></Tasklist>
           <div class="flex flex-col col-span-4">
             <div class="flex justify-between">
               <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">

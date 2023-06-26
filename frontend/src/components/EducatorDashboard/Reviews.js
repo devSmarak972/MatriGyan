@@ -17,31 +17,35 @@ const Reviews = () => {
   data = data.slice(0, 5);
 
   return (
-    <div className="col-span-12 lg:col-span-6">
+    <div className="col-span-12 lg:col-span-4">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100">
           Student Reviews
         </h2>
-          <Select
-            placeholder="Sort By"
-            data={["Rating", "Date", "Size"]}
-            value={sortBy}
-            onChange={setSortBy}
-            className="w-40"
-          />
-      </div>
-      {data.map((e) => (
-        <Review
-          img={e.img}
-          name={e.name}
-          courses={e.courses}
-          reviews={e.reviews}
-          rating={e.rating}
-          review={e.review}
-          course={e.course}
-          date={e.date}
+        <Select
+          placeholder="Sort By"
+          data={["Rating", "Date", "Size"]}
+          value={sortBy}
+          onChange={setSortBy}
+          className="w-40"
         />
-      ))}
+      </div>
+      <div
+        className="reviewSection scrollbar"
+        style={{ maxHeight: "600px", overflowY: "scroll" }}>
+        {data.map(e => (
+          <Review
+            img={e.img}
+            name={e.name}
+            courses={e.courses}
+            reviews={e.reviews}
+            rating={e.rating}
+            review={e.review}
+            course={e.course}
+            date={e.date}
+          />
+        ))}
+      </div>
     </div>
   );
 };

@@ -21981,3 +21981,26 @@ code.hljs {
   background-color: #f2f2f2!important;
 
 }
+.scrollbar{
+  scrollbar-color:var(--tw-grayscale);
+    scrollbar-width: thin;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

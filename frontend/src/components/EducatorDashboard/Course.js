@@ -3,6 +3,7 @@ import "../../pages/StudentDashboard/css/Dashboard.css";
 import { Rating } from "@mantine/core";
 
 const Course = (props) => {
+  console.log(props)
   return (
     <div className="card m-0">
       <div className="flex justify-between space-x-2 max-h-40">
