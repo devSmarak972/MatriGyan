@@ -1,0 +1,53 @@
+/* button.rc-cursor-pointer {
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    border: 2px solid #e5e7eb;
+}
+
+.rc-text-center {
+    font-size: 1rem;
+    line-height: 1.25rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.rc-flex {
+    align-items: center;
+}
+
+.rc-h-48{
+    max-height: 150px !important;
+}
+
+a[title="Day of Week"]{
+    background-color: #78c0ff !important;
+} */
+
+.fc-daygrid-day-frame {
+    max-height: 75px;
+}
+
+.fc-button {
+    background-color: transparent !important;
+    border: 1px solid #dddddd !important;
+    color: #334155 !important;
+}
+
+.fc-button-active {
+    border: 1px solid var(--primary) !important;
+    background-color: var(--primary) !important;
+    color: white !important;
+}
+
+.fc-toolbar-title {
+    font-weight: 600;
+    color: #334155;
+    font-size: 1.75rem !important;
+}
+
+.mantine-DateTimePicker-input {
+    background-color: white;
+}

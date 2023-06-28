@@ -6,6 +6,9 @@ import CoursePage from "./pages/CoursePage";
 import EditCourse from "./pages/EditCourse/EditCourse";
 import EducatorDashboard from "./pages/EducatorDashboard/EducatorDashboard";
 import Resources from "./pages/Resources";
+import StudentCalendarPage from "./pages/StudentCalendarPage";
+import EducatorCalendarPage from "./pages/EducatorCalendarPage";
+
 function App() {
   return (
     <Router>
@@ -16,9 +19,12 @@ function App() {
           <Route path="/signup" element={<LoginSignup />} />
           <Route path="/dashboard" element={<StudentDashboard />} />
           <Route path="/coursepage" element={<CoursePage/>}/>
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/student-dashboard" element={<StudentDashboard />} />
           <Route path="/educator-dashboard" element={<EducatorDashboard />} />
           <Route path="/edit-course" element={<EditCourse />} />
-          <Route path="/resources" element={<Resources />} />
+          <Route path="/student-calendar" element={<StudentCalendarPage />} />
+          <Route path="/educator-calendar" element={<EducatorCalendarPage />} />
         </Routes>
       </div>
     </Router>
