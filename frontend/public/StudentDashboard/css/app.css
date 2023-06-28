@@ -110,14 +110,7 @@ select {
     text-transform: none
 }
 
-[type=button],
-[type=reset],
-[type=submit],
-button {
-    -webkit-appearance: button;
-    background-color: transparent;
-    background-image: none
-}
+
 
 :-moz-focusring {
     outline: auto
@@ -8129,9 +8122,9 @@ button.gridjs-sort-desc {
     display: grid
 }
 
-.hidden {
+/* .hidden {
     display: none
-}
+} */
 
 .aspect-square {
     aspect-ratio: 1/1
@@ -8197,9 +8190,7 @@ button.gridjs-sort-desc {
     height: .875rem
 }
 
-.h-36 {
-    height: 9rem
-}
+
 
 .h-4 {
     height: 1rem
@@ -8209,17 +8200,7 @@ button.gridjs-sort-desc {
     height: 1.125rem
 }
 
-.h-40 {
-    height: 10rem
-}
 
-.h-44 {
-    height: 11rem
-}
-
-.h-48 {
-    height: 12rem
-}
 
 .h-5 {
     height: 1.25rem
@@ -8781,9 +8762,7 @@ button.gridjs-sort-desc {
     list-style-type: disc
 }
 
-.grid-cols-1 {
-    grid-template-columns: repeat(1, minmax(0, 1fr))
-}
+
 
 .grid-cols-12 {
     grid-template-columns: repeat(12, minmax(0, 1fr))

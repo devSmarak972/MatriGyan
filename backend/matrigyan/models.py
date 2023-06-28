@@ -1,13 +1,28 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Student(models.Model):
+	std=models.IntegerField(default=11)
+	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+	first_name=models.TextField(default="")
+	full_name=models.TextField(default="")
+	last_name=models.TextField(default="")
+	phone=models.TextField(default="000")
+	user_type=models.CharField(default="student",max_length=255)
+	def __str__(self) -> str:
+		return self.name
+
+class Educator(models.Model):
 	name=models.CharField(max_length=255)
 	std=models.IntegerField(default=11)
+	profile_pic = models.CharField(max_length=200, null=True, blank=True)
+	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+
 	def __str__(self) -> str:
 		return self.name
 # Create your models here.
 class CourseSection(models.Model):
-	course=models.ForeignKey("Course",on_delete=models.CASCADE)
+	course=models.ForeignKey("Course",on_delete=models.CASCADE, null=True, blank=True)
 	title=models.CharField(default="",max_length=255)
 	duration=models.IntegerField(default=0,null=True,blank=True)
 	order_id=models.IntegerField(primary_key=True)
@@ -16,18 +31,18 @@ class CourseSection(models.Model):
 
  
 class CourseCategory(models.Model):
-	category=models.CharField(default="",unique=True,max_length=255)
+	category=models.CharField(default="",unique=False,max_length=255)
 	def __str__(self):
 		  return str(self.category)
 
 class CourseTag(models.Model):
-	tagname=models.CharField(default="",unique=True,max_length=255)
+	tagname=models.CharField(default="",unique=False,max_length=255)
    
 	def __str__(self):
 		  return self.tagname
 
 class Comment(models.Model):
-	user=models.ForeignKey("Student",on_delete=models.CASCADE,related_name="user")
+	user=models.ForeignKey(Student,on_delete=models.CASCADE, null=True, blank=True)
 	comment=models.TextField()
 	date_time=models.DateTimeField( auto_now=True)
 	likes=models.IntegerField(default=0)
@@ -61,6 +76,7 @@ class Course(models.Model):
 	# sections=models.ForeignKey("CourseSection", on_delete=models.CASCADE)
 	category=models.ManyToManyField("CourseCategory")
 	tags=models.ManyToManyField("CourseTag")
+	image = models.TextField(null=True, blank=True)
 	# educator=models.ForeignKey("Educator",on_delete=models.CASCADE)
 	def __str__(self):
 		return self.title
@@ -83,10 +99,10 @@ class Notifications(models.Model):
 
 class ClassModel(models.Model):
 	title=models.CharField(default="",max_length=255)
-	students=models.ManyToManyField()
+	# students=models.ManyToManyField()
 	modes=((0,"English"),(1,"Hindi"))
 	mode=models.TextField(default=0,choices=modes)
-	teacher=models.ForeignKey("Educator",on_delete=models.CASCADE)
+	# teacher=models.ForeignKey("Educator",on_delete=models.CASCADE)
 	start=models.DateTimeField(auto_created=True)
 	end=models.DateTimeField()
 	def __str__(self):

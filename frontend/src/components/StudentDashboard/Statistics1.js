@@ -11,7 +11,7 @@ const Statistics = props => {
       <div className="m-auto px-1 col-span-1 row-span-2">
         <img
           className="max-w-xs scale-125"
-          src="dashboard.svg"
+          src="/dashboard.svg"
           alt="image"
           style={{ height: "17rem" }}
         />

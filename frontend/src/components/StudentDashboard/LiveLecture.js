@@ -5,17 +5,14 @@ const LiveLecture = props => {
   const status = today < props.start ? 2 : today > props.end ? 0 : 1;
 
   return (
-    <div
-      className={`h-32 card p-4 mb-0.5 ${
-        status === 1 ? `border-2 border-red-200` : ``
-      }`}>
-      <p className="font-medium text-slate-700 dark:text-navy-100">
+    <div className={`h-32 card p-3 mb-0.5 ${status===1?`border-2 border-red-200`:``}`}>
+      <p className="font-medium mb-0 text-slate-700 dark:text-navy-100">
         Basic Mathematics - II
       </p>
       <p className="mt-1 text-xs">Abhijeet Dubey</p>
 
-      <div className="mt-2 flex items-end justify-between">
-        <p className="flex items-center space-x-2 text-slate-400 dark:text-navy-300">
+      <div className="mt-2 relative flex items-end justify-between">
+        <p className="flex items-center mb-0 space-x-2 text-slate-400 dark:text-navy-300">
           {status !== 1 && (
             <svg
               xmlns="http://www.w3.org/2000/svg"

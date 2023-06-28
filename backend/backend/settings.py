@@ -12,8 +12,26 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from datetime import datetime
+import os
+import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+APP_DATA_ROOT = '/efs'
+env = environ.Env()
+
+environ.Env.read_env()
+
+
+#LANGTOOL_HOST = os.environ['LANGTOOL_HOST']
+#ENVIRONMENT = os.environ['ENVIRONMENT']
+ENVIRONMENT = env('ENVIRONMENT')
+
+PROD = True if ENVIRONMENT == "PRODUCTION" else False
+DEV = True if ENVIRONMENT == "DEVELOPMENT" else False
+STAGING = True if ENVIRONMENT == "STAGING" else False
+
+DEBUG = False if PROD else True
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +44,17 @@ SECRET_KEY = 'django-insecure-(27h%fzc7bs+d=_!lxtp49l@p@agm7+5e9_!4weof-=+a0f&ja
 DEBUG = True
 
 ALLOWED_HOSTS = []
+KEEP_LOGGED_DURATION=5184000 #60 days
 
+
+# Email
+# AWS_SES_ACCESS_KEY_ID = env('AWS_SES_ACCESS_KEY_ID')
+# AWS_SES_SECRET_ACCESS_KEY = env('AWS_SES_SECRET_ACCESS_KEY')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Matrigyan <matrigyan@gmail.com>'
+EMAIL_BACKEND = 'django_ses.SESBackend'
+# AWS_SES_REGION_NAME = 'us-west-2'
+# AWS_SES_REGION_ENDPOINT = 'email.us-west-2.amazonaws.com'
 
 # Application definition
 

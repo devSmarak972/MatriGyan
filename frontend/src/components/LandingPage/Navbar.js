@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/fontawesome-free-solid";
 
 const Navbar = () => {
+  const [scroll, setScroll] = useState(false);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", () => {
+  //     var val=window.scrollTop() > 100;
+  //     console.log(val)
+  //     setScroll(true);
+  //   });
+  // }, []);
   return (
     <header className="header">
       <div className="header-fixed">
-        <nav className="navbar navbar-expand-lg add-header-bg  header-nav scroll-sticky">
+        <nav
+          className={
+            scroll
+              ? "navbar navbar-expand-lg add-header-bg  header-nav scroll-sticky"
+              : "navbar navbar-expand-lg  header-nav scroll-sticky"
+          }
+        >
           <div className="container">
             <div className="navbar-header">
               <a id="mobile_btn" href="javascript:void(0);">
@@ -33,7 +47,8 @@ const Navbar = () => {
                 <a
                   id="menu_close"
                   className="menu-close"
-                  href="javascript:void(0);">
+                  href="javascript:void(0);"
+                >
                   <i className="fas fa-times"></i>
                 </a>
               </div>

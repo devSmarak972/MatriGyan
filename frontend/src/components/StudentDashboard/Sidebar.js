@@ -3,13 +3,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 import {
   faBookOpen,
   faCalendar,
   faFileLines,
   faHouse,
   faBars,
-  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = () => {
@@ -17,17 +18,22 @@ const Sidebar = () => {
   const [open, setOpen] = useState(0);
 
   return (
-    <div className="sidebar print:hidden">
+    <div className="sidebar print:hidden tw-dash-page">
       {window.innerWidth < 768 && (
         <motion.div
           initial={false}
           animate={{ x: open === 0 ? 0 : 75 }}
           transition={{ duration: 0.5 }}
-          style={{position:"absolute", zIndex:1000}}
+          style={{ position: "absolute", zIndex: 1000 }}
         >
           <FontAwesomeIcon
             icon={faBars}
-            style={{ color: "#278bf0", zIndex: 1000, position:"absolute", top:0 }}
+            style={{
+              color: "#278bf0",
+              zIndex: 1000,
+              position: "absolute",
+              top: 0,
+            }}
             className="p-2 rounded-full bg-blue-100 w-[1.6rem] h-[1.6rem] m-3 cursor-pointer"
             onClick={() => setOpen((prev) => 1 - prev)}
           />
@@ -41,7 +47,7 @@ const Sidebar = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800">
-          <div className="flex pt-4">
+          <div className="pt-4">
             <Link to="/">
               <img
                 className="h-11 w-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
@@ -50,11 +56,13 @@ const Sidebar = () => {
               />
             </Link>
           </div>
-
           <div className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6">
             <Link
               to="#"
-              className={`flex h-11 w-11 items-center justify-center rounded-lg ${
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Dashboard"
+              data-tooltip-place="right"
+              className={`relative flex h-11 w-11 items-center justify-center rounded-lg ${
                 sidebar === 0 ? `bg-[var(--background-light)]` : ``
               } text-primary outline-none transition-colors duration-200 hover:bg-[var(--background-light)] dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:active:bg-navy-450/90`}
               onClick={() => setSidebar(0)}
@@ -68,6 +76,9 @@ const Sidebar = () => {
 
             <Link
               to="#"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Courses"
+              data-tooltip-place="right"
               className={`flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 ${
                 sidebar === 1 ? `bg-[var(--background-light)]` : ``
               } hover:bg-[var(--background-light)] active:bg-[var(--background-light)] dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25`}
@@ -82,6 +93,9 @@ const Sidebar = () => {
 
             <Link
               to="#"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Calendar"
+              data-tooltip-place="right"
               className={`flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 ${
                 sidebar === 2 ? `bg-[var(--background-light)]` : ``
               } hover:bg-[var(--background-light)] active:bg-[var(--background-light)] dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25`}
@@ -96,9 +110,12 @@ const Sidebar = () => {
 
             <Link
               to="#"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Resources"
+              data-tooltip-place="right"
               className={`flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 ${
                 sidebar === 3 ? `bg-[var(--background-light)]` : ``
-              } hover:bg-[var(--background-light)]active:bg-[var(--background-light)]dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25`}
+              } hover:bg-[var(--background-light)] active:bg-[var(--background-light)] dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25`}
               onClick={() => setSidebar(3)}
             >
               <FontAwesomeIcon
@@ -107,6 +124,16 @@ const Sidebar = () => {
                 className="scale-150"
               />
             </Link>
+            <Tooltip
+              id="my-tooltip"
+              style={{
+                backgroundColor: "var(--black)",
+                color: "white",
+                marginTop: "0",
+                fontWeight: "500",
+                transition: "0.3s all ease"
+              }}
+            />
           </div>
 
           <div className="flex flex-col items-center space-y-3 py-3">
@@ -137,7 +164,7 @@ const Sidebar = () => {
               x-data="usePopper({placement:'right-end',offset:12})"
               className="flex"
             >
-              <button x-ref="popperRef" className="avatar h-12 w-12">
+              <button x-ref="popperRef" className="avatar h-12 w-12 border-0">
                 <img
                   className="rounded-full"
                   src="StudentDashboard/images/avatar/avatar-12.jpg"
