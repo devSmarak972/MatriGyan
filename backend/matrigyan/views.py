@@ -25,6 +25,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import Course,CourseCategory,CourseSection,Comment,CourseTag,Student,Educator
 from .common import update_first_and_last_name
+from .models import *
+from .serializers import *
 # Create your views here.
 from .serializers import CourseSerializer
 import backend.settings as matrigyan_settings
@@ -211,3 +213,128 @@ def create_student(user, first_name, last_name, email, phone, password, city="",
     update_first_and_last_name(guser)
     return guser.email
 
+@api_view(['GET'])
+def getTags(request):
+    tags = CourseTag.objects.all()
+    serializer = TagSerializer(tags, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def addTag(request, id):
+    s = TagSerializer(data=request.data)
+    course = Course.objects.get(id=id)
+    if s.is_valid():
+        s = s.data
+        new = s['tagname'].lower()
+        exists = CourseTag.objects.filter(tagname=new).first()
+        if exists==None:
+            new_tag = CourseTag(tagname=new)
+            new_tag.save()
+            course.tags.add(new_tag)
+            return Response("New unique tag was added!")
+        else:
+            course.tags.add(exists)
+            return Response("Old tag added!")
+    else:
+        return Response("Not valid!")
+    
+@api_view(['GET'])
+def getComment(request):
+    comments = Comment.objects.all()
+    sc = CommentSerializer(comments, many=True)
+    return Response(sc.data)
+
+@api_view(['POST'])
+def addComment(request, id):
+    student = Student.objects.get(id=id)
+    com = CommentSerializer(data=request.data)
+    if com.is_valid():
+        repr(com)
+        com.validated_data['user'] = student
+        com.save()
+        return Response(com.data)
+    else:
+        repr(com)
+        return Response("Invalid")
+    
+@api_view(['GET'])
+def getCategory(request):
+    categories = CourseCategory.objects.all()
+    cs = CategorySerializer(categories, many=True)
+    return Response(cs.data)
+
+@api_view(['POST'])
+def addCategory(request, id):
+    s = CategorySerializer(data=request.data)
+    course = Course.objects.get(id=id)
+    if s.is_valid():
+        s = s.data
+        new = s['category'].lower()
+        exists = CourseCategory.objects.filter(category=new).first()
+        if exists==None:
+            new_category = CourseCategory(category=new)
+            new_category.save()
+            course.category.add(new_category)
+            return Response("New unique category was added!")
+        else:
+            course.category.add(exists)
+            return Response("Old category added!")
+    else:
+        return Response("Not valid!")
+    
+@api_view(['POST'])
+def editCourse(request,id):
+    course = Course.objects.get(id=id)
+    courses = CourseSerializer(instance=course,data=request.data)
+    if courses.is_valid():
+        courses.save()
+    return Response(courses.data)
+
+@api_view(['GET'])
+def getCourses(request):
+    courses = Course.objects.all()
+    courseserializer = CourseSerializer(courses, many=True)
+    return Response(courseserializer.data)
+
+@api_view(['GET'])
+def getCourse(request, id):
+    course = Course.objects.get(id=id)
+    c = CourseSerializer(course, many=False)
+    return Response(c.data)
+
+@api_view(['DELETE'])
+def deleteCourse(request, id):
+    course = Course.objects.get(id=id)
+    course.delete()
+    return Response("Course deleted!")
+
+@api_view(['POST'])
+def addCourse(request):
+    course = CourseSerializer(data=request.data)
+    if course.is_valid():
+        course.save()
+    return Response(course.data)
+
+@api_view(['GET'])
+def getSections(request, id):
+    sections = CourseSection.objects.filter(course__id=id)
+    serialized_section = SectionSerializer(sections, many=True)
+    return Response(serialized_section.data)
+
+@api_view(['POST'])
+def addSection(request, id):
+    course = Course.objects.get(id=id)
+    sec = SectionSerializer(data=request.data)
+    if sec.is_valid():
+        title = sec.data['title']
+        duration = int(sec.data['duration'])
+        order_id = int(sec.data['order_id'])
+        section = CourseSection(course=course, title=title, duration=duration, order_id=order_id)
+        section.save()
+    return Response(sec.data)
+
+@api_view(['DELETE'])
+def deleteSection(request, id):
+    section = CourseSection.objects.get(id=id)
+    section.delete()
+    return Response("Section deleted!")
