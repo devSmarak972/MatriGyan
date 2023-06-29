@@ -25,4 +25,11 @@ urlpatterns = [
     path('get-sections/<int:id>/', views.getSections),
     path('add-section/<int:id>/', views.addSection),
     path('delete-section/<int:id>/', views.deleteSection),
+    path('get-quiz/<int:id>/', views.getQuiz),
+    path('get-course-quiz/<int:id>/', views.getCourseQuiz),
+    path('create-quiz/', views.createQuiz),
+    path('delete-quiz/<int:id>/', views.deleteQuiz),
+    path('add-question/<int:id>/', views.addQuestion),
+    path('get-questions/<int:id>/', views.getQuestions),
+    path('add-solution/<int:id>/', views.addSolution),
 ]
