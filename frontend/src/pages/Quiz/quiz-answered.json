@@ -1,0 +1,116 @@
+{
+  "topic": "Formal Language and Automata Theory",
+  "mins": 120,
+  "questions": [
+    {
+      "question": "What is the full form of DFA? What is the full form of DFA? What is the full form of DFA?",
+      "options": [
+        "Non Deterministic Finite Automata",
+        "Deterministic Finite Automata",
+        "Definite Finite Automata",
+        "Dog From America"
+      ],
+      "type": "single",
+      "correct": 3,
+      "incorrect": -1,
+      "answer": [0],
+      "selected": [0],
+      "status": "answered"
+    },
+    {
+      "question": "What is the full form of NFA?",
+      "options": [
+        "Non Deterministic Finite Automata",
+        "Deterministic Finite Automata",
+        "Definite Finite Automata",
+        "Dog From America"
+      ],
+      "type": "single",
+      "correct": 3,
+      "incorrect": -1,
+      "answer": [0],
+      "selected": [0],
+      "status": "answered"
+    },
+    {
+      "question": "What is the full form of PDAPDA?",
+      "options": [
+        "Non Deterministic Finite Automata",
+        "Deterministic Finite Automata",
+        "Definite Finite Automata",
+        "Push Down Automata"
+      ],
+      "type": "multi",
+      "correct": 4,
+      "incorrect": -2,
+      "answer": [1, 3],
+      "selected": [2, 3],
+      "status": "answered"
+    },
+    {
+      "question": "What is the Double Bond Equivalent of Benzene?",
+      "options": ["2", "3", "4", "5"],
+      "type": "single",
+      "correct": 3,
+      "incorrect": -1,
+      "answer": [2],
+      "selected": [0],
+      "status": "marked"
+    },
+    {
+      "question": "What is the full form of DFA? What is the full form of DFA? What is the full form of DFA?",
+      "options": [
+        "Non Deterministic Finite Automata",
+        "Deterministic Finite Automata",
+        "Definite Finite Automata",
+        "Dog From America"
+      ],
+      "type": "multi",
+      "correct": 4,
+      "incorrect": -2,
+      "answer": [1, 3],
+      "selected": [1, 3],
+      "status": "answered"
+    },
+    {
+      "question": "What is the full form of NFA?",
+      "options": [
+        "Non Deterministic Finite Automata",
+        "Deterministic Finite Automata",
+        "Definite Finite Automata",
+        "Dog From America"
+      ],
+      "type": "single",
+      "correct": 3,
+      "incorrect": -1,
+      "answer": [0],
+      "selected": [0],
+      "status": "marked"
+    },
+    {
+      "question": "What is the full form of PDAPDA?",
+      "options": [
+        "Non Deterministic Finite Automata",
+        "Deterministic Finite Automata",
+        "Definite Finite Automata",
+        "Push Down Automata"
+      ],
+      "type": "single",
+      "correct": 3,
+      "incorrect": -1,
+      "answer": [3],
+      "selected": [],
+      "status": "unanswered"
+    },
+    {
+      "question": "What is the Double Bond Equivalent of Benzene?What is the Double Bond Equivalent of Benzene?What is the Double Bond Equivalent of Benzene?What is the Double Bond Equivalent of Benzene?What is the Double Bond Equivalent of Benzene?What is the Double Bond Equivalent of Benzene?What is the Double Bond Equivalent of Benzene?What is the Double Bond Equivalent of Benzene?",
+      "options": ["2", "3", "4", "5"],
+      "type": "single",
+      "correct": 3,
+      "incorrect": -1,
+      "answer": [2],
+      "selected": [0],
+      "status": "answered"
+    }
+  ]
+}
