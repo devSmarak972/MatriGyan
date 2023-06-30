@@ -3,7 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { motion } from "framer-motion";
 
-const Quill = (props) => {
+const Quill = (props) => { 
   return (
     <div>
       <div className="mt-3 mb-3 transition-all duration-[.25s]">

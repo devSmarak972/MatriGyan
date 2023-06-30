@@ -8,7 +8,7 @@ import EducatorDashboard from "./pages/EducatorDashboard/EducatorDashboard";
 import Resources from "./pages/Resources";
 import StudentCalendarPage from "./pages/StudentCalendarPage";
 import EducatorCalendarPage from "./pages/EducatorCalendarPage";
-import EditQuizPage from "./pages/EditQuizPage";
+import EditQuizPage from "./pages/EditQuiz/EditQuizPage";
 import Live from "./pages/Live";
 import Quiz from "./pages/Quiz/Quiz";
 import PreQuiz from "./pages/Quiz/PreQuiz";
