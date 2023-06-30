@@ -1,0 +1,58 @@
+[
+    {
+        "name": "Learn Angular fundamentals",
+        "tutor": "Alak Pankey",
+        "length": 12,
+        "lessons":"6 hours",
+        "img_url_1": "https://www.acadboost.com/s/store/courses/5fc737b40cf2f2f9923e69e7/cover.jpg?v=4",
+        "img_url_2": "../../public/images/paths/angular_430x168.png"
+    },
+    {
+        "name": "Learn fundamentals of ReactJS",
+        "tutor": "Prathmesh Somani",
+        "length": 12,
+        "lessons":"6 hours",
+        "img_url_1": "https://www.acadboost.com/s/store/courses/5fc737b40cf2f2f9923e69e7/cover.jpg?v=4",
+        "img_url_2": "../../public/images/paths/angular_430x168.png"
+    },
+    {
+        "name": "Zero to Job Ready in just 3months, Learn C++",
+        "tutor": "Akshat Agarwal",
+        "length": 12,
+        "lessons":"6 hours",
+        "img_url_1": "https://www.acadboost.com/s/store/courses/5fc737b40cf2f2f9923e69e7/cover.jpg?v=4",
+        "img_url_2": "../../public/images/paths/angular_430x168.png"
+    },
+    {
+        "name": "Zero to Job Ready in just 3months, Learn C",
+        "tutor": "Anish",
+        "length": 12,
+        "lessons":"6 hours",
+        "img_url_1": "https://www.acadboost.com/s/store/courses/5fc737b40cf2f2f9923e69e7/cover.jpg?v=4",
+        "img_url_2": "../../public/images/paths/angular_430x168.png"
+    },
+    {
+        "name": "Learn fundamentals of python",
+        "tutor": "Abhishek",
+        "length": 12,
+        "lessons":"6 hours",
+        "img_url_1": "https://www.acadboost.com/s/store/courses/5fc737b40cf2f2f9923e69e7/cover.jpg?v=4",
+        "img_url_2": "../../public/images/paths/angular_430x168.png"
+    },
+    {
+        "name": "Learn Everthing with the best educators",
+        "tutor": "Matrigyaan",
+        "length": 12,
+        "lessons":"6 hours",
+        "img_url_1": "https://www.acadboost.com/s/store/courses/5fc737b40cf2f2f9923e69e7/cover.jpg?v=4",
+        "img_url_2": "../../public/images/paths/angular_430x168.png"
+    },
+    {
+        "name": "Learn fundamentals of NodeJS",
+        "tutor": "Smarak Kanjilal",
+        "length": 12,
+        "lessons":"6 hours",
+        "img_url_1": "https://www.acadboost.com/s/store/courses/5fc737b40cf2f2f9923e69e7/cover.jpg?v=4",
+        "img_url_2": "../../public/images/paths/angular_430x168.png"
+    }
+]

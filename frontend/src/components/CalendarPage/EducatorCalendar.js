@@ -3,13 +3,21 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
+import interactionPlugin from "@fullcalendar/interaction";
 import { useForm } from "@mantine/form";
 import data from "./Events.json";
-import "./Calendar.css";
 import NewEvent from "./NewEvent";
 import DeleteEvent from "./DeleteEvent.tsx";
+import { useDisclosure } from "@mantine/hooks";
+import { Drawer, Group, Button } from "@mantine/core";
+import "./Calendar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faRemove } from "@fortawesome/free-solid-svg-icons";
 
 const EducatorCalendar = () => {
+  const [openedAdd, { open:openAdd, close:closeAdd }] = useDisclosure(false);
+  const [openedDel, { open:openDel, close:closeDel }] = useDisclosure(false);
+
   const handleSubmit = () => {
     console.log(form.values);
     if (form.values.frequency === "0") {
@@ -181,35 +189,80 @@ const EducatorCalendar = () => {
   });
 
   return (
-    <div className="grid lg:grid-cols-3 gap-12">
-      <div className="order-last flex flex-col gap-8">
-        <NewEvent form={form} handleSubmit={handleSubmit} />
-        <DeleteEvent form={delform} handleRemove={handleRemove} data={data} />
-      </div>
-      <div className="lg:col-span-2">
+    <div className="">
+      <Drawer
+        opened={openedAdd}
+        onClose={closeAdd}
+        title="Authentication"
+        position="right"
+        overlayProps={{ opacity: 0.5, blur: 4 }}
+      >
+        {/* Drawer content */}
+        <div className="order-last flex flex-col gap-8">
+          <NewEvent form={form} handleSubmit={handleSubmit} />
+        </div>
+      </Drawer>
+      <Drawer
+        opened={openedDel}
+        onClose={closeDel}
+        title="Authentication"
+        position="right"
+        overlayProps={{ opacity: 0.5, blur: 4 }}
+      >
+        {/* Drawer content */}
+        <div className="order-last flex flex-col gap-8">
+          <DeleteEvent form={delform} handleRemove={handleRemove} data={data} />{" "}
+        </div>
+      </Drawer>
+
+      <div className="mt-8 block container-sm" style={{ maxWidth: "1000px" }}>
+        <div className="ButtonsCal mb-3">
+          <Group position="center">
+            <div className="removeEventBtn">
+            <Button
+              color="red"
+              onClick={openDel}
+            >
+              <FontAwesomeIcon icon={faRemove}></FontAwesomeIcon>
+              <span class="pl-1">Remove Event</span>
+            </Button>
+              </div>
+                          <div className="addEventBtn">
+
+            <Button onClick={openAdd}>
+              <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
+              <span class="pl-1">Add Event</span>
+            </Button>
+            </div>
+          </Group>
+        </div>
+
         <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
+          plugins={[
+            dayGridPlugin,
+            timeGridPlugin,
+            listPlugin,
+            interactionPlugin,
+          ]}
           initialView={window.innerWidth >= 640 ? "dayGridMonth" : "listWeek"}
           headerToolbar={{
-            left:
-              window.innerWidth >= 640
-                ? "title"
-                : "dayGridMonth,timeGridWeek,listWeek",
-            center:
-              window.innerWidth >= 640
-                ? "dayGridMonth,timeGridWeek,listWeek"
-                : "",
+            left: "dayGridMonth,timeGridWeek,listWeek",
+            center: window.innerWidth >= 640 ? "title" : "",
             right: "prev,next",
           }}
           events={data}
           nowIndicator={true}
+          editable={true}
+          droppable={true}
+          // nextDayThreshold= {"00:00:00"}
+
+          // contentHeight={window.innerWidth<640?400:window.innerWidth<1024?600:900}
           contentHeight={
-            window.innerWidth < 640 ? 400 : window.innerWidth < 1024 ? 600 : 900
+            window.innerWidth < 640 ? 400 : window.innerWidth < 1024 ? 550 : 600
           }
           dayMaxEventRows={
-            window.innerWidth < 640 ? 3 : window.innerWidth < 1024 ? 4 : 6
+            window.innerWidth < 640 ? 3 : window.innerWidth < 1024 ? 3 : 3
           }
-          droppable={true}
         />
       </div>
     </div>

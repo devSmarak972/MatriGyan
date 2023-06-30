@@ -173,7 +173,8 @@ const SignUp = (props) => {
     );
     setSubactive(0);
   };
-
+  
+ 
   return (
     <motion.div
       initial={false}

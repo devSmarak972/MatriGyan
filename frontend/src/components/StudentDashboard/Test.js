@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const Test = (props) => {
+const Test = props => {
   var today = new Date();
   // console.log(props.start.getTime());
   var end = new Date(props.start);
@@ -16,8 +16,7 @@ const Test = (props) => {
       transition={{ duration: 0.5 }}
       className={`card px-4 py-2 mb-2 h-32 justify-center ${
         status === 1 ? `font-semibold border-2 border-red-200` : ``
-      }`}
-    >
+      }`}>
       <div className="flex items-center space-x-3 justify-between">
         <div>
           <p className="text-base font-medium text-slate-700 dark:text-navy-100">
@@ -33,8 +32,7 @@ const Test = (props) => {
                 className="h-4.5 w-4.5 mx-0 text-slate-400 dark:text-navy-300"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -85,8 +83,7 @@ const Test = (props) => {
                   : `text-blue-500`
               } ${
                 status === 1 ? `font-semibold border-1 border-red-200` : ``
-              } rounded px-1 py-0.5`}
-            >
+              } rounded px-1 py-0.5`}>
               {`${
                 status === 0 ? `PAST` : status === 1 ? `LIVE NOW` : `UPCOMING`
               }`}
@@ -126,8 +123,7 @@ const Test = (props) => {
                 className="h-5 w-5 rotate-45"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"

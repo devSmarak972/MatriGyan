@@ -5,22 +5,32 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import data from "./Events.json";
 import "./Calendar.css"
+import interactionPlugin from "@fullcalendar/interaction";
 
 export default class DemoApp extends React.Component {
   render() {
     return (
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
         initialView={window.innerWidth >= 640 ? "dayGridMonth" : "listWeek"}
         headerToolbar={{
-          left: window.innerWidth>=640?"title":"dayGridMonth,timeGridWeek,listWeek",
-          center: window.innerWidth>=640?"dayGridMonth,timeGridWeek,listWeek":"",
+          left:"dayGridMonth,timeGridWeek,listWeek",
+          center: window.innerWidth>=640?"title":"",
           right: "prev,next",
         }}
         events={data}
         nowIndicator={true}
-        contentHeight={window.innerWidth<640?400:window.innerWidth<1024?600:900}
-        dayMaxEventRows={window.innerWidth<640?3:window.innerWidth<1024?4:6}
+        editable={true}
+        droppable={true}
+        // nextDayThreshold= {"00:00:00"}
+
+        // contentHeight={window.innerWidth<640?400:window.innerWidth<1024?600:900}
+        contentHeight={
+          window.innerWidth < 640 ? 400 : window.innerWidth < 1024 ? 550 : 600
+        }
+        dayMaxEventRows={
+          window.innerWidth < 640 ? 3 : window.innerWidth < 1024 ? 3 : 3
+        }
       />
     );
   }

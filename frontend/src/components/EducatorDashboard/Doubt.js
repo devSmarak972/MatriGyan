@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const Doubt = (props) => {
   return (
-    <div className="card py-4 px-8 flex flex-column gap-3">
+    <div className="noHoverCard card mb-2 py-4 px-4 flex flex-column gap-3">
       <div className="flex justify-between items-center">
         <div className="flex flex-column justify-between py-1">
           <div className="flex items-center gap-1">
@@ -32,7 +32,7 @@ const Doubt = (props) => {
           className="h-14"
         />
       </div>
-      <span className="text-slate-700 font-medium text-base">
+      <span className="text-slate-700 font-medium text-sm">
         {props.question}
       </span>
       <div className="flex justify-between items-center mb-[-5px]">
@@ -40,16 +40,14 @@ const Doubt = (props) => {
         <div className="flex gap-8 items-center">
           <Link
             to="#"
-            className="flex items-center text-[#334155] hover:text-[##228be6]"
-          >
+            className="flex items-center text-[#334155] hover:text-[##228be6]">
             <span className="font-medium mr-1">{props.replies}</span>
             <span className="font-medium mr-1 hidden sm:inline">Replies</span>
             <FontAwesomeIcon icon={faComment} className="h-5" />
           </Link>
           <Link
             to="#"
-            className="flex items-center text-[#334155] hover:text-[##228be6]"
-          >
+            className="flex items-center text-[#334155] hover:text-[##228be6]">
             <span className="font-medium mr-1">{props.upvotes}</span>
             <span className="font-medium mr-1 hidden sm:inline">Upvotes</span>
             <FontAwesomeIcon icon={faCircleUp} className="h-5" />

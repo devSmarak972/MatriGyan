@@ -1,5 +1,6 @@
 
 import React from 'react'
+import { useEffect } from 'react'
 import Navbar from '../components/LandingPage/Navbar'
 import Stats from '../components/LandingPage/Stats'
 import Home from '../components/LandingPage/Home'
@@ -13,16 +14,20 @@ import Courses from '../components/LandingPage/Courses'
 // import '../components/LandingPage/assets/css/style.css';
 import 'font-awesome/css/font-awesome.min.css';
 
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+// import AOS from 'aos';
+// import 'aos/dist/aos.css';
 import Point from '../components/LandingPage/Point'
 import Footer from '../components/LandingPage/Footer'
 
 const LandingPage = () => {
-          AOS.init();
+  
+  // useEffect(() => {
+  //   AOS.init();
+  // }, []);
+// import 
 
   return (
-    <div className="main-wrapper">
+    <div className="main-wrapper" id="landingpage">
            <Navbar></Navbar>
            <Home></Home>
            <Stats></Stats>

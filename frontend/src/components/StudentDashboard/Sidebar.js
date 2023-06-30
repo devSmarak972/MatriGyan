@@ -18,7 +18,7 @@ const Sidebar = () => {
   const [open, setOpen] = useState(0);
 
   return (
-    <div className="sidebar print:hidden">
+    <div className="sidebar print:hidden tw-dash-page">
       {window.innerWidth < 768 && (
         <motion.div
           initial={false}
@@ -47,7 +47,7 @@ const Sidebar = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800">
-          <div className="flex pt-4">
+          <div className="pt-4">
             <Link to="/">
               <img
                 className="h-11 w-11 transition-transform duration-500 ease-in-out hover:rotate-[360deg]"
@@ -164,7 +164,7 @@ const Sidebar = () => {
               x-data="usePopper({placement:'right-end',offset:12})"
               className="flex"
             >
-              <button x-ref="popperRef" className="avatar h-12 w-12">
+              <button x-ref="popperRef" className="avatar h-12 w-12 border-0">
                 <img
                   className="rounded-full"
                   src="StudentDashboard/images/avatar/avatar-12.jpg"

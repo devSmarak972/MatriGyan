@@ -13,7 +13,7 @@ const Doubts = () => {
   data = data.slice(0, Math.min(5, data.length));
   console.log(data);
   return (
-    <div className="col-span-12 lg:col-span-6">
+    <div className="col-span-12 lg:col-span-4">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100">
           Doubts on Lectures
@@ -26,6 +26,9 @@ const Doubts = () => {
           className="w-40"
         />
       </div>
+      <div
+        className="reviewSection scrollbar"
+        style={{ maxHeight: "600px", overflowY: "scroll" }}>
       {data.map((e) => (
         <Doubt
           name={e.name}
@@ -37,6 +40,7 @@ const Doubts = () => {
           upvotes={e.upvotes}
         />
       ))}
+    </div>
     </div>
   );
 };

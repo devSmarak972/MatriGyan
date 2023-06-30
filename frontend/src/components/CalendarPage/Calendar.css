@@ -25,16 +25,57 @@
 a[title="Day of Week"]{
     background-color: #78c0ff !important;
 } */
+:root{
+        --primary-blue:#1273C9;
 
+}
+.ButtonsCal .removeEventBtn button{
+ background: var(--accent)!important;
+}
+.ButtonsCal .addEventBtn button{
+ background: var(--primary-blue)!important;
+}
 .fc-daygrid-day-frame {
     max-height: 75px;
+    /* overflow-x: hidden; */
+    /* overflow-y:visible; */
 }
-
+.fc-view-harness{
+background-color:white;
+}
+.fc-button-group{
+    margin-bottom: 0.3rem;
+    gap:5px
+}
 .fc-button {
     background-color: transparent !important;
     border: 1px solid #dddddd !important;
     color: #334155 !important;
+    height: 30px;
+    text-align: center;
+    font-size: 0.9rem;
+    vertical-align: middle;
+    padding: 0rem 0.6rem!important;
+    border-radius: 4px!important;
 }
+
+.fc-header-toolbar{
+margin-bottom:1rem !important;
+}
+.fc-col-header,.fc-scrollgrid-section-header{
+    background: var(--primary-blue);
+    /* padding: 1rem; */
+    height: 2.5rem;
+    text-align: center;
+}
+.fc-col-header-cell-cushion{
+    color:white;
+}
+.fc-col-header th{
+        color: white;
+
+}
+
 
 .fc-button-active {
     border: 1px solid var(--primary) !important;
@@ -50,4 +91,8 @@ a[title="Day of Week"]{
 
 .mantine-DateTimePicker-input {
     background-color: white;
+}
+.fc-event{
+    height:15px;
+    font-size: 0.6rem;
 }
