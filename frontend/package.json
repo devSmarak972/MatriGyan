@@ -11,6 +11,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@fullcalendar/core": "^6.1.8",
     "@fullcalendar/daygrid": "^6.1.8",
+    "@fullcalendar/interaction": "^6.1.8",
     "@fullcalendar/list": "^6.1.8",
     "@fullcalendar/react": "^6.1.8",
     "@fullcalendar/timegrid": "^6.1.8",
@@ -41,6 +42,7 @@
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
     "react-tooltip": "^5.14.0",
+    "react-use-websocket": "^4.3.1",
     "react-visibility-sensor": "^5.1.1",
     "recharts": "^2.7.1",
     "web-vitals": "^2.1.4"

@@ -8,6 +8,8 @@ import EducatorDashboard from "./pages/EducatorDashboard/EducatorDashboard";
 import Resources from "./pages/Resources";
 import StudentCalendarPage from "./pages/StudentCalendarPage";
 import EducatorCalendarPage from "./pages/EducatorCalendarPage";
+import EditQuizPage from "./pages/EditQuizPage";
+import Live from "./pages/Live";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path="/edit-course" element={<EditCourse />} />
           <Route path="/student-calendar" element={<StudentCalendarPage />} />
           <Route path="/educator-calendar" element={<EducatorCalendarPage />} />
+          <Route path="/edit-quiz" element={<EditQuizPage />} />
+          <Route path="/live" element={<Live />} />
         </Routes>
       </div>
     </Router>
