@@ -220,3 +220,32 @@ def addSolution(request, id):
         question.solution = Solution.objects.get(id=solution.data['id'])
         question.save()
     return Response(solution.data)
+
+@api_view(['DELETE'])
+def deleteSolution(request, id):
+    solution = Solution.objects.get(id=id)
+    solution.delete()
+    return Response("Solution deleted")
+
+@api_view(['POST'])
+def addOption(request, id):
+    option = OptionSerializer(data=request.data)
+    if option.is_valid():
+        option.save()
+        question = Question.objects.get(id=id)
+        option_object = Option.objects.get(id=question.data['id'])
+        question.options.add(option_object)
+    return Response(option.data)
+
+@api_view(['DELETE'])
+def deleteOption(request, id):
+    option = Option.objects.get(id=id)
+    option.delete()
+    return Response("Option deleted")
+
+@api_view(['GET'])
+def getOptions(request, id):
+    question = Question.objects.get(id=id)
+    options = question.options.all()
+    option_serialized = OptionSerializer(options, many=True)
+    return Response(option_serialized.data)

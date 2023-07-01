@@ -31,5 +31,10 @@ urlpatterns = [
     path('delete-quiz/<int:id>/', views.deleteQuiz),
     path('add-question/<int:id>/', views.addQuestion),
     path('get-questions/<int:id>/', views.getQuestions),
+    path('delete-question/<int:id>/', views.deleteQuestion),
     path('add-solution/<int:id>/', views.addSolution),
+    path('delete-solution/<int:id>/', views.deleteSolution),
+    path('add-option/<int:id>/', views.addOption),
+    path('get-options/<int:id>/', views.getOptions),
+    path('delete-option/<int:id>/',views.deleteOption),
 ]
