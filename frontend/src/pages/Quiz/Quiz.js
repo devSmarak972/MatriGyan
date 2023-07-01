@@ -39,6 +39,7 @@ const Quiz = () => {
   );
 
   const HandleTimerComplete = () => {
+    localStorage.removeItem("timer");
     const navigate = useNavigate();
     navigate("/quiz-end");
   };
@@ -46,7 +47,7 @@ const Quiz = () => {
   return (
     <div className="h-screen flex">
       <div className="grid grid-cols-3 gap-8 w-[500px] sm:w-[800px] p-4 m-auto">
-        <div className="col-span-3">
+        <div className="col-span-3  mt-[50px]">
           <div className="fixed flex flex-col items-center top-0 left-0 w-full flex justify-center">
             <div className="flex items-center justify-between sm:justify-center w-full text-lg text-white bg-[var(--primary)] p-3">
               <Countdown
@@ -121,11 +122,13 @@ const Quiz = () => {
                 </Menu>
               )}
             </div>
-            <span className="font-medium mt-1">{data.topic}</span>
+            <span className="font-medium py-1 w-full text-center bg-[#f5f7fa]">
+              {data.topic}
+            </span>
           </div>
         </div>
         <div className="flex flex-col justify-end col-span-3 sm:col-span-2 gap-3">
-          <div className="flex flex-col gap-3 min-h-[350px]">
+          <div className="flex flex-col gap-3 min-h-[350px] overflow-y-scroll h-[70vh] pr-4">
             <div className="flex justify-between items-center">
               <span className="font-semibold mb-2">
                 Question {question + 1} of {dataModified.length}
@@ -145,6 +148,9 @@ const Quiz = () => {
             <span className="font-medium text-black">
               {dataModified[question].question}
             </span>
+            {dataModified[question].image && (
+              <img src={dataModified[question].image} />
+            )}
             <div className="flex flex-col gap-3">
               {dataModified[question].options.map((option, i) => (
                 <div

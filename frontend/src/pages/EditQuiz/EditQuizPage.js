@@ -21,6 +21,7 @@ const EditQuizPage = () => {
       option3: "",
       option4: "",
       answer: "",
+      image: "",
     },
     validate: {
       question: (value) =>

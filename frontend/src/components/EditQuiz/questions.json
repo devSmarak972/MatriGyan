@@ -23,7 +23,8 @@
     "type": "single",
     "correct": 3,
     "incorrect": -1,
-    "answer": [0]
+    "answer": [0],
+    "image": "https://www.researchgate.net/profile/Takashi-Yokomori/publication/2659477/figure/fig1/AS:647496795713537@1531386674269/NFA-and-DFA-for-Pattern-Matching-of-any-counterexample-Angluin-and-Kharitonov-1991.png"
   },
   {
     "question": "What is the full form of PDAPDA?",

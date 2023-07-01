@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const PostQuiz = () => {
+  localStorage.removeItem("timer");
+
   let marks = 0;
   let total = 0;
   let attempted = 0;

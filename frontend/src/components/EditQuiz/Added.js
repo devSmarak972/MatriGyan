@@ -12,6 +12,9 @@ import {
   Button,
   MultiSelect,
   Textarea,
+  HoverCard,
+  Popover,
+  FileInput,
 } from "@mantine/core";
 import { useListState, useDisclosure } from "@mantine/hooks";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -20,6 +23,7 @@ import {
   faAngleDown,
   faEllipsis,
   faGripVertical,
+  faImage,
   faPen,
   faPlus,
   faTrashCan,
@@ -120,7 +124,7 @@ const Added = (props) => {
               )}
             </AnimatePresence>
           </div>
-          <div className="flex flex-col items-center self-start">
+          <div className="flex flex-col gap-1 items-center self-start">
             <Menu shadow="md" width={200}>
               <Menu.Target>
                 <FontAwesomeIcon
@@ -152,6 +156,7 @@ const Added = (props) => {
                         type: item.type,
                         correct: item.correct,
                         incorrect: item.incorrect,
+                        image: item.image,
                       });
                       open();
                       // if (props.question.length !== 0 && !opened) {
@@ -179,9 +184,22 @@ const Added = (props) => {
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
-            <Text className="w-10" color="dimmed" size="sm">
+            <Text className="w-10 mt-[-5px] mb-[2px]" color="dimmed" size="sm">
               +{item.correct}, {item.incorrect}
             </Text>
+            {item.image && (
+              <Popover withArrow shadow="lg">
+                <Popover.Target>
+                  <button className="flex gap-1 items-center text-[#949494] font-medium text-xs border-2 rounded-lg px-1.5 py-0.5">
+                    <FontAwesomeIcon icon={faImage} />
+                    Image
+                  </button>
+                </Popover.Target>
+                <Popover.Dropdown>
+                  <img src={item.image} className="max-w-xs" />
+                </Popover.Dropdown>
+              </Popover>
+            )}
           </div>
         </div>
       )}
@@ -210,6 +228,7 @@ const Added = (props) => {
                     correct: props.form.values.correct,
                     incorrect: props.form.values.incorrect,
                     answer: props.form.values.answer,
+                    image: props.form.values.image.name,
                   };
               })
             );
@@ -217,20 +236,10 @@ const Added = (props) => {
             close();
           })}
         >
-          <label className="text-sm">Question</label>
           <Textarea
             label="Question"
             placeholder="What is 78 times 12?"
             {...props.form.getInputProps("question")}
-          />
-          <Select
-            label="Question Type"
-            placeholder="MCQ"
-            data={[
-              { value: "single", label: "Single Choice Correct" },
-              { value: "multi", label: "Multiple Choice Correct" },
-            ]}
-            {...props.form.getInputProps("type")}
           />
           <label className="text-sm mt-2">Options</label>
           <div className="grid gap-3 grid-cols-1 lg: grid-cols-2">
@@ -251,6 +260,16 @@ const Added = (props) => {
               {...props.form.getInputProps("option4")}
             />
           </div>
+          <Select
+            label="Question Type"
+            placeholder="MCQ"
+            className="mt-2"
+            data={[
+              { value: "single", label: "Single Choice Correct" },
+              { value: "multi", label: "Multiple Choice Correct" },
+            ]}
+            {...props.form.getInputProps("type")}
+          />
           <div className="flex gap-3 mt-2">
             <NumberInput
               label="Positive Marks"
@@ -261,29 +280,40 @@ const Added = (props) => {
               {...props.form.getInputProps("incorrect")}
             />
           </div>
-          <MultiSelect
-            data={[
-              {
-                value: 0,
-                label: "1",
-              },
-              {
-                value: 1,
-                label: "2",
-              },
-              {
-                value: 2,
-                label: "3",
-              },
-              {
-                value: 3,
-                label: "4",
-              },
-            ]}
-            label="Answer Key"
-            placeholder="Correct Options"
-            {...props.form.getInputProps("answer")}
-          />
+          <div className="flex gap-3 w-full mt-2">
+            <MultiSelect
+              data={[
+                {
+                  value: 0,
+                  label: "1",
+                },
+                {
+                  value: 1,
+                  label: "2",
+                },
+                {
+                  value: 2,
+                  label: "3",
+                },
+                {
+                  value: 3,
+                  label: "4",
+                },
+              ]}
+              label="Answer Key"
+              placeholder="Correct Options"
+              className="w-full"
+              {...props.form.getInputProps("answer")}
+            />
+            <FileInput
+              label="Upload Image"
+              placeholder="Diagram"
+              icon={<FontAwesomeIcon icon={faImage} />}
+              accept="image/png,image/jpeg,image/jpg,image/svg"
+              className="w-full"
+              {...props.form.getInputProps("image")}
+            />
+          </div>
           <Button
             onClick={props.form.isValid() ? close : null}
             type="submit"
