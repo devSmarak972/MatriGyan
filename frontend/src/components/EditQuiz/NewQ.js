@@ -41,6 +41,7 @@ const NewQ = (props) => {
                 correct: props.form.values.correct,
                 incorrect: -props.form.values.incorrect,
                 answer: props.form.values.answer,
+                image: props.form.values.image.name,
               },
             ]);
             close();
