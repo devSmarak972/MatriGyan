@@ -26,7 +26,8 @@
       "type": "single",
       "correct": 3,
       "incorrect": -1,
-      "answer": [0]
+      "answer": [0],
+      "image": "nfa-diagram.png"
     },
     {
       "question": "What is the full form of PDAPDA?",
@@ -94,7 +95,8 @@
       "type": "single",
       "correct": 3,
       "incorrect": -1,
-      "answer": [2]
+      "answer": [2],
+      "image": "https://images.squarespace-cdn.com/content/v1/5c5aed8434c4e20e953d6011/1630336796650-1R9ZFM5AZQSPDCJL5LOL/kekule+delocalised+structure.jpg?format=1000w"
     }
   ]
 }
