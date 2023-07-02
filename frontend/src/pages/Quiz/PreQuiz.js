@@ -103,8 +103,10 @@ const PreQuiz = () => {
         <Link
           to="/quiz"
           onClick={() => {
+            console.log(localStorage.getItem("timer"));
             if (!localStorage.getItem("timer"))
               localStorage.setItem("timer", JSON.stringify(Date.now()));
+            else console.log(localStorage.getItem("timer"));
           }}
           className="w-fit m-auto text-center mt-2 hover:scale-105 font-medium text-[var(--primary)] bg-blue-200 px-3 py-1.5 rounded-lg"
         >
