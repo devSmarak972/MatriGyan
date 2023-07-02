@@ -338,3 +338,92 @@ def deleteSection(request, id):
     section = CourseSection.objects.get(id=id)
     section.delete()
     return Response("Section deleted!")
+
+@api_view(['GET'])
+def getQuiz(request, id):
+    quizes = Quiz.objects.get(id=id)
+    qs = QuizSerializer(quizes, many=False)
+    return Response(qs.data)
+
+@api_view(['GET'])
+def getCourseQuiz(request, id):
+    course = Course.objects.get(id=id)
+    quizes = course.quizes.all()
+    print(quizes)
+    sq = QuizSerializer(quizes, many=True)
+    return Response(sq.data)
+
+@api_view(['POST'])
+def createQuiz(request):
+    quiz = QuizSerializer(data=request.data)
+    if quiz.is_valid():
+        quiz.save()
+    return Response(quiz.data)
+
+@api_view(['DELETE'])
+def deleteQuiz(request, id):
+    quiz = Quiz.objects.get(id=id)
+    quiz.delete()
+    return Response('Quiz deleted!')
+
+@api_view(['POST'])
+def addQuestion(request, id):
+    question = QuestionSerializer(data=request.data)
+    if question.is_valid():
+            question.save()
+            que = Question.objects.get(id=question.data['id'])
+            quiz = Quiz.objects.get(id=id)
+            quiz.questions.add(que)
+    return Response(question.data)
+
+@api_view(['GET'])
+def getQuestions(request, id):
+    quiz = Quiz.objects.get(id=id)
+    questions = quiz.questions.all()
+    serialized_questions = QuestionSerializer(questions, many=True)
+    return Response(serialized_questions.data)
+
+@api_view(['DELETE'])
+def deleteQuestion(request, id):
+    question = Question.objects.get(id=id)
+    question.delete()
+    return Response("Question deleted!")
+
+@api_view(['POST'])
+def addSolution(request, id):
+    solution = SolutionSerializer(data=request.data)
+    if solution.is_valid():
+        solution.save()
+        question = Question.objects.get(id=id)
+        question.solution = Solution.objects.get(id=solution.data['id'])
+        question.save()
+    return Response(solution.data)
+
+@api_view(['DELETE'])
+def deleteSolution(request, id):
+    solution = Solution.objects.get(id=id)
+    solution.delete()
+    return Response("Solution deleted")
+
+@api_view(['POST'])
+def addOption(request, id):
+    option = OptionSerializer(data=request.data)
+    if option.is_valid():
+        option.save()
+        question = Question.objects.get(id=id)
+        option_object = Option.objects.get(id=question.data['id'])
+        question.options.add(option_object)
+    return Response(option.data)
+
+@api_view(['DELETE'])
+def deleteOption(request, id):
+    option = Option.objects.get(id=id)
+    option.delete()
+    return Response("Option deleted")
+
+@api_view(['GET'])
+def getOptions(request, id):
+    question = Question.objects.get(id=id)
+    options = question.options.all()
+    option_serialized = OptionSerializer(options, many=True)
+    return Response(option_serialized.data)
