@@ -22,7 +22,7 @@ class Educator(models.Model):
 		return self.name
 # Create your models here.
 class CourseSection(models.Model):
-	course=models.ForeignKey("Course",on_delete=models.CASCADE, null=True, blank=True)
+	# course=models.ForeignKey("Course",on_delete=models.CASCADE, null=True, blank=True)
 	title=models.CharField(default="",max_length=255)
 	duration=models.IntegerField(default=0,null=True,blank=True)
 	order_id=models.IntegerField(primary_key=True)
@@ -67,16 +67,68 @@ class Feedback(models.Model):
 	def __str__(self):
 		return str(self.rating)+"_"+str(self.id)
 
+class Educator(models.Model):
+	name = models.CharField(max_length=250)
+	def __str__(self):
+		return (self.name)
+	
+class Option(models.Model):
+	value = models.TextField()
+
+	def __str__(self):
+		return self.value
+
+class Solution(models.Model):
+	solution = models.TextField()
+	media = models.TextField()
+
+	def __str__(self):
+		return self.solution
+
+class QuestionType(models.Model):
+	name = models.CharField(max_length=250)
+
+	def __str__(self):
+		return self.name
+
+class Question(models.Model):
+	qnumber = models.IntegerField(default=1)
+	question = models.TextField()
+	type_choice = (
+		('MULTIPLE','Multiple'),
+		('SINGLE','Single'),
+		('NUMERICAL', 'Numerical'),
+		('TEXT', 'Text'),
+	)
+	type = models.CharField(max_length=250, choices=type_choice, default='Single')
+	image = models.TextField()
+	options = models.ManyToManyField(Option)
+	solution = models.ForeignKey(Solution, on_delete=models.CASCADE, null=True, blank=True)
+	
+	def __str__(self):
+		return str(self.qnumber) + self.question
+
+class Quiz(models.Model):
+	name = models.CharField(max_length=250)
+	topic = models.CharField(max_length=250)
+	subject = models.CharField(max_length=250)
+	creator = models.ForeignKey(Educator, on_delete=models.CASCADE, null=True, blank=True)
+	questions = models.ManyToManyField(Question)
+
+	def __str__(self):
+		return (self.topic + self.subject)
+
 class Course(models.Model):
 	
 	title=models.CharField(default="",max_length=255)
 	# rating=models.IntegerChoices(default=0,choices=[0,1,2,3,4,5])
 	# duration=models.IntegerField(default=0,blank=True,null=True)
 	description=models.TextField(default="",blank=True,null=True)#received as html
-	# sections=models.ForeignKey("CourseSection", on_delete=models.CASCADE)
+	sections=models.ManyToManyField("CourseSection")
 	category=models.ManyToManyField("CourseCategory")
 	tags=models.ManyToManyField("CourseTag")
 	image = models.TextField(null=True, blank=True)
+	quizes = models.ManyToManyField(Quiz)
 	# educator=models.ForeignKey("Educator",on_delete=models.CASCADE)
 	def __str__(self):
 		return self.title
@@ -99,10 +151,10 @@ class Notifications(models.Model):
 
 class ClassModel(models.Model):
 	title=models.CharField(default="",max_length=255)
-	# students=models.ManyToManyField()
+	students=models.ManyToManyField(Student)
 	modes=((0,"English"),(1,"Hindi"))
 	mode=models.TextField(default=0,choices=modes)
-	# teacher=models.ForeignKey("Educator",on_delete=models.CASCADE)
+	teacher=models.ForeignKey("Educator",on_delete=models.CASCADE, null=True, blank=True)
 	start=models.DateTimeField(auto_created=True)
 	end=models.DateTimeField()
 	def __str__(self):
@@ -111,4 +163,54 @@ class ClassModel(models.Model):
 	@property
 	def duration(self):
 		return "16h"
+
+# class Educator(models.Model):
+# 	name = models.CharField(max_length=250)
+# 	def __str__(self):
+# 		return (self.name)
 	
+# class Option(models.Model):
+# 	value = models.TextField()
+
+# 	def __str__(self):
+# 		return self.value
+
+# class Solution(models.Model):
+# 	solution = models.TextField()
+# 	media = models.TextField()
+
+# 	def __str__(self):
+# 		return self.solution
+
+# class QuestionType(models.Model):
+# 	name = models.CharField(max_length=250)
+
+# 	def __str__(self):
+# 		return self.name
+
+# class Question(models.Model):
+# 	qnumber = models.IntegerField(default=1)
+# 	question = models.TextField()
+# 	type_choice = (
+# 		('MULTIPLE','Multiple'),
+# 		('SINGLE','Single'),
+# 		('NUMERICAL', 'Numerical'),
+# 		('TEXT', 'Text'),
+# 	)
+# 	type = models.CharField(max_length=250, choices=type_choice, default='Single')
+# 	image = models.TextField()
+# 	options = models.ManyToManyField(Option)
+# 	solution = models.ForeignKey(Solution, on_delete=models.CASCADE, null=True, blank=True)
+	
+# 	def __str__(self):
+# 		return str(self.qnumber) + self.question
+
+# class Quiz(models.Model):
+# 	name = models.CharField(max_length=250)
+# 	topic = models.CharField(max_length=250)
+# 	subject = models.CharField(max_length=250)
+# 	creator = models.ForeignKey(Educator, on_delete=models.CASCADE, null=True, blank=True)
+# 	questions = models.ManyToManyField(Question)
+
+# 	def __str__(self):
+# 		return (self.topic + self.subject)
