@@ -6,6 +6,8 @@ import CoursePage from "./pages/CoursePage";
 import EditCourse from "./pages/EditCourse/EditCourse";
 import EducatorDashboard from "./pages/EducatorDashboard/EducatorDashboard";
 import Resources from "./pages/Resources";
+import CoursePreview from "./pages/CoursePreview";
+
 function App() {
   return (
     <Router>
@@ -19,6 +21,7 @@ function App() {
           <Route path="/educator-dashboard" element={<EducatorDashboard />} />
           <Route path="/edit-course" element={<EditCourse />} />
           <Route path="/resources" element={<Resources />} />
+          <Route path="/coursepage/:id" element={<CoursePreview />}/>
         </Routes>
       </div>
     </Router>
