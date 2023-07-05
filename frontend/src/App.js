@@ -15,6 +15,7 @@ import Quiz from "./pages/Quiz/Quiz";
 import PreQuiz from "./pages/Quiz/PreQuiz";
 import PostQuiz from "./pages/Quiz/PostQuiz";
 import ReviewQuiz from "./pages/Quiz/ReviewQuiz";
+import CoursePreview from "./pages/CoursePreview";
 
 function App() {
   return (
@@ -32,12 +33,12 @@ function App() {
           <Route path="/student/calendar" element={<StudentCalendarPage />} />
           <Route path="/educator/calendar" element={<EducatorCalendarPage />} />
           <Route path="/quiz/edit" element={<EditQuizPage />} />
-          <Route path="/live" element={<Live />} />
           <Route path="/live/:ID" element={<Liveclass />} />
           <Route path="/quiz/:ID" element={<Quiz />} />
           <Route path="/quiz/:ID/start" element={<PreQuiz />} />
           <Route path="/quiz/:ID/end" element={<PostQuiz />} />
           <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
+          <Route path="/course/:id" element={<CoursePreview />}/>
         </Routes>
       </div>
     </Router>
