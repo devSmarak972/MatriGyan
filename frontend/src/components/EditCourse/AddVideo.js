@@ -85,7 +85,7 @@ const AddVideo = (props) => {
                 {...props.form.getInputProps("timesecs")}
               />
             </div>
-            <Video form={props.form} />
+            <Video form={props.form} /> 
           </div>
           <Button
             onClick={props.form.isValid() ? close : null}
