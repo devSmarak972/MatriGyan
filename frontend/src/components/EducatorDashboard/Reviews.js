@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Review from "./Review";
 import data from "./data/reviews.json";
@@ -6,15 +6,20 @@ import { Select } from "@mantine/core";
 
 const Reviews = () => {
   const [sortBy, setSortBy] = useState("");
-  console.log(data.map((e) => e.review.length));
+
+  console.log(sortBy);
   if (sortBy === "" || sortBy === "Date") {
-    // data.sort((a, b) => );
+    data.sort((a, b) => {
+      let dateA = new Date(a.date);
+      let dateB = new Date(b.date);
+      return dateB - dateA;
+    });
   } else if (sortBy === "Rating") {
     data.sort((a, b) => b.rating - a.rating);
   } else if (sortBy === "Size") {
     data.sort((a, b) => b.review.length - a.review.length);
   }
-  data = data.slice(0, 5);
+  let top5data = data.slice(0, 5);
 
   return (
     <div className="col-span-12 lg:col-span-4">
@@ -32,8 +37,9 @@ const Reviews = () => {
       </div>
       <div
         className="reviewSection scrollbar"
-        style={{ maxHeight: "600px", overflowY: "scroll" }}>
-        {data.map(e => (
+        style={{ maxHeight: "600px", overflowY: "scroll" }}
+      >
+        {top5data.map((e) => (
           <Review
             img={e.img}
             name={e.name}

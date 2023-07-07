@@ -7,7 +7,7 @@
     "rating": 4.2,
     "review": "Max is a fantastic instructor, providing in depth explanations of concepts to help you learn. I appreciate that in most instances he provides a starting and ending package to at first give you a boost, and then to allow you to compare or troubleshoot your own work against his.",
     "course": "General Inorganic Chemistry",
-    "date": "17/06/2023"
+    "date": "2023-06-17"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-2.jpg",
@@ -17,7 +17,7 @@
     "rating": 3.9,
     "review": "Clear explanations with detailed practice exercises. However the test questions were a little difficult.",
     "course": "General Inorganic Chemistry",
-    "date": "17/06/2023"
+    "date": "2023-06-17"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-1.jpg",
@@ -27,7 +27,7 @@
     "rating": 4.4,
     "review": "Clear explanations with detailed practice exercises. However the test questions were a little difficult.",
     "course": "Electrolysis",
-    "date": "28/07/2022"
+    "date": "2022-07-28"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-8.jpg",
@@ -37,7 +37,7 @@
     "rating": 4.3,
     "review": "Max is a fantastic instructor, providing in depth explanations of concepts to help you learn. I appreciate that in most instances he provides a starting and ending package to at first give you a boost, and then to allow you to compare or troubleshoot your own work against his.",
     "course": "General Inorganic Chemistry",
-    "date": "17/06/2023"
+    "date": "2023-06-17"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-2.jpg",
@@ -47,7 +47,7 @@
     "rating": 3.8,
     "review": "Clear explanations with detailed practice exercises. However the test questions were a little difficult.",
     "course": "General Inorganic Chemistry",
-    "date": "17/06/2023"
+    "date": "2023-06-17"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-1.jpg",
@@ -57,7 +57,7 @@
     "rating": 4.7,
     "review": "Clear explanations with detailed practice exercises. However the test questions were a little difficult.",
     "course": "Electrolysis",
-    "date": "28/07/2022"
+    "date": "2022-07-28"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-8.jpg",
@@ -67,7 +67,7 @@
     "rating": 4.2,
     "review": "Max is a fantastic instructor, providing in depth explanations of concepts to help you learn. I appreciate that in most instances he provides a starting and ending package to at first give you a boost, and then to allow you to compare or troubleshoot your own work against his.",
     "course": "General Inorganic Chemistry",
-    "date": "17/06/2023"
+    "date": "2023-06-17"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-2.jpg",
@@ -77,7 +77,7 @@
     "rating": 3.9,
     "review": "Clear explanations with detailed practice exercises. However the test questions were a little difficult.",
     "course": "General Inorganic Chemistry",
-    "date": "17/06/2023"
+    "date": "2023-06-17"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-1.jpg",
@@ -87,7 +87,7 @@
     "rating": 4.4,
     "review": "Clear explanations with detailed practice exercises. However the test questions were a little difficult.",
     "course": "Electrolysis",
-    "date": "28/07/2022"
+    "date": "2022-07-28"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-8.jpg",
@@ -95,9 +95,9 @@
     "courses": 23,
     "reviews": 13,
     "rating": 4.3,
-    "review": "Max is a fantastic instructor, providing in depth explanations of concepts to help you learn. I appreciate that in most instances he provides a starting and ending package to at first give you a boost, and then to allow you to compare or troubleshoot your own work against his.",
+    "review": "Max is a fantastic instructor, providing in depth explanations of concepts to help you learn. ",
     "course": "General Inorganic Chemistry",
-    "date": "17/06/2023"
+    "date": "2023-07-04"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-2.jpg",
@@ -107,7 +107,7 @@
     "rating": 3.8,
     "review": "Clear explanations with detailed practice exercises. However the test questions were a little difficult.",
     "course": "General Inorganic Chemistry",
-    "date": "17/06/2023"
+    "date": "2023-06-17"
   },
   {
     "img": "StudentDashboard/images/avatar/avatar-1.jpg",
@@ -117,6 +117,6 @@
     "rating": 4.7,
     "review": "Clear explanations with detailed practice exercises. However the test questions were a little difficult.",
     "course": "Electrolysis",
-    "date": "28/07/2022"
+    "date": "2022-07-28"
   }
 ]
