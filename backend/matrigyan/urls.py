@@ -37,4 +37,7 @@ urlpatterns = [
     path('add-option/<int:id>/', views.addOption),
     path('get-options/<int:id>/', views.getOptions),
     path('delete-option/<int:id>/',views.deleteOption),
+    path('get-events/<int:id>/', views.getEvents),
+    path('add-event/<int:id>/', views.addEvent),
+    path('delete-events/<int:id>/', views.deleteEvent),
 ]

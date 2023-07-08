@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Student(models.Model):
 	name=models.CharField(max_length=255)
@@ -112,8 +113,9 @@ class Course(models.Model):
 	sections=models.ManyToManyField("CourseSection")
 	category=models.ManyToManyField("CourseCategory")
 	tags=models.ManyToManyField("CourseTag")
-	image = models.TextField(null=True, blank=True)
+	image = models.TextField(default="",null=True, blank=True)
 	quizes = models.ManyToManyField(Quiz)
+	comments = models.ManyToManyField(Comment)
 	# educator=models.ForeignKey("Educator",on_delete=models.CASCADE)
 	def __str__(self):
 		return self.title
@@ -199,3 +201,18 @@ class ClassModel(models.Model):
 
 # 	def __str__(self):
 # 		return (self.topic + self.subject)
+
+class Event(models.Model):
+	title = models.CharField(max_length=250, blank=True, null=True)
+	types = (
+		('RECURRING','Recurring'),
+		('MULTIDAY', 'Multiday'),
+		('SINGLE', 'Single Day')
+	)
+	type = models.CharField(max_length=250, choices=types)
+	startRecur = models.DateField(null=True, blank=True)
+	endRecur = models.DateField(null=True, blank=True)
+	startTime = models.TimeField(null=True, blank=True)
+	endTime = models.TimeField(blank=True, null=True)
+	daysOfWeek = models.TextField(blank=True , null=True)
+	course = models.ForeignKey(Course, null=True, blank=True, on_delete=models.CASCADE)
