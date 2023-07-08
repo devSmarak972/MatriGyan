@@ -16,6 +16,7 @@ import PreQuiz from "./pages/Quiz/PreQuiz";
 import PostQuiz from "./pages/Quiz/PostQuiz";
 import ReviewQuiz from "./pages/Quiz/ReviewQuiz";
 import CoursePreview from "./pages/CoursePreview";
+import SearchLanding from "./components/LandingPage/SearchLanding";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <div>
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
+          {/* <Route path="/search" element={<SearchLanding />} /> */}
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/signup" element={<LoginSignup />} />
           <Route path="/student" element={<StudentDashboard />} />
@@ -38,7 +40,7 @@ function App() {
           <Route path="/quiz/:ID/start" element={<PreQuiz />} />
           <Route path="/quiz/:ID/end" element={<PostQuiz />} />
           <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
-          <Route path="/course/:id" element={<CoursePreview />}/>
+          <Route path="/course/:id" element={<CoursePreview />} />
         </Routes>
       </div>
     </Router>

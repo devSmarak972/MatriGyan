@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/fontawesome-free-solid";
+import {
+  faArrowRight,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
 
-const Navbar = () => {
+const Navbar = (props) => {
   const [scroll, setScroll] = useState(false);
   // useEffect(() => {
   //   window.addEventListener("scroll", () => {
@@ -227,6 +231,47 @@ const Navbar = () => {
                 </li>
               </ul>
             </div>
+
+            {props.searchPage && (
+              <div className="banner-content m-0">
+                <form
+                  className="form border rounded-full"
+                  // action="course-list.html"
+                >
+                  <div className="form-inner p-2">
+                    <div className="input-group gap-2 items-center">
+                      <FontAwesomeIcon icon={faMagnifyingGlass} color="grey" />
+                      <input
+                        type="email"
+                        className="form-control justify-content-center m-0"
+                        placeholder="Search"
+                        value={props.search}
+                        onChange={props.handleSearch}
+                      />
+                      <span className="drop-detail m-0">
+                        <select
+                          className="form-select pl-3 select w-fit"
+                          value={props.category}
+                          onChange={props.handleCategory}
+                        >
+                          <option>Courses</option>
+                          <option>Educators</option>
+                          <option>Materials</option>
+                        </select>
+                      </span>
+                      <button
+                        className="w-[44px] h-[44px] btn btn-primary sub-btn p-0"
+                        // type="submit"
+                        onClick={() => props.setSearchPage(0)}
+                      >
+                        <FontAwesomeIcon icon={faArrowRight} rotation={180} />
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            )}
+
             <ul className="nav header-navbar-rht">
               <li className="nav-item">
                 <a className="nav-link header-sign" href="login">

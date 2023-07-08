@@ -6,7 +6,11 @@ import data from "./data/questions.json";
 const Doubts = () => {
   const [sortBy, setSortBy] = useState("");
   if (sortBy === "" || sortBy === "Date") {
-    //
+    data.sort((a, b) => {
+      let dateA = new Date(a.date);
+      let dateB = new Date(b.date);
+      return dateB - dateA;
+    });
   } else if (sortBy === "Upvotes") {
     data.sort((a, b) => b.upvotes - a.upvotes);
   }
@@ -28,19 +32,20 @@ const Doubts = () => {
       </div>
       <div
         className="reviewSection scrollbar"
-        style={{ maxHeight: "600px", overflowY: "scroll" }}>
-      {data.map((e) => (
-        <Doubt
-          name={e.name}
-          video={e.video}
-          course={e.course}
-          question={e.question}
-          date={e.date}
-          replies={e.replies}
-          upvotes={e.upvotes}
-        />
-      ))}
-    </div>
+        style={{ maxHeight: "600px", overflowY: "scroll" }}
+      >
+        {data.map((e) => (
+          <Doubt
+            name={e.name}
+            video={e.video}
+            course={e.course}
+            question={e.question}
+            date={e.date}
+            replies={e.replies}
+            upvotes={e.upvotes}
+          />
+        ))}
+      </div>
     </div>
   );
 };
