@@ -22,6 +22,7 @@ urlpatterns = [
     path('add-category/<int:id>/', views.addCategory),
     path('edit-course/<int:id>/', views.editCourse),
     path('get-courses/', views.getCourses),
+    path('dashboard-data/', views.getDashData),
     path('get-course/<int:id>/', views.getCourse),
     path('create-course/', views.addCourse),  
     path('delete-course/<int:id>/', views.deleteCourse),  

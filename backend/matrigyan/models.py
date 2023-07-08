@@ -7,10 +7,19 @@ class Student(models.Model):
 	first_name=models.TextField(default="")
 	full_name=models.TextField(default="")
 	last_name=models.TextField(default="")
+	totalWatchTime=models.IntegerField(default=0,null=True)
+	avgWatchTime=models.IntegerField(default=0,null=True)
 	phone=models.TextField(default="000")
 	user_type=models.CharField(default="student",max_length=255)
+	enrolled_course=models.ManyToManyField("Course",related_name="enrolled_course")
+	ongoing_course=models.ManyToManyField("Course",related_name="ongoing_course")
+	attempted_test=models.ManyToManyField("Quiz",related_name="attempted_test")
+	test=models.ManyToManyField("Quiz",related_name="test")
+	task=models.ManyToManyField("Task",related_name="task")
+	event=models.ManyToManyField("Event",related_name="event")
+	live_class=models.ManyToManyField("LiveClass",related_name="live_class")
 	def __str__(self) -> str:
-		return self.name
+			return self.full_name
 
 class Educator(models.Model):
 	name=models.CharField(max_length=255)
@@ -67,10 +76,10 @@ class Feedback(models.Model):
 	def __str__(self):
 		return str(self.rating)+"_"+str(self.id)
 
-class Educator(models.Model):
-	name = models.CharField(max_length=250)
-	def __str__(self):
-		return (self.name)
+# class Educator(models.Model):
+# 	name = models.CharField(max_length=250)
+# 	def __str__(self):
+# 		return (self.name)
 	
 class Option(models.Model):
 	value = models.TextField()
@@ -118,6 +127,21 @@ class Quiz(models.Model):
 	def __str__(self):
 		return (self.topic + self.subject)
 
+class Task(models.Model):
+	name = models.CharField(max_length=250)
+	user=models.ForeignKey(User,on_delete=models.CASCADE)
+	due_date=models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return (self.topic + self.subject)
+class Event(models.Model):
+	name = models.CharField(max_length=250)
+	user=models.ForeignKey(User,on_delete=models.CASCADE)
+	due_date=models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return (self.topic + self.subject)
+
 class Course(models.Model):
 	
 	title=models.CharField(default="",max_length=255)
@@ -140,7 +164,21 @@ class Course(models.Model):
 			return 0
 		ratingsum=sum([el.rating for el in feedbacks])
 		return ratingsum/len(feedbacks)
+
+class LiveClass(models.Model):
 	
+	title=models.CharField(default="",max_length=255)
+	educator=models.ForeignKey("Educator",on_delete=models.CASCADE)
+	# rating=models.IntegerChoices(default=0,choices=[0,1,2,3,4,5])
+	# duration=models.IntegerField(default=0,blank=True,null=True)
+	description=models.TextField(default="",blank=True,null=True)#received as html
+	category=models.ManyToManyField("CourseCategory")
+	tags=models.ManyToManyField("CourseTag")
+	image = models.TextField(null=True, blank=True)
+	# educator=models.ForeignKey("Educator",on_delete=models.CASCADE)
+	def __str__(self):
+		return self.title
+
 
 class Notifications(models.Model):
 	message=models.TextField()

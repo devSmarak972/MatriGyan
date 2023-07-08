@@ -59,11 +59,19 @@ def login_user(request):
     if authentic_user:
         return HttpResponse(json.dumps({'redirect': True}), content_type="application/json")
     data = check_to_login_registered_user(request)
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    response = JsonResponse(
+        data
+    )
+    response["Access-Control-Allow-Origin"] = "http://localhost:3000"
+    response["Access-Control-Allow-Methods"] = "*"
+    response["Access-Control-Max-Age"] = "1000"
+    response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
+    return response
+    # return HttpResponse(json.dumps(data), content_type="application/json")
 
 def check_to_login_registered_user(request):
     print("data",request.body)
-    data=json.loads(request.body)
+    data=json.loads(request.body)["data"]
     print("data",data)
     email = data.get('email', '')
     password = data.get('password', '')
@@ -119,7 +127,7 @@ def generate_username(email, first_name, last_name):
         username = username + ''.join(random.choice(string.ascii_letters) for i in range(5))
         username_exists = User.objects.filter(username=username).exists()
     
-    print(username)
+    print(username,"\n\n\n")
     return username
 
 
@@ -129,13 +137,16 @@ def register_user(request):
     if authentic_user:
         return HttpResponse(json.dumps({'redirect': True}), content_type="application/json")
     # This flag decides if the client registered will be made freelance client or not
-    print(json.loads(request.body))
-    data=json.loads(request.body)
+    # print(json.loads(request.body))
+    data=json.loads(request.body)["data"]
+    print(data)
     email = data.get('email', '')
     password = data.get('password', '')
-    first_name = data.get('first_name', '')
-    last_name = data.get('last_name', '')
+    first_name = data.get('firstname', '')
+    last_name = data.get('lastname', '')
     phone = data.get('phone', '')
+    std = data.get('class', '')
+    exam = data.get('exam', '')
     city = data.get('city', '')
     state = data.get('state', '')
     country = data.get('country', '')
@@ -166,6 +177,7 @@ def register_user(request):
     if redirect:
             email = create_student(auth_user, first_name, last_name, email, phone,password, 
             city, state, country, zipcode)
+            return HttpResponse(json.dumps({"message": "Account created successfully!","username":username ,"redirect": redirect, "success": redirect, "user_id": user.id}), content_type="application/json")
     return HttpResponse(json.dumps({"message": msg, "redirect": redirect}), content_type="application/json")
 
 
@@ -301,6 +313,32 @@ def getCourse(request, id):
     course = Course.objects.get(id=id)
     c = CourseSerializer(course, many=False)
     return Response(c.data)
+@api_view(['GET'])
+def getDashData(request):
+    print(request.user.id)
+    student=Student.objects.filter(user=request.user.id).first()
+    print(student)
+    
+    mycourses=student.enrolled_course.all()
+    on_courses=student.ongoing_course.all()
+    att_tests=student.attempted_test.all()
+    tests=student.test.all()
+    tasks=student.task.all()
+    events=student.event.all()
+    live_classes=student.live_class.all()
+    print(mycourses)
+    # user=User.objects.get()
+    # course = Course.objects.all()
+    # c = CourseSerializer(course, many=True)
+    # print(c.data,"serialised")
+    response = Response({"enrolled_courses":mycourses,"on_courses":on_courses,"totalWatchTime":student.totalWatchTime,"avgWatchTime":student.avgWatchTime,"attempted_tests":att_tests,"my_tests":tests,"live_classes":live_classes,"tasks":tasks,"events":events})
+    # response=Response(c.data)
+    response["Access-Control-Allow-Origin"] = "http://localhost:3000"
+    response["Access-Control-Allow-Methods"] = "*"
+    response["Access-Control-Max-Age"] = "1000"
+    response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
+    return response
+    # return Response(c.data)
 
 @api_view(['DELETE'])
 def deleteCourse(request, id):

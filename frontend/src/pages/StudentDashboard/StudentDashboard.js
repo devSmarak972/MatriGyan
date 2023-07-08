@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CompletedCourses from "../../components/StudentDashboard/CompletedCourses";
 import Sidebar from "../../components/StudentDashboard/Sidebar";
 import CurrentCourses from "../../components/StudentDashboard/CurrentCourses";
@@ -11,8 +11,23 @@ import ItemCard from "../../components/StudentDashboard/ItemCard";
 import { Checkbox } from "@mantine/core";
 import DashboardCalendar from "../../components/StudentDashboard/DashboardCalendar";
 import Tasklist from "../../components/StudentDashboard/Tasklist";
-
+import axios from "axios";
+import { getCookie } from "../../utils/apiCaller";
 const StudentDashboard = () => {
+  useEffect(() => {
+    const config = {
+      withCredentials:true,
+      // headers: {
+      //   "X-CSRFToken": getCookie("csrftoken"),
+      // },
+    };
+    console.log("config", "config");
+    axios.get(`http://localhost:8000/dashboard-data`, config).then((res) => {
+      console.log(res);
+      console.log(res.data, "received data");
+    });
+  }, []);
+
   var classes = [
     {
       border: "border-l-info",
@@ -70,12 +85,12 @@ const StudentDashboard = () => {
               </span>
             </div>
             <div className="noHoverCard card px-4 py-2 mb-2 h-auto justify-center flex flex-col gap-y-2">
-              {classes?.map(el => {
+              {classes?.map((el) => {
                 return <ItemCard props={{ ...el }}></ItemCard>;
               })}
             </div>
           </div>
-            <Tasklist></Tasklist>
+          <Tasklist></Tasklist>
           <div class="flex flex-col col-span-4">
             <div class="flex justify-between">
               <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
@@ -83,7 +98,8 @@ const StudentDashboard = () => {
               </h2>
               <a
                 href="#"
-                class="pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">
+                class="pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70"
+              >
                 View
               </a>
             </div>
