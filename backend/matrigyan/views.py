@@ -25,6 +25,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import Course,CourseCategory,CourseSection,Comment,CourseTag,Student,Educator
 from .common import update_first_and_last_name
+import json
 from .models import *
 from .serializers import *
 # Create your views here.
@@ -246,15 +247,15 @@ def getComment(request):
 
 @api_view(['POST'])
 def addComment(request, id):
-    student = Student.objects.get(id=id)
+    student = Student.objects.get(id=request.user.id)
     com = CommentSerializer(data=request.data)
     if com.is_valid():
-        repr(com)
         com.validated_data['user'] = student
         com.save()
-        return Response(com.data)
+        course = Course.objects.get(id=id)
+        course.comments.add(com)
+        return Response("Comment added!")
     else:
-        repr(com)
         return Response("Invalid")
     
 @api_view(['GET'])
@@ -276,7 +277,7 @@ def addCategory(request, id):
             new_category.save()
             course.category.add(new_category)
             return Response("New unique category was added!")
-        else:
+        else:   
             course.category.add(exists)
             return Response("Old category added!")
     else:
@@ -288,7 +289,8 @@ def editCourse(request,id):
     courses = CourseSerializer(instance=course,data=request.data)
     if courses.is_valid():
         courses.save()
-    return Response(courses.data)
+        return Response("Course edited!")
+    return Response("Invalid")
 
 @api_view(['GET'])
 def getCourses(request):
@@ -313,13 +315,17 @@ def addCourse(request):
     course = CourseSerializer(data=request.data)
     if course.is_valid():
         course.save()
-    return Response(course.data)
+        return Response("Course updated")
+    return Response("Invalid")
 
 @api_view(['GET'])
 def getSections(request, id):
     sections = CourseSection.objects.filter(course__id=id)
-    serialized_section = SectionSerializer(sections, many=True)
-    return Response(serialized_section.data)
+    if sections!=None:
+        serialized_section = SectionSerializer(sections, many=True)
+        return Response(serialized_section.data)
+    else:
+        return Response("No sections available!")
 
 @api_view(['POST'])
 def addSection(request, id):
@@ -329,9 +335,11 @@ def addSection(request, id):
         title = sec.data['title']
         duration = int(sec.data['duration'])
         order_id = int(sec.data['order_id'])
-        section = CourseSection(course=course, title=title, duration=duration, order_id=order_id)
+        section = CourseSection(title=title, duration=duration, order_id=order_id)
         section.save()
-    return Response(sec.data)
+        course.sections.add(section)
+        return Response("Section added!")
+    return Response("Invalid")
 
 @api_view(['DELETE'])
 def deleteSection(request, id):
@@ -349,16 +357,22 @@ def getQuiz(request, id):
 def getCourseQuiz(request, id):
     course = Course.objects.get(id=id)
     quizes = course.quizes.all()
-    print(quizes)
-    sq = QuizSerializer(quizes, many=True)
-    return Response(sq.data)
+    if quizes!=None:
+        sq = QuizSerializer(quizes, many=True)
+        return Response(sq.data)
+    else:
+        return Response("No quizes found")
 
 @api_view(['POST'])
-def createQuiz(request):
+def createQuiz(request, id):
     quiz = QuizSerializer(data=request.data)
+    course = Course.objects.get(id=id)
     if quiz.is_valid():
         quiz.save()
-    return Response(quiz.data)
+        course_quiz = Quiz.objects.get(id = quiz.data['id'])
+        course.quizes.add(course_quiz)
+        return Response("Quiz created!")
+    return Response("Invalid")
 
 @api_view(['DELETE'])
 def deleteQuiz(request, id):
@@ -411,7 +425,7 @@ def addOption(request, id):
     if option.is_valid():
         option.save()
         question = Question.objects.get(id=id)
-        option_object = Option.objects.get(id=question.data['id'])
+        option_object = Option.objects.get(id=option.data['id'])
         question.options.add(option_object)
     return Response(option.data)
 
@@ -427,3 +441,35 @@ def getOptions(request, id):
     options = question.options.all()
     option_serialized = OptionSerializer(options, many=True)
     return Response(option_serialized.data)
+
+@api_view(['POST'])
+def addEvent(request, id):
+    data=request.data
+    print(data['daysOfWeek'])
+    daysOfWeek = json.dumps(data['daysOfWeek'])
+    event = Event()
+    event.title = data['title']
+    event.daysOfWeek = daysOfWeek
+    event.type = data['type']
+    event.startRecur = data['startRecur']
+    event.endRecur = data['endRecur']
+    event.startTime = data['startTime']
+    event.endTime = data['endTime']
+    event.course = Course.objects.get(id=id)
+    event.save()
+    return Response(data)
+
+@api_view(['GET'])
+def getEvents(request,id):
+    events = Event.objects.filter(course__id=id)
+    if events!=None:
+        serialized_events = EventSerializer(events, many=True)
+        return Response(serialized_events.data)
+    else:
+        return Response("No events found")
+    
+@api_view(['DELETE'])
+def deleteEvent(request, id):
+    event = Event.objects.get(id=id)
+    event.delete()
+    return Response("Event deleted!")
