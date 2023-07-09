@@ -29,7 +29,7 @@ import json
 from .models import *
 from .serializers import *
 # Create your views here.
-from .serializers import CourseSerializer
+# from .serializers import CourseSerializer
 import backend.settings as matrigyan_settings
 
 
@@ -317,24 +317,38 @@ def getCourse(request, id):
     return Response(c.data)
 @api_view(['GET'])
 def getDashData(request):
-    print(request.user.id)
+    print(request.user)
     student=Student.objects.filter(user=request.user.id).first()
+    if( not student):
+        return HttpResponse("<div>Not a student</div>")
+    # educator=Student.objects.filter(user=request.user.id).first()
+    
     print(student)
     
     mycourses=student.enrolled_course.all()
     on_courses=student.ongoing_course.all()
-    att_tests=student.attempted_test.all()
+    att_tests=student.quizresponse_set.all()
     tests=student.test.all()
     tasks=student.task.all()
     events=student.event.all()
     live_classes=student.live_class.all()
-    print(mycourses)
+    print(mycourses.first().sections.all())
     # user=User.objects.get()
     # course = Course.objects.all()
-    # c = CourseSerializer(course, many=True)
-    # print(c.data,"serialised")
-    response = Response({"enrolled_courses":mycourses,"on_courses":on_courses,"totalWatchTime":student.totalWatchTime,"avgWatchTime":student.avgWatchTime,"attempted_tests":att_tests,"my_tests":tests,"live_classes":live_classes,"tasks":tasks,"events":events})
-    # response=Response(c.data)
+    mycourses = CourseSerializer(mycourses, many=True)
+    on_courses = CourseSerializer(on_courses, many=True)
+    # mycourses=mycourses.values_list()
+    # on_courses=on_courses.values_list()
+    # att_tests=att_tests.values_list()
+    att_tests = QuizResponseSerializer(att_tests, many=True)
+    tests = QuizSerializer(tests, many=True)
+    # tests=tests.values_list()
+    tasks = TaskSerializer(tasks, many=True)
+    events = EventSerializer(events, many=True)
+    live_classes = ClassModelSerializer(live_classes, many=True)
+    # print(mycourses.data,on_courses.data,att_tests.data,tests.data,tasks.data)
+    response = Response({"name":student.first_name,"id":student.id,"avgTestScore":student.avgTestScore,"enrolled_courses":mycourses.data,"on_courses":on_courses.data,"totalWatchTime":student.totalWatchTime,"avgWatchTime":student.avgWatchTime,"attempted_tests":att_tests.data,"my_tests":tests.data,"live_classes":live_classes.data,"tasks":tasks.data,"events":events.data})
+    # response=Response({})
     response["Access-Control-Allow-Origin"] = "http://localhost:3000"
     response["Access-Control-Allow-Methods"] = "*"
     response["Access-Control-Max-Age"] = "1000"

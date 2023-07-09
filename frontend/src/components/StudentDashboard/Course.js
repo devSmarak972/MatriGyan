@@ -3,21 +3,24 @@ import { motion } from "framer-motion";
 import "../../pages/StudentDashboard/css/Dashboard.css";
 import { Rating } from "@mantine/core";
 
-const Course = props => {
-  console.log(props, "courses");
+const Course = (props) => {
+  // console.log(props, "courses");
+  // var details=props.details
   return (
-    <div className="card m-0" style={{ height: "190px" }}>
+    <div className="card m-0" style={{ height: "190px" ,maxWidth:"450px"}}>
       <div className="flex justify-between space-x-2 h-100">
         <div className="px-3.5 py-2.5 flex flex-1 flex-col justify-between">
           <div className="flex flex-col justify-between">
             <a
               href="#"
-              className="font-medium text-slate-700 outline-none transition-colors line-clamp-2 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light">
+              className="font-medium text-slate-700 outline-none transition-colors line-clamp-2 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light"
+            >
               {props.coursename}
             </a>
             <a
               href="#"
-              className="text-xs text-slate-400 hover:text-slate-800 dark:text-navy-300 dark:hover:text-navy-100">
+              className="text-xs text-slate-400 hover:text-slate-800 dark:text-navy-300 dark:hover:text-navy-100"
+            >
               {props.educator}
             </a>
           </div>
@@ -34,7 +37,8 @@ const Course = props => {
                     props.percent === 100
                       ? `text-green-600`
                       : `text-[var(--primary)]`
-                  }`}>
+                  }`}
+                >
                   {props.percent}%
                 </span>
               )}
@@ -47,11 +51,17 @@ const Course = props => {
                     (props.percent > 60
                       ? `dark:text-green text-green-600`
                       : `dark:text-red text-red-600`)
-                  }>
+                  }
+                >
                   {props.percent}% Completion Rate
                 </span>
                 {/* <div className="mx-2 my-1 w-px self-stretch bg-slate-200 dark:bg-navy-500"></div> */}
-                <Rating value={3.5} fractions={5} readOnly className="m-0" />
+                <Rating
+                  value={props.rating}
+                  fractions={5}
+                  readOnly
+                  className="m-0"
+                />
               </div>
             ) : (
               <div className="w-full bg-slate-200 rounded-full h-2 dark:bg-gray-700">
@@ -64,7 +74,8 @@ const Course = props => {
                   initial={{ width: 0 }}
                   whileInView={{ width: `${props.percent}%` }}
                   transition={{ duration: 0.5, delay: 0.5 }}
-                  viewport={{ once: true }}></motion.div>
+                  viewport={{ once: true }}
+                ></motion.div>
               </div>
             )}
           </div>
@@ -75,7 +86,8 @@ const Course = props => {
                 className="h-4.5 w-4.5 text-slate-400 dark:text-navy-300"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor">
+                stroke="currentColor"
+              >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -83,11 +95,11 @@ const Course = props => {
                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <p class="mb-0">16h 14m</p>
+              <p class="mb-0">{props.duration}h</p>
             </div>
             {props.type === "educator" ? "" : ""}
             <div className="mx-2 my-1 w-px self-stretch bg-slate-200 dark:bg-navy-500"></div>
-            <span className="line-clamp-1">475 Students </span>
+            <span className="line-clamp-1">{props.enrolled} Students </span>
           </div>
         </div>
         <img

@@ -72,17 +72,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'matrigyan',
-    'corsheaders',
+    
 ]
 
 ALLOWED_HOSTS=['http://localhost:3000',"*"]
 
 # CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-  
-]
+
 CORS_ALLOW_HEADERS=['accept',
 'accept-encoding',
 'authorization',
@@ -212,6 +209,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+# ]

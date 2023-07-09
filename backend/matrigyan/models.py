@@ -1,29 +1,31 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import random
 class Student(models.Model):
 	std=models.IntegerField(default=11)
 	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 	first_name=models.TextField(default="")
 	full_name=models.TextField(default="")
 	last_name=models.TextField(default="")
-	totalWatchTime=models.IntegerField(default=0,null=True)
-	avgWatchTime=models.IntegerField(default=0,null=True)
+	totalWatchTime=models.IntegerField(default=0,null=True,blank=True)
+	avgWatchTime=models.IntegerField(default=0,null=True,blank=True)
 	phone=models.TextField(default="000")
 	user_type=models.CharField(default="student",max_length=255)
-	enrolled_course=models.ManyToManyField("Course",related_name="enrolled_course")
-	ongoing_course=models.ManyToManyField("Course",related_name="ongoing_course")
-	attempted_test=models.ManyToManyField("Quiz",related_name="attempted_test")
-	test=models.ManyToManyField("Quiz",related_name="test")
-	task=models.ManyToManyField("Task",related_name="task")
-	event=models.ManyToManyField("Event",related_name="event")
-	live_class=models.ManyToManyField("LiveClass",related_name="live_class")
+	enrolled_course=models.ManyToManyField("Course",related_name="student_enrolled",blank=True)
+	ongoing_course=models.ManyToManyField("Course",related_name="student_ongoing",blank=True)
+	# attempted_test=models.ManyToManyField("QuizResponse",related_name="student_attempted",blank=True)
+	test=models.ManyToManyField("Quiz",related_name="student_test",blank=True)
+	task=models.ManyToManyField("Task",related_name="student_task",blank=True)
+	event=models.ManyToManyField("Event",related_name="student_event",blank=True)
+	live_class=models.ManyToManyField("ClassModel",related_name="student_live",blank=True)
 	def __str__(self) -> str:
 			return self.full_name
-
+	@property
+	def avgTestScore(self):
+		return (int)(random.random()*100+10)
 class Educator(models.Model):
 	name=models.CharField(max_length=255)
-	std=models.IntegerField(default=11)
+	# std=models.IntegerField(default=11)
 	profile_pic = models.CharField(max_length=200, null=True, blank=True)
 	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
@@ -88,8 +90,9 @@ class Option(models.Model):
 		return self.value
 
 class Solution(models.Model):
-	solution = models.TextField()
-	media = models.TextField()
+	answer = models.TextField(default="")
+	solution = models.TextField(blank=True,default="")
+	media = models.TextField(blank=True)
 
 	def __str__(self):
 		return self.solution
@@ -110,10 +113,10 @@ class Question(models.Model):
 		('TEXT', 'Text'),
 	)
 	type = models.CharField(max_length=250, choices=type_choice, default='Single')
-	image = models.TextField()
-	options = models.ManyToManyField(Option)
+	image = models.TextField(blank=True,default="")
+	options = models.ManyToManyField(Option,blank=True)
 	solution = models.ForeignKey(Solution, on_delete=models.CASCADE, null=True, blank=True)
-	
+	marks=models.IntegerField(default=1,blank=True)
 	def __str__(self):
 		return str(self.qnumber) + self.question
 
@@ -122,25 +125,43 @@ class Quiz(models.Model):
 	topic = models.CharField(max_length=250)
 	subject = models.CharField(max_length=250)
 	creator = models.ForeignKey(Educator, on_delete=models.CASCADE, null=True, blank=True)
-	questions = models.ManyToManyField(Question)
-
+	questions = models.ManyToManyField(Question,blank=True)
+	time=models.IntegerField(default=1,blank=True)
 	def __str__(self):
 		return (self.topic + self.subject)
+	@property
+	def number_of_questions(self):
+		return len(self.questions.all())
+	@property
+	def total_marks(self):
+		return sum([el.marks for el in self.questions.all()])
+class QuizResponse(models.Model):
+	quiz=models.ForeignKey(Quiz,on_delete=models.CASCADE)
+	educator_feedback=models.TextField(default="",blank=True)
+	student=models.ForeignKey(Student,on_delete=models.CASCADE,blank=True,null=True)
+	def __str__(self):
+		return (self.quiz.name + self.student.full_name)
+	def obtained_marks(self):
+		return sum([el.marks for el in self.quizanswer_set.all()])
+		
+class QuizAnswer(models.Model):
+	question=models.ForeignKey(Question,on_delete=models.CASCADE)
+	answer=models.TextField(default="",blank=True)
+	response=models.ForeignKey(QuizResponse,on_delete=models.CASCADE)
+	marks=models.IntegerField(default=0,blank=True)
+	def __str__(self):
+		return (self.question + self.response.student_test.all().fullname)
+	
+		
 
 class Task(models.Model):
 	name = models.CharField(max_length=250)
 	user=models.ForeignKey(User,on_delete=models.CASCADE)
 	due_date=models.DateTimeField(auto_now_add=True)
-
+	completed=models.BooleanField(default=False,blank=True)
 	def __str__(self):
-		return (self.topic + self.subject)
-class Event(models.Model):
-	name = models.CharField(max_length=250)
-	user=models.ForeignKey(User,on_delete=models.CASCADE)
-	due_date=models.DateTimeField(auto_now_add=True)
+		return (self.name + self.user.username)
 
-	def __str__(self):
-		return (self.topic + self.subject)
 
 class Course(models.Model):
 	
@@ -148,13 +169,13 @@ class Course(models.Model):
 	# rating=models.IntegerChoices(default=0,choices=[0,1,2,3,4,5])
 	# duration=models.IntegerField(default=0,blank=True,null=True)
 	description=models.TextField(default="",blank=True,null=True)#received as html
-	sections=models.ManyToManyField("CourseSection")
-	category=models.ManyToManyField("CourseCategory")
-	tags=models.ManyToManyField("CourseTag")
+	sections=models.ManyToManyField("CourseSection",blank=True)
+	category=models.ManyToManyField("CourseCategory",blank=True)
+	tags=models.ManyToManyField("CourseTag",blank=True)
 	image = models.TextField(default="",null=True, blank=True)
-	quizes = models.ManyToManyField(Quiz)
-	comments = models.ManyToManyField(Comment)
-	# educator=models.ForeignKey("Educator",on_delete=models.CASCADE)
+	quizes = models.ManyToManyField(Quiz,blank=True)
+	comments = models.ManyToManyField(Comment,blank=True)
+	educator=models.ForeignKey("Educator",on_delete=models.CASCADE,null=True,blank=True)
 	def __str__(self):
 		return self.title
 	@property
@@ -165,20 +186,31 @@ class Course(models.Model):
 			return 0
 		ratingsum=sum([el.rating for el in feedbacks])
 		return ratingsum/len(feedbacks)
+	@property
+	def enrolled(self):
+		return len(self.student_enrolled.all())
+	@property
+	def duration(self):
+		dur=sum([el.duration for el in self.sections.all()])
+		print(dur,"sum")
+		return dur
+	@property
+	def ongoing(self):
+		return len(self.student_ongoing.all())
 
-class LiveClass(models.Model):
+# class LiveClass(models.Model):
 	
-	title=models.CharField(default="",max_length=255)
-	educator=models.ForeignKey("Educator",on_delete=models.CASCADE)
-	# rating=models.IntegerChoices(default=0,choices=[0,1,2,3,4,5])
-	# duration=models.IntegerField(default=0,blank=True,null=True)
-	description=models.TextField(default="",blank=True,null=True)#received as html
-	category=models.ManyToManyField("CourseCategory")
-	tags=models.ManyToManyField("CourseTag")
-	image = models.TextField(null=True, blank=True)
-	# educator=models.ForeignKey("Educator",on_delete=models.CASCADE)
-	def __str__(self):
-		return self.title
+# 	title=models.CharField(default="",max_length=255)
+# 	educator=models.ForeignKey("Educator",on_delete=models.CASCADE)
+# 	# rating=models.IntegerChoices(default=0,choices=[0,1,2,3,4,5])
+# 	# duration=models.IntegerField(default=0,blank=True,null=True)
+# 	description=models.TextField(default="",blank=True,null=True)#received as html
+# 	category=models.ManyToManyField("CourseCategory")
+# 	tags=models.ManyToManyField("CourseTag")
+# 	image = models.TextField(null=True, blank=True)
+# 	# educator=models.ForeignKey("Educator",on_delete=models.CASCADE)
+# 	def __str__(self):
+# 		return self.title
 
 
 class Notifications(models.Model):
@@ -190,9 +222,9 @@ class Notifications(models.Model):
 
 class ClassModel(models.Model):
 	title=models.CharField(default="",max_length=255)
-	students=models.ManyToManyField(Student)
+	# students=models.ManyToManyField(Student)
 	modes=((0,"English"),(1,"Hindi"))
-	mode=models.TextField(default=0,choices=modes)
+	mode=models.IntegerField(default=0,choices=modes)
 	teacher=models.ForeignKey("Educator",on_delete=models.CASCADE, null=True, blank=True)
 	start=models.DateTimeField(auto_created=True)
 	end=models.DateTimeField()
@@ -261,10 +293,10 @@ class Event(models.Model):
 		('MULTIDAY', 'Multiday'),
 		('SINGLE', 'Single Day')
 	)
-	type = models.CharField(max_length=250, choices=types)
+	type = models.CharField(max_length=250, choices=types,default='SINGLE')
 	startRecur = models.DateField(null=True, blank=True)
 	endRecur = models.DateField(null=True, blank=True)
 	startTime = models.TimeField(null=True, blank=True)
 	endTime = models.TimeField(blank=True, null=True)
 	daysOfWeek = models.TextField(blank=True , null=True)
-	course = models.ForeignKey(Course, null=True, blank=True, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
