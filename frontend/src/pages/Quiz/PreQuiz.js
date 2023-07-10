@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import data from "./quiz.json";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 const PreQuiz = () => {
+  const { ID } = useParams();
+  const [dataa, setDataa] = useState({});
+  console.log("URL: ", `http://localhost:8000/get-quiz/${ID}/`);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/get-quiz/${ID}/`
+        );
+      } catch (e) {
+        console.log("Error fetching data: ", e);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(dataa);
+
   let total = 0;
   let qtypes = [];
   for (let i = 0; i < data.questions.length; i++) {
@@ -26,7 +46,9 @@ const PreQuiz = () => {
     <div className="p-4 h-screen flex bg-[var(--background-light)]">
       <div className="bg-white m-auto max-w-[500px] p-8 shadow-lg rounded-xl flex flex-col gap-3">
         <div className="flex flex-col">
-          <span className="font-semibold text-[var(--primary)]">Quiz</span>
+          <span className="font-semibold text-[var(--primary)]">
+            {data.name}
+          </span>
           <span className="font-medium text-black text-base">{data.topic}</span>
         </div>
         <span>
