@@ -37,12 +37,18 @@ class CustomizedAxisTick extends PureComponent {
   }
 }
 
-const Graph1 = () => {
-  let dataModified = data.map((item) => ({
-    name: item.name,
-    completed: item.completed,
-    inprogress: item.total - item.completed,
-  }));
+const Graph1 = (props) => {
+  // let dataModified = data.map((item) => ({
+  //   name: item.name,
+  //   completed: item.completed,
+  //   inprogress: item.total - item.completed,
+  // }));
+  let dataModified = props.course?props.course.map((item) => ({
+    name: item.title,
+    completed: item.enrolled-item.ongoing,
+    inprogress: item.ongoing,
+  })):[];
+
   dataModified.sort((a, b) => {
     return b.completed + b.inprogress - a.completed - a.inprogress;
   });

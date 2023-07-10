@@ -1,14 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 # coding: utf-8
-
-from django.shortcuts import render
 from django.template.loader import get_template
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponsePermanentRedirect,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-
+from backend.settings import FRONTEND_URL
 import random, string
 from django.contrib.auth import logout
 from rest_framework import permissions, status
@@ -63,6 +61,7 @@ def login_user(request):
     response = JsonResponse(
         data
     )
+    
     response["Access-Control-Allow-Origin"] = "http://localhost:3000"
     response["Access-Control-Allow-Methods"] = "*"
     response["Access-Control-Max-Age"] = "1000"
@@ -92,19 +91,27 @@ def check_to_login_registered_user(request):
     else:
         username = user.first().username
     auth_user = authenticate(username=username, password=password)
+    utype="undefined"
     if auth_user is not None:
         if auth_user.is_active:
             login(request, auth_user)
             msg = "Signed in successfully!"
             redirect = True
             request.session.set_expiry(matrigyan_settings.KEEP_LOGGED_DURATION)
+            educator=Educator.objects.filter(user=auth_user.id).first()
+            student=Student.objects.filter(user=auth_user.id).first()
+            if educator:
+                utype="educator"
+            elif student:
+                utype="student"
+                 
         else:
             msg = 'The user is disabled!'
             redirect = False
     else:
         msg = 'Invalid login'
         redirect = False
-    return {"message": msg, "redirect": redirect, "success": redirect, "user_id": user.first().id}
+    return {"message": msg, "redirect": redirect, "success": redirect, "user_id": user.first().id,"utype":utype}
 
 def logout_user(request, app_type=None):
    
@@ -316,12 +323,53 @@ def getCourse(request, id):
     c = CourseSerializer(course, many=False)
     return Response(c.data)
 @api_view(['GET'])
-def getDashData(request):
+def getEducatorDashData(request):
+    print(request.user)
+    educator=Educator.objects.filter(user=request.user.id).first()
+    if( not educator):
+        student=Student.objects.filter(user=request.user.id).first()
+        if not student:
+            return Response({"success":False,"message":"Not educator","code":1})
+        else:
+            return Response({"success":False,"message":"Student","code":2})
+         
+    # educator=Student.objects.filter(user=request.user.id).first()
+    
+    print(educator)
+    courses=educator.course_set.all()
+    classes=educator.classmodel_set.all()
+    courses = CourseSerializer(courses, many=True)
+    tasks=educator.task.all()
+    tasks=TaskSerializer(tasks,many=True)
+    comments=Comment.objects.filter(course__educator=educator.id)
+    comments=CommentSerializer(comments,many=True)
+    classes = ClassModelSerializer(classes, many=True)
+    # tests=Quiz.objects
+    tests=educator.quiz_set.all()
+    # tests=QuizSerializer(tests,many=True)
+    feedbacks=educator.feedbacks
+    # feedbacks=[]
+    feedbacks=FeedbackSerializer(feedbacks, many=True)
+    
+    print(feedbacks)
+    # response = Response({"name":student.first_name,"id":student.id,"avgTestScore":student.avgTestScore,"enrolled_courses":mycourses.data,"on_courses":on_courses.data,"totalWatchTime":student.totalWatchTime,"avgWatchTime":student.avgWatchTime,"attempted_tests":att_tests.data,"my_tests":tests.data,"live_classes":live_classes.data,"tasks":tasks.data,"events":events.data})
+    response=Response({"success":True,"tasks":tasks.data,"watchTime":321,"numTests":len(tests),"taughtTime":educator.taughtTime,"rating":educator.rating,"numTests":educator.numTests,"numStudents":educator.numStudents,"courses":courses.data,"comments":comments.data,"classes":classes.data,"feedback":feedbacks.data})
+    response["Access-Control-Allow-Origin"] = "http://localhost:3000"
+    response["Access-Control-Allow-Methods"] = "*"
+    response["Access-Control-Max-Age"] = "1000"
+    response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
+    return response
+@api_view(['GET'])
+def getStudentDashData(request):
     print(request.user)
     student=Student.objects.filter(user=request.user.id).first()
     if( not student):
-        return HttpResponse("<div>Not a student</div>")
-    # educator=Student.objects.filter(user=request.user.id).first()
+        educator=Educator.objects.filter(user=request.user.id).first()
+        if not educator:
+            return Response({"success":False,"message":"Not educator","code":1})
+        else:
+            return Response({"success":False,"message":"Student","code":2})
+         # educator=Student.objects.filter(user=request.user.id).first()
     
     print(student)
     
@@ -347,7 +395,7 @@ def getDashData(request):
     events = EventSerializer(events, many=True)
     live_classes = ClassModelSerializer(live_classes, many=True)
     # print(mycourses.data,on_courses.data,att_tests.data,tests.data,tasks.data)
-    response = Response({"name":student.first_name,"id":student.id,"avgTestScore":student.avgTestScore,"enrolled_courses":mycourses.data,"on_courses":on_courses.data,"totalWatchTime":student.totalWatchTime,"avgWatchTime":student.avgWatchTime,"attempted_tests":att_tests.data,"my_tests":tests.data,"live_classes":live_classes.data,"tasks":tasks.data,"events":events.data})
+    response = Response({"success":True,"name":student.first_name,"id":student.id,"avgTestScore":student.avgTestScore,"enrolled_courses":mycourses.data,"on_courses":on_courses.data,"totalWatchTime":student.totalWatchTime,"avgWatchTime":student.avgWatchTime,"attempted_tests":att_tests.data,"my_tests":tests.data,"live_classes":live_classes.data,"tasks":tasks.data,"events":events.data})
     # response=Response({})
     response["Access-Control-Allow-Origin"] = "http://localhost:3000"
     response["Access-Control-Allow-Methods"] = "*"

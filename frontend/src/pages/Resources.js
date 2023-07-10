@@ -38,16 +38,18 @@ const Resources = () => {
   return (
     <div>
       <Sidebar></Sidebar>
-      <div class="main-content w-full pb-8 px-8">
+      <div class="main-content w-full pb-8 px-8 mx-8">
         <div class="form-wrapper p-8 m-8">
           <FilterTopBar
             search={search}
             handleSearch={handleSearch}
           ></FilterTopBar>
         </div>
+        <div className="container-lg page__container px-6">
         {resources.sections.map((el) => {
           return <ResourceSection props={el}></ResourceSection>;
         })}
+      </div>
       </div>
     </div>
   );

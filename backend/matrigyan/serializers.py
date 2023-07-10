@@ -5,15 +5,16 @@ from rest_framework import serializers
 from .models import *
 
 class EducatorSerializer(serializers.ModelSerializer):
+	numStudents=serializers.ReadOnlyField(read_only=True)
+	numTests=serializers.ReadOnlyField(read_only=True)
+	rating=serializers.ReadOnlyField(read_only=True)
+ 	# feedbacks=FeedbackSerializer(read_only=True,many=True)
+
 	class Meta:
 		model = Educator
 		fields = "__all__"
 # Create a model serializer			
 
-class CommentSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Comment
-		fields = "__all__"
 
 class StudentSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -38,13 +39,18 @@ class OptionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Option
 		fields = "__all__"
-
+class SolutionSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Solution
+		fields = "__all__"
 class QuestionSerializer(serializers.ModelSerializer):
 	options=OptionSerializer(many=True,read_only=True)
+	solution=SolutionSerializer(read_only=True)
 	class Meta:
 		model = Question
 		fields = "__all__"
   
+
 class QuizSerializer(serializers.ModelSerializer):
 	# questions=serializers.RelatedField(read_only=True)
 	creator= EducatorSerializer(read_only=True)
@@ -71,6 +77,14 @@ class QuizAnswerSerializer(serializers.ModelSerializer):
 		model = QuizAnswer
 		fields = "__all__"
 
+class CommentSerializer(serializers.ModelSerializer):
+	user=StudentSerializer(read_only=True)
+	# course=CourseSerializer(read_only=True)
+	totalcomments=serializers.ReadOnlyField(read_only=True)
+	class Meta:
+		model = Comment
+		fields = "__all__"
+  
 class CourseSerializer(serializers.ModelSerializer):
 	# specify model and fields
 	sections=SectionSerializer(read_only=True,many=True)
@@ -92,10 +106,15 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 
-class SolutionSerializer(serializers.ModelSerializer):
+class FeedbackSerializer(serializers.ModelSerializer):
+	course=CourseSerializer(read_only=True)
+ 
+	user=StudentSerializer(read_only=True)
+	# user_id=serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), source='user')
 	class Meta:
-		model = Solution
+		model = Feedback
 		fields = "__all__"
+
 
 class EventSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -107,6 +126,7 @@ class TaskSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 class ClassModelSerializer(serializers.ModelSerializer):
 	teacher=EducatorSerializer(read_only=True)
+	tags=CourseTagSerializer(read_only=True,many=True)
 	class Meta:
 		model = ClassModel
 		fields = "__all__"

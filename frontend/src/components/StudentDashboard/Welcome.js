@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Logout from "../General/Logout";
 
 const Welcome = (props) => {
   return (
@@ -16,6 +17,7 @@ const Welcome = (props) => {
           {props.name}
         </span>
       </motion.div>
+      <Logout></Logout>
     </div>
   );
 };

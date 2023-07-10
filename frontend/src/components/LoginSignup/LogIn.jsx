@@ -34,7 +34,15 @@ const LogIn = (props) => {
         console.log(res.data, res.headers);
 
         if (res.data["redirect"] === true) {
+
+          if(res.data["utype"]==="student")
           navigate("../student");
+          else if(res.data["utype"]==="educator")
+          navigate("../student");
+          else
+          navigate("/");
+
+
 
           // setCookie('csrftoken', , { path: '/' });
 

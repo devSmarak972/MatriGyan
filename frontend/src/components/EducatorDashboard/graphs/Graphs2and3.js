@@ -5,7 +5,7 @@ import Graph3 from "./Graph3";
 import { Select } from "@mantine/core";
 import data from "../data/viewers.json";
 
-const Graphs = () => {
+const Graphs = (props) => {
   let dataYear = data.map((e) => e.day.slice(0, 4));
   let set = new Set(dataYear);
   dataYear = Array.from(set);
@@ -39,7 +39,7 @@ const Graphs = () => {
         <span className="text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100">
           Course Rankings
         </span>
-        <Graph3 />
+        <Graph3 courses={props.courses}/>
       </div>
     </div>
   );
