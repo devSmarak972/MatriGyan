@@ -1,7 +1,9 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "@mantine/form";
+import { useNavigate } from "react-router-dom";
+
 import {
   Stepper,
   Group,
@@ -14,6 +16,7 @@ import {
   Select,
   MultiSelect,
 } from "@mantine/core";
+import axios from "axios";
 import { MoonLoader } from "react-spinners";
 import { auth } from "../../utils/Firebase/firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
@@ -21,13 +24,24 @@ import { motion } from "framer-motion";
 import "../../pages/LoginSignup/LoginSignup.css";
 
 const SignUp = (props) => {
+  const navigate = useNavigate();
   const [active, setActive] = useState(0);
   const [subactive, setSubactive] = useState(0);
+  const [logged, setLogged] = useState(false);
 
   const [otpLoading, setOtpLoading] = useState(0);
 
   const classes = ["Class IX", "Class X", "Class XI", "Class XII"];
   const exams = ["Jee Main", "Jee Advanved", "NEET", "KVPY"];
+  // useEffect(() => {
+  //   // navigate("/");
+  // }, []);
+
+  // useEffect(() => {
+
+  //   props.handleSwitch(1);
+  //   // navigate("../login", { replace: true });
+  // }, [logged]);
 
   const sendOTP = async () => {
     let phone = form.values.phone;
@@ -145,7 +159,20 @@ const SignUp = (props) => {
       return {};
     },
   });
+  const submitSignup = (event) => {
+    event.preventDefault();
 
+    var data = form.values;
+
+    axios
+      .post(`http://localhost:8000/api/register/email`, { data })
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        if (res.data["redirect"] === true) props.handleSwitch(1);
+
+      });
+  };
   //  //  //  //
 
   const nextStep = async () => {
@@ -154,16 +181,21 @@ const SignUp = (props) => {
       setActive((prev) => prev);
     } else if (active === 2 && subactive === 0) setActive((prev) => prev);
     else if (active === 2 && subactive === 1) {
-      verifyOTP();
-    } else setActive((prev) => prev + 1);
+      // verifyOTP();
+      setActive((prev) => prev + 1);
+    } else {
+      setActive((prev) => prev + 1);
+    }
 
     //  //  //  //  //
     console.log("Next Step");
+    console.log("Step :" + active);
 
     if (form.validate().hasErrors) {
       return setSubactive((prev) => prev);
     } else if (active === 2 && subactive === 0) {
-      sendOTP();
+      setSubactive(1);
+      // sendOTP();
     }
   };
 
@@ -173,8 +205,12 @@ const SignUp = (props) => {
     );
     setSubactive(0);
   };
-  
- 
+  function funcBtn(e) {
+    console.log(e, "funcbtn");
+    if (active === 2 && subactive !== 0) submitSignup(e);
+    else nextStep(e);
+  }
+
   return (
     <motion.div
       initial={false}
@@ -353,7 +389,11 @@ const SignUp = (props) => {
             </Button>
           )}
           {active !== 3 && (
-            <Button className="signup-next" onClick={nextStep}>
+            <Button
+              className="signup-next"
+              // onClick={nextStep}
+              onClick={funcBtn}
+            >
               {active < 2
                 ? "Next step"
                 : subactive === 0

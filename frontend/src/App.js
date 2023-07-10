@@ -16,17 +16,23 @@ import PreQuiz from "./pages/Quiz/PreQuiz";
 import PostQuiz from "./pages/Quiz/PostQuiz";
 import ReviewQuiz from "./pages/Quiz/ReviewQuiz";
 import CoursePreview from "./pages/CoursePreview";
-
+import MyContents from "./pages/MyContents";
+import SearchLanding from "./components/LandingPage/SearchLanding";
+import Loader from "./loader"
+import MyItems from "./pages/MyContents";
 function App() {
   return (
     <Router>
       <div>
         <Routes>
+
           <Route exact path="/" element={<LandingPage />} />
+          {/* <Route path="/search" element={<SearchLanding />} /> */}
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/signup" element={<LoginSignup />} />
           <Route path="/student" element={<StudentDashboard />} />
           <Route path="/courses" element={<CoursePage />} />
+          <Route path="/educator/contents" element={<MyContents />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/educator" element={<EducatorDashboard />} />
           <Route path="/course/:ID/edit" element={<EditCourse />} />
@@ -38,7 +44,7 @@ function App() {
           <Route path="/quiz/:ID/start" element={<PreQuiz />} />
           <Route path="/quiz/:ID/end" element={<PostQuiz />} />
           <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
-          <Route path="/course/:id" element={<CoursePreview />}/>
+          <Route path="/course/:id" element={<CoursePreview />} />
         </Routes>
       </div>
     </Router>

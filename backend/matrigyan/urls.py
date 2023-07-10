@@ -22,6 +22,8 @@ urlpatterns = [
     path('add-category/<int:id>/', views.addCategory),
     path('edit-course/<int:id>/', views.editCourse),
     path('get-courses/', views.getCourses),
+    path('educator-dashboard-data/', views.getEducatorDashData),
+    path('student-dashboard-data/', views.getStudentDashData),
     path('get-course/<int:id>/', views.getCourse),
     path('create-course/', views.addCourse),  
     path('delete-course/<int:id>/', views.deleteCourse),  
@@ -40,4 +42,7 @@ urlpatterns = [
     path('add-option/<int:id>/', views.addOption),
     path('get-options/<int:id>/', views.getOptions),
     path('delete-option/<int:id>/',views.deleteOption),
+    path('get-events/<int:id>/', views.getEvents),
+    path('add-event/<int:id>/', views.addEvent),
+    path('delete-events/<int:id>/', views.deleteEvent),
 ]

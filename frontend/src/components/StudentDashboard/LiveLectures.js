@@ -2,7 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import LiveLecture from "./LiveLecture";
 
-const LiveLectures = () => {
+const LiveLectures = (props) => {
+  console.log(props,"lectures renderer")
   return (
     <div className="col-span-12 sm:col-span-6 lg:col-span-4">
       <div className="flex items-center justify-between">
@@ -11,7 +12,8 @@ const LiveLectures = () => {
         </h2>
         <a
           href="#"
-          class="border-b border-dotted border-current pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">
+          class="border-b border-dotted border-current pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70"
+        >
           View All
         </a>
       </div>
@@ -20,31 +22,22 @@ const LiveLectures = () => {
           initial={{ y: 50, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          viewport={{ once: true }}>
-          <LiveLecture
-            start={new Date("2022-06-20 10:00:00")}
-            end={new Date("2022-06-20 13:00:00")}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ y: 50 }}
-          whileInView={{ y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}>
-          <LiveLecture
-            start={new Date("2024-06-20 10:00:00")}
-            end={new Date("2024-06-20 13:00:00")}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}>
-          <LiveLecture
-            start={new Date("2023-06-15 2:00:00")}
-            end={new Date("2023-07-15 13:00:00")}
-          />
+          viewport={{ once: true }}
+        >
+          {props.lectures ? (
+            props.lectures.map((el) => {
+              return (
+                <LiveLecture
+                  title={el.title}
+                  educator={el.teacher}
+                  start={new Date(el.start)}
+                  end={new Date(el.end)}
+                />
+              );
+            })
+          ) : (
+            <p>No live lectures upcoming</p>
+          )}
         </motion.div>
       </div>
     </div>

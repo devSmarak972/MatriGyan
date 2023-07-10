@@ -1,7 +1,9 @@
 import React from "react";
 import Course from "./Course";
 
-const CompletedCourses = () => {
+const CompletedCourses = (props) => {
+  console.log(props.courses,"completed course")
+
    var courses = [
      {
        percent: 100,
@@ -45,10 +47,27 @@ const CompletedCourses = () => {
           </a>
         </div>
         <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-5 lg:grid-cols-1">
-          {courses.map(el => {
-            console.log(el, "cc");
+           {props?.courses.length!==0 ? (
+              props.courses
+                .map((el) => {
+                  return {
+                    rating: el.rating,
+                    enrolled: el.enrolled,
+                    ongoing: el.ongoing,
+                    coursename: el.title,
+                    percent: parseInt(Math.random()*90+10),
+                    educator: el.educator.name,
+                    image: el.image
+                      ? el.image
+                      : "https://i.ytimg.com/vi/dfUDCgaFOBE/maxresdefault.jpg",
+                    duration: el.duration,
+                  };
+                })
+                .map(el => {
+            // console.log(el, "cc");
             return <Course {...el} />;
-          })}
+          })):<p>No courses completed</p>
+        }
         </div>
       </div>
     </>

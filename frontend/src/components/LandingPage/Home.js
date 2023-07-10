@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faStar } from "@fortawesome/fontawesome-free-solid";
+import { Link } from "react-router-dom";
 
-const Home = () => {
+const Home = (props) => {
+  console.log(props.search, "+++", props.category);
   return (
     <section className="home-slide d-flex align-items-center">
       <div className="container">
@@ -23,19 +25,27 @@ const Home = () => {
                         type="email"
                         className="form-control justify-content-center"
                         placeholder="Search School, Topics, Courses etc"
+                        value={props.search}
+                        onChange={props.handleSearch}
                       />
                       <span className="drop-detail">
-                        <select className="form-select pl-3 select">
-                          <option>Category</option>
-                          <option>Schools</option>
-                          <option>Topics</option>
+                        <select
+                          className="form-select pl-3 select"
+                          value={props.category}
+                          onChange={props.handleCategory}
+                        >
                           <option>Courses</option>
-                          <option>Class</option>
+                          <option>Educators</option>
+                          <option>Materials</option>
                         </select>
                       </span>
-                      <button className="btn btn-primary sub-btn" type="submit">
+                      <Link
+                        className="btn btn-primary sub-btn"
+                        type="submit"
+                        onClick={() => props.setSearchPage(1)}
+                      >
                         <FontAwesomeIcon icon={faArrowRight} />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </form>

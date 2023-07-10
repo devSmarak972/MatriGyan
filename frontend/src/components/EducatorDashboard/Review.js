@@ -9,16 +9,14 @@ const Review = (props) => {
       <div className="flex justify-between">
         <div className="flex gap-4">
           <img src={props.img} className="rounded-full w-18 h-18" />
-          <div className="flex flex-column justify-between py-1">
+          <div className="flex flex-column py-1">
             <span className="text-base font-semibold text-slate-700">
               {props.name}
             </span>
             <span className="text-sm font-medium text-slate-500">
               {props.courses} courses
             </span>
-            <span className="text-sm font-medium text-slate-500">
-              {props.reviews} reviews
-            </span>
+            
           </div>
         </div>
         <FontAwesomeIcon
