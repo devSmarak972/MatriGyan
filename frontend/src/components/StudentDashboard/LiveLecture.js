@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 
-const LiveLecture = props => {
+const LiveLecture = (props) => {
+  console.log(props,"livelecture");
   var today = new Date();
   const status = today < props.start ? 2 : today > props.end ? 0 : 1;
 
   return (
     <div className={`h-32 card p-3 mb-0.5 ${status===1?`border-2 border-red-200`:``}`}>
       <p className="font-medium mb-0 text-slate-700 dark:text-navy-100">
-        Basic Mathematics - II
+        {props.title}
       </p>
-      <p className="mt-1 text-xs">Abhijeet Dubey</p>
+      <p className="mt-1 text-xs">{props.educator?.name}</p>
 
       <div className="mt-2 relative flex items-end justify-between">
         <p className="flex items-center mb-0 space-x-2 text-slate-400 dark:text-navy-300">

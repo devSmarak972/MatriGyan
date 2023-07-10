@@ -1,7 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const Test = props => {
+const Test = (props) => {
+  // console.log(props,"in test")
   var today = new Date();
   // console.log(props.start.getTime());
   var end = new Date(props.start);
@@ -34,14 +35,15 @@ const Test = props => {
                 viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
             )}
-            <span className="text-xs">{`${
+            <span className="text-xs">
+              {
               status === 0
                 ? props.start.getHours() +
                   `:` +
@@ -67,7 +69,7 @@ const Test = props => {
                   `/` +
                   props.start.getFullYear()
                 : ``
-            }`}</span>
+            }</span>
             <span
               className={`${status !== 1 ? `mx-3` : `m-0`} text-xs ${
                 status === 0
@@ -90,7 +92,7 @@ const Test = props => {
             </span>
           </div>
         </div>
-        {props.marks && (
+        {!isNaN(props.marks) && (
           <div className="single-chart justify-around">
             <svg viewBox="0 0 36 36" className="w-20 circular-chart blue">
               <path
@@ -101,7 +103,7 @@ const Test = props => {
               />
               <path
                 className="circle"
-                stroke-dasharray={`${
+                strokeDasharray={`${
                   (props.marks / props.totalmarks) * 100
                 }, 100`}
                 d="M18 2.0845
