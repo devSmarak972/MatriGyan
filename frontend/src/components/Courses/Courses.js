@@ -1,11 +1,11 @@
 import React from "react";
 import PageSeperator from "./PageSeperator";
 import Row from "./Row";
-function PopularCourses({title}) {
+function PopularCourses(props) {
   return (
     <>
-    <PageSeperator title = {title}></PageSeperator>
-    <Row></Row>
+    <PageSeperator title = {props.title}></PageSeperator>
+    <Row courses = {props.courses}></Row>
     </>
   );
 }

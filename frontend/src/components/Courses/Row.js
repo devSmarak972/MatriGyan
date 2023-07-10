@@ -2,9 +2,9 @@ import React from "react";
 import Column from "./Column";
 import Details from "./Details.json"
 import { useState } from "react";
-function Row() {
+function Row(props) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [courses, setCourses] = useState(Details);
+  const [courses, setCourses] = useState(props.courses);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const coursesPerPage = 4;
@@ -36,7 +36,7 @@ function Row() {
     const currentCourses = courses.slice(startIndex, endIndex);
    
     return currentCourses.map((course, index) => (
-      <Column key={index} course={course} isTransitioning={isTransitioning}/>
+      <Column key={course.id} course={course} isTransitioning={isTransitioning}/>
     ));
   };
 
