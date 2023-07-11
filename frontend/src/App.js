@@ -34,7 +34,7 @@ function App() {
           <Route path="/course/:ID/edit" element={<EditCourse />} />
           <Route path="/student/calendar" element={<StudentCalendarPage />} />
           <Route path="/educator/calendar" element={<EducatorCalendarPage />} />
-          <Route path="/quiz/edit" element={<EditQuizPage />} />
+          <Route path="/quiz/:ID/edit" element={<EditQuizPage />} />
           <Route path="/live/:ID" element={<Liveclass />} />
           <Route path="/quiz/:ID" element={<Quiz />} />
           <Route path="/quiz/:ID/start" element={<PreQuiz />} />

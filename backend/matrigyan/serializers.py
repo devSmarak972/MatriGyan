@@ -39,12 +39,18 @@ class OptionSerializer(serializers.ModelSerializer):
 		model = Option
 		fields = "__all__"
 
+class SolutionSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Solution
+		fields = "__all__"
+
 class QuestionSerializer(serializers.ModelSerializer):
 	options=OptionSerializer(many=True,read_only=True)
+	solution=SolutionSerializer(read_only=True)
 	class Meta:
 		model = Question
 		fields = "__all__"
-  
+
 class QuizSerializer(serializers.ModelSerializer):
 	# questions=serializers.RelatedField(read_only=True)
 	creator= EducatorSerializer(read_only=True)
@@ -92,10 +98,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 
-class SolutionSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Solution
-		fields = "__all__"
+
 
 class EventSerializer(serializers.ModelSerializer):
 	class Meta:

@@ -401,8 +401,10 @@ def deleteSection(request, id):
 
 @api_view(['GET'])
 def getQuiz(request, id):
+    print(id)
     quizes = Quiz.objects.get(id=id)
     qs = QuizSerializer(quizes, many=False)
+    print(qs.data, quizes)
     return Response(qs.data)
 
 @api_view(['GET'])

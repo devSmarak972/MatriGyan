@@ -1,17 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Countdown, { zeroPad } from "react-countdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGrip } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import axios from "axios";
 
 import data from "./quiz.json";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const Quiz = () => {
+  const { ID } = useParams();
+  const [data, setData] = useState({});
+  console.log("URL: ", `http://localhost:8000/get-quiz/${ID}/`);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios
+          .get(`http://localhost:8000/get-quiz/${ID}/`)
+          .then((res) => {
+            console.log(res.data);
+            setData({
+              name: res.data.name,
+              topic: res.data.topic,
+              mins: res.data.time,
+              questions: res.data.questions.map((q) => ({
+                id: q.id,
+                question: q.question,
+                options: q.options,
+                type: q.type === "SINGLE" ? "single" : "multi",
+                correct: q.marks,
+                incorrect: q.type === "SINGLE" ? -1 : -2,
+                answer: [parseInt(q.solution.answer)],
+                selected: {
+                  id: q.id,
+                  marked: [],
+                },
+                status: "unanswered",
+                image: q.image,
+              })),
+            });
+          });
+      } catch (e) {
+        console.log("Error fetching data: ", e);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(data);
+
+  console.log(data.questions);
   const [question, setQuestion] = useState(0);
   const [selected, setSelected] = useState([]);
-  console.log(localStorage.getItem("timer"));
   const [start, setStart] = useState(JSON.parse(localStorage.getItem("timer")));
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -30,18 +72,12 @@ const Quiz = () => {
     }
   };
 
-  const [dataModified, setDataModified] = useState(
-    data.questions.map((q) => ({
-      ...q,
-      selected: [],
-      status: "unanswered",
-    }))
-  );
+  if (JSON.stringify(data) === "{}") return null;
 
   const HandleTimerComplete = () => {
     localStorage.removeItem("timer");
     const navigate = useNavigate();
-    navigate("/quiz-end");
+    navigate(`/quiz/${ID}/end`);
   };
 
   return (
@@ -54,7 +90,7 @@ const Quiz = () => {
                 renderer={renderer}
                 date={start + data.mins * 60 * 1000}
                 onComplete={() => {
-                  window.location.href = "/quiz-end";
+                  window.location.href = `/quiz/${ID}/end`;
                 }}
               />
               {window.innerWidth < 640 && (
@@ -70,25 +106,34 @@ const Quiz = () => {
                       <span className="font-semibold">Questions</span>
                     </Menu.Label>
                     <div className="flex gap-2 flex-wrap max-w-[275px] px-2 pb-2.5">
-                      {dataModified.map((q, i) => (
+                      {data.questions.map((q, i) => (
                         <div
                           onClick={() => {
-                            setDataModified((prev) =>
-                              prev.map((q, i) => {
+                            setData((prev) => ({
+                              ...prev,
+                              questions: prev.questions.map((q, i) => {
                                 if (i === question) {
                                   return {
                                     ...q,
                                     status:
-                                      q.status === "unanswered" &&
-                                      selected.length !== 0
+                                      q.status === "marked"
+                                        ? "marked"
+                                        : q.status === "unanswered" &&
+                                          selected.length !== 0
                                         ? "answered"
+                                        : q.status === "answered" &&
+                                          selected.length === 0
+                                        ? "unanswered"
                                         : q.status,
-                                    selected: selected,
+                                    selected: {
+                                      ...q.selected,
+                                      marked: selected,
+                                    },
                                   };
                                 } else return q;
-                              })
-                            );
-                            setSelected(dataModified[i].selected);
+                              }),
+                            }));
+                            setSelected(data.questions[i].selected.marked);
                             setQuestion((prev) => i);
                           }}
                           className={`cursor-pointer flex items-center justify-center rounded-xl w-8 h-8 border-2 ${
@@ -127,39 +172,39 @@ const Quiz = () => {
             </span>
           </div>
         </div>
-        <div className="flex flex-col justify-end col-span-3 sm:col-span-2 gap-3">
-          <div className="flex flex-col gap-3 min-h-[350px] overflow-y-scroll h-[70vh] pr-4">
+        <div className="flex flex-col col-span-3 sm:col-span-2 gap-3">
+          <div className="flex flex-col gap-3 min-h-[350px] overflow-y-scroll h-[69vh] pr-4">
             <div className="flex justify-between items-center">
               <span className="font-semibold mb-2">
-                Question {question + 1} of {dataModified.length}
+                Question {question + 1} of {data.questions.length}
               </span>
               <div className="flex flex-col items-end">
                 <span>
-                  {dataModified[question].type === "single"
+                  {data.questions[question].type === "single"
                     ? "Single Choice Correct"
                     : "Multi Choice Correct"}
                 </span>
                 <span className="font-semibold">
-                  +{dataModified[question].correct},
-                  {" " + dataModified[question].incorrect}
+                  +{data.questions[question].correct},
+                  {" " + data.questions[question].incorrect}
                 </span>
               </div>
             </div>
             <span className="font-medium text-black">
-              {dataModified[question].question}
+              {data.questions[question].question}
             </span>
-            {dataModified[question].image && (
-              <img src={dataModified[question].image} />
+            {data.questions[question].image && (
+              <img className="w-fit" src={data.questions[question].image} />
             )}
             <div className="flex flex-col gap-3">
-              {dataModified[question].options.map((option, i) => (
+              {data.questions[question].options.map((option, i) => (
                 <div
                   className="flex gap-3 cursor-pointer"
                   onClick={() =>
                     setSelected((prev) =>
                       prev.includes(i + 1)
-                        ? prev
-                        : dataModified[question].type === "multi"
+                        ? prev.filter((j) => j != i + 1)
+                        : data.questions[question].type === "multi"
                         ? [...prev, i + 1]
                         : [i + 1]
                     )
@@ -175,7 +220,7 @@ const Quiz = () => {
                     {i === 0 ? "A" : i === 1 ? "B" : i === 2 ? "C" : "D"}
                   </span>
                   <span className="font-medium flex items-center text-black">
-                    {option}
+                    {option.value}
                   </span>
                 </div>
               ))}
@@ -190,21 +235,30 @@ const Quiz = () => {
               <button
                 className="text-white bg-slate-500  px-3 py-1.5 rounded-lg"
                 onClick={() => {
-                  setDataModified((prev) =>
-                    prev.map((q, i) => {
+                  setData((prev) => ({
+                    ...prev,
+                    questions: prev.questions.map((q, i) => {
                       if (i === question) {
                         return {
                           ...q,
                           status:
-                            selected.length !== 0 && q.status === "unanswered"
+                            q.status === "marked"
+                              ? "marked"
+                              : q.status === "unanswered" &&
+                                selected.length !== 0
                               ? "answered"
+                              : q.status === "answered" && selected.length === 0
+                              ? "unanswered"
                               : q.status,
-                          selected: selected,
+                          selected: {
+                            ...q.selected,
+                            marked: selected,
+                          },
                         };
                       } else return q;
-                    })
-                  );
-                  setSelected(dataModified[question - 1].selected);
+                    }),
+                  }));
+                  setSelected(data.questions[question - 1].selected.marked);
                   setQuestion((prev) => prev - 1);
                 }}
               >
@@ -215,8 +269,9 @@ const Quiz = () => {
               <button
                 className="text-white bg-orange-400  px-3 py-1.5 rounded-lg"
                 onClick={() => {
-                  setDataModified((prev) =>
-                    prev.map((q, i) => {
+                  setData((prev) => ({
+                    ...prev,
+                    questions: prev.questions.map((q, i) => {
                       if (i === question) {
                         return {
                           ...q,
@@ -226,43 +281,57 @@ const Quiz = () => {
                               : selected.length === 0
                               ? "unanswered"
                               : "answered",
-                          selected: selected,
+                          selected: {
+                            ...q.selected,
+                            marked: selected,
+                          },
                         };
                       } else return q;
-                    })
-                  );
-                  if (question < dataModified.length - 1) {
-                    setSelected(dataModified[question + 1].selected);
-                    setQuestion((prev) => prev + 1);
+                    }),
+                  }));
+                  if (question < data.questions.length - 1) {
+                    // setSelected(data.questions[question + 1].selected.marked);
+                    // setQuestion((prev) => prev + 1);
                   }
                 }}
               >
-                {dataModified[question].status === "marked" ? "Unmark" : "Mark"}
+                {data.questions[question].status === "marked"
+                  ? "Unmark"
+                  : "Mark"}
               </button>
               <button
                 className="text-white bg-[var(--primary)]  px-3 py-1.5 rounded-lg"
                 onClick={() => {
-                  setDataModified((prev) =>
-                    prev.map((q, i) => {
+                  setData((prev) => ({
+                    ...prev,
+                    questions: prev.questions.map((q, i) => {
                       if (i === question) {
                         return {
                           ...q,
                           status:
-                            q.status === "unanswered" && selected.length !== 0
+                            q.status === "marked"
+                              ? "marked"
+                              : q.status === "unanswered" &&
+                                selected.length !== 0
                               ? "answered"
+                              : q.status === "answered" && selected.length === 0
+                              ? "unanswered"
                               : q.status,
-                          selected: selected,
+                          selected: {
+                            ...q.selected,
+                            marked: selected,
+                          },
                         };
                       } else return q;
-                    })
-                  );
-                  if (question < dataModified.length - 1) {
-                    setSelected(dataModified[question + 1].selected);
+                    }),
+                  }));
+                  if (question < data.questions.length - 1) {
+                    setSelected(data.questions[question + 1].selected.marked);
                     setQuestion((prev) => prev + 1);
                   }
                 }}
               >
-                {question < dataModified.length - 1 ? "Next" : "Save"}
+                {question < data.questions.length - 1 ? "Next" : "Save"}
               </button>
             </div>
           </div>
@@ -273,25 +342,34 @@ const Quiz = () => {
             <div className="flex flex-col gap-4">
               <span className="font-semibold">Questions</span>
               <div className="flex gap-2 flex-wrap max-w-[275px]">
-                {dataModified.map((q, i) => (
+                {data.questions.map((q, i) => (
                   <div
                     onClick={() => {
-                      setDataModified((prev) =>
-                        prev.map((q, i) => {
+                      setData((prev) => ({
+                        ...prev,
+                        questions: prev.questions.map((q, i) => {
                           if (i === question) {
                             return {
                               ...q,
                               status:
-                                q.status === "unanswered" &&
-                                selected.length !== 0
+                                q.status === "marked"
+                                  ? "marked"
+                                  : q.status === "unanswered" &&
+                                    selected.length !== 0
                                   ? "answered"
+                                  : q.status === "answered" &&
+                                    selected.length === 0
+                                  ? "unanswered"
                                   : q.status,
-                              selected: selected,
+                              selected: {
+                                ...q.selected,
+                                marked: selected,
+                              },
                             };
                           } else return q;
-                        })
-                      );
-                      setSelected(dataModified[i].selected);
+                        }),
+                      }));
+                      setSelected(data.questions[i].selected.marked);
                       setQuestion((prev) => i);
                     }}
                     className={`cursor-pointer flex items-center justify-center rounded-xl w-8 h-8 border-2 ${
@@ -324,13 +402,16 @@ const Quiz = () => {
             <p>
               You have answered{" "}
               <span className="font-semibold">
-                {dataModified.filter((q) => q.selected.length > 0).length}
+                {
+                  data.questions.filter((q) => q.selected.marked.length > 0)
+                    .length
+                }
               </span>{" "}
               out of{" "}
-              <span className="font-semibold">{dataModified.length}</span>{" "}
+              <span className="font-semibold">{data.questions.length}</span>{" "}
               question(s), and marked{" "}
               <span className="font-semibold">
-                {dataModified.filter((q) => q.status === "marked").length}
+                {data.questions.filter((q) => q.status === "marked").length}
               </span>{" "}
               question(s).
             </p>
@@ -345,7 +426,7 @@ const Quiz = () => {
                 Back
               </button>
               <Link
-                to="/quiz-end"
+                to={`/quiz/${ID}/end`}
                 onClick={() => {
                   close();
                   localStorage.removeItem("timer");

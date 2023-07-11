@@ -1,18 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGrip } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import data from "./quiz-answered.json";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 const ReviewQuiz = () => {
+  const { ID } = useParams();
+  const [data, setData] = useState({});
+  console.log("URL: ", `http://localhost:8000/get-quiz/${ID}/`);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios
+          .get(`http://localhost:8000/get-quiz/${ID}/`)
+          .then((res) => {
+            console.log(res.data);
+            setData({
+              name: res.data.name,
+              topic: res.data.topic,
+              mins: res.data.time,
+              questions: res.data.questions.map((q) => ({
+                id: q.id,
+                question: q.question,
+                options: q.options,
+                type: q.type === "SINGLE" ? "single" : "multi",
+                correct: q.marks,
+                incorrect: q.type === "SINGLE" ? -1 : -2,
+                answer: [parseInt(q.solution.answer)],
+                solution: q.solution.solution,
+                ansMedia: q.solution.media,
+                selected: {
+                  id: q.id,
+                  marked: [1],
+                },
+                status: "answered",
+                image: q.image,
+              })),
+            });
+          });
+      } catch (e) {
+        console.log("Error fetching data: ", e);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const [question, setQuestion] = useState(0);
   const [opened, { open, close }] = useDisclosure(false);
+
+  if (JSON.stringify(data) === "{}") return null;
+
   const qstatus = data.questions.map((q) => {
     const answer = q.answer;
-    const selected = q.selected;
+    const selected = q.selected.marked;
     answer.sort();
     selected.sort();
     const equal = answer.every((e, i) => selected[i] === e);
@@ -76,8 +121,8 @@ const ReviewQuiz = () => {
             <span className="font-medium mt-1">{data.topic}</span>
           </div>
         </div>
-        <div className="flex flex-col justify-end col-span-3 sm:col-span-2 gap-3">
-          <div className="flex flex-col gap-3 min-h-[350px]">
+        <div className="flex flex-col col-span-3 sm:col-span-2 gap-3 overflow-y-scroll h-[69vh] pr-4">
+          <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center">
               <span className="font-semibold mb-2">
                 Question {question + 1} of {data.questions.length}
@@ -97,7 +142,10 @@ const ReviewQuiz = () => {
             <span className="font-medium text-black">
               {data.questions[question].question}
             </span>
-            <div className="flex flex-col gap-3">
+            {data.questions[question].image && (
+              <img className="w-fit" src={data.questions[question].image} />
+            )}
+            <div className="flex flex-col gap-3 my-2">
               {data.questions[question].options.map((option, i) => (
                 <div className="flex gap-3">
                   <span
@@ -108,7 +156,9 @@ const ReviewQuiz = () => {
                             .filter(
                               (e) =>
                                 !data.questions[question].answer.includes(e) &&
-                                data.questions[question].selected.includes(e)
+                                data.questions[
+                                  question
+                                ].selected.marked.includes(e)
                             )
                             .includes(i)
                         ? "bg-red-400 border-red-400 text-white"
@@ -118,7 +168,7 @@ const ReviewQuiz = () => {
                     {i === 0 ? "A" : i === 1 ? "B" : i === 2 ? "C" : "D"}
                   </span>
                   <span className="font-medium flex items-center text-black">
-                    {option}
+                    {option.value}
                   </span>
                 </div>
               ))}
@@ -138,7 +188,7 @@ const ReviewQuiz = () => {
             <span className="font-semibold">
               Your Answer:{" "}
               <span className="font-normal text-base">
-                {data.questions[question].selected
+                {data.questions[question].selected.marked
                   .map((e) =>
                     e === 0 ? "A" : e === 1 ? "B" : e === 2 ? "C" : "D"
                   )
@@ -146,6 +196,13 @@ const ReviewQuiz = () => {
               </span>{" "}
             </span>
           </div>
+          <span className="font-normal">
+            <span className="font-semibold">Solution: </span>
+            {data.questions[question].solution}
+          </span>
+          {data.questions[question].ansMedia && (
+            <img className="w-fit" src={data.questions[question].ansMedia} />
+          )}
           <div
             className={`flex mt-2 ${
               question === 0 ? "justify-end" : "justify-between"
@@ -216,7 +273,10 @@ const ReviewQuiz = () => {
             <p>
               You have answered{" "}
               <span className="font-semibold">
-                {data.questions.filter((q) => q.selected.length > 0).length}
+                {
+                  data.questions.filter((q) => q.selected.marked.length > 0)
+                    .length
+                }
               </span>{" "}
               out of{" "}
               <span className="font-semibold">{data.questions.length}</span>{" "}
@@ -247,7 +307,7 @@ const ReviewQuiz = () => {
             </div>
           </Modal>
           <Link
-            to="/quiz-end"
+            to={`/quiz/${ID}/end`}
             className="font-medium text-[var(--primary)] rounded-lg"
           >
             Quiz Summary

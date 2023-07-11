@@ -1,18 +1,33 @@
 import React, { useEffect, useState } from "react";
-import data from "./quiz.json";
-import { Link, useParams } from "react-router-dom";
+// import data from "./quiz.json";
+import { Link, json, useParams } from "react-router-dom";
 import axios from "axios";
 
 const PreQuiz = () => {
   const { ID } = useParams();
-  const [dataa, setDataa] = useState({});
+  const [data, setData] = useState({});
   console.log("URL: ", `http://localhost:8000/get-quiz/${ID}/`);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/get-quiz/${ID}/`
-        );
+        const response = await axios
+          .get(`http://localhost:8000/get-quiz/${ID}/`)
+          .then((res) => {
+            setData({
+              name: res.data.name,
+              topic: res.data.topic,
+              mins: res.data.time,
+              questions: res.data.questions.map((q) => ({
+                question: q.question,
+                options: q.options,
+                type: q.type === "SINGLE" ? "single" : "multi",
+                correct: q.marks,
+                incorrect: q.type === "SINGLE" ? -1 : -2,
+                answer: [parseInt(q.solution.answer)],
+                image: q.image,
+              })),
+            });
+          });
       } catch (e) {
         console.log("Error fetching data: ", e);
       }
@@ -21,7 +36,9 @@ const PreQuiz = () => {
     fetchData();
   }, []);
 
-  console.log(dataa);
+  console.log(data);
+
+  if (JSON.stringify(data) === "{}") return null;
 
   let total = 0;
   let qtypes = [];
@@ -123,7 +140,7 @@ const PreQuiz = () => {
           </div>
         </div>
         <Link
-          to="/quiz"
+          to={`/quiz/${ID}`}
           onClick={() => {
             console.log(localStorage.getItem("timer"));
             if (!localStorage.getItem("timer"))
