@@ -163,11 +163,12 @@ class QuizResponse(models.Model):
 		return (self.quiz.name + self.student.full_name)
 	def obtained_marks(self):
 		return sum([el.marks for el in self.quizanswer_set.all()])
-		
+	
+			
 class QuizAnswer(models.Model):
 	question=models.ForeignKey(Question,on_delete=models.CASCADE)
 	answer=models.TextField(default="",blank=True)
-	response=models.ForeignKey(QuizResponse,on_delete=models.CASCADE)
+	response=models.ForeignKey(QuizResponse,on_delete=models.CASCADE,blank=True)
 	marks=models.IntegerField(default=0,blank=True)
 	def __str__(self):
 		return (self.question + self.response.student_test.all().fullname)

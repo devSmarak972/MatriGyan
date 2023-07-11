@@ -44,11 +44,44 @@ class SolutionSerializer(serializers.ModelSerializer):
 		model = Solution
 		fields = "__all__"
 class QuestionSerializer(serializers.ModelSerializer):
-	options=OptionSerializer(many=True,read_only=True)
-	solution=SolutionSerializer(read_only=True)
+	options=OptionSerializer(many=True,required=False)
+	solution=SolutionSerializer(read_only=True,required=False)
 	class Meta:
 		model = Question
 		fields = "__all__"
+	def update(self,instance,validated_data):
+			print("validated question", validated_data)
+			options=[]
+			if "options" in validated_data:
+					options = validated_data.pop('options')
+					opt=[]
+			
+			question=instance
+			for option in options:
+					el= Option.objects.create(value=option["value"])
+					opt+=[el]
+			print(opt,"opt in update")
+			question.options.set(opt)
+			
+			return question
+	def create(self, validated_data):
+		print("validated", validated_data)
+		options=[]
+		if "options" in validated_data:
+			options = validated_data.pop('options')
+		opt=[]
+		
+		question = Question.objects.create(**validated_data)
+
+		for option in options:
+			el= Option.objects.create(value=option["value"])
+			opt+=[el]
+		question.options.add(*opt)
+				
+		# course.save()
+		return question
+
+
   
 
 class QuizSerializer(serializers.ModelSerializer):
@@ -62,11 +95,13 @@ class QuizSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Quiz
 		fields ="__all__"
-class QuizResponseSerializer(serializers.ModelSerializer):
-	quiz=QuizSerializer(read_only=True)
-	quiz_id=serializers.PrimaryKeyRelatedField(queryset=Quiz.objects.all(), source='quiz')
+	
 
-	obtained_marks=serializers.ReadOnlyField(read_only=True)
+class QuizResponseSerializer(serializers.ModelSerializer):
+	quiz=QuizSerializer(read_only=True,required=False)
+	quiz_id=serializers.PrimaryKeyRelatedField(queryset=Quiz.objects.all(), source='quiz')
+ 
+	obtained_marks=serializers.ReadOnlyField(read_only=True,required=False)
 	class Meta:
 		model = QuizResponse
 		fields = "__all__"
@@ -76,11 +111,22 @@ class QuizAnswerSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = QuizAnswer
 		fields = "__all__"
+	def create(self,validated_data):
+		print("validated", validated_data)
+		
+		res=int(self.context.get("response"))
+		quizanswer = QuizAnswer.objects.create(response_id=res,**validated_data)
+
+		# quizanswer.response=self.context.get("response")	
+		# quizanswer.save()
+		return quizanswer
+		
 
 class CommentSerializer(serializers.ModelSerializer):
-	user=StudentSerializer(read_only=True)
+	user=StudentSerializer(read_only=True,required=False)
+ 
 	# course=CourseSerializer(read_only=True)
-	totalcomments=serializers.ReadOnlyField(read_only=True)
+	totalcomments=serializers.ReadOnlyField(read_only=True,required=False)
 	class Meta:
 		model = Comment
 		fields = "__all__"
@@ -107,6 +153,27 @@ class CourseSerializer(serializers.ModelSerializer):
 	#    if type(value) is not list:
 	# 		raise ValidationError('Category Not in correct format')
 	#    return value
+	def update(self,instance,validated_data):
+		print("validated", validated_data)
+		categories=[]
+		coursetags=[]
+		if "category" in validated_data:
+				categories = validated_data.pop('category')
+				cat=[]
+		if "tags" in validated_data:
+				coursetags = validated_data.pop('tags')
+				tags=[]
+		course=instance
+		for category in categories:
+				el,_ = CourseCategory.objects.get_or_create(category=category["category"].lower())
+				cat+=[el]
+		print(cat,"cat in update")
+		course.category.set(cat)
+		for tag in coursetags:
+				el,_ =CourseTag.objects.get_or_create(tagname=tag["tagname"].lower())
+				tags+=[el]
+		course.tags.set(tags)
+		return course
 
 	def create(self, validated_data):
 			print("validated", validated_data)
@@ -121,11 +188,13 @@ class CourseSerializer(serializers.ModelSerializer):
 			course = Course.objects.create(**validated_data)
    
 			for category in categories:
-				cat+=[CourseCategory.objects.create(category=category["category"])]
-				course.category.add(*cat)
+				el,_ = CourseCategory.objects.get_or_create(category=category["category"].lower())
+				cat+=[el]
+			course.category.add(*cat)
 			for tag in coursetags:
-					tags+=[CourseTag.objects.create(tagname=tag["tagname"])]
-					course.tags.add(*tags)
+				el,_ = CourseTag.objects.get_or_create(tagname=coursetags["tagname"].lower())
+				tags+=[el]
+			course.tags.add(*tags)
 			
 			# course.save()
 			return course
