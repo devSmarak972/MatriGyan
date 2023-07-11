@@ -8,35 +8,47 @@ import EducatorDashboard from "./pages/EducatorDashboard/EducatorDashboard";
 import Resources from "./pages/Resources";
 import StudentCalendarPage from "./pages/StudentCalendarPage";
 import EducatorCalendarPage from "./pages/EducatorCalendarPage";
-import EditQuizPage from "./pages/EditQuizPage";
+import EditQuizPage from "./pages/EditQuiz/EditQuizPage";
 import Live from "./pages/Live";
+import Liveclass from "./pages/Liveclass";
 import Quiz from "./pages/Quiz/Quiz";
 import PreQuiz from "./pages/Quiz/PreQuiz";
 import PostQuiz from "./pages/Quiz/PostQuiz";
 import ReviewQuiz from "./pages/Quiz/ReviewQuiz";
-
+import CoursePreview from "./pages/CoursePreview";
+import MyContents from "./pages/MyContents";
+import SearchLanding from "./components/LandingPage/SearchLanding";
+import Loader from "./loader"
+import MyItems from "./pages/MyContents";
+import Page404 from "./pages/Page404/Page404"
+import InDev from "./pages/InDev/InDev";
 function App() {
   return (
     <Router>
       <div>
         <Routes>
+
           <Route exact path="/" element={<LandingPage />} />
+          {/* <Route path="/search" element={<SearchLanding />} /> */}
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/signup" element={<LoginSignup />} />
-          <Route path="/dashboard" element={<StudentDashboard />} />
-          <Route path="/coursepage" element={<CoursePage/>}/>
+          <Route path="/student" element={<StudentDashboard />} />
+          <Route path="/courses" element={<CoursePage />} />
+          <Route path="/educator/contents" element={<MyContents />} />
           <Route path="/resources" element={<Resources />} />
-          <Route path="/student-dashboard" element={<StudentDashboard />} />
-          <Route path="/educator-dashboard" element={<EducatorDashboard />} />
-          <Route path="/edit-course" element={<EditCourse />} />
-          <Route path="/student-calendar" element={<StudentCalendarPage />} />
-          <Route path="/educator-calendar" element={<EducatorCalendarPage />} />
-          <Route path="/edit-quiz" element={<EditQuizPage />} />
-          <Route path="/live" element={<Live />} />
-          <Route path="/quiz" element={<Quiz />} />
-          <Route path="/quiz-start" element={<PreQuiz />} />
-          <Route path="/quiz-end" element={<PostQuiz />} />
-          <Route path="/quiz-review" element={<ReviewQuiz />} />
+          <Route path="/educator" element={<EducatorDashboard />} />
+          <Route path="/course/:ID/edit" element={<EditCourse />} />
+          <Route path="/student/calendar" element={<StudentCalendarPage />} />
+          <Route path="/educator/calendar" element={<EducatorCalendarPage />} />
+          <Route path="/quiz/edit" element={<EditQuizPage />} />
+          <Route path="/live/:ID" element={<Liveclass />} />
+          <Route path="/quiz/:ID" element={<Quiz />} />
+          <Route path="/quiz/:ID/start" element={<PreQuiz />} />
+          <Route path="/quiz/:ID/end" element={<PostQuiz />} />
+          <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
+          <Route path="/course/:id" element={<CoursePreview />} />
+          <Route path="/not-found" element={<Page404 />} />
+          <Route path="/developing" element={<InDev />} />
         </Routes>
       </div>
     </Router>

@@ -2,7 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import "./transition.css"
-function Column({ course, isTransitioning }) {
+import { Link } from "react-router-dom";
+function Column({ key, course, isTransitioning }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   // const classes = isPopoverOpen
   //   ? "card h-100 card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card overlay--show"
@@ -96,7 +97,7 @@ function Column({ course, isTransitioning }) {
               {/* <small className="text-50">6 hours</small> */}
             </div>
             <div className="d-flex">
-            <button type="button" class="btn btn-outline-primary">View</button>
+            <button type="button" class="btn btn-outline-primary"><Link to={`/coursepage/${key}`}>View</Link></button>
             </div>
           </div>
           

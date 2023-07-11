@@ -1,14 +1,15 @@
 import React from "react";
 import Column from "./Column";
-import Details from "./Details.json"
 import { useState } from "react";
+
 function Row(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [courses, setCourses] = useState(props.courses);
+
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const coursesPerPage = 4;
-  const totalPages = Math.ceil(courses.length / coursesPerPage);
+  const totalPages = Math.ceil(props.courseData.length / coursesPerPage);
 
   const handleClickNext = () => {
     if (currentPage < totalPages) {
@@ -33,22 +34,27 @@ function Row(props) {
   const renderCourseCards = () => {
     const startIndex = (currentPage - 1) * coursesPerPage;
     const endIndex = startIndex + coursesPerPage;
-    const currentCourses = courses.slice(startIndex, endIndex);
-   
+    const currentCourses = props.courseData.slice(startIndex, endIndex);
+
     return currentCourses.map((course, index) => (
+
       <Column key={course.id} course={course} isTransitioning={isTransitioning}/>
+
     ));
   };
 
   return (
     <>
-      <div className="row card-group-row">
-        {renderCourseCards()}
-      </div>
+      <div className="row card-group-row">{renderCourseCards()}</div>
       <div className="mb-32pt">
         <ul className="pagination justify-content-start pagination-xsm m-0">
           <li className="page-item">
-            <button className="page-link" aria-label="Previous" onClick={handleClickPrev} disabled={currentPage === 1}>
+            <button
+              className="page-link"
+              aria-label="Previous"
+              onClick={handleClickPrev}
+              disabled={currentPage === 1}
+            >
               <span aria-hidden="true" className="material-icons text-sm">
                 chevron_left
               </span>
@@ -59,7 +65,12 @@ function Row(props) {
             <span className="page-link text-sm">{currentPage}</span>
           </li>
           <li className="page-item">
-            <button className="page-link" aria-label="Next" onClick={handleClickNext} disabled={currentPage === totalPages}>
+            <button
+              className="page-link"
+              aria-label="Next"
+              onClick={handleClickNext}
+              disabled={currentPage === totalPages}
+            >
               <span className="text-sm">Next</span>
               <span aria-hidden="true" className="material-icons text-sm">
                 chevron_right

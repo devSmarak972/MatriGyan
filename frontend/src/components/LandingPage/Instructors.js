@@ -1,8 +1,11 @@
-import React from 'react'
+import React from "react";
 import OwlCarousel from "react-owl-carousel-autoheight";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
+import data from "./instructors.json";
+
 const Instructors = () => {
+  console.log(data);
   return (
     <section className="section trend-course">
       <div className="container">
@@ -31,7 +34,8 @@ const Instructors = () => {
           loop
           nav
           margin={8}
-          data-aos="fade-up">
+          data-aos="fade-up"
+        >
           {/* <div className="owl-carousel trending-course owl-theme aos" data-aos="fade-up"> */}
           <div className="course-box trend-box">
             <div className="product trend-product">
@@ -229,9 +233,29 @@ const Instructors = () => {
             loop
             nav
             margin={8}
-            data-aos="fade-up">
+            data-aos="fade-up"
+          >
             {/* <div className="owl-carousel instructors-course owl-theme aos" data-aos="fade-up"> */}
-            <div className="instructors-widget">
+            {data.map((instructor) => (
+              <div className="instructors-widget">
+                <div className="instructors-img ">
+                  <a href="instructor-list.html">
+                    <img className="img-fluid" alt src={instructor.image} />
+                  </a>
+                </div>
+                <div className="instructors-content text-center">
+                  <h5>
+                    <a href="instructor-profile.html">{instructor.name}</a>
+                  </h5>
+                  <p>{instructor.subtitle}</p>
+                  <div className="student-count d-flex justify-content-center">
+                    <i className="fa-solid fa-user-group"></i>
+                    <span>{instructor.students}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {/* <div className="instructors-widget">
               <div className="instructors-img ">
                 <a href="instructor-list.html">
                   <img
@@ -314,12 +338,12 @@ const Instructors = () => {
                   <span>50 Students</span>
                 </div>
               </div>
-            </div>
+            </div> */}
           </OwlCarousel>
         </div>
       </div>
     </section>
   );
-}
+};
 
-export default Instructors
+export default Instructors;

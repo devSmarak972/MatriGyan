@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const PostQuiz = () => {
+  localStorage.removeItem("timer");
+   var id=1;
   let marks = 0;
   let total = 0;
   let attempted = 0;
@@ -100,11 +102,11 @@ const PostQuiz = () => {
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <Link to="/quiz-review" className="font-medium text-[var(--primary)]">
+          <Link to={"/quiz/"+id+"/review"} className="font-medium text-[var(--primary)]">
             Check Your Mistakes
           </Link>
           <Link
-            to="/student-dashboard"
+            to="/student"
             className="font-medium text-white bg-[var(--primary)] px-3 py-1.5 rounded-lg"
           >
             To Dashboard

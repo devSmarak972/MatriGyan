@@ -2,10 +2,50 @@ import React from "react";
 import { ResponsiveBump } from "@nivo/bump";
 import data from "../data/course-ranking.json";
 
-const Graph3 = () => {
+const Graph3 = (props) => {
+  // {
+  //   "id": "Electrochemistry",
+  //     "data": [
+  //       {
+  //         "x": 2000,
+  //         "y": 2
+  //       },
+  //       {
+  //         "x": 2001,
+  //         "y": 7
+  //       },
+  //       {
+  //         "x": 2002,
+  //         "y": 8
+  //       },
+  //       {
+  //         "x": 2003,
+  //         "y": 2
+  //       },
+  //       {
+  //         "x": 2004,
+  //         "y": 2
+  //       }
+  //     ]
+  //   },
+  // console.log(props.courses)
+ var data1= props.courses?props.courses.sort((a,b)=>a.rating<b.rating).map((el,id)=>{
+  var date=new Date();
+  var year=date.getFullYear();
+  var gdata=[]
+  for(var i=4;i>=0;i--)
+  {
+    gdata.push({"x":year-i,"y":id+1})
+  }
+  return {
+    "id":el.title,
+    data:gdata
+  }
+ }):data;
   return (
+   
     <ResponsiveBump
-      data={data}
+      data={data1}
       colors={{ scheme: "spectral" }}
       lineWidth={3}
       activeLineWidth={6}

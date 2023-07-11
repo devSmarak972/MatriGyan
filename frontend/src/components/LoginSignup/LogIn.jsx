@@ -1,17 +1,20 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import {
-  Button,
-  TextInput,
-  Checkbox,
-  PasswordInput,
-} from "@mantine/core";
+import axios from "axios";
+import { Button, TextInput, Checkbox, PasswordInput } from "@mantine/core";
 import { motion } from "framer-motion";
 import "../../pages/LoginSignup/LoginSignup.css";
+// import setCookie
+// import {useCookies} from "react-cookie"
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LogIn = (props) => {
+  // const [cookies, setCookie, removeCookie] = useCookies(["csrftoken"]);
+  const navigate = useNavigate();
   const form = useForm({
     initialValues: {
       email: "",
@@ -23,8 +26,46 @@ const LogIn = (props) => {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
+  const handleLogin = (event) => {
+    event.preventDefault();
 
+    var data = form.values;
+
+    axios
+      .post(`http://localhost:8000/api/login/email`, { data }, {withCredentials:true})
+      .then((res) => {
+        console.log(res);
+        console.log(res.data, res.headers);
+
+        if (res.data["redirect"] === true) {
+
+          if(res.data["utype"]==="student")
+          navigate("../student");
+          else if(res.data["utype"]==="educator")
+          navigate("../student");
+          else
+          navigate("/");
+         
+
+
+          // setCookie('csrftoken', , { path: '/' });
+
+          // setCookie();
+        }
+        else{
+          
+          throw res.data["message"]
+        }
+      }).catch(err=>{
+        console.log(err)
+        const errToast = () => toast("Failed to login: "+err);
+          errToast();
+      });
+  };
   return (
+    <>
+    <ToastContainer></ToastContainer>
+    
     <motion.div
       initial={false}
       animate={{
@@ -66,7 +107,7 @@ const LogIn = (props) => {
             <a href="">Forgot Password?</a>
           </div>
           <div>
-            <Button className="submit" type="submit">
+            <Button className="submit" onClick={handleLogin} type="submit">
               Sign in
             </Button>
             <Button className="google" mt="sm">
@@ -89,6 +130,7 @@ const LogIn = (props) => {
         </div>
       </div>
     </motion.div>
+    </>
   );
 };
 

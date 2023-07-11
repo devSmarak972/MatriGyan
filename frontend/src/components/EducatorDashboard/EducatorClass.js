@@ -1,7 +1,7 @@
 import React from "react";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-const EducatorClass = ({ props }) => {
+const EducatorClass = ( props ) => {
   return (
     <div class="itemCard py-3 flex flex-grow align-items-center">
       <div
@@ -10,14 +10,14 @@ const EducatorClass = ({ props }) => {
         }>
         <FontAwesomeIcon icon={faBook} className="text-2xl"></FontAwesomeIcon>
         <div className="pl-6 text-sm flex flex-col w-100">
-          <span>26th June,2023</span>
-          <span>10:30 am</span>
+          <span>{props.date}</span>
+          <span>{props.start}</span>
         </div>
       </div>
       <div class={"flex flex-col justify-between px-4 "}>
         <div>
           <p class="text-base font-medium text-primary dark:text-navy-100 mb-0">
-            {props.classname}
+            {props.title}
           </p>
           {/* <p class="text-xs text-slate-400 dark:text-navy-300 mb-1">
             {props.educator}
@@ -36,18 +36,18 @@ const EducatorClass = ({ props }) => {
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span>60 mins</span>
+            <span>{props.duration} mins</span>
           </div>
         </div>
       </div>
       <div className="tags flex">
-        {props.tags?.map(tag => {
+        {props.tags?props.tags.map(tag => {
           return (
             <div class="badge mt-2 mx-1 bg-info/10 text-info dark:bg-info/15">
-              {tag}
+              {tag.tagname}
             </div>
           );
-        })}
+        }):""}
       </div>
       <span class="px-3">
         <button class="btn bg-success/10 text-sm text-success px-2.5 py-0.75 hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
