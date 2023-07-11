@@ -8,6 +8,7 @@ function PopularCourses({ title, courseData }) {
     <>
       {title && <PageSeperator title={title}></PageSeperator>}
       <Row courseData={courseData}></Row>
+
     </>
   );
 }
