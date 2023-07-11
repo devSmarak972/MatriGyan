@@ -20,6 +20,8 @@ import MyContents from "./pages/MyContents";
 import SearchLanding from "./components/LandingPage/SearchLanding";
 import Loader from "./loader"
 import MyItems from "./pages/MyContents";
+import Page404 from "./pages/Page404/Page404"
+import InDev from "./pages/InDev/InDev";
 function App() {
   return (
     <Router>
@@ -45,6 +47,8 @@ function App() {
           <Route path="/quiz/:ID/end" element={<PostQuiz />} />
           <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
           <Route path="/course/:id" element={<CoursePreview />} />
+          <Route path="/not-found" element={<Page404 />} />
+          <Route path="/developing" element={<InDev />} />
         </Routes>
       </div>
     </Router>

@@ -16,6 +16,8 @@ import { getCookie } from "../../utils/apiCaller";
 import Loader from "../../loader";
 import { useNavigate } from "react-router-dom";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const StudentDashboard = () => {
   const navigate=useNavigate();
   const [Data, setData] = useState({});
@@ -52,6 +54,10 @@ const StudentDashboard = () => {
       if (mounted.current) {
         setData(res.data);
       }
+    }).catch(err=>{
+
+      const notify = () => toast(err.message);
+       notify();
     });
     return () => (mounted.current = false);
   }, []);
@@ -62,6 +68,7 @@ const StudentDashboard = () => {
     comp = Data.enrolled_courses.length - Data.on_courses.length;
   return (
     <>
+    <ToastContainer></ToastContainer>
     {loader?<Loader></Loader>:""}
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
       <Sidebar />

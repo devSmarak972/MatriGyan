@@ -23,6 +23,8 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { motion } from "framer-motion";
 import "../../pages/LoginSignup/LoginSignup.css";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const SignUp = (props) => {
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
@@ -94,7 +96,7 @@ const SignUp = (props) => {
         setOtpLoading(0);
       });
   };
-
+  const accCreated = () => toast("Account Created Successfully");
   const form = useForm({
     initialValues: {
       email: "",
@@ -169,8 +171,16 @@ const SignUp = (props) => {
       .then((res) => {
         console.log(res);
         console.log(res.data);
-        if (res.data["redirect"] === true) props.handleSwitch(1);
+        if (res.data["redirect"] === true) {
+          accCreated();
+          props.handleSwitch(1);
 
+        }
+           
+      }).then(err=>{
+        console.log(err.message);
+        const notify = () => toast(err.message);
+       notify();
       });
   };
   //  //  //  //
@@ -212,6 +222,8 @@ const SignUp = (props) => {
   }
 
   return (
+    <>
+    <ToastContainer></ToastContainer>
     <motion.div
       initial={false}
       animate={{
@@ -415,6 +427,8 @@ const SignUp = (props) => {
         </div>
       </div>
     </motion.div>
+    </>
+
   );
 };
 

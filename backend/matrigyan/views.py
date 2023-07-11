@@ -70,9 +70,9 @@ def login_user(request):
     # return HttpResponse(json.dumps(data), content_type="application/json")
 
 def check_to_login_registered_user(request):
-    print("data",request.body)
+    # print("data",request.body)
     data=json.loads(request.body)["data"]
-    print("data",data)
+    # print("data",data)
     email = data.get('email', '')
     password = data.get('password', '')
     email = email.lower().strip()
@@ -120,7 +120,7 @@ def logout_user(request, app_type=None):
         return JsonResponse(return_dict)
 
 def generate_username(email, first_name, last_name):
-    print(email)
+    # print(email)
     if first_name or last_name:
         username = first_name + last_name
     else:
