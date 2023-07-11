@@ -412,11 +412,13 @@ def deleteCourse(request, id):
 
 @api_view(['POST'])
 def addCourse(request):
+    print(request.data)
     course = CourseSerializer(data=request.data)
+    # print(course.data)
     if course.is_valid():
         course.save()
-        return Response("Course updated")
-    return Response("Invalid")
+        return Response({"success":True,"message":"Course Created","course":course.data})
+    return Response({"success":False,"message":"Invalid input"})
 
 @api_view(['GET'])
 def getSections(request, id):

@@ -87,22 +87,48 @@ class CommentSerializer(serializers.ModelSerializer):
   
 class CourseSerializer(serializers.ModelSerializer):
 	# specify model and fields
-	sections=SectionSerializer(read_only=True,many=True)
-	category=CategorySerializer(many=True)
-	tags=CourseTagSerializer(many=True)
-	educator= EducatorSerializer(read_only=True)
-	educator_id = serializers.PrimaryKeyRelatedField(queryset=Educator.objects.all(), source='educator')
+	sections=SectionSerializer(read_only=True,many=True, required=False)
+	category=CategorySerializer(many=True, required=False)
+	tags=CourseTagSerializer(many=True, required=False)
+	educator= EducatorSerializer(read_only=True, required=False)
+	educator_id = serializers.PrimaryKeyRelatedField(queryset=Educator.objects.all(), required=False, source='educator')
 	
 	# educator=serializers.RelatedField(queryset=Educator.objects.all())
-	quizes=QuizSerializer(many=True,read_only=True)
-	comments=CommentSerializer(read_only=True,many=True)
-	rating=serializers.ReadOnlyField(read_only=True)
-	enrolled=serializers.ReadOnlyField(read_only=True)
-	ongoing=serializers.ReadOnlyField(read_only=True)
-	duration=serializers.ReadOnlyField(read_only=True)
+	quizes=QuizSerializer(many=True,read_only=True, required=False)
+	comments=CommentSerializer(read_only=True,many=True, required=False)
+	rating=serializers.ReadOnlyField(read_only=True, required=False)
+	enrolled=serializers.ReadOnlyField(read_only=True, required=False)
+	ongoing=serializers.ReadOnlyField(read_only=True, required=False)
+	duration=serializers.ReadOnlyField(read_only=True, required=False)
 	class Meta:
 		model = Course
 		fields = "__all__"
+	# def validate_name(self, value):
+	#    if type(value) is not list:
+	# 		raise ValidationError('Category Not in correct format')
+	#    return value
+
+	def create(self, validated_data):
+			print("validated", validated_data)
+			categories=[]
+			coursetags=[]
+			if "category" in validated_data:
+				categories = validated_data.pop('category')
+				cat=[]
+			if "tags" in validated_data:
+				coursetags = validated_data.pop('tags')
+				tags=[]
+			course = Course.objects.create(**validated_data)
+   
+			for category in categories:
+				cat+=[CourseCategory.objects.create(category=category["category"])]
+				course.category.add(*cat)
+			for tag in coursetags:
+					tags+=[CourseTag.objects.create(tagname=tag["tagname"])]
+					course.tags.add(*tags)
+			
+			# course.save()
+			return course
 
 
 
