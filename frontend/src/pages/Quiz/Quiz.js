@@ -12,14 +12,12 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 const Quiz = () => {
   const { ID } = useParams();
   const [data, setData] = useState({});
-  console.log("URL: ", `http://localhost:8000/get-quiz/${ID}/`);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios
           .get(`http://localhost:8000/get-quiz/${ID}/`)
           .then((res) => {
-            console.log(res.data);
             setData({
               name: res.data.name,
               topic: res.data.topic,
@@ -32,10 +30,7 @@ const Quiz = () => {
                 correct: q.marks,
                 incorrect: q.type === "SINGLE" ? -1 : -2,
                 answer: [parseInt(q.solution.answer)],
-                selected: {
-                  id: q.id,
-                  marked: [],
-                },
+                selected: [],
                 status: "unanswered",
                 image: q.image,
               })),
@@ -49,9 +44,6 @@ const Quiz = () => {
     fetchData();
   }, []);
 
-  console.log(data);
-
-  console.log(data.questions);
   const [question, setQuestion] = useState(0);
   const [selected, setSelected] = useState([]);
   const [start, setStart] = useState(JSON.parse(localStorage.getItem("timer")));
@@ -125,15 +117,12 @@ const Quiz = () => {
                                           selected.length === 0
                                         ? "unanswered"
                                         : q.status,
-                                    selected: {
-                                      ...q.selected,
-                                      marked: selected,
-                                    },
+                                    selected: selected,
                                   };
                                 } else return q;
                               }),
                             }));
-                            setSelected(data.questions[i].selected.marked);
+                            setSelected(data.questions[i].selected);
                             setQuestion((prev) => i);
                           }}
                           className={`cursor-pointer flex items-center justify-center rounded-xl w-8 h-8 border-2 ${
@@ -250,15 +239,12 @@ const Quiz = () => {
                               : q.status === "answered" && selected.length === 0
                               ? "unanswered"
                               : q.status,
-                          selected: {
-                            ...q.selected,
-                            marked: selected,
-                          },
+                          selected: selected,
                         };
                       } else return q;
                     }),
                   }));
-                  setSelected(data.questions[question - 1].selected.marked);
+                  setSelected(data.questions[question - 1].selected);
                   setQuestion((prev) => prev - 1);
                 }}
               >
@@ -281,16 +267,13 @@ const Quiz = () => {
                               : selected.length === 0
                               ? "unanswered"
                               : "answered",
-                          selected: {
-                            ...q.selected,
-                            marked: selected,
-                          },
+                          selected: selected,
                         };
                       } else return q;
                     }),
                   }));
                   if (question < data.questions.length - 1) {
-                    // setSelected(data.questions[question + 1].selected.marked);
+                    // setSelected(data.questions[question + 1].selected);
                     // setQuestion((prev) => prev + 1);
                   }
                 }}
@@ -317,16 +300,13 @@ const Quiz = () => {
                               : q.status === "answered" && selected.length === 0
                               ? "unanswered"
                               : q.status,
-                          selected: {
-                            ...q.selected,
-                            marked: selected,
-                          },
+                          selected: selected,
                         };
                       } else return q;
                     }),
                   }));
                   if (question < data.questions.length - 1) {
-                    setSelected(data.questions[question + 1].selected.marked);
+                    setSelected(data.questions[question + 1].selected);
                     setQuestion((prev) => prev + 1);
                   }
                 }}
@@ -361,15 +341,12 @@ const Quiz = () => {
                                     selected.length === 0
                                   ? "unanswered"
                                   : q.status,
-                              selected: {
-                                ...q.selected,
-                                marked: selected,
-                              },
+                              selected: selected,
                             };
                           } else return q;
                         }),
                       }));
-                      setSelected(data.questions[i].selected.marked);
+                      setSelected(data.questions[i].selected);
                       setQuestion((prev) => i);
                     }}
                     className={`cursor-pointer flex items-center justify-center rounded-xl w-8 h-8 border-2 ${
@@ -402,10 +379,7 @@ const Quiz = () => {
             <p>
               You have answered{" "}
               <span className="font-semibold">
-                {
-                  data.questions.filter((q) => q.selected.marked.length > 0)
-                    .length
-                }
+                {data.questions.filter((q) => q.selected.length > 0).length}
               </span>{" "}
               out of{" "}
               <span className="font-semibold">{data.questions.length}</span>{" "}
@@ -427,9 +401,31 @@ const Quiz = () => {
               </button>
               <Link
                 to={`/quiz/${ID}/end`}
-                onClick={() => {
+                onClick={async () => {
                   close();
                   localStorage.removeItem("timer");
+
+                  await axios
+                    .post(`http://localhost:8000/add-quiz-response/6/${ID}/`, {
+                      quiz_id: parseInt(ID),
+                      student: 6,
+                      answers: data.questions.map((q) => ({
+                        question_id: q.id,
+                        answer: q.selected.join(" "),
+                        marks: q.correct,
+                      })),
+                    })
+                    .then((res) => {
+                    })
+                    .catch((e) => {
+                      console.log(e);
+                    });
+                  // await axios
+                  //   .get(`http://localhost:8000/get-quiz-response/6/${ID}/`)
+                  //   .then((res) => console.log(res))
+                  //   .catch((e) => {
+                  //     console.log(e);
+                  //   });
                 }}
                 className="font-medium text-[var(--primary)] bg-blue-200 px-3 py-1.5 rounded-lg"
               >

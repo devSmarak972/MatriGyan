@@ -11,43 +11,34 @@ import axios from "axios";
 const ReviewQuiz = () => {
   const { ID } = useParams();
   const [data, setData] = useState({});
-  console.log("URL: ", `http://localhost:8000/get-quiz/${ID}/`);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios
-          .get(`http://localhost:8000/get-quiz/${ID}/`)
-          .then((res) => {
-            console.log(res.data);
-            setData({
-              name: res.data.name,
-              topic: res.data.topic,
-              mins: res.data.time,
-              questions: res.data.questions.map((q) => ({
-                id: q.id,
-                question: q.question,
-                options: q.options,
-                type: q.type === "SINGLE" ? "single" : "multi",
-                correct: q.marks,
-                incorrect: q.type === "SINGLE" ? -1 : -2,
-                answer: [parseInt(q.solution.answer)],
-                solution: q.solution.solution,
-                ansMedia: q.solution.media,
-                selected: {
-                  id: q.id,
-                  marked: [1],
-                },
-                status: "answered",
-                image: q.image,
-              })),
-            });
-          });
-      } catch (e) {
-        console.log("Error fetching data: ", e);
-      }
-    };
-
-    fetchData();
+    const fetchData = axios
+      .get(`http://localhost:8000/get-quiz-response/6/${ID}/`)
+      .then((res) => {
+        setData({
+          name: res.data.response.quiz.name,
+          topic: res.data.response.quiz.topic,
+          mins: res.data.response.quiz.time,
+          questions: res.data.answers.map((ans) => ({
+            id: ans.question.id,
+            question: ans.question.question,
+            options: ans.question.options,
+            type: ans.question.type === "SINGLE" ? "single" : "multi",
+            correct: ans.question.marks,
+            incorrect: ans.question.type === "SINGLE" ? -1 : -2,
+            answer: [parseInt(ans.question.solution.answer)],
+            selected:
+              ans.answer.length > 0
+                ? ans.answer.split(" ").map((i) => parseInt(i) - 1)
+                : [],
+            status: ans.answer.length === 0 ? "unanswered" : "answered",
+            image: ans.question.image,
+            solution: ans.question.solution.solution,
+            ansMedia: ans.question.solution.media,
+          })),
+        });
+      })
+      .catch((e) => console.log(e));
   }, []);
 
   const [question, setQuestion] = useState(0);
@@ -57,7 +48,7 @@ const ReviewQuiz = () => {
 
   const qstatus = data.questions.map((q) => {
     const answer = q.answer;
-    const selected = q.selected.marked;
+    const selected = q.selected;
     answer.sort();
     selected.sort();
     const equal = answer.every((e, i) => selected[i] === e);
@@ -156,9 +147,7 @@ const ReviewQuiz = () => {
                             .filter(
                               (e) =>
                                 !data.questions[question].answer.includes(e) &&
-                                data.questions[
-                                  question
-                                ].selected.marked.includes(e)
+                                data.questions[question].selected.includes(e)
                             )
                             .includes(i)
                         ? "bg-red-400 border-red-400 text-white"
@@ -188,11 +177,13 @@ const ReviewQuiz = () => {
             <span className="font-semibold">
               Your Answer:{" "}
               <span className="font-normal text-base">
-                {data.questions[question].selected.marked
-                  .map((e) =>
-                    e === 0 ? "A" : e === 1 ? "B" : e === 2 ? "C" : "D"
-                  )
-                  .join(", ")}
+                {data.questions[question].selected.length === 0
+                  ? "Unattempted"
+                  : data.questions[question].selected
+                      .map((e) =>
+                        e === 0 ? "A" : e === 1 ? "B" : e === 2 ? "C" : "D"
+                      )
+                      .join(", ")}
               </span>{" "}
             </span>
           </div>
@@ -273,10 +264,7 @@ const ReviewQuiz = () => {
             <p>
               You have answered{" "}
               <span className="font-semibold">
-                {
-                  data.questions.filter((q) => q.selected.marked.length > 0)
-                    .length
-                }
+                {data.questions.filter((q) => q.selected.length > 0).length}
               </span>{" "}
               out of{" "}
               <span className="font-semibold">{data.questions.length}</span>{" "}
