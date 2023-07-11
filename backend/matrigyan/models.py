@@ -28,9 +28,25 @@ class Educator(models.Model):
 	# std=models.IntegerField(default=11)
 	profile_pic = models.CharField(max_length=200, null=True, blank=True)
 	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-
+	taughtTime=models.IntegerField(default=0,blank=True)
+	task=models.ManyToManyField("Task",related_name="educator_task",blank=True)
+	
 	def __str__(self) -> str:
 		return self.name
+	@property
+	def numStudents(self):
+		return sum([el.ongoing for el in self.course_set.all()])
+	@property
+	def rating(self):
+		return sum([el.rating for el in self.course_set.all()])
+	@property
+	def numTests(self):
+		return len(self.quiz_set.all())
+	@property
+	def feedbacks(self):
+		# courses=self.course_set.all()
+		feedbacks=Feedback.objects.filter(course__educator=self.id)
+		return feedbacks
 # Create your models here.
 class CourseSection(models.Model):
 	# course=models.ForeignKey("Course",on_delete=models.CASCADE, null=True, blank=True)
@@ -57,9 +73,13 @@ class Comment(models.Model):
 	comment=models.TextField()
 	date_time=models.DateTimeField( auto_now=True)
 	likes=models.IntegerField(default=0)
+	video=models.IntegerField(default=1,blank=True)
+	course=models.ForeignKey("Course",on_delete=models.CASCADE,null=True)
 	def __str__(self) -> str:
 		return self.comment+"_"+str(self.date_time)
-
+	@property
+	def totalcomments(self):
+		return len(self.course.comment_set.all()) 
 class Feedback(models.Model):
 	ratings=(
 		(0,0),
@@ -69,10 +89,10 @@ class Feedback(models.Model):
 		(4,4),
 		(5,5),
 	)
-	message=models.TextField()
+	message=models.TextField(default="",blank=True)
 	course=models.ForeignKey("Course",on_delete=models.CASCADE)
 	rating=models.IntegerField(default=5,choices=ratings)
-	
+	date=models.DateTimeField(blank=True,auto_now_add=True)
 	user=models.ForeignKey("Student",on_delete=models.CASCADE)
 	
 	def __str__(self):
@@ -143,11 +163,12 @@ class QuizResponse(models.Model):
 		return (self.quiz.name + self.student.full_name)
 	def obtained_marks(self):
 		return sum([el.marks for el in self.quizanswer_set.all()])
-		
+	
+			
 class QuizAnswer(models.Model):
 	question=models.ForeignKey(Question,on_delete=models.CASCADE)
 	answer=models.TextField(default="",blank=True)
-	response=models.ForeignKey(QuizResponse,on_delete=models.CASCADE)
+	response=models.ForeignKey(QuizResponse,on_delete=models.CASCADE,blank=True)
 	marks=models.IntegerField(default=0,blank=True)
 	def __str__(self):
 		return (self.question + self.response.student_test.all().fullname)
@@ -174,7 +195,7 @@ class Course(models.Model):
 	tags=models.ManyToManyField("CourseTag",blank=True)
 	image = models.TextField(default="",null=True, blank=True)
 	quizes = models.ManyToManyField(Quiz,blank=True)
-	comments = models.ManyToManyField(Comment,blank=True)
+	# comments = models.ManyToManyField(Comment,blank=True)
 	educator=models.ForeignKey("Educator",on_delete=models.CASCADE,null=True,blank=True)
 	def __str__(self):
 		return self.title
@@ -197,6 +218,10 @@ class Course(models.Model):
 	@property
 	def ongoing(self):
 		return len(self.student_ongoing.all())
+	@property
+	def comments(self):
+		return self.comment_set.all()
+	
 
 # class LiveClass(models.Model):
 	
@@ -227,7 +252,9 @@ class ClassModel(models.Model):
 	mode=models.IntegerField(default=0,choices=modes)
 	teacher=models.ForeignKey("Educator",on_delete=models.CASCADE, null=True, blank=True)
 	start=models.DateTimeField(auto_created=True)
-	end=models.DateTimeField()
+	end=models.DateTimeField(auto_created=True)
+	tags=models.ManyToManyField("CourseTag",blank=True)
+
 	def __str__(self):
 		return self.title+"_"+str(self.id)
 	

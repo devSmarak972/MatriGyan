@@ -4,10 +4,22 @@ import Review from "./Review";
 import data from "./data/reviews.json";
 import { Select } from "@mantine/core";
 
-const Reviews = () => {
+const Reviews = (props) => {
   const [sortBy, setSortBy] = useState("");
-
+  console.log(props,"reviews")
   console.log(sortBy);
+  var data=props.feedback?props.feedback?.map(el=>{
+    var date=new Date(el.date);
+    return {
+      "img": el.user.profile_img||"StudentDashboard/images/avatar/avatar-8.jpg",
+      "name": el.user.full_name||"Anonymous",
+      "courses": el.user.enrolled_course.length|0,
+      "rating": el.rating,
+      "review": el.message,
+      "course": el.course.title,
+      "date": date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate(),
+    }
+  }):[]
   if (sortBy === "" || sortBy === "Date") {
     data.sort((a, b) => {
       let dateA = new Date(a.date);
@@ -44,7 +56,6 @@ const Reviews = () => {
             img={e.img}
             name={e.name}
             courses={e.courses}
-            reviews={e.reviews}
             rating={e.rating}
             review={e.review}
             course={e.course}

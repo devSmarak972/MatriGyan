@@ -53,7 +53,7 @@ const Course = (props) => {
                       : `dark:text-red text-red-600`)
                   }
                 >
-                  {props.percent}% Completion Rate
+                  {parseInt((props.enrolled-props.ongoing)/(props.enrolled?props.enrolled:1))}% Completion Rate
                 </span>
                 {/* <div className="mx-2 my-1 w-px self-stretch bg-slate-200 dark:bg-navy-500"></div> */}
                 <Rating

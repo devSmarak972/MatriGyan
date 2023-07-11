@@ -18,11 +18,19 @@ import "font-awesome/css/font-awesome.min.css";
 import Point from "../components/LandingPage/Point";
 import Footer from "../components/LandingPage/Footer";
 import SearchLanding from "../components/LandingPage/SearchLanding";
-
+import Loader from "../loader";
 const LandingPage = () => {
   // useEffect(() => {
   //   AOS.init();
   // }, []);
+  const [loader, setLoader] = useState(true)
+  useEffect(()=>{
+    
+      console.log(loader,"loader")
+      setLoader(false);
+      
+   
+  },[])
   // import
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Courses");
@@ -37,6 +45,10 @@ const LandingPage = () => {
   };
 
   return (
+    <>
+    {loader?<Loader></Loader>:""}
+
+  
     <div className="main-wrapper" id="landingpage">
       <Navbar
         searchPage={searchPage}
@@ -74,6 +86,7 @@ const LandingPage = () => {
         />
       )}
     </div>
+    </>
   );
 };
 

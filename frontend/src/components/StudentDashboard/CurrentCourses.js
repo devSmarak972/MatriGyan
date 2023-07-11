@@ -116,12 +116,13 @@ const CurrentCourses = (props) => {
                 .map((el) => {
                   return (
                     <swiper-slide>
-                      <Course key={el.coursename} {...el} type={type.type} />
+                      <Course key={el.coursename} {...el} type={type} />
                     </swiper-slide>
                   );
                 })
             ) : (
-              <p className="text-center text-muted">No Courses enrolled</p>
+              <p className="text-center text-muted">{props.type==="educator"?"No courses created":
+              "No Courses enrolled"}</p>
             )}
           </swiper-container>
         </div>

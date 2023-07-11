@@ -13,9 +13,24 @@ import DashboardCalendar from "../../components/StudentDashboard/DashboardCalend
 import Tasklist from "../../components/StudentDashboard/Tasklist";
 import axios from "axios";
 import { getCookie } from "../../utils/apiCaller";
+import Loader from "../../loader";
+import { useNavigate } from "react-router-dom";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const StudentDashboard = () => {
+  const navigate=useNavigate();
   const [Data, setData] = useState({});
   const mounted = useRef(false);
+  const [loader, setLoader] = useState(true)
+
+  useEffect(()=>{
+    
+    console.log(loader,"loader")
+    setLoader(false);
+    
+ 
+},[])
   useEffect(() => {
     mounted.current = true;
     const config = {
@@ -25,12 +40,24 @@ const StudentDashboard = () => {
       // },
     };
     console.log("config", "config");
-    axios.get(`http://localhost:8000/dashboard-data`, config).then((res) => {
+    axios.get(`http://localhost:8000/student-dashboard-data`, config).then((res) => {
       console.log(res);
       console.log(res.data, "received data");
+      if(!res.data.success)
+       {
+        if(res.code===2)
+        navigate("/educator")
+        else
+        navigate("/")
+
+       }
       if (mounted.current) {
         setData(res.data);
       }
+    }).catch(err=>{
+
+      const notify = () => toast(err.message);
+       notify();
     });
     return () => (mounted.current = false);
   }, []);
@@ -40,6 +67,9 @@ const StudentDashboard = () => {
   if (Object.keys(Data).length)
     comp = Data.enrolled_courses.length - Data.on_courses.length;
   return (
+    <>
+    <ToastContainer></ToastContainer>
+    {loader?<Loader></Loader>:""}
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
       <Sidebar />
       <main className="main-content w-full pb-8 ml-5">
@@ -111,6 +141,7 @@ const StudentDashboard = () => {
         </div>
       </main>
     </div>
+    </>
   );
 };
 

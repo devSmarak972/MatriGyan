@@ -21,7 +21,7 @@ APP_DATA_ROOT = '/efs'
 env = environ.Env()
 
 environ.Env.read_env()
-
+FRONTEND_URL="http://localhost:3000"
 
 #LANGTOOL_HOST = os.environ['LANGTOOL_HOST']
 #ENVIRONMENT = os.environ['ENVIRONMENT']
