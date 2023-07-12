@@ -30,16 +30,16 @@ function RightHalf({details}) {
 
             <Link to="/coursepage/angular" class="d-flex flex-nowrap mb-24pt">
               <span class="mr-16pt">
-                <img
-                  src={details.image}
+                {/* <img
+                  src={details.data.image}
                   width="40"
                   alt="Angular"
                   class="rounded"
-                />
+                /> */}
               </span>
               <span class="flex d-flex flex-column align-items-start">
-                <span class="card-title">{details.title}</span>
-                <span class="card-subtitle text-50">{details.duration} Lessons</span>
+                <span class="card-title">{details.data.title}</span>
+                <span class="card-subtitle text-50"> Lessons</span>
               </span>
             </Link>
 
@@ -58,7 +58,7 @@ function RightHalf({details}) {
               </span>
               <div class="media-body">
                 <Link class="card-title m-0" to={`/teacher/${details.educator_id}`}>
-                  {details.educator}
+                  {details.data.educator}
                 </Link>
                 <p class="text-50 lh-1 mb-0">Instructor</p>
               </div>

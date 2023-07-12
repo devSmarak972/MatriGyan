@@ -9,14 +9,14 @@ function Heading({details}) {
           <div className="d-flex flex-column flex-md-row align-items-center flex mb-16pt mb-lg-0 text-center text-md-left">
             <div className="avatar mb-16pt mb-md-0 mr-md-16pt">
               <img
-                src={details.image}
+                // src={details.data.image}
                 //added sample image
                 className="avatar-img rounded"
                 alt="lesson"
               />
             </div>
             <div className="flex text-left" style={{flexDirection:"column"}}> 
-              <h1 className="h2 m-0">{details.title}</h1>
+              <h1 className="h2 m-0">{details.data.title}</h1>
               <div className="rating mb-8pt d-inline-flex">
                 <div className="rating__item">
                   <i className="material-icons">star</i>

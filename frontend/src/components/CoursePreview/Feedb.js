@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Feedb({details}) {
   console.log(details.title);
-  const comments = details ? details.comments : [];
+  const comments = details && details.data.comments ? details.data.comments : [];
   return (
     <div class="page-section bg-alt">
       <div class="container page__container">

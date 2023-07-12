@@ -18,7 +18,7 @@ function LeftHalf({ details }) {
   const isAccordionOpen = (accordionId) => {
     return activeAccordion === accordionId ? "show" : "";
   };
-  const tags_course = details ? details.tags : [];
+  const tags_course = details && details.data.tags ? details.data.tags : [];
   return (
     <div class="col-lg-8">
       <div class="js-player card bg-primary embed-responsive embed-responsive-16by9 mb-24pt">
@@ -50,7 +50,7 @@ function LeftHalf({ details }) {
       <div class="mb-24pt text-left">
         <span class="chip chip-outline-secondary d-inline-flex align-items-center mx-2">
           <i class="material-icons icon--left">schedule</i>
-          {details.duration}
+          {/* {details.data.duration} */}
         </span>
         {tags_course.map((tag, index) => (
           <span class="chip chip-outline-secondary d-inline-flex align-items-center" key={index}>
@@ -60,7 +60,7 @@ function LeftHalf({ details }) {
       </div>
 
       <p class="lead measure-lead text-70 mb-24pt text-left">
-        {details.description}
+        {details.data.description}
       </p>
 
       <div class="page-separator">
