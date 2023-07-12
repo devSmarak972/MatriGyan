@@ -10,7 +10,7 @@ const PostQuiz = () => {
   useEffect(() => {
     setTimeout(() => {
       const fetchData = axios
-        .get(`http://localhost:8000/get-quiz-response/6/${ID}/`)
+        .get(`http://localhost:8000/get-quiz-response/1/${ID}/`)
         .then((res) => {
           setData({
             name: res.data.response.quiz.name,

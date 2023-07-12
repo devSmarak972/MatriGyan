@@ -189,7 +189,7 @@ class QuizAnswer(models.Model):
 	response=models.ForeignKey(QuizResponse,on_delete=models.CASCADE,blank=True)
 	marks=models.IntegerField(default=0,blank=True)
 	def __str__(self):
-		return (self.question + self.response.student.fullname)
+		return (self.question + self.response.student.full_name)
 	
 		
 
