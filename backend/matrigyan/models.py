@@ -227,7 +227,7 @@ class Course(models.Model):
 		return ratingsum/len(feedbacks)
 	@property
 	def sections(self):
-		return self.section_set.all()
+		return self.coursesection_set.all()
 	@property
 	def enrolled(self):
 		return len(self.student_enrolled.all())

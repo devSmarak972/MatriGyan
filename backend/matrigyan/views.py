@@ -330,6 +330,8 @@ def getCourse(request, id):
 	course = Course.objects.get(id=id)
 	students=course.student_enrolled.all().values_list("user")
 	enrolled=False
+	# sections=course.coursesection_set.all()
+	# sections=SectionSerializer(sections,many=True)
 	# print(request.user,list(students))
 	# student=Student.objects.get(user=request.user)
 	
