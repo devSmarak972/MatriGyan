@@ -26,6 +26,7 @@ urlpatterns = [
     path('get-quiz-response/<int:student_id>/<int:quiz_id>/', views.getQuizResponse),
     path('edit-course/<int:id>/', views.editCourse),
     path('get-courses/', views.getCourses),
+    path('enroll-course/<int:id>/', views.enrollCourse),
     path('educator-dashboard-data/', views.getEducatorDashData),
     path('student-dashboard-data/', views.getStudentDashData),
     path('get-course/<int:id>/', views.getCourse),

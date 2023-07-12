@@ -320,6 +320,7 @@ def editCourse(request,id):
 
 @api_view(['GET'])
 def getCourses(request):
+	# student=Student.objects.filter()
 	courses = Course.objects.all()
 	courseserializer = CourseSerializer(courses, many=True)
 	return Response(courseserializer.data)
@@ -327,8 +328,16 @@ def getCourses(request):
 @api_view(['GET'])
 def getCourse(request, id):
 	course = Course.objects.get(id=id)
+	students=course.student_enrolled.all().values_list("user")
+	enrolled=False
+	# print(request.user,list(students))
+	# student=Student.objects.get(user=request.user)
+	
+	if (request.user.id,) in list(students):
+		enrolled=True
+		print("enrolled")
 	c = CourseSerializer(course, many=False)
-	return Response(c.data)
+	return Response({"data":c.data,"isEnrolled":enrolled})
 @api_view(['GET'])
 def getEducatorDashData(request):
 	print(request.user)
@@ -387,7 +396,7 @@ def getStudentDashData(request):
 	tasks=student.task.all()
 	events=student.event.all()
 	live_classes=student.live_class.all()
-	print(mycourses.first().sections.all())
+	# print(mycourses.first().sections.all())
 	# user=User.objects.get()
 	# course = Course.objects.all()
 	mycourses = CourseSerializer(mycourses, many=True)
@@ -435,6 +444,22 @@ def getSections(request, id):
 		return Response(serialized_section.data)
 	else:
 		return Response("No sections available!")
+@api_view(['GET'])
+def enrollCourse(request, id):
+	student=Student.objects.get(user=request.user)
+	if not student:
+			return Response({"success":False,"message":"Not logged in"})
+
+	course = Course.objects.filter(id=id).first()
+
+	if course!=None:
+		student.enrolled_course.add(course)
+		student.save()
+			
+		# serialized_section = SectionSerializer(sections, many=True)
+		return Response({"success":True,"message":"course added successfully","isEnrolled":True})
+	else:
+		return Response({"success":False,"message":"The course is not available"})
 
 @api_view(['POST'])
 def addSection(request, id):
@@ -450,6 +475,7 @@ def addSection(request, id):
 		# course.sections.add(section)
 		return Response("Section added!")
 	return Response("Invalid")
+
 @api_view(['POST'])
 def addVideo(request,course_id):
 	print(request.data["order_id"])
