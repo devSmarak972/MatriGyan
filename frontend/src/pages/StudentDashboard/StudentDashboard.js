@@ -122,7 +122,7 @@ const StudentDashboard = () => {
               )}
             </div>
           </div>
-          <Tasklist tasks={Data.tasks}></Tasklist>
+          {Data.tasks?<Tasklist tasks={Data.tasks}></Tasklist>:<p className="p-3">Loading...</p>}
           <div class="flex flex-col col-span-4">
             <div class="flex justify-between">
               <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">

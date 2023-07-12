@@ -189,7 +189,7 @@ class QuizAnswer(models.Model):
 	response=models.ForeignKey(QuizResponse,on_delete=models.CASCADE,blank=True)
 	marks=models.IntegerField(default=0,blank=True)
 	def __str__(self):
-		return (self.question + self.response.student_test.all().fullname)
+		return (self.question + self.response.student.fullname)
 	
 		
 
@@ -220,7 +220,7 @@ class Course(models.Model):
 	@property
 	def rating(self):
 		feedbacks=self.feedback_set.all()
-		print(feedbacks)
+		# print(feedbacks)
 		if len(feedbacks)==0:
 			return 0
 		ratingsum=sum([el.rating for el in feedbacks])
@@ -234,7 +234,7 @@ class Course(models.Model):
 	@property
 	def duration(self):
 		dur=sum([el.duration for el in self.sections.all()])
-		print(dur,"sum")
+		# print(dur,"sum")
 		return dur
 	@property
 	def ongoing(self):

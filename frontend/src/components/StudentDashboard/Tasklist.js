@@ -2,6 +2,7 @@ import React, { useState, useEffect ,useRef} from "react";
 import CheckboxItem from "../../components/StudentDashboard/CheckboxItem";
 
 const Tasklist = (props) => {
+  console.log(props.tasks)
   // var tasks = [
   //   {
   //     title: "Coordinate Geometry DPP",
@@ -27,22 +28,25 @@ const Tasklist = (props) => {
   //   },
   //   { title: "Doubt Clearing Session" },
   // ];
-  const [numcompleted, setnumcompleted] = useState(0);
-const tasks=useRef([]);
+  // const [numcompleted, setnumcompleted] = useState(0);
+  const [tasks, settasks] = useState(false);
+// const tasks=useRef([]);
   var today = new Date();
-  // console.log(props.start.getTime());
+  console.log(tasks,":tasks");
 
   var num = 0;
   useEffect(() => {
-    tasks.current = props.tasks?.map((el) => {
+   var taskstmp= props.tasks?.map((el) => {
       if (el.completed) num++;
-      var end = new Date(props.due_date);
-      end.setMinutes(end.getMinutes() + props.time);
-      var status = today < props.due_date ? 2 : 1;
-
+      var end = new Date(el.due_date);
+      // end.setMinutes(end.getMinutes() + el.time);
+      var status = today < el.due_date ? 2 : 1;
+       var date=""+end.getFullYear()+"-"+end.getMonth()+"-"+end.getDate();
+       console.log(end.getFullYear()+"-"+end.getMonth()+"-"+end.getDate())
       return {
-        title: el.title,
-        date: new Date(el.due_date),
+        id:el.id,
+        title: el.name,
+        date: date,
         message:
           el.completed === true
             ? "Completed"
@@ -58,9 +62,24 @@ const tasks=useRef([]);
         completed: el.completed,
       };
     });
-    return () => setnumcompleted(num);
+    settasks({"tasks":taskstmp,"numcompleted":num})
+    // return () => setnumcompleted(num);
   }, []);
-
+function handleCheck(el){
+  console.log(el.currentTarget.checked)
+  var id=parseInt(el.currentTarget.id.substring(5));
+  if(tasks)
+  {
+    var tmptasks={"tasks":tasks.tasks.map(a => {return {...a}}),"numcompleted":tasks.numcompleted}
+    tmptasks.tasks.find(it=>it.id===id).completed=!el.currentTarget.checked;
+    if(el.currentTarget.checked)tmptasks.numcompleted+=1;
+    else tmptasks.numcompleted-=1;
+  settasks(tmptasks)
+}
+else{
+  console.log("tasks not defined")
+}
+}
   return (
     <div class="flex flex-col col-span-4">
       <div class="flex justify-between">
@@ -71,16 +90,17 @@ const tasks=useRef([]);
           <i className="fas fa-plus"></i>
         </span>
       </div>
+     { tasks ?
       <div class="card noHoverCard px-4 py-3 mb-2 h-auto gap-y-2 ">
         <div class="flex flex-col">
-          {tasks.current?tasks.current.map(el => {
-            return <CheckboxItem props={{ ...el }}></CheckboxItem>;
+          {((tasks.tasks.length!==0) && tasks.tasks)?tasks.tasks.map(el => {
+            return <CheckboxItem key={el.id} props={{ ...el ,handleCheck:handleCheck}}></CheckboxItem>;
           }):<p>No tasks created</p>}
         </div>
         <div class="badge float-left mt-2 mr-auto bg-success/10 text-success dark:bg-success/15">
-          {numcompleted}/{tasks.current?tasks.current.length:0} completed
+          {tasks.numcompleted}/{tasks.tasks?tasks.tasks.length:0} completed
         </div>
-      </div>
+      </div>:<p className="p-3">Loading...</p>}
     </div>
   );
 };
