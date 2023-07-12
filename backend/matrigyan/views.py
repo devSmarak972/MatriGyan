@@ -323,7 +323,7 @@ def getCourses(request):
 	# student=Student.objects.filter()
 	courses = Course.objects.all()
 	courseserializer = CourseSerializer(courses, many=True)
-	return Response(courseserializer.data)
+	return Response({"success":True,"data":courseserializer.data})
 
 @api_view(['GET'])
 def getCourse(request, id):

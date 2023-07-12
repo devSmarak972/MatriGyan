@@ -348,3 +348,13 @@ class Event(models.Model):
 	endTime = models.TimeField(blank=True, null=True)
 	daysOfWeek = models.TextField(blank=True , null=True)
 	user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+ 
+ 
+class Resource(models.Model):
+	image=models.TextField(default="",blank=True)
+	description=models.TextField(default="",blank=True)
+	title=models.TextField(default="",blank=True)
+	file_url=models.TextField(default="",blank=True)
+	creator=models.ForeignKey("Educator",on_delete=models.CASCADE,blank=True)
+	def __str__(self):
+		 return self.creator.id+"_"+self.title     

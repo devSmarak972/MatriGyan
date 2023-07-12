@@ -4,12 +4,12 @@ import { useState } from "react";
 
 function Row(props) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [courses, setCourses] = useState(props.courses);
+  // const [courses, setCourses] = useState(props.courses);
 
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const coursesPerPage = 4;
-  const totalPages = Math.ceil(props.courseData.length / coursesPerPage);
+  const totalPages = Math.ceil(props.courseData.data.length / coursesPerPage);
 
   const handleClickNext = () => {
     if (currentPage < totalPages) {
@@ -32,15 +32,17 @@ function Row(props) {
   };
 
   const renderCourseCards = () => {
+    console.log(props.courseData.data,"data")
     const startIndex = (currentPage - 1) * coursesPerPage;
     const endIndex = startIndex + coursesPerPage;
-    const currentCourses = props.courseData.slice(startIndex, endIndex);
+    const currentCourses = props.courseData.data?props.courseData.data.slice(startIndex, endIndex):[];
 
-    return currentCourses.map((course, index) => (
+    return currentCourses.map((course, index) => {
+      console.log(course)
+      return (
+      <Column key={course.id} cid={course.id} course={course} isTransitioning={isTransitioning}/>
 
-      <Column key={course.id} course={course} isTransitioning={isTransitioning}/>
-
-    ));
+    )});
   };
 
   return (
