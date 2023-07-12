@@ -8,24 +8,44 @@ const QuizCourse = (props) => {
     <div>
       <form
         onSubmit={props.form.onSubmit(async (values) => {
-          console.log(values);
-          console.log(props.questions);
-          const quizRes = await axios
+          await axios
             .post(`http://localhost:8000/create-quiz/`, {
               creator_id: 1,
               name: values.name,
               topic: values.topic,
               subject: values.subject,
-              time: 30,
+              time: values.time,
             })
-            .then((res) => console.log(res.data))
+            .then((res) => console.log(res))
             .catch((e) => console.log(e));
 
-          console.log(quizRes);
+          setTimeout(() => {
+            props.questions.map(async (q, i) => {
+              await axios
+                .post("http://localhost:8000/add-question/15/", {
+                  qnumber: i + 1,
+                  questions: q.question,
+                  type: q.type === "single" ? "SINGLE" : "MULTI",
+                  options: q.options.map((val) => ({ value: val })),
+                })
+                .then((res) => console.log(res))
+                .catch((e) => console.log(e));
+            });
+          }, 3000);
 
-          // const ques = await axios("http://localhost:8000/get-questions/1")
-          //   .then((res) => console.log(res.data))
-          //   .catch((e) => console.log(e));
+          setTimeout(() => {
+            axios
+              .get("http://localhost:8000/get-quiz/15/")
+              .then((res) => console.log(res.data))
+              .catch((e) => console.log(e));
+          }, 6000);
+
+          setTimeout(() => {
+            axios
+              .get("http://localhost:8000/get-questions/15/")
+              .then((res) => console.log("Quiz Questions: ", res))
+              .catch((e) => console.log(e.response.data));
+          }, 9000);
         })}
         className="flex flex-col gap-2"
       >

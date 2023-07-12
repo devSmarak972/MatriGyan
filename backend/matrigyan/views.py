@@ -547,7 +547,8 @@ def addQuestion(request, id):
 	return Response(question.data)
 
 @api_view(['GET'])
-def getQuestions(request, id):
+def 
+getQuestions(request, id):
 	quiz = Quiz.objects.get(id=id)
 	questions = quiz.questions.all()
 	serialized_questions = QuestionSerializer(questions, many=True)
