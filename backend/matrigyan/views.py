@@ -654,6 +654,9 @@ def addQuizResponse(request,student_id,quiz_id):
 	return Response({"success":False,"message":"Invalid input"})
 @api_view(['GET'])
 def getQuizResponse(request,quiz_id,student_id):
+	print(student_id,quiz_id)
+	if not student_id:
+		student_id=Student.objects.get(user=request.user).id
 	qresponse=QuizResponse.objects.filter(quiz_id=quiz_id,student_id=student_id).first()
 	if not qresponse:
 		return Response({"success":False,"message":"Quiz not attempted!"})
