@@ -44,7 +44,7 @@ SECRET_KEY = 'django-insecure-(27h%fzc7bs+d=_!lxtp49l@p@agm7+5e9_!4weof-=+a0f&ja
 DEBUG = True
 
 ALLOWED_HOSTS = []
-KEEP_LOGGED_DURATION=5184000 #60 days
+KEEP_LOGGED_DURATION=51840000 #60 days
 
 
 # Email
