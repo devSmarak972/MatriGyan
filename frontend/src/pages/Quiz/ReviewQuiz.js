@@ -1,15 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGrip } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import data from "./quiz-answered.json";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 const ReviewQuiz = () => {
+  const { ID } = useParams();
+  const [data, setData] = useState({});
+  useEffect(() => {
+    const fetchData = axios
+      .get(`http://localhost:8000/get-quiz-response/6/${ID}/`)
+      .then((res) => {
+        setData({
+          name: res.data.response.quiz.name,
+          topic: res.data.response.quiz.topic,
+          mins: res.data.response.quiz.time,
+          questions: res.data.answers.map((ans) => ({
+            id: ans.question.id,
+            question: ans.question.question,
+            options: ans.question.options,
+            type: ans.question.type === "SINGLE" ? "single" : "multi",
+            correct: ans.question.marks,
+            incorrect: ans.question.type === "SINGLE" ? -1 : -2,
+            answer: [parseInt(ans.question.solution.answer)],
+            selected:
+              ans.answer.length > 0
+                ? ans.answer.split(" ").map((i) => parseInt(i) - 1)
+                : [],
+            status: ans.answer.length === 0 ? "unanswered" : "answered",
+            image: ans.question.image,
+            solution: ans.question.solution.solution,
+            ansMedia: ans.question.solution.media,
+          })),
+        });
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
   const [question, setQuestion] = useState(0);
   const [opened, { open, close }] = useDisclosure(false);
+
+  if (JSON.stringify(data) === "{}") return null;
+
   const qstatus = data.questions.map((q) => {
     const answer = q.answer;
     const selected = q.selected;
@@ -76,8 +112,8 @@ const ReviewQuiz = () => {
             <span className="font-medium mt-1">{data.topic}</span>
           </div>
         </div>
-        <div className="flex flex-col justify-end col-span-3 sm:col-span-2 gap-3">
-          <div className="flex flex-col gap-3 min-h-[350px]">
+        <div className="flex flex-col col-span-3 sm:col-span-2 gap-3 overflow-y-scroll h-[69vh] pr-4">
+          <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center">
               <span className="font-semibold mb-2">
                 Question {question + 1} of {data.questions.length}
@@ -97,7 +133,10 @@ const ReviewQuiz = () => {
             <span className="font-medium text-black">
               {data.questions[question].question}
             </span>
-            <div className="flex flex-col gap-3">
+            {data.questions[question].image && (
+              <img className="w-fit" src={data.questions[question].image} />
+            )}
+            <div className="flex flex-col gap-3 my-2">
               {data.questions[question].options.map((option, i) => (
                 <div className="flex gap-3">
                   <span
@@ -118,7 +157,7 @@ const ReviewQuiz = () => {
                     {i === 0 ? "A" : i === 1 ? "B" : i === 2 ? "C" : "D"}
                   </span>
                   <span className="font-medium flex items-center text-black">
-                    {option}
+                    {option.value}
                   </span>
                 </div>
               ))}
@@ -138,14 +177,23 @@ const ReviewQuiz = () => {
             <span className="font-semibold">
               Your Answer:{" "}
               <span className="font-normal text-base">
-                {data.questions[question].selected
-                  .map((e) =>
-                    e === 0 ? "A" : e === 1 ? "B" : e === 2 ? "C" : "D"
-                  )
-                  .join(", ")}
+                {data.questions[question].selected.length === 0
+                  ? "Unattempted"
+                  : data.questions[question].selected
+                      .map((e) =>
+                        e === 0 ? "A" : e === 1 ? "B" : e === 2 ? "C" : "D"
+                      )
+                      .join(", ")}
               </span>{" "}
             </span>
           </div>
+          <span className="font-normal">
+            <span className="font-semibold">Solution: </span>
+            {data.questions[question].solution}
+          </span>
+          {data.questions[question].ansMedia && (
+            <img className="w-fit" src={data.questions[question].ansMedia} />
+          )}
           <div
             className={`flex mt-2 ${
               question === 0 ? "justify-end" : "justify-between"
@@ -247,7 +295,7 @@ const ReviewQuiz = () => {
             </div>
           </Modal>
           <Link
-            to="/quiz-end"
+            to={`/quiz/${ID}/end`}
             className="font-medium text-[var(--primary)] rounded-lg"
           >
             Quiz Summary

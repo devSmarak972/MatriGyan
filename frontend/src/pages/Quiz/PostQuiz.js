@@ -1,11 +1,46 @@
-import React from "react";
-import data from "./quiz-answered.json";
+import React, { useEffect, useState } from "react";
+// import data from "./quiz-answered.json";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 const PostQuiz = () => {
+  const { ID } = useParams();
+  const [data, setData] = useState({});
+  useEffect(() => {
+    setTimeout(() => {
+      const fetchData = axios
+        .get(`http://localhost:8000/get-quiz-response/6/${ID}/`)
+        .then((res) => {
+          setData({
+            name: res.data.response.quiz.name,
+            topic: res.data.response.quiz.topic,
+            mins: res.data.response.quiz.time,
+            questions: res.data.answers.map((ans) => ({
+              id: ans.question.id,
+              question: ans.question.question,
+              options: ans.question.options,
+              type: ans.question.type === "SINGLE" ? "single" : "multi",
+              correct: ans.question.marks,
+              incorrect: ans.question.type === "SINGLE" ? -1 : -2,
+              answer: [parseInt(ans.question.solution.answer)],
+              selected:
+                ans.answer.length > 0
+                  ? ans.answer.split(" ").map((i) => parseInt(i) - 1)
+                  : [],
+              status: ans.answer.length === 0 ? "unanswered" : "answered",
+              image: ans.question.image,
+            })),
+          });
+        })
+        .catch((e) => console.log(e));
+    }, 300);
+  }, []);
+
+  if (JSON.stringify(data) === "{}") return null;
+
   localStorage.removeItem("timer");
-   var id=1;
+  var id = 1;
   let marks = 0;
   let total = 0;
   let attempted = 0;
@@ -22,16 +57,16 @@ const PostQuiz = () => {
       marks = marks + data.questions[i].correct;
       correct++;
       attempted++;
-    } else {
+    } else if (selected.length > 0) {
       marks = marks + data.questions[i].incorrect;
       if (selected.length > 0) {
         attempted++;
         negative -= data.questions[i].incorrect;
       }
-    }
+    } 
   }
 
-  const fraction = marks / total;
+  const fraction = Math.max(0, marks / total);
   const largeArcFlag = fraction <= 0.5 ? 0 : 1;
   const sweepFlag = 1;
   const endX = 50 + 40 * Math.sin(2 * Math.PI * fraction);
@@ -98,11 +133,14 @@ const PostQuiz = () => {
           </span>
           <span className="font-semibold">
             Negative:{" "}
-            <span className="font-normal text-base ml-0.5">{negative}</span>
+            <span className="font-normal text-base ml-0.5">{-negative}</span>
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <Link to={"/quiz/"+id+"/review"} className="font-medium text-[var(--primary)]">
+          <Link
+            to={"/quiz/" + id + "/review"}
+            className="font-medium text-[var(--primary)]"
+          >
             Check Your Mistakes
           </Link>
           <Link
