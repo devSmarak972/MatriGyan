@@ -8,7 +8,7 @@ const QuizCourse = (props) => {
     <div>
       <form
         onSubmit={props.form.onSubmit(async (values) => {
-          await axios
+          const quizID = await axios
             .post(`http://localhost:8000/create-quiz/`, {
               creator_id: 1,
               name: values.name,
@@ -16,13 +16,17 @@ const QuizCourse = (props) => {
               subject: values.subject,
               time: values.time,
             })
-            .then((res) => console.log(res))
+            .then((res) => res.data.quiz.id)
             .catch((e) => console.log(e));
+
+          setTimeout(() => {
+            console.log(quizID);
+          }, 1500);
 
           setTimeout(() => {
             props.questions.map(async (q, i) => {
               await axios
-                .post("http://localhost:8000/add-question/15/", {
+                .post(`http://localhost:8000/add-question/${quizID}/`, {
                   qnumber: i + 1,
                   questions: q.question,
                   type: q.type === "single" ? "SINGLE" : "MULTI",
@@ -35,14 +39,14 @@ const QuizCourse = (props) => {
 
           setTimeout(() => {
             axios
-              .get("http://localhost:8000/get-quiz/15/")
+              .get(`http://localhost:8000/get-quiz/${quizID}/`)
               .then((res) => console.log(res.data))
               .catch((e) => console.log(e));
           }, 6000);
 
           setTimeout(() => {
             axios
-              .get("http://localhost:8000/get-questions/15/")
+              .get(`http://localhost:8000/get-questions/${quizID}/`)
               .then((res) => console.log("Quiz Questions: ", res))
               .catch((e) => console.log(e.response.data));
           }, 9000);
