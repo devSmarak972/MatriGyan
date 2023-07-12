@@ -32,7 +32,7 @@ class Educator(models.Model):
 	task=models.ManyToManyField("Task",related_name="educator_task",blank=True)
 	
 	def __str__(self) -> str:
-		return self.name
+		return self.name+str(self.id)
 	@property
 	def numStudents(self):
 		return sum([el.ongoing for el in self.course_set.all()])
@@ -189,7 +189,7 @@ class QuizAnswer(models.Model):
 	response=models.ForeignKey(QuizResponse,on_delete=models.CASCADE,blank=True)
 	marks=models.IntegerField(default=0,blank=True)
 	def __str__(self):
-		return (self.question + self.response.student_test.all().fullname)
+		return (str(self.question) + self.response.student.full_name)
 	
 		
 
@@ -220,21 +220,21 @@ class Course(models.Model):
 	@property
 	def rating(self):
 		feedbacks=self.feedback_set.all()
-		print(feedbacks)
+		# print(feedbacks)
 		if len(feedbacks)==0:
 			return 0
 		ratingsum=sum([el.rating for el in feedbacks])
 		return ratingsum/len(feedbacks)
 	@property
 	def sections(self):
-		return self.section_set.all()
+		return self.coursesection_set.all()
 	@property
 	def enrolled(self):
 		return len(self.student_enrolled.all())
 	@property
 	def duration(self):
 		dur=sum([el.duration for el in self.sections.all()])
-		print(dur,"sum")
+		# print(dur,"sum")
 		return dur
 	@property
 	def ongoing(self):

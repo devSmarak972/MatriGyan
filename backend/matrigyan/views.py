@@ -330,6 +330,8 @@ def getCourse(request, id):
 	course = Course.objects.get(id=id)
 	students=course.student_enrolled.all().values_list("user")
 	enrolled=False
+	# sections=course.coursesection_set.all()
+	# sections=SectionSerializer(sections,many=True)
 	# print(request.user,list(students))
 	# student=Student.objects.get(user=request.user)
 	
@@ -520,13 +522,13 @@ def createQuiz(request):
 	if quiz.is_valid():
 		quiz.save()
   
-		if request.data["course_id"]:
+		if "course_id" in request.data.keys():
 			course = Course.objects.get(id=request.data["course_id"])
 			course_quiz = Quiz.objects.get(id = quiz.data['id'])
 			course.quizes.add(course_quiz)
 
-		return Response("Quiz created!")
-	return Response("Invalid")
+		return Response({"success":True,"quiz":quiz.data,"message":"Quiz created!"})
+	return Response({"success":False,"message":"Invalid"})
 
 @api_view(['DELETE'])
 def deleteQuiz(request, id):
@@ -629,18 +631,31 @@ def deleteEvent(request, id):
 	event = Event.objects.get(id=id)
 	event.delete()
 	return Response("Event deleted!")
+# @csrf_exempt
 @api_view(['POST'])
-def addQuizResponse(request,student_id,quiz_id):
+def addQuizResponse(request,quiz_id):
+	print(request.user,"adding resposne")
+	if not request.user.is_authenticated:
+			return Response({"success":False,"message":"Not logged in"})
+
+	student=Student.objects.get(user=request.user)
+	if not student:
+		return Response({"success":False,"message":"Not a student"})
+	student_id=student.id
 	qresponse=QuizResponse.objects.filter(quiz_id=quiz_id,student_id=student_id).first()
 	if qresponse:
 		return Response({"success":False,"message":"Response to this quiz already exists"})
 	qresponse = QuizResponseSerializer(data=request.data)
+	
 	ans=request.data["answers"]
 	
 	# print(course.data)
 	if qresponse.is_valid():
 		qresponse.save()
-		print(qresponse.data)
+		res = QuizResponse.objects.get(id=qresponse.data["id"])
+		res.student_id=student_id
+		print(res)
+		res.save()        
 		qanswers=QuizAnswerSerializer(context={"response":qresponse.data["id"]},data=request.data["answers"],many=True)
 		if qanswers.is_valid():
 			qanswers.save()
@@ -651,7 +666,15 @@ def addQuizResponse(request,student_id,quiz_id):
 			
 	return Response({"success":False,"message":"Invalid input"})
 @api_view(['GET'])
-def getQuizResponse(request,quiz_id,student_id):
+def getQuizResponse(request,quiz_id):
+	print(quiz_id,request.user)
+	if not request.user.is_authenticated:
+			return Response({"success":False,"message":"Not logged in"})
+
+	student=Student.objects.get(user=request.user)
+	if not student:
+		return Response({"success":False,"message":"Not a student"})
+	student_id=student.id
 	qresponse=QuizResponse.objects.filter(quiz_id=quiz_id,student_id=student_id).first()
 	if not qresponse:
 		return Response({"success":False,"message":"Quiz not attempted!"})

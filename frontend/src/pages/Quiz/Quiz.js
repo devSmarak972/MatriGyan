@@ -7,17 +7,21 @@ import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
 import data from "./quiz.json";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Quiz = () => {
   const { ID } = useParams();
   const [data, setData] = useState({});
+  localStorage.setItem("timer",10);
   const navigate=useNavigate()
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios
-          .get(`http://localhost:8000/get-quiz/${ID}/`)
+          .get(`http://localhost:8000/get-quiz/${ID}/`,{withCredentials:true})
           .then((res) => {
+            // if()
+            // throw res.message;
             setData({
               name: res.data.name,
               topic: res.data.topic,
@@ -35,6 +39,7 @@ const Quiz = () => {
                 image: q.image,
               })),
             });
+            setStart(parseInt(res.data.time))
           });
       } catch (e) {
         console.log("Error fetching data: ", e);
@@ -47,7 +52,8 @@ const Quiz = () => {
 
   const [question, setQuestion] = useState(0);
   const [selected, setSelected] = useState([]);
-  const [start, setStart] = useState(JSON.parse(localStorage.getItem("timer")));
+  // const [start, setStart] = useState(JSON.parse(localStorage.getItem("timer")));
+  const [start, setStart] = useState(20);
   const [opened, { open, close }] = useDisclosure(false);
 
   const Completionist = () => <span>Time Up!</span>;
@@ -81,8 +87,25 @@ const Quiz = () => {
             <div className="flex items-center justify-between sm:justify-center w-full text-lg text-white bg-[var(--primary)] p-3">
               <Countdown
                 renderer={renderer}
-                date={start + data.mins * 60 * 1000}
-                onComplete={() => {
+                date={Date.now()+start + data.mins * 60 * 1000}
+                onComplete={async () => {
+                  await axios
+                    .post(`http://localhost:8000/add-quiz-response/${ID}/`,{
+                      quiz_id: parseInt(ID),
+                      // student: 6,
+                      answers: data.questions.map((q) => ({
+                        question_id: q.id,
+                        answer: q.selected.join(" "),
+                        marks: q.correct,
+                      })),
+                    }, {withCredentials:true})
+                    .then((res) => {
+                    })
+                    .catch((e) => {
+                      const notify=()=>toast("Test submitted successfully");
+                      notify()
+                      console.log(e);
+                    });
                   window.location.href = `/quiz/${ID}/end`;
                 }}
               />
@@ -405,20 +428,25 @@ const Quiz = () => {
                 onClick={async () => {
                   close();
                   localStorage.removeItem("timer");
+                  // const csrftoken = get('csrftoken');
 
+                  // console.log(csrftoken)
                   await axios
-                    .post(`http://localhost:8000/add-quiz-response/6/${ID}/`, {
+                    .post(`http://localhost:8000/add-quiz-response/${ID}/`,{
                       quiz_id: parseInt(ID),
-                      student: 6,
+                      // student: 6,
                       answers: data.questions.map((q) => ({
                         question_id: q.id,
                         answer: q.selected.join(" "),
                         marks: q.correct,
+                        // 'csrfmiddlewaretoken':csrftoken
                       })),
-                    })
+                    }, {withCredentials:true})
                     .then((res) => {
                     })
                     .catch((e) => {
+                      const notify=()=>toast("Test submitted successfully");
+                      notify()
                       console.log(e);
                     });
                   // await axios

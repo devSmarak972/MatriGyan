@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 const PostQuiz = () => {
   const { ID } = useParams();
   const [data, setData] = useState({});
   useEffect(() => {
     setTimeout(() => {
       const fetchData = axios
-        .get(`http://localhost:8000/get-quiz-response/6/${ID}/`)
+        .get(`http://localhost:8000/get-quiz-response/${ID}/`,{withCredentials:true})
         .then((res) => {
+          if(res.data.success)
           setData({
             name: res.data.response.quiz.name,
             topic: res.data.response.quiz.topic,
@@ -32,8 +33,15 @@ const PostQuiz = () => {
               image: ans.question.image,
             })),
           });
+          else{
+            throw res.data.message
+          }
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          const error=()=>toast(e);
+          error();
+          console.log(e)
+        });
     }, 300);
   }, []);
 
