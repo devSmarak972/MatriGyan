@@ -515,13 +515,16 @@ def getCourseQuiz(request, id):
 		return Response("No quizes found")
 
 @api_view(['POST'])
-def createQuiz(request, id):
+def createQuiz(request):
 	quiz = QuizSerializer(data=request.data)
-	course = Course.objects.get(id=id)
-	if quiz.is_valid():
+    	if quiz.is_valid():
 		quiz.save()
-		course_quiz = Quiz.objects.get(id = quiz.data['id'])
-		course.quizes.add(course_quiz)
+  
+		if request.data["course_id"]:
+			course = Course.objects.get(id=request.data["course_id"])
+			course_quiz = Quiz.objects.get(id = quiz.data['id'])
+			course.quizes.add(course_quiz)
+
 		return Response("Quiz created!")
 	return Response("Invalid")
 
