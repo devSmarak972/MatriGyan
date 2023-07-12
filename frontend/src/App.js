@@ -9,6 +9,7 @@ import Resources from "./pages/Resources";
 import StudentCalendarPage from "./pages/StudentCalendarPage";
 import EducatorCalendarPage from "./pages/EducatorCalendarPage";
 import EditQuizPage from "./pages/EditQuiz/EditQuizPage";
+import NewQuizPage from "./pages/EditQuiz/NewQuizPage";
 import Live from "./pages/Live";
 import Liveclass from "./pages/Liveclass";
 import Quiz from "./pages/Quiz/Quiz";
@@ -18,16 +19,15 @@ import ReviewQuiz from "./pages/Quiz/ReviewQuiz";
 import CoursePreview from "./pages/CoursePreview";
 import MyContents from "./pages/MyContents";
 import SearchLanding from "./components/LandingPage/SearchLanding";
-import Loader from "./loader"
+import Loader from "./loader";
 import MyItems from "./pages/MyContents";
-import Page404 from "./pages/Page404/Page404"
+import Page404 from "./pages/Page404/Page404";
 import InDev from "./pages/InDev/InDev";
 function App() {
   return (
     <Router>
       <div>
         <Routes>
-
           <Route exact path="/" element={<LandingPage />} />
           {/* <Route path="/search" element={<SearchLanding />} /> */}
           <Route path="/login" element={<LoginSignup />} />
@@ -41,6 +41,7 @@ function App() {
           <Route path="/student/calendar" element={<StudentCalendarPage />} />
           <Route path="/educator/calendar" element={<EducatorCalendarPage />} />
           <Route path="/quiz/:ID/edit" element={<EditQuizPage />} />
+          <Route path="/quiz/new" element={<NewQuizPage />} />
           <Route path="/live/:ID" element={<Liveclass />} />
           <Route path="/quiz/:ID" element={<Quiz />} />
           <Route path="/quiz/:ID/start" element={<PreQuiz />} />

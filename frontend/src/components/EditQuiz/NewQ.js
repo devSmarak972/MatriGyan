@@ -139,7 +139,7 @@ const NewQ = (props) => {
           props.form.reset();
           open();
         }}
-        className="flex gap-2 items-center text-sm font-medium text-white bg-[var(--primary)] px-3 py-1.5 rounded-lg"
+        className="flex gap-2 items-center text-sm font-medium text-[var(--primary)] bg-blue-200 px-3 py-2 rounded-lg"
       >
         <FontAwesomeIcon icon={faPlus} size="lg" />
         New Question

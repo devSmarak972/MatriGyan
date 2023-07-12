@@ -2,52 +2,29 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/EducatorDashboard/Sidebar";
 import Added from "../../components/EditQuiz/Added";
 import Save from "../../components/EditQuiz/Save";
-// import data from "../../components/EditQuiz/questions.json";
+import data from "../../components/EditQuiz/questions.json";
 import { useForm } from "@mantine/form";
 import NewQ from "../../components/EditQuiz/NewQ";
 import QuizCourse from "../../components/EditQuiz/OtherDetails";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const EditQuizPage = () => {
-  const { ID } = useParams();
-  const [data, setData] = useState({});
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios
-          .get(`http://localhost:8000/get-quiz/${ID}/`)
-          .then((res) => {
-            setData({
-              name: res.data.name,
-              topic: res.data.topic,
-              mins: res.data.time,
-              questions: res.data.questions.map((q) => ({
-                question: q.question,
-                options: q.options,
-                type: q.type === "SINGLE" ? "single" : "multi",
-                correct: q.marks,
-                incorrect: q.type === "SINGLE" ? -1 : -2,
-                answer: [parseInt(q.solution.answer)],
-                image: q.image,
-              })),
-            });
-          });
-      } catch (e) {
-        console.log("Error fetching data: ", e);
-      }
+    const f = async () => {
+      console.log("HELLO");
+      await axios
+        .post(`http://localhost:8000/create-quiz/`, {
+          name: "samplename",
+          topic: "sampletopic",
+          subject: "sampleSubject",
+        })
+        .then((res) => console.log(res.data))
+        .catch((e) => console.log(e));
     };
-
-    fetchData();
+    f();
   }, []);
 
-  const [questions, setQuestions] = useState(data.questions);
-
-  useEffect(() => {
-    setQuestions(data.questions);
-  }, [data]);
-
-  console.log(questions);
+  const [questions, setQuestions] = useState(data);
 
   const form1 = useForm({
     initialValues: {
@@ -105,14 +82,12 @@ const EditQuizPage = () => {
     },
   });
 
-  if (JSON.stringify(data) === "{}" || !questions) return null;
-
   return (
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
       <Sidebar />
       <main className="main-content w-full pb-8 px-[var(--margin-x)]">
         <span className="text-[1.75rem] font-bold text-slate-700 mb-8">
-          Edit Quiz
+          New Quiz
         </span>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="col-span-1 lg:col-span-2">
@@ -136,7 +111,7 @@ const EditQuizPage = () => {
             />
           </div>
           <div>
-            <QuizCourse form={form2} />
+            <QuizCourse form={form2} questions={questions} />
           </div>
         </div>
       </main>

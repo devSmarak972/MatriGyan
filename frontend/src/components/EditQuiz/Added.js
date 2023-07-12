@@ -48,7 +48,7 @@ const Added = (props) => {
 
   const [ansShow, setAnsShow] = useState(0);
 
-  console.log(props.form.isValid());
+  console.log(props);
 
   const items = props.questions.map((item, index) => (
     <Draggable key={"" + index} index={index} draggableId={"" + index}>
@@ -117,7 +117,7 @@ const Added = (props) => {
                         {id === 0 ? "A" : id === 1 ? "B" : id === 2 ? "C" : "D"}
                         .
                       </span>
-                      <span>{opt}</span>
+                      <span>{opt.value}</span>
                     </div>
                   ))}
                 </motion.div>
