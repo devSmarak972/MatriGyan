@@ -2,12 +2,19 @@ import React from "react";
 import PageSeperator from "./PageSeperator";
 import Row from "./Row";
 
-function PopularCourses({ title, courseData }) {
-  console.log("Courses: ", courseData);
+function PopularCourses({ title, courses }) {
+  console.log("Courses: ", courses);
   return (
     <>
+    
+
+    
+   
+
+    
       {title && <PageSeperator title={title}></PageSeperator>}
-      <Row courseData={courseData}></Row>
+      {courses && <Row courseData={courses}></Row>}
+
     </>
   );
 }

@@ -7,9 +7,13 @@ import { Button, TextInput, Checkbox, PasswordInput } from "@mantine/core";
 import { motion } from "framer-motion";
 import "../../pages/LoginSignup/LoginSignup.css";
 // import setCookie
-import {useCookies} from "react-cookie"
+// import {useCookies} from "react-cookie"
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const LogIn = (props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(["csrftoken"]);
+  // const [cookies, setCookie, removeCookie] = useCookies(["csrftoken"]);
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
@@ -41,16 +45,27 @@ const LogIn = (props) => {
           navigate("../student");
           else
           navigate("/");
-
+         
 
 
           // setCookie('csrftoken', , { path: '/' });
 
           // setCookie();
         }
+        else{
+          
+          throw res.data["message"]
+        }
+      }).catch(err=>{
+        console.log(err)
+        const errToast = () => toast("Failed to login: "+err);
+          errToast();
       });
   };
   return (
+    <>
+    <ToastContainer></ToastContainer>
+    
     <motion.div
       initial={false}
       animate={{
@@ -115,6 +130,7 @@ const LogIn = (props) => {
         </div>
       </div>
     </motion.div>
+    </>
   );
 };
 

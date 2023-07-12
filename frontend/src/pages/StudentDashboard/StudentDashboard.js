@@ -16,6 +16,8 @@ import { getCookie } from "../../utils/apiCaller";
 import Loader from "../../loader";
 import { useNavigate } from "react-router-dom";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const StudentDashboard = () => {
   const navigate=useNavigate();
   const [Data, setData] = useState({});
@@ -52,6 +54,10 @@ const StudentDashboard = () => {
       if (mounted.current) {
         setData(res.data);
       }
+    }).catch(err=>{
+
+      const notify = () => toast(err.message);
+       notify();
     });
     return () => (mounted.current = false);
   }, []);
@@ -62,9 +68,10 @@ const StudentDashboard = () => {
     comp = Data.enrolled_courses.length - Data.on_courses.length;
   return (
     <>
+    <ToastContainer></ToastContainer>
     {loader?<Loader></Loader>:""}
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar />
+      <Sidebar utype={"student"}/>
       <main className="main-content w-full pb-8 ml-5">
         <Welcome name={Data.name} />
         <CurrentCourses courses={Data.enrolled_courses} type="student" />
@@ -84,9 +91,9 @@ const StudentDashboard = () => {
           <LiveLectures lectures={Data.live_classes} />
           {Data.enrolled_courses ? (
             <CompletedCourses
-              courses={Data.enrolled_courses.filter(
+              courses={Data.on_courses.length!==0?Data.enrolled_courses.filter(
                 (x) => !Data.on_courses.reduce((val,el)=>(x.id===el.id)||val)
-              )}
+              ):[]}
             />
           ) : (
             ""
@@ -103,13 +110,13 @@ const StudentDashboard = () => {
               </span>
             </div>
             <div className="noHoverCard card px-4 py-2 mb-2 h-auto justify-center flex flex-col gap-y-2">
-              {Data.on_courses ? (
+              {(Data.on_courses && Data.on_courses.length!==0)? (
                 Data.on_courses.map((el) => {
                   var tags=el.tags.map(tagd=>tagd.tagname);
                   return <ItemCard educator={el.educator.name} title={el.title} tags={tags}></ItemCard>;
                 })
               ) : (
-                <p>
+                <p className="p-3">
                   No ongoing courses. Enroll to some course to get started! 
               </p>
               )}
