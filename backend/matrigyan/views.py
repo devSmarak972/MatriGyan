@@ -517,7 +517,7 @@ def getCourseQuiz(request, id):
 @api_view(['POST'])
 def createQuiz(request):
 	quiz = QuizSerializer(data=request.data)
-    	if quiz.is_valid():
+	if quiz.is_valid():
 		quiz.save()
   
 		if request.data["course_id"]:
