@@ -1,5 +1,6 @@
 [
     {
+        "id":1,
         "name": "Learn Angular fundamentals",
         "tutor": "Alak Pankey",
         "length": 12,
@@ -8,6 +9,7 @@
         "img_url_2": "../../public/images/paths/angular_430x168.png"
     },
     {
+        "id":2,
         "name": "Learn fundamentals of ReactJS",
         "tutor": "Prathmesh Somani",
         "length": 12,
@@ -16,6 +18,7 @@
         "img_url_2": "../../public/images/paths/angular_430x168.png"
     },
     {
+        "id":3,
         "name": "Zero to Job Ready in just 3months, Learn C++",
         "tutor": "Akshat Agarwal",
         "length": 12,
@@ -24,6 +27,7 @@
         "img_url_2": "../../public/images/paths/angular_430x168.png"
     },
     {
+        "id":4,
         "name": "Zero to Job Ready in just 3months, Learn C",
         "tutor": "Anish",
         "length": 12,
@@ -32,6 +36,7 @@
         "img_url_2": "../../public/images/paths/angular_430x168.png"
     },
     {
+        "id":5,
         "name": "Learn fundamentals of python",
         "tutor": "Abhishek",
         "length": 12,
@@ -40,6 +45,7 @@
         "img_url_2": "../../public/images/paths/angular_430x168.png"
     },
     {
+        "id":6,
         "name": "Learn Everthing with the best educators",
         "tutor": "Matrigyaan",
         "length": 12,
@@ -48,6 +54,7 @@
         "img_url_2": "../../public/images/paths/angular_430x168.png"
     },
     {
+        "id":7,
         "name": "Learn fundamentals of NodeJS",
         "tutor": "Smarak Kanjilal",
         "length": 12,
