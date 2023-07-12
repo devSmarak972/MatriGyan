@@ -177,7 +177,7 @@ const SignUp = (props) => {
 
         }
            
-      }).then(err=>{
+      }).catch(err=>{
         console.log(err.message);
         const notify = () => toast(err.message);
        notify();
@@ -223,7 +223,6 @@ const SignUp = (props) => {
 
   return (
     <>
-    <ToastContainer></ToastContainer>
     <motion.div
       initial={false}
       animate={{

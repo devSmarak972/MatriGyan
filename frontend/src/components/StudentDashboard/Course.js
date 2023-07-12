@@ -48,7 +48,7 @@ const Course = (props) => {
                 <span
                   className={
                     `text-xs font-normal ` +
-                    (props.percent > 60
+                    ((props.enrolled>props.ongoing/2) > 60
                       ? `dark:text-green text-green-600`
                       : `dark:text-red text-red-600`)
                   }

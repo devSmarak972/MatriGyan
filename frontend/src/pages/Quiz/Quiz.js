@@ -5,13 +5,13 @@ import { faGrip } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
-
 import data from "./quiz.json";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const Quiz = () => {
   const { ID } = useParams();
   const [data, setData] = useState({});
+  const navigate=useNavigate()
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,6 +38,7 @@ const Quiz = () => {
           });
       } catch (e) {
         console.log("Error fetching data: ", e);
+        navigate("/not-found",{replace:true})
       }
     };
 

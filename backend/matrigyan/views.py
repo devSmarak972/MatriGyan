@@ -320,15 +320,26 @@ def editCourse(request,id):
 
 @api_view(['GET'])
 def getCourses(request):
+	# student=Student.objects.filter()
 	courses = Course.objects.all()
 	courseserializer = CourseSerializer(courses, many=True)
-	return Response(courseserializer.data)
+	return Response({"success":True,"data":courseserializer.data})
 
 @api_view(['GET'])
 def getCourse(request, id):
 	course = Course.objects.get(id=id)
+	students=course.student_enrolled.all().values_list("user")
+	enrolled=False
+	# sections=course.coursesection_set.all()
+	# sections=SectionSerializer(sections,many=True)
+	# print(request.user,list(students))
+	# student=Student.objects.get(user=request.user)
+	
+	if (request.user.id,) in list(students):
+		enrolled=True
+		print("enrolled")
 	c = CourseSerializer(course, many=False)
-	return Response(c.data)
+	return Response({"data":c.data,"isEnrolled":enrolled})
 @api_view(['GET'])
 def getEducatorDashData(request):
 	print(request.user)
@@ -358,7 +369,7 @@ def getEducatorDashData(request):
 	# feedbacks=[]
 	feedbacks=FeedbackSerializer(feedbacks, many=True)
 	
-	print(feedbacks)
+	# print(feedbacks)
 	# response = Response({"name":student.first_name,"id":student.id,"avgTestScore":student.avgTestScore,"enrolled_courses":mycourses.data,"on_courses":on_courses.data,"totalWatchTime":student.totalWatchTime,"avgWatchTime":student.avgWatchTime,"attempted_tests":att_tests.data,"my_tests":tests.data,"live_classes":live_classes.data,"tasks":tasks.data,"events":events.data})
 	response=Response({"success":True,"tasks":tasks.data,"watchTime":321,"numTests":len(tests),"taughtTime":educator.taughtTime,"rating":educator.rating,"numTests":educator.numTests,"numStudents":educator.numStudents,"courses":courses.data,"comments":comments.data,"classes":classes.data,"feedback":feedbacks.data})
 	response["Access-Control-Allow-Origin"] = "http://localhost:3000"
@@ -387,7 +398,7 @@ def getStudentDashData(request):
 	tasks=student.task.all()
 	events=student.event.all()
 	live_classes=student.live_class.all()
-	print(mycourses.first().sections.all())
+	# print(mycourses.first().sections.all())
 	# user=User.objects.get()
 	# course = Course.objects.all()
 	mycourses = CourseSerializer(mycourses, many=True)
@@ -425,7 +436,7 @@ def addCourse(request):
 	if course.is_valid():
 		course.save()
 		return Response({"success":True,"message":"Course Created","course":course.data})
-	return Response({"success":False,"message":"Invalid input"})
+	return Response({"success":False,"message":"Invalid input","errors":course.errors})
 
 @api_view(['GET'])
 def getSections(request, id):
@@ -435,6 +446,22 @@ def getSections(request, id):
 		return Response(serialized_section.data)
 	else:
 		return Response("No sections available!")
+@api_view(['GET'])
+def enrollCourse(request, id):
+	student=Student.objects.get(user=request.user)
+	if not student:
+			return Response({"success":False,"message":"Not logged in"})
+
+	course = Course.objects.filter(id=id).first()
+
+	if course!=None:
+		student.enrolled_course.add(course)
+		student.save()
+			
+		# serialized_section = SectionSerializer(sections, many=True)
+		return Response({"success":True,"message":"course added successfully","isEnrolled":True})
+	else:
+		return Response({"success":False,"message":"The course is not available"})
 
 @api_view(['POST'])
 def addSection(request, id):
@@ -442,13 +469,30 @@ def addSection(request, id):
 	sec = SectionSerializer(data=request.data)
 	if sec.is_valid():
 		title = sec.data['title']
-		duration = int(sec.data['duration'])
+		# duration = int(sec.data['duration'])
 		order_id = int(sec.data['order_id'])
-		section = CourseSection(title=title, duration=duration, order_id=order_id)
+		course_id = id
+		section = CourseSection(course_id=course_id,title=title, order_id=order_id)
 		section.save()
-		course.sections.add(section)
+		# course.sections.add(section)
 		return Response("Section added!")
 	return Response("Invalid")
+
+@api_view(['POST'])
+def addVideo(request,course_id):
+	print(request.data["order_id"])
+	course_section = CourseSection.objects.get(course_id=course_id,order_id=request.data["order_id"])
+	creator=course_section.course.educator
+	print(creator)
+	data=request.data.copy()
+	data["section"]=course_section.id
+	print(data,request.data)
+	video = VideoSerializer(data=data)
+	#must send the section_id with body
+	if video.is_valid():
+		video.save()
+		return Response({"success":True,"video":video.data,"message":"video added!"})
+	return Response({"Success":False,"errors":video.errors})
 
 @api_view(['DELETE'])
 def deleteSection(request, id):
@@ -473,13 +517,16 @@ def getCourseQuiz(request, id):
 		return Response("No quizes found")
 
 @api_view(['POST'])
-def createQuiz(request, id):
+def createQuiz(request):
 	quiz = QuizSerializer(data=request.data)
-	course = Course.objects.get(id=id)
 	if quiz.is_valid():
 		quiz.save()
-		course_quiz = Quiz.objects.get(id = quiz.data['id'])
-		course.quizes.add(course_quiz)
+  
+		if request.data["course_id"]:
+			course = Course.objects.get(id=request.data["course_id"])
+			course_quiz = Quiz.objects.get(id = quiz.data['id'])
+			course.quizes.add(course_quiz)
+
 		return Response("Quiz created!")
 	return Response("Invalid")
 

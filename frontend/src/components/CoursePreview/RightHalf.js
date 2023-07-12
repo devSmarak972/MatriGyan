@@ -71,9 +71,9 @@ function RightHalf() {
               strategies through continued coursework.
             </p>
 
-            <Link href="/teacher/:id" class="btn btn-white mb-24pt">
-              Follow
-            </Link>
+            {/* <Link href="/teacher/:id" class="btn btn-white mb-24pt">
+              View profile
+            </Link> */}
           </div>
   )
 }
