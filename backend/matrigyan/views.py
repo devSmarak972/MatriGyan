@@ -358,7 +358,7 @@ def getEducatorDashData(request):
 	# feedbacks=[]
 	feedbacks=FeedbackSerializer(feedbacks, many=True)
 	
-	print(feedbacks)
+	# print(feedbacks)
 	# response = Response({"name":student.first_name,"id":student.id,"avgTestScore":student.avgTestScore,"enrolled_courses":mycourses.data,"on_courses":on_courses.data,"totalWatchTime":student.totalWatchTime,"avgWatchTime":student.avgWatchTime,"attempted_tests":att_tests.data,"my_tests":tests.data,"live_classes":live_classes.data,"tasks":tasks.data,"events":events.data})
 	response=Response({"success":True,"tasks":tasks.data,"watchTime":321,"numTests":len(tests),"taughtTime":educator.taughtTime,"rating":educator.rating,"numTests":educator.numTests,"numStudents":educator.numStudents,"courses":courses.data,"comments":comments.data,"classes":classes.data,"feedback":feedbacks.data})
 	response["Access-Control-Allow-Origin"] = "http://localhost:3000"
@@ -425,7 +425,7 @@ def addCourse(request):
 	if course.is_valid():
 		course.save()
 		return Response({"success":True,"message":"Course Created","course":course.data})
-	return Response({"success":False,"message":"Invalid input"})
+	return Response({"success":False,"message":"Invalid input","errors":course.errors})
 
 @api_view(['GET'])
 def getSections(request, id):
@@ -442,13 +442,29 @@ def addSection(request, id):
 	sec = SectionSerializer(data=request.data)
 	if sec.is_valid():
 		title = sec.data['title']
-		duration = int(sec.data['duration'])
+		# duration = int(sec.data['duration'])
 		order_id = int(sec.data['order_id'])
-		section = CourseSection(title=title, duration=duration, order_id=order_id)
+		course_id = id
+		section = CourseSection(course_id=course_id,title=title, order_id=order_id)
 		section.save()
-		course.sections.add(section)
+		# course.sections.add(section)
 		return Response("Section added!")
 	return Response("Invalid")
+@api_view(['POST'])
+def addVideo(request,course_id):
+	print(request.data["order_id"])
+	course_section = CourseSection.objects.get(course_id=course_id,order_id=request.data["order_id"])
+	creator=course_section.course.educator
+	print(creator)
+	data=request.data.copy()
+	data["section"]=course_section.id
+	print(data,request.data)
+	video = VideoSerializer(data=data)
+	#must send the section_id with body
+	if video.is_valid():
+		video.save()
+		return Response({"success":True,"video":video.data,"message":"video added!"})
+	return Response({"Success":False,"errors":video.errors})
 
 @api_view(['DELETE'])
 def deleteSection(request, id):

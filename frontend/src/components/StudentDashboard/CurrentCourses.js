@@ -42,10 +42,11 @@ const CurrentCourses = (props) => {
   // ];
   useLayoutEffect(() => {
     setSlides(() => {
-      let width = ref.current.offsetWidth;
+      // let width = ref.current.offsetWidth;
+      let width = window.innerWidth;
       console.log(width);
       if (width < 500) return 1;
-      else if (width < 750) return 1.3;
+      else if (width < 750) return 2;
       else if (width < 1500) return 2.3;
       else return 3.3;
     });
@@ -57,7 +58,7 @@ const CurrentCourses = (props) => {
   //       let width = ref.current.offsetWidth;
   //       console.log(width);
   //       if (width < 500) return 1;
-  //       else if (width < 900) return 1.3;
+  //       else if (width < 900) return 2;
   //       else if (width < 1400) return 2.3;
   //       else return 3.3;
   //     });
@@ -81,7 +82,7 @@ const CurrentCourses = (props) => {
           My Courses
         </motion.p>
         <a
-          href="/courses"
+          href="/educator/contents"
           class="pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70"
         >
           View All
@@ -90,7 +91,7 @@ const CurrentCourses = (props) => {
       <div className="flex">
         <div
           ref={ref}
-          className="swiper mx-0 mt-4 px-[var(--margin-x)] transition-all duration-[.25s]"
+          className="swiper w-full mx-0 mt-4 px-[var(--margin-x)] transition-all duration-[.25s]"
         >
           <swiper-container
             className="swiper-wrapper"
@@ -110,13 +111,15 @@ const CurrentCourses = (props) => {
                     image: el.image
                       ? el.image
                       : "https://i.ytimg.com/vi/dfUDCgaFOBE/maxresdefault.jpg",
-                    duration: el.duration,
+                    duration: el.duration?el.duration:0,
+                    id:el.id
                   };
                 })
                 .map((el) => {
+                  console.log(el,"courses of educator")
                   return (
                     <swiper-slide>
-                      <Course key={el.coursename} {...el} type={type} />
+                      <Course key={el.coursename+"_"+el.id} {...el} type={type} />
                     </swiper-slide>
                   );
                 })

@@ -22,10 +22,13 @@ import Loader from "./loader"
 import MyItems from "./pages/MyContents";
 import Page404 from "./pages/Page404/Page404"
 import InDev from "./pages/InDev/InDev";
+import {ToastContainer} from "react-toastify"
 function App() {
   return (
     <Router>
       <div>
+      <ToastContainer></ToastContainer>
+
         <Routes>
 
           <Route exact path="/" element={<LandingPage />} />

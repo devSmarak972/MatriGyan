@@ -26,7 +26,14 @@ class CategorySerializer(serializers.ModelSerializer):
 		model = CourseCategory
 		fields = "__all__"
 
+class VideoSerializer(serializers.ModelSerializer):
+	
+	class Meta:
+		model = Video
+		fields = "__all__"
 class SectionSerializer(serializers.ModelSerializer):
+	videos=VideoSerializer(many=True,read_only=True,required=False)
+	duration=serializers.ReadOnlyField(read_only=True,required=False)
 	class Meta:
 		model = CourseSection
 		fields = "__all__"
@@ -188,11 +195,12 @@ class CourseSerializer(serializers.ModelSerializer):
 			course = Course.objects.create(**validated_data)
    
 			for category in categories:
+				# print(category)
 				el,_ = CourseCategory.objects.get_or_create(category=category["category"].lower())
 				cat+=[el]
 			course.category.add(*cat)
 			for tag in coursetags:
-				el,_ = CourseTag.objects.get_or_create(tagname=coursetags["tagname"].lower())
+				el,_ = CourseTag.objects.get_or_create(tagname=tag["tagname"].lower())
 				tags+=[el]
 			course.tags.add(*tags)
 			

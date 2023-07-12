@@ -21,6 +21,7 @@ urlpatterns = [
     path('get-comments/<int:id>/', views.getCommentCourse),
     path('get-category/', views.getCategory),
     path('add-category/<int:id>/', views.addCategory),
+    path('add-video/<int:course_id>/', views.addVideo),
     path('add-quiz-response/<int:student_id>/<int:quiz_id>/', views.addQuizResponse),
     path('get-quiz-response/<int:student_id>/<int:quiz_id>/', views.getQuizResponse),
     path('edit-course/<int:id>/', views.editCourse),
