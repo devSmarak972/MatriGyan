@@ -9,20 +9,7 @@ import QuizCourse from "../../components/EditQuiz/OtherDetails";
 import axios from "axios";
 
 const EditQuizPage = () => {
-  useEffect(() => {
-    const f = async () => {
-      console.log("HELLO");
-      await axios
-        .post(`http://localhost:8000/create-quiz/`, {
-          name: "samplename",
-          topic: "sampletopic",
-          subject: "sampleSubject",
-        })
-        .then((res) => console.log(res.data))
-        .catch((e) => console.log(e));
-    };
-    f();
-  }, []);
+ 
 
   const [questions, setQuestions] = useState(data);
 

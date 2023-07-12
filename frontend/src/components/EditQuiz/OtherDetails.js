@@ -1,14 +1,31 @@
 import { NumberInput, Select, TextInput } from "@mantine/core";
 import React from "react";
 import Save from "./Save";
+import axios from "axios";
 
 const QuizCourse = (props) => {
   return (
     <div>
       <form
-        onSubmit={props.form.onSubmit((values) => {
+        onSubmit={props.form.onSubmit(async (values) => {
           console.log(values);
-          console.log(props.questions.values);
+          console.log(props.questions);
+          const quizRes = await axios
+            .post(`http://localhost:8000/create-quiz/`, {
+              creator_id: 1,
+              name: values.name,
+              topic: values.topic,
+              subject: values.subject,
+              time: 30,
+            })
+            .then((res) => console.log(res.data))
+            .catch((e) => console.log(e));
+
+          console.log(quizRes);
+
+          // const ques = await axios("http://localhost:8000/get-questions/1")
+          //   .then((res) => console.log(res.data))
+          //   .catch((e) => console.log(e));
         })}
         className="flex flex-col gap-2"
       >
