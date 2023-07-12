@@ -527,8 +527,8 @@ def createQuiz(request):
 			course_quiz = Quiz.objects.get(id = quiz.data['id'])
 			course.quizes.add(course_quiz)
 
-		return Response("Quiz created!")
-	return Response("Invalid")
+		return Response({"success":True,"quiz":quiz.data,"message":"Quiz created!"})
+	return Response({"success":False,"message":"Invalid"})
 
 @api_view(['DELETE'])
 def deleteQuiz(request, id):
