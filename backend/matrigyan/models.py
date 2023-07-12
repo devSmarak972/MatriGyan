@@ -32,7 +32,7 @@ class Educator(models.Model):
 	task=models.ManyToManyField("Task",related_name="educator_task",blank=True)
 	
 	def __str__(self) -> str:
-		return self.name
+		return self.name+str(self.id)
 	@property
 	def numStudents(self):
 		return sum([el.ongoing for el in self.course_set.all()])
@@ -189,7 +189,7 @@ class QuizAnswer(models.Model):
 	response=models.ForeignKey(QuizResponse,on_delete=models.CASCADE,blank=True)
 	marks=models.IntegerField(default=0,blank=True)
 	def __str__(self):
-		return (self.question + self.response.student.full_name)
+		return (str(self.question) + self.response.student.full_name)
 	
 		
 
