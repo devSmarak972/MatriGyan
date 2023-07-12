@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom'
 function RightHalf({details}) {
   return (
     <div class="col-lg-4 text-left">
+            {details.isEnrolled?
+            <>
+            </>
+            :
+            <>
             <div class="card">
               <div class="card-body py-16pt text-center">
                 <span class="icon-holder icon-holder--outline-secondary rounded-circle d-inline-flex mb-8pt">
@@ -23,6 +28,7 @@ function RightHalf({details}) {
                 </p>
               </div>
             </div>
+            </>}
 
             <div class="page-separator">
               <div class="page-separator__text">Course</div>
