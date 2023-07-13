@@ -36,11 +36,11 @@ function Heading({details}) {
               </div>
             </div>
           </div>
-          <div className="ml-lg-16pt">
+          {/* <div className="ml-lg-16pt">
             <Link to="/" className="btn btn-light">
               Library
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

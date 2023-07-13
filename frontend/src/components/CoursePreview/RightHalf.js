@@ -76,10 +76,6 @@ function RightHalf({details}) {
               sociology and stay in tune with the latest digital marketing
               strategies through continued coursework.
             </p>
-
-            <Link to={`/teacher/${details.educator_id}`} class="btn btn-white mb-24pt">
-              Follow
-            </Link>
           </div>
   )
 }

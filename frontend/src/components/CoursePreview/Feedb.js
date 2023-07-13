@@ -35,7 +35,7 @@ function Feedb({details}) {
               </div>
               <div class="media-body media-middle">
                 <Link href="/student/:id" class="card-title">
-                  {comment.user}
+                  {comment.user.firstname}
                 </Link>
                 <div class="rating mt-4pt">
                   <span class="rating__item">
