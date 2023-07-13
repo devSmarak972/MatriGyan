@@ -4,6 +4,7 @@ import Save from "./Save";
 import axios from "axios";
 
 const QuizCourse = (props) => {
+  console.log(props.questions);
   return (
     <div>
       <form
@@ -19,37 +20,51 @@ const QuizCourse = (props) => {
             .then((res) => res.data.quiz.id)
             .catch((e) => console.log(e));
 
-          setTimeout(() => {
-            console.log(quizID);
-          }, 1500);
+          await axios
+            .get(`http://localhost:8000/get-quiz/${quizID}/`)
+            .then((res) => console.log(res.data))
+            .catch((e) => console.log(e));
 
-          setTimeout(() => {
-            props.questions.map(async (q, i) => {
-              await axios
-                .post(`http://localhost:8000/add-question/${quizID}/`, {
+          props.questions.map(async (q, i) => {
+            const quesID = await axios
+              .post(`http://localhost:8000/add-question/${quizID}/`, {
+                qnumber: i + 1,
+                question: q.question,
+                type: q.type === "single" ? "SINGLE" : "MULTIPLE",
+                options: q.options.map((val) => ({ value: val })),
+                image: q.image,
+                marks: q.correct,
+              })
+              .then(async (res) => {
+                await axios
+                  .post(`http://localhost:8000/add-solution/${res.data.id}/`, {
+                    answer: q.answer[0],
+                    solution: q.answer[0],
+                  })
+                  .then((res) => console.log(res))
+                  .catch((e) => console.log(q, e));
+                // console.log("ID: ", res.data.id);
+                // return res.data.id;
+              })
+              .catch((e) =>
+                console.log("ERRORRR for: ", {
                   qnumber: i + 1,
-                  questions: q.question,
-                  type: q.type === "single" ? "SINGLE" : "MULTI",
+                  question: q.question,
+                  type: q.type === "single" ? "SINGLE" : "MULTIPLE",
                   options: q.options.map((val) => ({ value: val })),
+                  image: q.image,
+                  marks: q.correct,
                 })
-                .then((res) => console.log(res))
-                .catch((e) => console.log(e));
-            });
-          }, 3000);
+              );
 
-          setTimeout(() => {
-            axios
-              .get(`http://localhost:8000/get-quiz/${quizID}/`)
-              .then((res) => console.log(res.data))
-              .catch((e) => console.log(e));
-          }, 6000);
-
-          setTimeout(() => {
-            axios
-              .get(`http://localhost:8000/get-questions/${quizID}/`)
-              .then((res) => console.log("Quiz Questions: ", res))
-              .catch((e) => console.log(e.response.data));
-          }, 9000);
+            // await axios
+            //   .post(`http://localhost:8000/add-solution/${quesID}/`, {
+            //     answer: q.answer[0],
+            //     solution: q.answer[0],
+            //   })
+            //   .then((res) => console.log(res))
+            //   .catch((e) => console.log(q, e));
+          });
         })}
         className="flex flex-col gap-2"
       >

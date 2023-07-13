@@ -117,7 +117,7 @@ const Added = (props) => {
                         {id === 0 ? "A" : id === 1 ? "B" : id === 2 ? "C" : "D"}
                         .
                       </span>
-                      <span>{opt.value}</span>
+                      <span>{opt}</span>
                     </div>
                   ))}
                 </motion.div>
@@ -228,7 +228,9 @@ const Added = (props) => {
                     correct: props.form.values.correct,
                     incorrect: props.form.values.incorrect,
                     answer: props.form.values.answer,
-                    image: props.form.values.image.name,
+                    image: props.form.values.image
+                      ? props.form.values.image.name
+                      : undefined,
                   };
               })
             );
@@ -323,6 +325,14 @@ const Added = (props) => {
           </Button>
         </form>
       </Modal>
+
+      {props.questions.length === 0 && (
+        <div className="flex items-center rounded-xl border-2 border-slate-300 p-4 pl-8 border-dashed mb-3 text-slate-400">
+          <span className="w-full text-center font-semibold text-base text-slate-400">
+            No Questions Added
+          </span>
+        </div>
+      )}
 
       <DragDropContext
         onDragEnd={({ destination, source }) => {

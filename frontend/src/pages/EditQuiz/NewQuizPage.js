@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/EducatorDashboard/Sidebar";
 import Added from "../../components/EditQuiz/Added";
 import Save from "../../components/EditQuiz/Save";
-import data from "../../components/EditQuiz/questions.json";
+// import data from "../../components/EditQuiz/questions.json";
 import { useForm } from "@mantine/form";
 import NewQ from "../../components/EditQuiz/NewQ";
 import QuizCourse from "../../components/EditQuiz/OtherDetails";
@@ -67,7 +67,7 @@ const EditQuizPage = () => {
   //   fetchData();
   // }, []);
 
-  const [questions, setQuestions] = useState(data);
+  const [questions, setQuestions] = useState([]);
 
   const form1 = useForm({
     initialValues: {
