@@ -29,7 +29,7 @@ function CoursePage() {
   useEffect(()=>{
     axios.get('http://127.0.0.1:8000/get-courses/')
     .then((res)=>{
-      console.log("Data recieved!");
+      console.log("Data recieved!",res.data);
       setData(res.data);
       console.log("Data set successfuly!");
     })
@@ -38,17 +38,18 @@ function CoursePage() {
     })
   },[])
 
-
+console.log(data,"data");
   return (
     <div className="page-section tw-page">
       <Sidebar></Sidebar>
       <div className="container page__container pt-6">
-
+         {(data && data.length!==0)?
+         <>
           <Header onButtonClick={handleclick}></Header>
           <Courses title="Popular Courses" courses={data}></Courses>
           <Courses title="Development Courses" courses={data}></Courses>
-          <Courses title="Desgin Courses" courses={data}></Courses>
-
+          <Courses title="Desgin Courses" courses={data}></Courses></>
+:<p className="m-auto p-3">Loading ...</p>}
       </div>
       <Backdrop isActive={isActive} onButtonClick={handleclick}></Backdrop>
       <Filters isActive={isActive}></Filters>

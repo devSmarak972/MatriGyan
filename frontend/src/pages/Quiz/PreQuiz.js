@@ -1,8 +1,42 @@
-import React from "react";
-import data from "./quiz.json";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+// import data from "./quiz.json";
+import { Link, json, useParams } from "react-router-dom";
+import axios from "axios";
 
 const PreQuiz = () => {
+  const { ID } = useParams();
+  const [data, setData] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios
+          .get(`http://localhost:8000/get-quiz/${ID}/`,{withCredentials:true})
+          .then((res) => {
+            setData({
+              name: res.data.name,
+              topic: res.data.topic,
+              mins: res.data.time,
+              questions: res.data.questions.map((q) => ({
+                question: q.question,
+                options: q.options,
+                type: q.type === "SINGLE" ? "single" : "multi",
+                correct: q.marks,
+                incorrect: q.type === "SINGLE" ? -1 : -2,
+                answer: [parseInt(q.solution.answer)],
+                image: q.image,
+              })),
+            });
+          });
+      } catch (e) {
+        console.log("Error fetching data: ", e);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (JSON.stringify(data) === "{}") return null;
+
   let total = 0;
   let qtypes = [];
   for (let i = 0; i < data.questions.length; i++) {
@@ -26,7 +60,9 @@ const PreQuiz = () => {
     <div className="p-4 h-screen flex bg-[var(--background-light)]">
       <div className="bg-white m-auto max-w-[500px] p-8 shadow-lg rounded-xl flex flex-col gap-3">
         <div className="flex flex-col">
-          <span className="font-semibold text-[var(--primary)]">Quiz</span>
+          <span className="font-semibold text-[var(--primary)]">
+            {data.name}
+          </span>
           <span className="font-medium text-black text-base">{data.topic}</span>
         </div>
         <span>
@@ -101,12 +137,11 @@ const PreQuiz = () => {
           </div>
         </div>
         <Link
-          to="/quiz"
+          to={`/quiz/${ID}`}
           onClick={() => {
-            console.log(localStorage.getItem("timer"));
             if (!localStorage.getItem("timer"))
               localStorage.setItem("timer", JSON.stringify(Date.now()));
-            else console.log(localStorage.getItem("timer"));
+            // else console.log(localStorage.getItem("timer"));
           }}
           className="w-fit m-auto text-center mt-2 hover:scale-105 font-medium text-[var(--primary)] bg-blue-200 px-3 py-1.5 rounded-lg"
         >

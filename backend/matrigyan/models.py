@@ -32,7 +32,7 @@ class Educator(models.Model):
 	task=models.ManyToManyField("Task",related_name="educator_task",blank=True)
 	
 	def __str__(self) -> str:
-		return self.name
+		return self.name+str(self.id)
 	@property
 	def numStudents(self):
 		return sum([el.ongoing for el in self.course_set.all()])
@@ -47,15 +47,33 @@ class Educator(models.Model):
 		# courses=self.course_set.all()
 		feedbacks=Feedback.objects.filter(course__educator=self.id)
 		return feedbacks
+class Video(models.Model):
+	title=models.TextField(default="",blank=True)
+	url=models.TextField(default="",blank=True)
+	duration=models.IntegerField(default=0)#in mins
+	section=models.ForeignKey("CourseSection",blank=True,on_delete=models.CASCADE)
+	def __str__(self):
+		return self.url
 # Create your models here.
 class CourseSection(models.Model):
 	# course=models.ForeignKey("Course",on_delete=models.CASCADE, null=True, blank=True)
 	title=models.CharField(default="",max_length=255)
-	duration=models.IntegerField(default=0,null=True,blank=True)
-	order_id=models.IntegerField(primary_key=True)
+	# duration=models.IntegerField(default=0,null=True,blank=True)
+	order_id=models.IntegerField(default=1)
+	course=models.ForeignKey("Course",blank=True,on_delete=models.CASCADE,null=True)
+	
+	@property
+	def duration(self):
+		return sum([el.duration for el in self.video_set.all()])
+	@property
+	def videos(self):
+		return self.video_set.all()
 	def __str__(self) -> str:
 		   return self.title+"_"+str(self.order_id)
 
+	
+	# def videos(self):
+	# 	return self.video_set.all()
  
 class CourseCategory(models.Model):
 	category=models.CharField(default="",unique=False,max_length=255)
@@ -164,14 +182,14 @@ class QuizResponse(models.Model):
 	def obtained_marks(self):
 		return sum([el.marks for el in self.quizanswer_set.all()])
 	
-			
+		
 class QuizAnswer(models.Model):
 	question=models.ForeignKey(Question,on_delete=models.CASCADE)
 	answer=models.TextField(default="",blank=True)
 	response=models.ForeignKey(QuizResponse,on_delete=models.CASCADE,blank=True)
 	marks=models.IntegerField(default=0,blank=True)
 	def __str__(self):
-		return (self.question + self.response.student_test.all().fullname)
+		return (str(self.question) + self.response.student.full_name)
 	
 		
 
@@ -190,7 +208,7 @@ class Course(models.Model):
 	# rating=models.IntegerChoices(default=0,choices=[0,1,2,3,4,5])
 	# duration=models.IntegerField(default=0,blank=True,null=True)
 	description=models.TextField(default="",blank=True,null=True)#received as html
-	sections=models.ManyToManyField("CourseSection",blank=True)
+	# sections=models.ManyToManyField("CourseSection",blank=True)
 	category=models.ManyToManyField("CourseCategory",blank=True)
 	tags=models.ManyToManyField("CourseTag",blank=True)
 	image = models.TextField(default="",null=True, blank=True)
@@ -202,18 +220,21 @@ class Course(models.Model):
 	@property
 	def rating(self):
 		feedbacks=self.feedback_set.all()
-		print(feedbacks)
+		# print(feedbacks)
 		if len(feedbacks)==0:
 			return 0
 		ratingsum=sum([el.rating for el in feedbacks])
 		return ratingsum/len(feedbacks)
+	@property
+	def sections(self):
+		return self.coursesection_set.all()
 	@property
 	def enrolled(self):
 		return len(self.student_enrolled.all())
 	@property
 	def duration(self):
 		dur=sum([el.duration for el in self.sections.all()])
-		print(dur,"sum")
+		# print(dur,"sum")
 		return dur
 	@property
 	def ongoing(self):
@@ -327,3 +348,13 @@ class Event(models.Model):
 	endTime = models.TimeField(blank=True, null=True)
 	daysOfWeek = models.TextField(blank=True , null=True)
 	user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+ 
+ 
+class Resource(models.Model):
+	image=models.TextField(default="",blank=True)
+	description=models.TextField(default="",blank=True)
+	title=models.TextField(default="",blank=True)
+	file_url=models.TextField(default="",blank=True)
+	creator=models.ForeignKey("Educator",on_delete=models.CASCADE,blank=True)
+	def __str__(self):
+		 return self.creator.id+"_"+self.title     

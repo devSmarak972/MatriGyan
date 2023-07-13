@@ -71,7 +71,7 @@ const StudentDashboard = () => {
     <ToastContainer></ToastContainer>
     {loader?<Loader></Loader>:""}
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar />
+      <Sidebar utype={"student"}/>
       <main className="main-content w-full pb-8 ml-5">
         <Welcome name={Data.name} />
         <CurrentCourses courses={Data.enrolled_courses} type="student" />
@@ -91,9 +91,9 @@ const StudentDashboard = () => {
           <LiveLectures lectures={Data.live_classes} />
           {Data.enrolled_courses ? (
             <CompletedCourses
-              courses={Data.enrolled_courses.filter(
+              courses={Data.on_courses.length!==0?Data.enrolled_courses.filter(
                 (x) => !Data.on_courses.reduce((val,el)=>(x.id===el.id)||val)
-              )}
+              ):[]}
             />
           ) : (
             ""
@@ -110,19 +110,19 @@ const StudentDashboard = () => {
               </span>
             </div>
             <div className="noHoverCard card px-4 py-2 mb-2 h-auto justify-center flex flex-col gap-y-2">
-              {Data.on_courses ? (
+              {(Data.on_courses && Data.on_courses.length!==0)? (
                 Data.on_courses.map((el) => {
                   var tags=el.tags.map(tagd=>tagd.tagname);
                   return <ItemCard educator={el.educator.name} title={el.title} tags={tags}></ItemCard>;
                 })
               ) : (
-                <p>
+                <p className="p-3">
                   No ongoing courses. Enroll to some course to get started! 
               </p>
               )}
             </div>
           </div>
-          <Tasklist tasks={Data.tasks}></Tasklist>
+          {Data.tasks?<Tasklist tasks={Data.tasks}></Tasklist>:<p className="p-3">Loading...</p>}
           <div class="flex flex-col col-span-4">
             <div class="flex justify-between">
               <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">

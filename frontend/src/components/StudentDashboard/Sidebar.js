@@ -13,10 +13,10 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Sidebar = () => {
+const Sidebar = (props) => {
   const [sidebar, setSidebar] = useState(0);
   const [open, setOpen] = useState(0);
-
+  var utype=props.utype?props.utype:"student"
   return (
     <div className="sidebar print:hidden tw-dash-page">
       {window.innerWidth < 768 && (
@@ -58,7 +58,7 @@ const Sidebar = () => {
           </div>
           <div className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6">
             <Link
-              to="#"
+              to={"/"+utype}
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Dashboard"
               data-tooltip-place="right"
@@ -75,7 +75,7 @@ const Sidebar = () => {
             </Link>
 
             <Link
-              to="#"
+              to="/courses"
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Courses"
               data-tooltip-place="right"
@@ -92,7 +92,7 @@ const Sidebar = () => {
             </Link>
 
             <Link
-              to="#"
+              to={"/"+utype+"/calendar"}
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Calendar"
               data-tooltip-place="right"
@@ -109,7 +109,7 @@ const Sidebar = () => {
             </Link>
 
             <Link
-              to="#"
+              to={"/resources"}
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Resources"
               data-tooltip-place="right"
