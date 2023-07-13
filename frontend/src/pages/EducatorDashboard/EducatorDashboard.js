@@ -105,7 +105,7 @@ const EducatorDashboard = () => {
               </span>
             </div>
             <div className="noHoverCard card px-0 py-2 mb-2 h-auto justify-center flex flex-col gap-y-2">
-              {Data?Data.classes?.map(el => {
+              {Data?.classes?.length?Data.classes.map(el => {
                 var date=new Date(el.start)
                 date=date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
                 var startDate=new Date(el.start);
@@ -115,7 +115,7 @@ const EducatorDashboard = () => {
                 var duration=parseInt(((endTime-startTime)/(1000*60)))
                 startTime=startDate.toLocaleTimeString(undefined, {timeZone: 'Asia/Kolkata', hour: 'numeric', minute: 'numeric', hour12: true });
                 return <EducatorClass title={el.title} date={date} start={startTime} duration={duration} tags={el.tags}></EducatorClass>;
-              }):<p>No classes scheduled</p>}
+              }):<p className="p-3">No classes scheduled</p>}
             </div>
           </div>
           <div class="flex flex-col col-span-4">

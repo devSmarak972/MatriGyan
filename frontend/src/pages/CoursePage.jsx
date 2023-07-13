@@ -49,11 +49,13 @@ function CoursePage() {
     <div className="page-section tw-page">
       <Sidebar></Sidebar>
       <div className="container page__container pt-6">
-
+         {(data && data.length!==0)?
+         <>
           <Header onButtonClick={handleclick}></Header>
-          <Courses title="Popular Courses"></Courses>
-          <Courses title="Development Courses"></Courses>
-          <Courses title="Desgin Courses"></Courses>
+          <Courses title="Popular Courses" courses={data}></Courses>
+          <Courses title="Development Courses" courses={data}></Courses>
+          <Courses title="Desgin Courses" courses={data}></Courses>
+
       </div>
       <Backdrop isActive={isActive} onButtonClick={handleclick}></Backdrop>
       <Filters isActive={isActive}></Filters>

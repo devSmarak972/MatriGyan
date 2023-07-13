@@ -26,7 +26,14 @@ class CategorySerializer(serializers.ModelSerializer):
 		model = CourseCategory
 		fields = "__all__"
 
+class VideoSerializer(serializers.ModelSerializer):
+	
+	class Meta:
+		model = Video
+		fields = "__all__"
 class SectionSerializer(serializers.ModelSerializer):
+	videos=VideoSerializer(many=True,read_only=True,required=False)
+	duration=serializers.ReadOnlyField(read_only=True,required=False)
 	class Meta:
 		model = CourseSection
 		fields = "__all__"
@@ -86,12 +93,12 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class QuizSerializer(serializers.ModelSerializer):
 	# questions=serializers.RelatedField(read_only=True)
-	creator= EducatorSerializer(read_only=True)
+	creator= EducatorSerializer(read_only=True,required=False)
 	creator_id = serializers.PrimaryKeyRelatedField(queryset=Educator.objects.all(), source='creator')
-	total_marks=serializers.ReadOnlyField(read_only=True)
-	number_of_questions=serializers.ReadOnlyField(read_only=True)
+	total_marks=serializers.ReadOnlyField(read_only=True,required=False)
+	number_of_questions=serializers.ReadOnlyField(read_only=True,required=False)
 	# questions=serializers.RelatedField(read_only=True,many=True)
-	questions=QuestionSerializer(read_only=True,many=True)
+	questions=QuestionSerializer(read_only=True,many=True,required=False)
 	class Meta:
 		model = Quiz
 		fields ="__all__"
@@ -100,8 +107,9 @@ class QuizSerializer(serializers.ModelSerializer):
 class QuizResponseSerializer(serializers.ModelSerializer):
 	quiz=QuizSerializer(read_only=True,required=False)
 	quiz_id=serializers.PrimaryKeyRelatedField(queryset=Quiz.objects.all(), source='quiz')
- 
+	# student=StudentSerializer(read_only=True,required=False)
 	obtained_marks=serializers.ReadOnlyField(read_only=True,required=False)
+	# educator_feedback=serializers.ReadOnlyField(read_only=True,required=False)
 	class Meta:
 		model = QuizResponse
 		fields = "__all__"
@@ -188,11 +196,12 @@ class CourseSerializer(serializers.ModelSerializer):
 			course = Course.objects.create(**validated_data)
    
 			for category in categories:
+				# print(category)
 				el,_ = CourseCategory.objects.get_or_create(category=category["category"].lower())
 				cat+=[el]
 			course.category.add(*cat)
 			for tag in coursetags:
-				el,_ = CourseTag.objects.get_or_create(tagname=coursetags["tagname"].lower())
+				el,_ = CourseTag.objects.get_or_create(tagname=tag["tagname"].lower())
 				tags+=[el]
 			course.tags.add(*tags)
 			
@@ -224,4 +233,9 @@ class ClassModelSerializer(serializers.ModelSerializer):
 	tags=CourseTagSerializer(read_only=True,many=True)
 	class Meta:
 		model = ClassModel
+		fields = "__all__"
+
+class ResourceSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Resource
 		fields = "__all__"

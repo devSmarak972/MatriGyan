@@ -37,15 +37,17 @@ function Row(props) {
   };
 
   const renderCourseCards = () => {
+    console.log(props.courseData.data,"data")
     const startIndex = (currentPage - 1) * coursesPerPage;
     const endIndex = startIndex + coursesPerPage;
     const currentCourses = courses.slice(startIndex, endIndex);
 
-    return currentCourses.map((course, index) => (
+    return currentCourses.map((course, index) => {
+      console.log(course)
+      return (
+      <Column key={course.id} cid={course.id} course={course} isTransitioning={isTransitioning}/>
 
-      <Column key={index} course={course} isTransitioning={isTransitioning}/>
-
-    ));
+    )});
   };
 
   return (

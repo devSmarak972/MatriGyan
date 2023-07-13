@@ -2,18 +2,24 @@ import React from "react";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import "./transition.css"
-import { Link } from "react-router-dom";
-function Column({ key, course, isTransitioning }) {
+import { Link, useNavigate } from "react-router-dom";
+function Column({ cid, course, isTransitioning }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   // const classes = isPopoverOpen
   //   ? "card h-100 card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card overlay--show"
   //   : "card h-100 card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card";
+ console.log("cid",cid)
+  const navigate=useNavigate();
   const togglePopover = () => {
     setIsPopoverOpen(!isPopoverOpen);
   };
+ function openCourse(event){
+  console.log(event.target.id,"open course")
+  navigate(`/course/${event.target.id}`,{replace:true})
+ }
   return (
     <>
-      <div className={`col-md-6 col-lg-4 my-2 col-xl-3 card-group-row__col course-card${isTransitioning ? " transitioning" : ""}`}>
+      <div  id={course.id} className={`col-md-6 col-lg-4 my-2 col-xl-3 card-group-row__col course-card${isTransitioning ? " transitioning" : ""}`}>
         <div
           className={`${isPopoverOpen
           ? "card h-100 card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card overlay--show"
@@ -97,7 +103,7 @@ function Column({ key, course, isTransitioning }) {
               {/* <small className="text-50">6 hours</small> */}
             </div>
             <div className="d-flex">
-            <button type="button" class="btn btn-outline-primary"><Link to={`/coursepage/${key}`}>View</Link></button>
+            <button type="button" class="btn btn-outline-primary"><Link to={`/course/${cid}`}>View</Link></button>
             </div>
           </div>
           

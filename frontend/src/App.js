@@ -22,10 +22,13 @@ import Loader from "./loader"
 import MyItems from "./pages/MyContents";
 import Page404 from "./pages/Page404/Page404"
 import InDev from "./pages/InDev/InDev";
+import {ToastContainer} from "react-toastify"
 function App() {
   return (
     <Router>
       <div>
+      <ToastContainer></ToastContainer>
+
         <Routes>
 
           <Route exact path="/" element={<LandingPage />} />
@@ -40,7 +43,7 @@ function App() {
           <Route path="/course/:ID/edit" element={<EditCourse />} />
           <Route path="/student/calendar" element={<StudentCalendarPage />} />
           <Route path="/educator/calendar" element={<EducatorCalendarPage />} />
-          <Route path="/quiz/edit" element={<EditQuizPage />} />
+          <Route path="/quiz/:ID/edit" element={<EditQuizPage />} />
           <Route path="/live/:ID" element={<Liveclass />} />
           <Route path="/quiz/:ID" element={<Quiz />} />
           <Route path="/quiz/:ID/start" element={<PreQuiz />} />
