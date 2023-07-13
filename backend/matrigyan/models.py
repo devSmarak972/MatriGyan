@@ -92,7 +92,7 @@ class Feedback(models.Model):
 	message=models.TextField(default="",blank=True)
 	course=models.ForeignKey("Course",on_delete=models.CASCADE)
 	rating=models.IntegerField(default=5,choices=ratings)
-	date=models.DateTimeField(blank=True,auto_now_add=True)
+	date=models.DateTimeField(blank=True,auto_now_add=True, null=True)
 	user=models.ForeignKey("Student",on_delete=models.CASCADE)
 	
 	def __str__(self):
@@ -178,7 +178,7 @@ class QuizAnswer(models.Model):
 class Task(models.Model):
 	name = models.CharField(max_length=250)
 	user=models.ForeignKey(User,on_delete=models.CASCADE)
-	due_date=models.DateTimeField(auto_now_add=True)
+	due_date=models.DateTimeField(auto_now_add=True, null=True, blank=True)
 	completed=models.BooleanField(default=False,blank=True)
 	def __str__(self):
 		return (self.name + self.user.username)

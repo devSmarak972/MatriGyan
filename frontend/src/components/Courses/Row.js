@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Column from "./Column";
 import { useState } from "react";
+import Details from "./Details.json"
 
 function Row(props) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [courses, setCourses] = useState(props.courses);
-
+  const [courses, setCourses] = useState(Details);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
+  // useEffect(()=>{
+  //   setCourses(props.coursesall);
+  //   console.log(props.coursesall);
+  // }, [])
+
   const coursesPerPage = 4;
-  const totalPages = Math.ceil(props.courseData.length / coursesPerPage);
+  const totalPages = Math.ceil(courses.length / coursesPerPage);
 
   const handleClickNext = () => {
     if (currentPage < totalPages) {
@@ -34,11 +39,11 @@ function Row(props) {
   const renderCourseCards = () => {
     const startIndex = (currentPage - 1) * coursesPerPage;
     const endIndex = startIndex + coursesPerPage;
-    const currentCourses = props.courseData.slice(startIndex, endIndex);
+    const currentCourses = courses.slice(startIndex, endIndex);
 
     return currentCourses.map((course, index) => (
 
-      <Column key={course.id} course={course} isTransitioning={isTransitioning}/>
+      <Column key={index} course={course} isTransitioning={isTransitioning}/>
 
     ));
   };

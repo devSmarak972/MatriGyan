@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PageSeperator from "./PageSeperator";
 import Row from "./Row";
+function PopularCourses(props) {
 
-function PopularCourses({ title, courseData }) {
-  console.log("Courses: ", courseData);
+  // const [coursesall, setCourses] = useState(props.courses);
+  // if(coursesall.length==0){
+  //   return null;
+  // }
+
   return (
     <>
-      {title && <PageSeperator title={title}></PageSeperator>}
-      <Row courseData={courseData}></Row>
-
+    <PageSeperator title = {props.title}></PageSeperator>
+    <Row ></Row>
     </>
   );
 }
