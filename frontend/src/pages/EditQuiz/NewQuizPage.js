@@ -9,64 +9,6 @@ import QuizCourse from "../../components/EditQuiz/OtherDetails";
 import axios from "axios";
 
 const EditQuizPage = () => {
-  // useEffect(() => {
-  //   const f = async () => {
-  //     console.log("EBESBB");
-  //     try {
-  //       await axios
-  //         .post(`http://localhost:8000/create-quiz/`, {
-  //           creator_id: 1,
-  //           name: "values.name",
-  //           topic: "values.topic",
-  //           subject: "values.subject",
-  //           time: "values.time",
-  //         })
-  //         .then((res) => console.log(res));
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
-  //   f();
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios
-  //         .get(`http://localhost:8000/get-quiz/1/`, {
-  //           withCredentials: true,
-  //         })
-  //         .then((res) => {
-  //           // if()
-  //           // throw res.message;
-  //           console.log({
-  //             name: res.data.name,
-  //             topic: res.data.topic,
-  //             mins: res.data.time,
-  //             questions: res.data.questions.map((q) => ({
-  //               id: q.id,
-  //               question: q.question,
-  //               options: q.options,
-  //               type: q.type === "SINGLE" ? "single" : "multi",
-  //               correct: q.marks,
-  //               incorrect: q.type === "SINGLE" ? -1 : -2,
-  //               answer: [parseInt(q.solution.answer)],
-  //               selected: [],
-  //               status: "unanswered",
-  //               image: q.image,
-  //             })),
-  //           });
-  //           // setStart(parseInt(res.data.time));
-  //         });
-  //     } catch (e) {
-  //       console.log("Error fetching data: ", e.response.data);
-  //       // navigate("/not-found", { replace: true });
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   const [questions, setQuestions] = useState([]);
 
   const form1 = useForm({
@@ -114,7 +56,6 @@ const EditQuizPage = () => {
       subject: "",
     },
     validate: {
-      course: (value) => (value.length === 0 ? "Choose a course" : null),
       time: (value) =>
         value.length === 0 || value === 0
           ? "Allot a non-zero time in minutes"

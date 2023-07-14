@@ -48,8 +48,6 @@ const Added = (props) => {
 
   const [ansShow, setAnsShow] = useState(0);
 
-  console.log(props);
-
   const items = props.questions.map((item, index) => (
     <Draggable key={"" + index} index={index} draggableId={"" + index}>
       {(provided, snapshot) => (
@@ -211,7 +209,6 @@ const Added = (props) => {
       <Modal centered opened={opened} onClose={close} title="Authentication">
         <form
           onSubmit={props.form.onSubmit((values) => {
-            // console.log(values);
             props.setQuestions((prev) =>
               prev.map((q, i) => {
                 if (i + 1 !== editingQ) return q;
@@ -340,9 +337,10 @@ const Added = (props) => {
           const to = destination?.index || 0;
           props.setQuestions((prev) =>
             prev.map((q, i) => {
-              if (i === from) return prev[to];
-              else if (i === to) return prev[from];
-              else return q;
+              if (i === to) return prev[from];
+              else if (i >= from && i < to) return prev[i + 1];
+              else if (i > to && i <= from) return prev[i - 1];
+              else return prev[i];
             })
           );
         }}

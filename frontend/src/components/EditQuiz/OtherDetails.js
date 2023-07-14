@@ -1,10 +1,28 @@
 import { NumberInput, Select, TextInput } from "@mantine/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Save from "./Save";
 import axios from "axios";
 
 const QuizCourse = (props) => {
-  console.log(props.questions);
+  const [courses, setCourses] = useState({});
+  useEffect(() => {
+    const f = async () => {
+      try {
+        await axios.get(`http://localhost:8000/get-courses/`).then((res) => {
+          console.log(res.data);
+          setCourses(res.data);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    f();
+  }, []);
+
+  if (JSON.stringify(courses) === "{}") return null;
+
+  console.log("Courses: ", courses.data);
+
   return (
     <div>
       <form
@@ -16,6 +34,7 @@ const QuizCourse = (props) => {
               topic: values.topic,
               subject: values.subject,
               time: values.time,
+              course_id: values.course,
             })
             .then((res) => res.data.quiz.id)
             .catch((e) => console.log(e));
@@ -41,21 +60,11 @@ const QuizCourse = (props) => {
                     answer: q.answer[0],
                     solution: q.answer[0],
                   })
-                  .then((res) => console.log(res))
-                  .catch((e) => console.log(q, e));
-                // console.log("ID: ", res.data.id);
+                  .then((res) => console.log(res.data))
+                  .catch((e) => console.log(e));
                 // return res.data.id;
               })
-              .catch((e) =>
-                console.log("ERRORRR for: ", {
-                  qnumber: i + 1,
-                  question: q.question,
-                  type: q.type === "single" ? "SINGLE" : "MULTIPLE",
-                  options: q.options.map((val) => ({ value: val })),
-                  image: q.image,
-                  marks: q.correct,
-                })
-              );
+              .catch((e) => console.log(e));
 
             // await axios
             //   .post(`http://localhost:8000/add-solution/${quesID}/`, {
@@ -102,12 +111,10 @@ const QuizCourse = (props) => {
         <Select
           label="Quiz Course"
           placeholder="Select course to add quiz to"
-          data={[
-            { value: "react", label: "React" },
-            { value: "ng", label: "Angular" },
-            { value: "svelte", label: "Svelte" },
-            { value: "vue", label: "Vue" },
-          ]}
+          data={courses.data.map((course) => ({
+            value: course.id,
+            label: course.title,
+          }))}
           {...props.form.getInputProps("course")}
         />
         <NumberInput

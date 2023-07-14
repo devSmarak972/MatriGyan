@@ -18,19 +18,26 @@ const EditQuizPage = () => {
         const response = await axios
           .get(`http://localhost:8000/get-quiz/${ID}/`)
           .then((res) => {
+            console.log(res.data);
             setData({
               name: res.data.name,
               topic: res.data.topic,
               mins: res.data.time,
               questions: res.data.questions.map((q) => ({
                 question: q.question,
-                options: q.options,
+                options: q.options.map((op) => op.value),
                 type: q.type === "SINGLE" ? "single" : "multi",
                 correct: q.marks,
                 incorrect: q.type === "SINGLE" ? -1 : -2,
                 answer: [parseInt(q.solution.answer)],
                 image: q.image,
               })),
+            });
+            form2.setValues({
+              name: res.data.name,
+              topic: res.data.topic,
+              time: res.data.time,
+              subject: res.data.subject,
             });
           });
       } catch (e) {
@@ -40,6 +47,8 @@ const EditQuizPage = () => {
 
     fetchData();
   }, []);
+
+  console.log(data);
 
   const [questions, setQuestions] = useState(data.questions);
 
@@ -89,7 +98,7 @@ const EditQuizPage = () => {
     initialValues: {
       name: "",
       course: "",
-      time: "",
+      time: 45,
       topic: "",
       subject: "",
     },
