@@ -21,8 +21,6 @@ const QuizCourse = (props) => {
 
   if (JSON.stringify(courses) === "{}") return null;
 
-  console.log("Courses: ", courses.data);
-
   return (
     <div>
       <form

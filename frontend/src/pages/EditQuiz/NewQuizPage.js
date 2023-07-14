@@ -11,6 +11,8 @@ import axios from "axios";
 const EditQuizPage = () => {
   const [questions, setQuestions] = useState([]);
 
+  console.log(questions);
+
   const form1 = useForm({
     initialValues: {
       question: "",
@@ -22,7 +24,9 @@ const EditQuizPage = () => {
       option3: "",
       option4: "",
       answer: "",
-      image: "",
+      solutionDesc: "",
+      quesMedia: "",
+      ansMedia: "",
     },
     validate: {
       question: (value) =>

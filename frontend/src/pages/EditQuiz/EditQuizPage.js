@@ -30,7 +30,9 @@ const EditQuizPage = () => {
                 correct: q.marks,
                 incorrect: q.type === "SINGLE" ? -1 : -2,
                 answer: [parseInt(q.solution.answer)],
-                image: q.image,
+                solutionDesc: q.solution.solution,
+                quesMedia: q.image,
+                ansMedia: q.solution.media,
               })),
             });
             form2.setValues({
@@ -47,8 +49,6 @@ const EditQuizPage = () => {
 
     fetchData();
   }, []);
-
-  console.log(data);
 
   const [questions, setQuestions] = useState(data.questions);
 
@@ -69,7 +69,9 @@ const EditQuizPage = () => {
       option3: "",
       option4: "",
       answer: "",
-      image: "",
+      solutionDesc: "",
+      quesMedia: "",
+      ansMedia: "",
     },
     validate: {
       question: (value) =>
