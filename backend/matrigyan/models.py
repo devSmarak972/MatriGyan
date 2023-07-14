@@ -348,7 +348,12 @@ class Event(models.Model):
 	endTime = models.TimeField(blank=True, null=True)
 	daysOfWeek = models.TextField(blank=True , null=True)
 	user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
- 
+
+class ResourceTag(models.Model):
+	name = models.CharField(max_length=250)
+
+	def __str__(self):
+		return self.name
  
 class Resource(models.Model):
 	image=models.TextField(default="",blank=True)
@@ -356,5 +361,6 @@ class Resource(models.Model):
 	title=models.TextField(default="",blank=True)
 	file_url=models.TextField(default="",blank=True)
 	creator=models.ForeignKey("Educator",on_delete=models.CASCADE,blank=True)
+	tagname = models.ForeignKey(ResourceTag, on_delete=models.CASCADE, null=True, blank=True)
 	def __str__(self):	
-		 return self.title     
+		 return self.title+"_"+self.tagname.name

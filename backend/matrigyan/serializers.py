@@ -239,3 +239,8 @@ class ResourceSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Resource
 		fields = "__all__"
+
+class ResourceTagSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = ResourceTag
+		fields = "__all__"
