@@ -93,7 +93,7 @@ else{
      { tasks ?
       <div class="card noHoverCard px-4 py-3 mb-2 h-auto gap-y-2 ">
         <div class="flex flex-col">
-          {((tasks.tasks.length!==0) && tasks.tasks)?tasks.tasks.map(el => {
+          {( tasks.tasks) && (tasks.tasks.length!==0)?tasks.tasks.map(el => {
             return <CheckboxItem key={el.id} props={{ ...el ,handleCheck:handleCheck}}></CheckboxItem>;
           }):<p>No tasks created</p>}
         </div>
