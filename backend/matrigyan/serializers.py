@@ -59,16 +59,22 @@ class QuestionSerializer(serializers.ModelSerializer):
 	def update(self,instance,validated_data):
 			print("validated question", validated_data)
 			options=[]
+			opt=[]
+            
 			if "options" in validated_data:
 					options = validated_data.pop('options')
 					opt=[]
 			
 			question=instance
+            
+			super().update(instance=instance, validated_data=validated_data)
+                
 			for option in options:
 					el= Option.objects.create(value=option["value"])
 					opt+=[el]
-			print(opt,"opt in update")
-			question.options.set(opt)
+					print(opt,"opt in update")
+			if(len(opt)!=0):
+				question.options.set(opt)
 			
 			return question
 	def create(self, validated_data):

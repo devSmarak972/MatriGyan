@@ -607,7 +607,7 @@ def editQuestion(request, id):
 	# if image:
 	# 	question.image=image
 	# question.save()
-	question=QuestionSerializer(instance=question,data=request.data)
+	question=QuestionSerializer(instance=question,data=request.data,partial=True)
 	if question.is_valid():
 		question.save()
 		return Response({"success":True,"message":"Question edited","question":question.data})
