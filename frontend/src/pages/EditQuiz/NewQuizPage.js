@@ -5,7 +5,7 @@ import Save from "../../components/EditQuiz/Save";
 // import data from "../../components/EditQuiz/questions.json";
 import { useForm } from "@mantine/form";
 import NewQ from "../../components/EditQuiz/NewQ";
-import QuizCourse from "../../components/EditQuiz/OtherDetails";
+import OtherDetails from "../../components/EditQuiz/OtherDetails";
 import axios from "axios";
 
 const EditQuizPage = () => {
@@ -88,6 +88,7 @@ const EditQuizPage = () => {
                     questions={questions}
                     setQuestions={setQuestions}
                     form={form1}
+                    axiosType="add"
                   />
                 </div>
               </div>
@@ -96,10 +97,11 @@ const EditQuizPage = () => {
               questions={questions}
               setQuestions={setQuestions}
               form={form1}
+              axiosType="add"
             />
           </div>
           <div>
-            <QuizCourse form={form2} questions={questions} />
+            <OtherDetails form={form2} questions={questions} axiosType="add" />
           </div>
         </div>
       </main>

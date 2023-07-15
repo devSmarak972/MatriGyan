@@ -17,51 +17,79 @@ import {
   Textarea,
   FileInput,
 } from "@mantine/core";
+import axios from "axios";
 
 const NewQ = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
-
-  // const fileToDataUri = (file) =>
-  //   new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.onload = (event) => {
-  //       resolve(event.target.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   });
 
   const fileToDataUri = (file) => {
     if (!file) return "";
     return URL.createObjectURL(file);
   };
 
+  console.log(props);
+
   return (
     <div>
       <Modal centered opened={opened} onClose={close} title="Authentication">
         <form
-          onSubmit={props.form.onSubmit((values) => {
-            // console.log(values);
+          onSubmit={props.form.onSubmit(async (values) => {
+            let quesID = undefined;
+            if (props.axiosType === "edit") {
+              quesID = await axios
+                .post(`http://localhost:8000/add-question/${props.ID}/`, {
+                  qnumber: props.questions.length + 1,
+                  question: values.question,
+                  type: values.type === "single" ? "SINGLE" : "MULTIPLE",
+                  options: [
+                    values.option1,
+                    values.option2,
+                    values.option3,
+                    values.option4,
+                  ].map((opt) => ({
+                    value: opt,
+                  })),
+                  image: values.quesMedia,
+                  marks: values.correct,
+                })
+                .then(async (res) => {
+                  await axios
+                    .post(
+                      `http://localhost:8000/add-solution/${res.data.id}/`,
+                      {
+                        answer: props.form.values.answer[0],
+                        solution: props.form.values.solutionDesc,
+                        media: props.form.values.ansMedia,
+                      }
+                    )
+                    .then((res) => console.log(res.data))
+                    .catch((e) => console.log(e));
+                  return res.data.id;
+                })
+                .catch((e) => console.log(e));
+            }
+            console.log(quesID);
             props.setQuestions((prev) => [
               ...prev,
               {
-                question: props.form.values.question,
-                type: props.form.values.type,
+                id: quesID ? quesID : undefined,
+                qnumber: prev.length + 1,
+                question: values.question,
+                type: values.type,
                 options: [
-                  props.form.values.option1,
-                  props.form.values.option2,
-                  props.form.values.option3,
-                  props.form.values.option4,
+                  values.option1,
+                  values.option2,
+                  values.option3,
+                  values.option4,
                 ],
-                correct: props.form.values.correct,
-                incorrect: -props.form.values.incorrect,
-                answer: props.form.values.answer,
-                solutionDesc: props.form.values.solutionDesc,
-                quesMedia: props.form.values.quesMedia
-                  ? fileToDataUri(props.form.values.quesMedia)
+                correct: values.correct,
+                incorrect: -values.incorrect,
+                answer: values.answer,
+                solutionDesc: values.solutionDesc,
+                quesMedia: values.quesMedia
+                  ? fileToDataUri(values.quesMedia)
                   : "",
-                ansMedia: props.form.values.ansMedia
-                  ? fileToDataUri(props.form.values.ansMedia)
-                  : "",
+                ansMedia: values.ansMedia ? fileToDataUri(values.ansMedia) : "",
               },
             ]);
             close();

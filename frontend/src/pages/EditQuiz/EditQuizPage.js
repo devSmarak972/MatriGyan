@@ -5,7 +5,7 @@ import Save from "../../components/EditQuiz/Save";
 // import data from "../../components/EditQuiz/questions.json";
 import { useForm } from "@mantine/form";
 import NewQ from "../../components/EditQuiz/NewQ";
-import QuizCourse from "../../components/EditQuiz/OtherDetails";
+import OtherDetails from "../../components/EditQuiz/OtherDetails";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -23,17 +23,22 @@ const EditQuizPage = () => {
               name: res.data.name,
               topic: res.data.topic,
               mins: res.data.time,
-              questions: res.data.questions.map((q) => ({
-                question: q.question,
-                options: q.options.map((op) => op.value),
-                type: q.type === "SINGLE" ? "single" : "multi",
-                correct: q.marks,
-                incorrect: q.type === "SINGLE" ? -1 : -2,
-                answer: [parseInt(q.solution.answer)],
-                solutionDesc: q.solution.solution,
-                quesMedia: q.image,
-                ansMedia: q.solution.media,
-              })),
+              course: res.data.course,
+              questions: res.data.questions
+                .map((q) => ({
+                  id: q.id,
+                  qnumber: q.qnumber,
+                  question: q.question,
+                  options: q.options.map((op) => op.value),
+                  type: q.type === "SINGLE" ? "single" : "multi",
+                  correct: q.marks,
+                  incorrect: q.type === "SINGLE" ? -1 : -2,
+                  answer: [parseInt(q.solution.answer)],
+                  solutionDesc: q.solution.solution,
+                  quesMedia: q.image,
+                  ansMedia: q.solution.media,
+                }))
+                .sort((a, b) => a.qnumber - b.qnumber),
             });
             form2.setValues({
               name: res.data.name,
@@ -136,6 +141,8 @@ const EditQuizPage = () => {
                     questions={questions}
                     setQuestions={setQuestions}
                     form={form1}
+                    axiosType="edit"
+                    ID={ID}
                   />
                 </div>
               </div>
@@ -144,10 +151,17 @@ const EditQuizPage = () => {
               questions={questions}
               setQuestions={setQuestions}
               form={form1}
+              axiosType="edit"
+              ID={ID}
             />
           </div>
           <div>
-            <QuizCourse form={form2} />
+            <OtherDetails
+              form={form2}
+              questions={questions}
+              axiosType="edit"
+              ID={ID}
+            />
           </div>
         </div>
       </main>

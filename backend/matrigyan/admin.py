@@ -7,7 +7,7 @@ admin.site.register(CourseCategory)
 admin.site.register(CourseSection)
 admin.site.register(CourseTag)
 admin.site.register(ClassModel)
-
+admin.site.register(Video)
 admin.site.register(Feedback)
 admin.site.register(Comment)
 admin.site.register(Student)

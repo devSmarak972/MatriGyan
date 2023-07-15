@@ -32,6 +32,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./added.css";
+import axios from "axios";
 
 const questionTruncate = (text, maxLength) => {
   if (text.length <= maxLength) {
@@ -169,9 +170,6 @@ const Added = (props) => {
                         solutionDesc: item.solutionDesc,
                       });
                       open();
-                      // if (props.question.length !== 0 && !opened) {
-                      //   console.log("$^$^", props.form.values);
-                      // }
                     }}
                   >
                     Edit Question
@@ -183,10 +181,16 @@ const Added = (props) => {
                   className="text-red-400"
                 >
                   <button
-                    onClick={() => {
+                    onClick={async () => {
                       props.setQuestions((prev) =>
                         prev.filter((q) => q !== item)
                       );
+                      await axios
+                        .delete(
+                          `http://localhost:8000/delete-question/${item.id}/`
+                        )
+                        .then((res) => console.log(res))
+                        .catch((e) => console.log(e));
                     }}
                   >
                     Delete Question
@@ -226,12 +230,14 @@ const Added = (props) => {
     <>
       <Modal centered opened={opened} onClose={close} title="Authentication">
         <form
-          onSubmit={props.form.onSubmit((values) => {
+          onSubmit={props.form.onSubmit(async (values) => {
             props.setQuestions((prev) =>
               prev.map((q, i) => {
                 if (i + 1 !== editingQ) return q;
                 else
                   return {
+                    id: q.id,
+                    qnumber: q.qnumber,
                     question: props.form.values.question,
                     type: props.form.values.type,
                     options: [
@@ -253,6 +259,57 @@ const Added = (props) => {
                   };
               })
             );
+            console.log(editingQ);
+            if (props.axiosType === "edit") {
+              console.log("Post Question: ", {
+                // qnumber: props.questions[editingQ - 1].qnumber,
+                question: values.question,
+                type: values.type === "single" ? "SINGLE" : "MULTIPLE",
+                options: [
+                  values.option1,
+                  values.option2,
+                  values.option3,
+                  values.option4,
+                ].map((opt) => ({ value: opt })),
+                image: values.quesMedia ? fileToDataUri(values.quesMedia) : "",
+                marks: values.correct,
+              });
+              console.log(props.questions[editingQ - 1].id);
+              await axios
+                .post(
+                  `http://localhost:8000/edit-question/${
+                    props.questions[editingQ - 1].id
+                  }/`,
+                  {
+                    // qnumber: props.questions[editingQ - 1].qnumber,
+                    question: values.question,
+                    type: values.type === "single" ? "SINGLE" : "MULTIPLE",
+                    options: [
+                      values.option1,
+                      values.option2,
+                      values.option3,
+                      values.option4,
+                    ].map((opt) => ({ value: opt })),
+                    image: values.quesMedia,
+                    marks: values.correct,
+                  }
+                )
+                .then(async (res) => {
+                  console.log("Question edited: ", res.data);
+                  await axios
+                    .post(
+                      `http://localhost:8000/edit-solution/${res.data.question.solution.id}/`,
+                      {
+                        answer: values.answer[0],
+                        solution: values.solutionDesc,
+                        media: values.ansMedia,
+                      }
+                    )
+                    .then((res) => console.log(res))
+                    .catch((e) => console.log(e));
+                })
+                .catch((e) => console.log(e));
+            }
             setEditingQ(0);
             close();
           })}
