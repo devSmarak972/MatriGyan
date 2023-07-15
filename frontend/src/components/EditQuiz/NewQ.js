@@ -23,6 +23,7 @@ const NewQ = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   const fileToDataUri = (file) => {
+    console.log(file);
     if (!file) return "";
     return URL.createObjectURL(file);
   };
@@ -36,30 +37,57 @@ const NewQ = (props) => {
           onSubmit={props.form.onSubmit(async (values) => {
             let quesID = undefined;
             if (props.axiosType === "edit") {
+              let quesData = new FormData();
+              let quesDataObj = {
+                qnumber: props.questions.length + 1,
+                question: values.question,
+                type: values.type === "single" ? "SINGLE" : "MULTIPLE",
+                options: [
+                  values.option1,
+                  values.option2,
+                  values.option3,
+                  values.option4,
+                ].map((opt) => ({
+                  value: opt,
+                })),
+                image: values.quesMedia,
+                marks: values.correct,
+              };
+              for (let key in quesDataObj) {
+                quesData.append(key, quesDataObj[key]);
+              }
               quesID = await axios
-                .post(`http://localhost:8000/add-question/${props.ID}/`, {
-                  qnumber: props.questions.length + 1,
-                  question: values.question,
-                  type: values.type === "single" ? "SINGLE" : "MULTIPLE",
-                  options: [
-                    values.option1,
-                    values.option2,
-                    values.option3,
-                    values.option4,
-                  ].map((opt) => ({
-                    value: opt,
-                  })),
-                  image: values.quesMedia,
-                  marks: values.correct,
-                })
+                .post(
+                  `http://localhost:8000/add-question/${props.ID}/`,
+                  quesData,
+                  {
+                    headers: {
+                      accept: "application/json",
+                      "Accept-Language": "en-US,en;q=0.8",
+                      "Content-Type": `multipart/form-data; boundary=${quesData._boundary}`,
+                    },
+                  }
+                )
                 .then(async (res) => {
+                  let solData = new FormData();
+                  let solDataObj = {
+                    answer: props.form.values.answer[0],
+                    solution: props.form.values.solutionDesc,
+                    media: props.form.values.ansMedia,
+                  };
+                  for (let key in solDataObj) {
+                    solData.append(key, solDataObj[key]);
+                  }
                   await axios
                     .post(
                       `http://localhost:8000/add-solution/${res.data.id}/`,
+                      solData,
                       {
-                        answer: props.form.values.answer[0],
-                        solution: props.form.values.solutionDesc,
-                        media: props.form.values.ansMedia,
+                        headers: {
+                          accept: "application/json",
+                          "Accept-Language": "en-US,en;q=0.8",
+                          "Content-Type": `multipart/form-data; boundary=${solData._boundary}`,
+                        },
                       }
                     )
                     .then((res) => console.log(res.data))

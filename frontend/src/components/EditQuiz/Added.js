@@ -33,6 +33,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./added.css";
 import axios from "axios";
+import { Form } from "react-router-dom";
 
 const questionTruncate = (text, maxLength) => {
   if (text.length <= maxLength) {
@@ -157,13 +158,13 @@ const Added = (props) => {
                         incorrect: item.incorrect,
                         quesMedia:
                           item.quesMedia &&
-                          new File([item.quesMedia], "diagram.png", {
+                          new File([b64toBlob(item.quesMedia)], "diagram.png", {
                             type: "image/png",
                             lastModified: new Date().getTime(),
                           }),
                         ansMedia:
                           item.ansMedia &&
-                          new File([item.ansMedia], "solution.png", {
+                          new File([b64toBlob(item.ansMedia)], "solution.png", {
                             type: "image/png",
                             lastModified: new Date().getTime(),
                           }),
@@ -221,10 +222,43 @@ const Added = (props) => {
   ));
 
   const fileToDataUri = (file) => {
-    if (!file) return "";
-    console.log(file);
-    return URL.createObjectURL(file);
+    console.log("FILES: ", file);
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        const blob = b64toBlob(base64data);
+        const imageUrl = URL.createObjectURL(blob);
+        console.log(imageUrl);
+        return imageUrl;
+      };
+
+      reader.readAsDataURL(file);
+    } else return "";
   };
+
+  function b64toBlob(base64data) {
+    const contentType = base64data.split(",")[0].split(":")[1].split(";")[0];
+    const byteCharacters = atob(base64data.split(",")[1]);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, { type: "image/png" });
+  }
+
+  console.log(props.form.values);
 
   return (
     <>
@@ -261,8 +295,22 @@ const Added = (props) => {
             );
             console.log(editingQ);
             if (props.axiosType === "edit") {
-              console.log("Post Question: ", {
-                // qnumber: props.questions[editingQ - 1].qnumber,
+              // console.log("Post Question: ", {
+              //   // qnumber: props.questions[editingQ - 1].qnumber,
+              //   question: values.question,
+              //   type: values.type === "single" ? "SINGLE" : "MULTIPLE",
+              //   options: [
+              //     values.option1,
+              //     values.option2,
+              //     values.option3,
+              //     values.option4,
+              //   ].map((opt) => ({ value: opt })),
+              //   image: values.quesMedia ? fileToDataUri(values.quesMedia) : "",
+              //   marks: values.correct,
+              // });
+              // console.log(props.questions[editingQ - 1].id);
+              let quesData = new FormData();
+              let quesDataObj = {
                 question: values.question,
                 type: values.type === "single" ? "SINGLE" : "MULTIPLE",
                 options: [
@@ -271,38 +319,47 @@ const Added = (props) => {
                   values.option3,
                   values.option4,
                 ].map((opt) => ({ value: opt })),
-                image: values.quesMedia ? fileToDataUri(values.quesMedia) : "",
+                image: values.quesMedia,
                 marks: values.correct,
-              });
-              console.log(props.questions[editingQ - 1].id);
+              };
+              for (let key in quesDataObj) {
+                quesData.append(key, quesDataObj[key]);
+              }
               await axios
                 .post(
                   `http://localhost:8000/edit-question/${
                     props.questions[editingQ - 1].id
                   }/`,
+                  quesData,
                   {
-                    // qnumber: props.questions[editingQ - 1].qnumber,
-                    question: values.question,
-                    type: values.type === "single" ? "SINGLE" : "MULTIPLE",
-                    options: [
-                      values.option1,
-                      values.option2,
-                      values.option3,
-                      values.option4,
-                    ].map((opt) => ({ value: opt })),
-                    image: values.quesMedia,
-                    marks: values.correct,
+                    headers: {
+                      accept: "application/json",
+                      "Accept-Language": "en-US,en;q=0.8",
+                      "Content-Type": `multipart/form-data; boundary=${quesData._boundary}`,
+                    },
                   }
                 )
                 .then(async (res) => {
+                  let solData = new FormData();
+                  let solDataObj = {
+                    answer: values.answer[0],
+                    solution: values.solutionDesc,
+                    media: values.ansMedia,
+                  };
+                  for (let key in solDataObj) {
+                    solData.append(key, solDataObj[key]);
+                  }
                   console.log("Question edited: ", res.data);
                   await axios
                     .post(
                       `http://localhost:8000/edit-solution/${res.data.question.solution.id}/`,
+                      solData,
                       {
-                        answer: values.answer[0],
-                        solution: values.solutionDesc,
-                        media: values.ansMedia,
+                        headers: {
+                          accept: "application/json",
+                          "Accept-Language": "en-US,en;q=0.8",
+                          "Content-Type": `multipart/form-data; boundary=${solData._boundary}`,
+                        },
                       }
                     )
                     .then((res) => console.log(res))
