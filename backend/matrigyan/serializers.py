@@ -178,10 +178,12 @@ class CourseSerializer(serializers.ModelSerializer):
 				coursetags = validated_data.pop('tags')
 				tags=[]
 		course=instance
+		super().update(instance=instance, validated_data=validated_data)
+
 		for category in categories:
 				el,_ = CourseCategory.objects.get_or_create(category=category["category"].lower())
 				cat+=[el]
-		print(cat,"cat in update")
+		# print(cat,"cat in update")
 		course.category.set(cat)
 		for tag in coursetags:
 				el,_ =CourseTag.objects.get_or_create(tagname=tag["tagname"].lower())
