@@ -59,16 +59,22 @@ class QuestionSerializer(serializers.ModelSerializer):
 	def update(self,instance,validated_data):
 			print("validated question", validated_data)
 			options=[]
+			opt=[]
+            
 			if "options" in validated_data:
 					options = validated_data.pop('options')
 					opt=[]
 			
 			question=instance
+            
+			super().update(instance=instance, validated_data=validated_data)
+                
 			for option in options:
 					el= Option.objects.create(value=option["value"])
 					opt+=[el]
-			print(opt,"opt in update")
-			question.options.set(opt)
+					print(opt,"opt in update")
+			if(len(opt)!=0):
+				question.options.set(opt)
 			
 			return question
 	def create(self, validated_data):
@@ -172,10 +178,12 @@ class CourseSerializer(serializers.ModelSerializer):
 				coursetags = validated_data.pop('tags')
 				tags=[]
 		course=instance
+		super().update(instance=instance, validated_data=validated_data)
+
 		for category in categories:
 				el,_ = CourseCategory.objects.get_or_create(category=category["category"].lower())
 				cat+=[el]
-		print(cat,"cat in update")
+		# print(cat,"cat in update")
 		course.category.set(cat)
 		for tag in coursetags:
 				el,_ =CourseTag.objects.get_or_create(tagname=tag["tagname"].lower())
