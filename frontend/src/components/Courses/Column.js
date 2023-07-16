@@ -37,14 +37,14 @@ function Column({ cid, course, isTransitioning }) {
               position: "relative",
               overflow: "hidden",
               backgroundImage:
-                `url(${course.img_url_1})`,
+                `url(${course.image})`,
               backgroundSize: "cover",
               backgroundPosition: "center center",
               paddingBottom: "75%"
             }}
           >
             <img
-              src={course.img_url_1}
+              src={course.image}
               alt="course"
               style={{ visibility: "hidden" }}
             />
@@ -64,11 +64,11 @@ function Column({ cid, course, isTransitioning }) {
             <div className="d-flex" style={{height: "40%", justifyContent: "space-between"}}>
               <div className="flex" style={{ display: "flex", flexDirection: "column"}}>
                 <a className="card-title text-left" href="student-course.html">
-                  {course.name}
+                  {course.title}
                 </a>
               
                 <p className="text-50 text-left font-weight-bold mb-4pt">
-                  {course.tutor}
+                  {course.description}
                 </p>
               </div>
               <div>

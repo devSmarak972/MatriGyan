@@ -29,33 +29,33 @@ function CoursePage() {
 
   const [courses,setData] = useState([]);
 
-  // useEffect(()=>{
-  //   axios.get("http://127.0.0.1:8000/get-courses/")
-  //   .then((res)=>{
-  //     console.log("Data recieved");
-  //     console.log(res.data);
-  //     setData(res.data);
-  //   })
-  //   .catch((err)=>{
-  //     console.log(err);
-  //   })
-  // },[])
+  useEffect(()=>{
+    axios.get("http://127.0.0.1:8000/get-courses/")
+    .then((res)=>{
+      console.log("Data recieved");
+      console.log(res.data.data);
+      setData(res.data.data);
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  },[])
 
-  // if(courses.length==0){
-  //   return null;
-  // }
+  if(courses.length==0){
+    return null;
+  }
 
   return (
     <div className="page-section tw-page">
       <Sidebar></Sidebar>
       <div className="container page__container pt-6">
-         {(data && data.length!==0)?
+         {(courses && courses.length!==0)?
          <>
           <Header onButtonClick={handleclick}></Header>
-          <Courses title="Popular Courses" courses={data}></Courses>
-          <Courses title="Development Courses" courses={data}></Courses>
-          <Courses title="Desgin Courses" courses={data}></Courses>
-
+          <Courses title="Popular Courses" courses={courses}></Courses>
+          <Courses title="Development Courses" courses={courses}></Courses>
+          <Courses title="Desgin Courses" courses={courses}></Courses></>
+:<p className="m-auto p-3">Loading ...</p>}
       </div>
       <Backdrop isActive={isActive} onButtonClick={handleclick}></Backdrop>
       <Filters isActive={isActive}></Filters>

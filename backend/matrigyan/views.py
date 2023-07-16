@@ -743,3 +743,51 @@ def deleteResource(request, id):
 	resource = Resource.objects.get(id=id)
 	resource.delete()
 	return Response({"success":True, "message":"Resource deleted!"})
+
+@api_view(['GET'])
+def getUser(request):
+	if request.user.is_authenticated:
+		user = request.user
+		ser_user = UserSerializer(user, many=False)
+		if Student.objects.get(id=user.id) != None:
+			student = Student.objects.get(user__id=user.id)
+			ser_student = StudentSerializer(student, many=False)
+			return Response({"success":True, "user":ser_user,"is_student":True,"student":ser_student})
+		else:
+			educator = Educator.objects.get(id=user.id)
+			ser_educator = EducatorSerializer(educator, many=False)
+			return Response({"success":True, "is_student":False, "user":ser_user,"educator":ser_educator})
+	else:
+		return({"success":False,"message":"User not logged in."})
+
+@api_view(['GET'])
+def getEducators(request):
+	educators = Educator.objects.all()
+	ser_educators = EducatorSerializer(educators, many=True)
+	return Response({"success":True, "educators":ser_educators})
+
+@api_view(['GET'])
+def getEducator(request, id):
+	educator = Educator.objects.get(id=id)
+	ser_educator = EducatorSerializer(educator, many=False)
+	return Response({"success":True, "educator":ser_educator})
+
+@api_view(['POST'])
+def editStudent(request,id):
+	student = Student.objects.get(id=id)
+	ser_student = StudentSerializer(instance=student, data=request.data)
+	if ser_student.is_valid():
+		ser_student.save()
+		return Response({"success":True,"student":ser_student,"message":"Student details updated"})
+	else:
+		return Response({"success":False, "student":ser_student, "message":"Failed to update info."})
+	
+@api_view(['POST'])
+def editEducator(request,id):
+	educator = Educator.objects.get(id=id)
+	ser_educator = EducatorSerializer(instance=educator, data=request.data)
+	if ser_educator.is_valid():
+		ser_educator.save()
+		return Response({"success":True,"educator":ser_educator,"message":"Educator details updated"})
+	else:
+		return Response({"success":False, "educator":ser_educator, "message":"Failed to update info."})

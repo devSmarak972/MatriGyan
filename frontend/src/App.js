@@ -22,6 +22,7 @@ import Loader from "./loader"
 import MyItems from "./pages/MyContents";
 import Page404 from "./pages/Page404/Page404"
 import InDev from "./pages/InDev/InDev";
+import ResourceView from "./pages/ResourceView";
 import {ToastContainer} from "react-toastify"
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           <Route path="/course/:id" element={<CoursePreview />} />
           <Route path="/not-found" element={<Page404 />} />
           <Route path="/developing" element={<InDev />} />
+          <Route path="/resourceview" element={<ResourceView />}/>
         </Routes>
       </div>
     </Router>

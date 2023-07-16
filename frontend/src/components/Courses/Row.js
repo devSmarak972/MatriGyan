@@ -5,7 +5,7 @@ import Details from "./Details.json"
 
 function Row(props) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [courses, setCourses] = useState(Details);
+  const [courses, setCourses] = useState(props.courseData);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   // useEffect(()=>{
@@ -37,7 +37,7 @@ function Row(props) {
   };
 
   const renderCourseCards = () => {
-    console.log(props.courseData.data,"data")
+    console.log(courses,"data")
     const startIndex = (currentPage - 1) * coursesPerPage;
     const endIndex = startIndex + coursesPerPage;
     const currentCourses = courses.slice(startIndex, endIndex);
