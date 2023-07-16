@@ -23,18 +23,21 @@ import Loader from "./loader";
 import MyItems from "./pages/MyContents";
 // import Page404 from "./pages/Page404/Page404";
 import InDev from "./pages/InDev/InDev";
-import {ToastContainer} from "react-toastify"
+import { ToastContainer } from "react-toastify";
+import ProfilePage from "./pages/ProfilePage";
 function App() {
   return (
     <Router>
       <div>
-      <ToastContainer></ToastContainer>
+        <ToastContainer></ToastContainer>
 
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
           {/* <Route path="/search" element={<SearchLanding />} /> */}
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/signup" element={<LoginSignup />} />
+          <Route path="/student/profile" element={<ProfilePage userType={1} />} />
+          <Route path="/educator/profile" element={<ProfilePage userType={2} />} />
           <Route path="/student" element={<StudentDashboard />} />
           <Route path="/courses" element={<CoursePage />} />
           <Route path="/educator/contents" element={<MyContents />} />
