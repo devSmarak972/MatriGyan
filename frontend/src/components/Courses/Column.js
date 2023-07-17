@@ -4,6 +4,7 @@ import { Tooltip } from "react-tooltip";
 import "./transition.css"
 import { Link, useNavigate } from "react-router-dom";
 function Column({ cid, course, isTransitioning }) {
+  
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   // const classes = isPopoverOpen
   //   ? "card h-100 card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card overlay--show"

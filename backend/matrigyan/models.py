@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 import random
+from django.utils import timezone
+
 class Student(models.Model):
 	std=models.IntegerField(default=11)
 	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
@@ -191,12 +193,10 @@ class QuizAnswer(models.Model):
 	def __str__(self):
 		return (str(self.question) + self.response.student.full_name)
 	
-		
-
 class Task(models.Model):
 	name = models.CharField(max_length=250)
 	user=models.ForeignKey(User,on_delete=models.CASCADE)
-	due_date=models.DateTimeField(auto_now_add=True, null=True, blank=True)
+	due_date=models.DateTimeField(default=timezone.now, null=True, blank=True)
 	completed=models.BooleanField(default=False,blank=True)
 	def __str__(self):
 		return (self.name + self.user.username)

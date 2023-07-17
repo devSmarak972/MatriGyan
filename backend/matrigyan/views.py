@@ -437,6 +437,40 @@ def addCourse(request):
 		course.save()
 		return Response({"success":True,"message":"Course Created","course":course.data})
 	return Response({"success":False,"message":"Invalid input","errors":course.errors})
+@api_view(['POST'])
+def addTask(request):
+	# print(request.data)
+	task = TaskSerializer(data=request.data)
+	# print(course.data)
+	if task.is_valid():
+		due_date=request.data.get("due_date")
+		print(due_date)
+		if due_date:
+			task.due_date=due_date
+		task.save()
+		return Response({"success":True,"message":"Task Created","task":task.data})
+	return Response({"success":False,"message":"Invalid input","errors":task.errors})
+
+@api_view(['POST'])
+def editTask(request,id):
+	# print(request.data)
+	task = TaskSerializer(instance=task,data=request.data)
+	# print(course.data)
+	if task.is_valid():
+		task.save()
+		return Response({"success":True,"message":"Task edited","task":task.data})
+	return Response({"success":False,"message":"Invalid input","errors":task.errors})
+
+@api_view(['GET'])
+def ChangeTaskStatus(request,id):
+	# print(request.data)
+	task = Task.objects.get(id=id)
+	task.completed=request.GET.get("status",False)
+	# print(course.data)
+	# if task.is_valid():
+	task.save()
+	return Response({"success":True,"message":"Task edited","task_completed":task.completed})
+	# return Response({"success":False,"message":"Invalid input","errors":task.errors})
 
 @api_view(['GET'])
 def getSections(request, id):
@@ -499,6 +533,12 @@ def deleteSection(request, id):
 	section.delete()
 	return Response({"success":True,"message":"Section deleted!"})
 
+@api_view(['DELETE'])
+def deleteVideo(request, id):
+	vid = Video.objects.get(id=id)
+	vid.delete()
+	return Response({"success":True,"message":"Video deleted"})
+
 @api_view(['GET'])
 def getQuiz(request, id):
 	quizes = Quiz.objects.get(id=id)
@@ -526,6 +566,36 @@ def createQuiz(request):
 		return Response({"success":True,"quiz":quiz.data,"message":"Quiz created!"})
 	return Response({"success":False,"message":"Invalid"})
 
+@api_view(['POST'])
+def editQuiz(request, id):
+	print(id)
+	# return Response("reached")
+	quiz=Quiz.objects.get(id=id)
+	if not quiz:
+		return Response({"success":False,"message":"No quiz exists with id"+id})
+	# print(request.data)
+	name=request.data.get("name",False)
+	topic=request.data.get("topic",False)
+	subject=request.data.get("subject",False)
+	time=request.data.get("time",False)
+	# print(name,topic,subject,time)
+	if not( name or topic or subject or time):
+		return Response({"success":False,"message":"No changes"})
+
+	if name:
+		quiz.name=name
+	if topic:
+		quiz.topic=topic
+	if subject:
+		quiz.subject=subject
+	if time:
+		quiz.time=time
+	quiz.save()
+	quiz=QuizSerializer(quiz)
+	return Response({"success":True,"quiz":quiz.data,"message":"Quiz edited!"})
+	# return Response({"success":False,"message":"Invalid"})
+
+
 @api_view(['DELETE'])
 def deleteQuiz(request, id):
 	quiz = Quiz.objects.get(id=id)
@@ -539,10 +609,81 @@ def addQuestion(request, id):
 			question.save()
 			que = Question.objects.get(id=question.data['id'])
 			quiz = Quiz.objects.get(id=id)
+			# print("Quiz questions: ", que)
 			quiz.questions.add(que)
-			return Response({"success":True,"data":question.data,"message":"Question added!"})
+      quiz.save()
+			return Response({"success":True,"data":question.data,"message":"Question added!","question":question.data})
 	return Response({"success":False,"message":"Question not added."})
 
+@api_view(['POST'])
+def editQuestion(request, id):
+	print(id)
+	
+	question=Question.objects.get(id=id)
+	if not question:
+		return Response({"success":False,"message":"No question exists with id"+id})
+	# qnumber=request.data.get("qnumber",False)
+	# question=quiz.question_set.filter(qnumber=qnumber)
+	# question=request.data.get("question",False)
+	type=request.data.get("type",False)
+	marks=request.data.get("marks",False)
+	options=request.data.get("options",False)
+	image=request.data.get("image",False)
+	ques=request.data.get("question",False)
+	# return Response("reached")
+	# print(request.data)
+	
+	# print(name,topic,subject,time)
+	if not( type or marks or options or image or ques):
+		return Response({"success":False,"message":"No changes"})
+	# if type:
+	# 	question.type=type
+	# if ques:
+	# 	question.question=ques
+	# if marks:
+	# 	question.marks=marks
+	# if image:
+	# 	question.image=image
+	# question.save()
+	question=QuestionSerializer(instance=question,data=request.data,partial=True)
+	if question.is_valid():
+		question.save()
+		return Response({"success":True,"message":"Question edited","question":question.data})
+	return Response({"message":"question edit failed!","errors":question.errors,"success":False})
+
+@api_view(['POST'])
+def editQuestionOrder(request, id):
+	print(id)
+	
+	quiz=Quiz.objects.get(id=id)
+	if not quiz:
+		return Response({"success":False,"message":"No quiz exists with id"+id})
+	# qnumber=request.data.get("qnumber",False)
+	questions=quiz.questions
+	# question=request.data.get("question",False)
+	qnos=request.data.get("qnos")
+	for qno in qnos:
+		ques=questions.filter(id=qno["question_id"]).first()
+		if ques:
+			ques.qnumber=qno["qnumber"]
+			ques.save()
+	return Response({"success":True,"message":"Question order changed"})
+
+@api_view(['POST'])
+def editSolution(request, id):
+	print(id)
+	
+	sol=Solution.objects.get(id=id)
+	if not sol:
+		return Response({"success":False,"message":"No solution exists with id"+id})
+	# qnumber=request.data.get("qnumber",False)
+	# question=request.data.get("question",False)
+	sol = SolutionSerializer(instance=sol,data=request.data)
+	if sol.is_valid():
+		sol.save()
+		return Response({"message":"solution edited!","solution":sol.data,"success":True})
+	return Response({"errors":sol.errors,"message":"solution not edited","success":False})
+	
 @api_view(['GET'])
 def getQuestions(request, id):
 	quiz = Quiz.objects.get(id=id)

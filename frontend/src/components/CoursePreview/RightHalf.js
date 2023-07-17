@@ -1,9 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function RightHalf() {
+function RightHalf({details}) {
   return (
     <div class="col-lg-4 text-left">
+            {details.isEnrolled?
+            <>
+            </>
+            :
+            <>
             <div class="card">
               <div class="card-body py-16pt text-center">
                 <span class="icon-holder icon-holder--outline-secondary rounded-circle d-inline-flex mb-8pt">
@@ -23,6 +28,7 @@ function RightHalf() {
                 </p>
               </div>
             </div>
+            </>}
 
             <div class="page-separator">
               <div class="page-separator__text">Course</div>
@@ -30,16 +36,16 @@ function RightHalf() {
 
             <Link to="/coursepage/angular" class="d-flex flex-nowrap mb-24pt">
               <span class="mr-16pt">
-                <img
-                  src="https://th.bing.com/th?id=OIP.JWcKdjkJlUbPCu8Z2lKHzgHaH3&w=242&h=257&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
+                {/* <img
+                  src={details.data.image}
                   width="40"
                   alt="Angular"
                   class="rounded"
-                />
+                /> */}
               </span>
               <span class="flex d-flex flex-column align-items-start">
-                <span class="card-title">Angular Fundamentals</span>
-                <span class="card-subtitle text-50">16 Lessons</span>
+                <span class="card-title">{details.data.title}</span>
+                <span class="card-subtitle text-50"> Lessons</span>
               </span>
             </Link>
 
@@ -57,8 +63,8 @@ function RightHalf() {
                 />
               </span>
               <div class="media-body">
-                <Link class="card-title m-0" to="/teacher/:id">
-                  Eddie Bryan
+                <Link class="card-title m-0" to={`/teacher/${details.educator_id}`}>
+                  {details.data.educator}
                 </Link>
                 <p class="text-50 lh-1 mb-0">Instructor</p>
               </div>
@@ -70,10 +76,6 @@ function RightHalf() {
               sociology and stay in tune with the latest digital marketing
               strategies through continued coursework.
             </p>
-
-            {/* <Link href="/teacher/:id" class="btn btn-white mb-24pt">
-              View profile
-            </Link> */}
           </div>
   )
 }
