@@ -622,7 +622,7 @@ def addQuestion(request, id):
 			quiz = Quiz.objects.get(id=id)
 			# print("Quiz questions: ", que)
 			quiz.questions.add(que)
-      quiz.save()
+			quiz.save()
 			return Response({"success":True,"data":question.data,"message":"Question added!","question":question.data})
 	return Response({"success":False,"message":"Question not added."})
 
