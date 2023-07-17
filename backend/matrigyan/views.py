@@ -26,6 +26,8 @@ from .common import update_first_and_last_name
 import json
 from .models import *
 from .serializers import *
+import uuid
+
 # Create your views here.
 # from .serializers import CourseSerializer
 import backend.settings as matrigyan_settings
