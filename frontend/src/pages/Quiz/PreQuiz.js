@@ -10,8 +10,11 @@ const PreQuiz = () => {
     const fetchData = async () => {
       try {
         const response = await axios
-          .get(`http://localhost:8000/get-quiz/${ID}/`,{withCredentials:true})
+          .get(`http://localhost:8000/get-quiz/${ID}/`, {
+            withCredentials: true,
+          })
           .then((res) => {
+            console.log("Quiz questions: ", res.data);
             setData({
               name: res.data.name,
               topic: res.data.topic,
