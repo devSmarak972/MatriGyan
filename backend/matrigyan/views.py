@@ -450,6 +450,15 @@ def addTask(request):
 		if due_date:
 			task.due_date=due_date
 		task.save()
+		print(task.data)
+		taskobj=Task.objects.get(id=task.data.get("id"))
+		user=Student.objects.get(user_id=taskobj.user)
+		if not user:
+			user=Educator.objects.get(user_id=taskobj.user)
+			if not user:		
+				return Response({"success":False,"message":"Not a student or educator"})
+		user.task.add(taskobj)
+		user.save()
 		return Response({"success":True,"message":"Task Created","task":task.data})
 	return Response({"success":False,"message":"Invalid input","errors":task.errors})
 
