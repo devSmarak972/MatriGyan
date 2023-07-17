@@ -1,8 +1,6 @@
 import React from 'react'
 
 const CheckboxItem = ({props}) => {
-  console.log(props,"checkbox")
-  
   return (
     <label class="inline-flex items-center space-x-2">
       <input
