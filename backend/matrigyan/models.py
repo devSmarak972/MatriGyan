@@ -34,7 +34,7 @@ class Educator(models.Model):
 	task=models.ManyToManyField("Task",related_name="educator_task",blank=True)
 	
 	def __str__(self) -> str:
-		return self.name+str(self.id)
+		return self.name
 	@property
 	def numStudents(self):
 		return sum([el.ongoing for el in self.course_set.all()])
@@ -61,7 +61,7 @@ class CourseSection(models.Model):
 	# course=models.ForeignKey("Course",on_delete=models.CASCADE, null=True, blank=True)
 	title=models.CharField(default="",max_length=255)
 	# duration=models.IntegerField(default=0,null=True,blank=True)
-	order_id=models.IntegerField(default=1)
+	order_id=models.IntegerField(default=1, null=True, blank=True)
 	course=models.ForeignKey("Course",blank=True,on_delete=models.CASCADE,null=True)
 	
 	@property
@@ -71,7 +71,7 @@ class CourseSection(models.Model):
 	def videos(self):
 		return self.video_set.all()
 	def __str__(self) -> str:
-		   return self.title+"_"+str(self.order_id)
+		   return self.title+"_"
 
 	
 	# def videos(self):
@@ -112,11 +112,11 @@ class Feedback(models.Model):
 	message=models.TextField(default="",blank=True)
 	course=models.ForeignKey("Course",on_delete=models.CASCADE)
 	rating=models.IntegerField(default=5,choices=ratings)
-	date=models.DateTimeField(blank=True,auto_now_add=True)
+	date=models.DateTimeField(blank=True,auto_now_add=True, null=True)
 	user=models.ForeignKey("Student",on_delete=models.CASCADE)
 	
 	def __str__(self):
-		return str(self.rating)+"_"+str(self.id)
+		return str(self.rating)+"_"
 
 # class Educator(models.Model):
 # 	name = models.CharField(max_length=250)
@@ -264,7 +264,7 @@ class Notifications(models.Model):
 	date_time=models.DateTimeField(auto_now=True)
 	title=models.CharField(default="",max_length=255)
 	def __str__(self) -> str:
-		return self.title+"_"+str(self.id)
+		return self.title+"_"
 
 class ClassModel(models.Model):
 	title=models.CharField(default="",max_length=255)
@@ -277,7 +277,7 @@ class ClassModel(models.Model):
 	tags=models.ManyToManyField("CourseTag",blank=True)
 
 	def __str__(self):
-		return self.title+"_"+str(self.id)
+		return self.title+"_"
 	
 	@property
 	def duration(self):
@@ -348,7 +348,12 @@ class Event(models.Model):
 	endTime = models.TimeField(blank=True, null=True)
 	daysOfWeek = models.TextField(blank=True , null=True)
 	user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
- 
+
+class ResourceTag(models.Model):
+	name = models.CharField(max_length=250)
+
+	def __str__(self):
+		return self.name
  
 class Resource(models.Model):
 	image=models.TextField(default="",blank=True)
@@ -356,5 +361,6 @@ class Resource(models.Model):
 	title=models.TextField(default="",blank=True)
 	file_url=models.TextField(default="",blank=True)
 	creator=models.ForeignKey("Educator",on_delete=models.CASCADE,blank=True)
-	def __str__(self):
-		 return self.creator.id+"_"+self.title     
+	tagname = models.ForeignKey(ResourceTag, on_delete=models.CASCADE, null=True, blank=True)
+	def __str__(self):	
+		 return self.title+"_"+self.tagname.name

@@ -242,3 +242,18 @@ class ClassModelSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ClassModel
 		fields = "__all__"
+
+class ResourceSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Resource
+		fields = "__all__"
+
+class ResourceTagSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = ResourceTag
+		fields = "__all__"
+
+class UserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = User
+		fields = "__all__"
