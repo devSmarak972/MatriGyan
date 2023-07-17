@@ -6,60 +6,10 @@ import Save from "../../components/EditQuiz/Save";
 import { useForm } from "@mantine/form";
 import NewQ from "../../components/EditQuiz/NewQ";
 import OtherDetails from "../../components/EditQuiz/OtherDetails";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const EditQuizPage = () => {
-  const { ID } = useParams();
-  const [data, setData] = useState({});
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios
-          .get(`http://localhost:8000/get-quiz/${ID}/`)
-          .then((res) => {
-            console.log(res.data);
-            setData({
-              name: res.data.name,
-              topic: res.data.topic,
-              mins: res.data.time,
-              course: res.data.course,
-              questions: res.data.questions
-                .map((q) => ({
-                  id: q.id,
-                  qnumber: q.qnumber,
-                  question: q.question,
-                  options: q.options.map((op) => op.value),
-                  type: q.type === "SINGLE" ? "single" : "multi",
-                  correct: q.marks,
-                  incorrect: q.type === "SINGLE" ? -1 : -2,
-                  answer: [parseInt(q.solution.answer)],
-                  solutionDesc: q.solution.solution,
-                  quesMedia: q.image,
-                  ansMedia: q.solution.media,
-                }))
-                .sort((a, b) => a.qnumber - b.qnumber),
-            });
-            form2.setValues({
-              name: res.data.name,
-              topic: res.data.topic,
-              time: res.data.time,
-              subject: res.data.subject,
-            });
-          });
-      } catch (e) {
-        console.log("Error fetching data: ", e);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const [questions, setQuestions] = useState(data.questions);
-
-  useEffect(() => {
-    setQuestions(data.questions);
-  }, [data]);
+  const [questions, setQuestions] = useState([]);
 
   console.log(questions);
 
@@ -105,12 +55,11 @@ const EditQuizPage = () => {
     initialValues: {
       name: "",
       course: "",
-      time: 45,
+      time: "",
       topic: "",
       subject: "",
     },
     validate: {
-      course: (value) => (value.length === 0 ? "Choose a course" : null),
       time: (value) =>
         value.length === 0 || value === 0
           ? "Allot a non-zero time in minutes"
@@ -121,14 +70,12 @@ const EditQuizPage = () => {
     },
   });
 
-  if (JSON.stringify(data) === "{}" || !questions) return null;
-
   return (
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
       <Sidebar />
       <main className="main-content w-full pb-8 px-[var(--margin-x)]">
         <span className="text-[1.75rem] font-bold text-slate-700 mb-8">
-          Edit Quiz
+          New Quiz
         </span>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="col-span-1 lg:col-span-2">
@@ -141,8 +88,7 @@ const EditQuizPage = () => {
                     questions={questions}
                     setQuestions={setQuestions}
                     form={form1}
-                    axiosType="edit"
-                    ID={ID}
+                    axiosType="add"
                   />
                 </div>
               </div>
@@ -151,17 +97,11 @@ const EditQuizPage = () => {
               questions={questions}
               setQuestions={setQuestions}
               form={form1}
-              axiosType="edit"
-              ID={ID}
+              axiosType="add"
             />
           </div>
           <div>
-            <OtherDetails
-              form={form2}
-              questions={questions}
-              axiosType="edit"
-              ID={ID}
-            />
+            <OtherDetails form={form2} questions={questions} axiosType="add" />
           </div>
         </div>
       </main>

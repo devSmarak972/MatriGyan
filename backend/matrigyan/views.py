@@ -613,8 +613,9 @@ def addQuestion(request, id):
 			question.save()
 			que = Question.objects.get(id=question.data['id'])
 			quiz = Quiz.objects.get(id=id)
+			# print("Quiz questions: ", que)
 			quiz.questions.add(que)
-   
+			quiz.save()
 	return Response(question.data)
 
 @api_view(['POST'])
