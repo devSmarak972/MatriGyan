@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/StudentDashboard/Sidebar";
-import Calendar from "../components/CalendarPage/StudentCalendar";
+import DemoApp from "../components/CalendarPage/StudentCalendar";
+import axios from "axios";
 
 const CalendarPage = () => {
+
+  const [data,setData] = useState([]);
+
+  // useEffect(()=>{
+  //   axios.get("http://127.0.0.1:8000/get-events/1/")
+  //   .then((res)=>{
+  //     console.log(res.data);
+  //     setData(res.data);
+  //   })
+  //   .catch((err)=>{
+  //     console.log(err);
+  //   })
+  // }, [])
+
+  // if(data.length==0){
+  //   return null;
+  // }
+
   return (
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900">
       <Sidebar />
@@ -11,7 +30,7 @@ const CalendarPage = () => {
           Calendar
         </span> */}
         <div className="mt-8 block container-sm" style={{maxWidth:"1000px"}}>
-          <Calendar />
+          <DemoApp  />
         </div>
       </main>
     </div>

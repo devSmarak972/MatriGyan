@@ -279,9 +279,9 @@ def addComment(request, id):
 		com.save()
 		course = Course.objects.get(id=id)
 		course.comments.add(com)
-		return Response("Comment added!")
+		return Response({"success":True,"message":"Comment added!","comment":com.data})
 	else:
-		return Response("Invalid")
+		return Response({"success":False,"message":"Comment not added.","comment":com.data})
 	
 @api_view(['GET'])
 def getCategory(request):
@@ -426,7 +426,7 @@ def getStudentDashData(request):
 def deleteCourse(request, id):
 	course = Course.objects.get(id=id)
 	course.delete()
-	return Response("Course deleted!")
+	return Response({"success":True,"message":"Course deleted!"})
 
 @api_view(['POST'])
 def addCourse(request):
@@ -475,11 +475,10 @@ def ChangeTaskStatus(request,id):
 @api_view(['GET'])
 def getSections(request, id):
 	sections = CourseSection.objects.filter(course__id=id)
-	if sections!=None:
-		serialized_section = SectionSerializer(sections, many=True)
-		return Response(serialized_section.data)
-	else:
-		return Response("No sections available!")
+	serialized_section = SectionSerializer(sections, many=True)
+	return Response(serialized_section.data)
+	# else:
+	# 	return Response("No sections available!")
 @api_view(['GET'])
 def enrollCourse(request, id):
 	student=Student.objects.get(user=request.user)
@@ -509,8 +508,8 @@ def addSection(request, id):
 		section = CourseSection(course_id=course_id,title=title, order_id=order_id)
 		section.save()
 		# course.sections.add(section)
-		return Response("Section added!")
-	return Response("Invalid")
+		return Response({"success":True,"data":"Section added!","message":"Section added!"})
+	return Response({"success":False,"data":sec.data,"message":"Section not added"})
 
 @api_view(['POST'])
 def addVideo(request,course_id):
@@ -532,7 +531,7 @@ def addVideo(request,course_id):
 def deleteSection(request, id):
 	section = CourseSection.objects.get(id=id)
 	section.delete()
-	return Response("Section deleted!")
+	return Response({"success":True,"message":"Section deleted!"})
 
 @api_view(['DELETE'])
 def deleteVideo(request, id):
@@ -550,11 +549,8 @@ def getQuiz(request, id):
 def getCourseQuiz(request, id):
 	course = Course.objects.get(id=id)
 	quizes = course.quizes.all()
-	if quizes!=None:
-		sq = QuizSerializer(quizes, many=True)
-		return Response(sq.data)
-	else:
-		return Response("No quizes found")
+	sq = QuizSerializer(quizes, many=True)
+	return Response(sq.data)
 
 @api_view(['POST'])
 def createQuiz(request):
@@ -604,7 +600,7 @@ def editQuiz(request, id):
 def deleteQuiz(request, id):
 	quiz = Quiz.objects.get(id=id)
 	quiz.delete()
-	return Response('Quiz deleted!')
+	return Response({"success":True,"message":'Quiz deleted!'})
 
 @api_view(['POST'])
 def addQuestion(request, id):
@@ -615,8 +611,9 @@ def addQuestion(request, id):
 			quiz = Quiz.objects.get(id=id)
 			# print("Quiz questions: ", que)
 			quiz.questions.add(que)
-			quiz.save()
-	return Response(question.data)
+      quiz.save()
+			return Response({"success":True,"data":question.data,"message":"Question added!","question":question.data})
+	return Response({"success":False,"message":"Question not added."})
 
 @api_view(['POST'])
 def editQuestion(request, id):
@@ -708,7 +705,8 @@ def addSolution(request, id):
 		question = Question.objects.get(id=id)
 		question.solution = Solution.objects.get(id=solution.data['id'])
 		question.save()
-	return Response(solution.data)
+		return Response({"success":True,"data":solution.data,"message":"Solution added!"})
+	return Response({"success":False,"data":solution.data,"message":"Could not add solution"})
 
 @api_view(['DELETE'])
 def deleteSolution(request, id):
@@ -732,7 +730,7 @@ def addOption(request, id):
 def deleteOption(request, id):
 	option = Option.objects.get(id=id)
 	option.delete()
-	return Response("Option deleted")
+	return Response({"success":True,"message":"Option deleted"})
 
 @api_view(['GET'])
 def getOptions(request, id):
@@ -756,16 +754,17 @@ def addEvent(request, id):
 	event.endTime = data['endTime']
 	event.course = Course.objects.get(id=id)
 	event.save()
-	return Response(data)
+	ser_event = EventSerializer(event, many=False)
+	return Response({"success":True,"data":ser_event.data})
 
 @api_view(['GET'])
 def getEvents(request,id):
 	events = Event.objects.filter(course__id=id)
 	if events!=None:
 		serialized_events = EventSerializer(events, many=True)
-		return Response(serialized_events.data)
+		return Response({"success":True,"data":serialized_events.data})
 	else:
-		return Response("No events found")
+		return Response({"success":False, "message":"No events found"})
 	
 @api_view(['DELETE'])
 def deleteEvent(request, id):
@@ -824,3 +823,112 @@ def getQuizResponse(request,quiz_id):
 	qresponse = QuizResponseSerializer(qresponse)
 	qanswers=QuizAnswerSerializer(qanswers,many=True)
 	return Response({"success":True,"message":"Quiz Response Found","response":qresponse.data,"answers":qanswers.data})
+
+@api_view(['GET'])
+def getResources(request):
+	tags = ResourceTag.objects.all()
+	sections = []
+	for tag in tags:
+		resources = Resource.objects.filter(tagname__id=tag.id)
+		ser_res = ResourceSerializer(resources, many=True)
+		section = {
+			"sectionname":tag.name,
+			"cards":ser_res.data
+		}
+		sections.append(section)
+	sec_json = json.dumps(sections)
+	return Response({"success":True,"sections":sections})
+
+@api_view(['GET'])
+def getParticularResource(request, id):
+	resource = Resource.objects.get(id=id)
+	serializedresource = ResourceSerializer(resource, many=False)
+	return Response(serializedresource.data)
+
+@api_view(['GET'])
+def getEducatorResource(request, id):
+	eresources = Resource.objects.filter(creator__id=id)
+	resourceserialized = ResourceSerializer(eresources, many=True)
+	return Response(resourceserialized.data)
+
+@api_view(['POST'])
+def addResource(request, id):
+	data=request.data
+	tag_name = data['tagname']
+	tag_name = tag_name.lower()
+	exists = ResourceTag.objects.filter(name=tag_name).first()
+	if exists==None:
+		new_tag = ResourceTag(name=tag_name)
+		new_tag.save()
+		resource = Resource(image=data['image'],description=data['description'],title=data['title'],file_url=data['file_url'])
+		creator = Educator.objects.get(id=id)
+		resource.creator = creator
+		resource.tagname = new_tag
+		resource.save()
+		ser_res = ResourceSerializer(resource, many=False)
+		ser_tag = ResourceTagSerializer(new_tag, many=False)
+		return Response({"success":True, "resource":ser_res.data,"tag":ser_tag.data})
+	old_tag = ResourceTag.objects.get(name=tag_name)
+	resource = Resource(image=data['image'],description=data['description'],title=data['title'],file_url=data['file_url'])
+	creator = Educator.objects.get(id=id)
+	resource.creator = creator
+	resource.tagname = old_tag
+	resource.save()
+	ser_res = ResourceSerializer(resource, many=True)
+	ser_tag = ResourceTagSerializer(old_tag, many=False)
+	return Response({"success":True, "resource":ser_res.data,"tag":ser_tag.data})
+
+
+@api_view(['DELETE'])
+def deleteResource(request, id):
+	resource = Resource.objects.get(id=id)
+	resource.delete()
+	return Response({"success":True, "message":"Resource deleted!"})
+
+@api_view(['GET'])
+def getUser(request):
+	if request.user.is_authenticated:
+		user = request.user
+		ser_user = UserSerializer(user, many=False)
+		if Student.objects.get(id=user.id) != None:
+			student = Student.objects.get(user__id=user.id)
+			ser_student = StudentSerializer(student, many=False)
+			return Response({"success":True, "user":ser_user,"is_student":True,"student":ser_student})
+		else:
+			educator = Educator.objects.get(id=user.id)
+			ser_educator = EducatorSerializer(educator, many=False)
+			return Response({"success":True, "is_student":False, "user":ser_user,"educator":ser_educator})
+	else:
+		return({"success":False,"message":"User not logged in."})
+
+@api_view(['GET'])
+def getEducators(request):
+	educators = Educator.objects.all()
+	ser_educators = EducatorSerializer(educators, many=True)
+	return Response({"success":True, "educators":ser_educators})
+
+@api_view(['GET'])
+def getEducator(request, id):
+	educator = Educator.objects.get(id=id)
+	ser_educator = EducatorSerializer(educator, many=False)
+	return Response({"success":True, "educator":ser_educator})
+
+@api_view(['POST'])
+def editStudent(request,id):
+	student = Student.objects.get(id=id)
+	ser_student = StudentSerializer(instance=student, data=request.data)
+	if ser_student.is_valid():
+		ser_student.save()
+		return Response({"success":True,"student":ser_student,"message":"Student details updated"})
+	else:
+		return Response({"success":False, "student":ser_student, "message":"Failed to update info."})
+	
+@api_view(['POST'])
+def editEducator(request,id):
+	educator = Educator.objects.get(id=id)
+	ser_educator = EducatorSerializer(instance=educator, data=request.data)
+	if ser_educator.is_valid():
+		ser_educator.save()
+		return Response({"success":True,"educator":ser_educator,"message":"Educator details updated"})
+	else:
+		return Response({"success":False, "educator":ser_educator, "message":"Failed to update info."})
