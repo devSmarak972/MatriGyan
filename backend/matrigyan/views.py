@@ -437,6 +437,40 @@ def addCourse(request):
 		course.save()
 		return Response({"success":True,"message":"Course Created","course":course.data})
 	return Response({"success":False,"message":"Invalid input","errors":course.errors})
+@api_view(['POST'])
+def addTask(request):
+	# print(request.data)
+	task = TaskSerializer(data=request.data)
+	# print(course.data)
+	if task.is_valid():
+		due_date=request.data.get("due_date")
+		print(due_date)
+		if due_date:
+			task.due_date=due_date
+		task.save()
+		return Response({"success":True,"message":"Task Created","task":task.data})
+	return Response({"success":False,"message":"Invalid input","errors":task.errors})
+
+@api_view(['POST'])
+def editTask(request,id):
+	# print(request.data)
+	task = TaskSerializer(instance=task,data=request.data)
+	# print(course.data)
+	if task.is_valid():
+		task.save()
+		return Response({"success":True,"message":"Task edited","task":task.data})
+	return Response({"success":False,"message":"Invalid input","errors":task.errors})
+
+@api_view(['GET'])
+def ChangeTaskStatus(request,id):
+	# print(request.data)
+	task = Task.objects.get(id=id)
+	task.completed=request.GET.get("status",False)
+	# print(course.data)
+	# if task.is_valid():
+	task.save()
+	return Response({"success":True,"message":"Task edited","task_completed":task.completed})
+	# return Response({"success":False,"message":"Invalid input","errors":task.errors})
 
 @api_view(['GET'])
 def getSections(request, id):
@@ -499,6 +533,12 @@ def deleteSection(request, id):
 	section = CourseSection.objects.get(id=id)
 	section.delete()
 	return Response("Section deleted!")
+
+@api_view(['DELETE'])
+def deleteVideo(request, id):
+	vid = Video.objects.get(id=id)
+	vid.delete()
+	return Response({"success":True,"message":"Video deleted"})
 
 @api_view(['GET'])
 def getQuiz(request, id):
