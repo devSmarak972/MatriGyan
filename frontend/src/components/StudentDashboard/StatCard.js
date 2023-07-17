@@ -5,6 +5,7 @@ import VisibilitySensor from "react-visibility-sensor";
 const StatCard = (props) => {
   let value = props.value;
   let subtitle = props.subtitle;
+  console.log(props);
   return (
     <div className="card justify-between px-4 py-3 m-0 bg-white h-32">
       <p className="font-medium">{props.title}</p>
@@ -54,10 +55,10 @@ const StatCard = (props) => {
                 <VisibilitySensor onChange={start} delayedCall>
                   <div className="inline">
                     <span
-                      className="text-3xl font-semibold text-slate-700 dark:text-navy-100"
+                      className="ml-1 text-xl font-semibold text-slate-700 dark:text-navy-100"
                       ref={countUpRef}
                     />
-                    <span className="ml-1 text-xl font-semibold text-slate-700 dark:text-navy-100">
+                    <span className="text-xl font-semibold text-slate-700 dark:text-navy-100">
                       {["h", "m"].includes(subtitle[subtitle.length - 1])
                         ? subtitle[subtitle.length - 1]
                         : ""}
@@ -67,7 +68,7 @@ const StatCard = (props) => {
               )}
             </CountUp>
           )}
-          {props.den && <span>{" / " + props.den}</span>}
+          {props.den !== undefined && <span>{" / " + props.den}</span>}
         </div>
         {props.icon}
       </div>

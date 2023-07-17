@@ -10,6 +10,9 @@ import {
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import CheckboxItem from "../../components/StudentDashboard/CheckboxItem";
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 
 const useStyles = createStyles(() => ({
   month: {
@@ -51,7 +54,6 @@ const Tasklist = (props) => {
     initialValues: {
       name: "",
       due_date: null,
-      completed: false,
     },
     validate: {
       name: (value) => (value.length === 0 ? "Enter task name" : null),
@@ -117,10 +119,12 @@ const Tasklist = (props) => {
         !el.currentTarget.checked;
       if (el.currentTarget.checked) {
         tmptasks.numcompleted += 1;
+        tmptasks.tasks.find((it) => it.id === id).completed = true;
         tmptasks.tasks.find((it) => it.id === id).message = "Completed";
         tmptasks.tasks.find((it) => it.id === id).messagetype = "text-success";
       } else {
         tmptasks.numcompleted -= 1;
+        tmptasks.tasks.find((it) => it.id === id).completed = false;
         tmptasks.tasks.find((it) => it.id === id).message =
           new Date() < new Date(tmptasks.tasks.find((it) => it.id === id).date)
             ? "Pending"
@@ -150,9 +154,8 @@ const Tasklist = (props) => {
           size="xs"
         >
           <form
-            onSubmit={form.onSubmit((values) => {
+            onSubmit={form.onSubmit(async (values) => {
               var num = tasks.numcompleted;
-              if (values.completed) num++;
               var status = new Date() < values.due_date ? 2 : 1;
               var date =
                 "" +
@@ -170,22 +173,21 @@ const Tasklist = (props) => {
                     id: prev.tasks.length + 1,
                     title: values.name,
                     date,
-                    message:
-                      values.completed === true
-                        ? "Completed"
-                        : status === 2
-                        ? "Pending"
-                        : "Delayed",
-                    completed: values.completed,
-                    messagetype:
-                      values.completed === true
-                        ? "text-success"
-                        : status === 2
-                        ? "text-warning"
-                        : "text-danger",
+                    message: status === 2 ? "Pending" : "Delayed",
+                    messagetype: status === 2 ? "text-warning" : "text-danger",
                   },
                 ],
               }));
+
+              await axios
+                .post("http://localhost:8000/add-task/", {
+                  name: values.name,
+                  due_date: values.due_date,
+                  user: 1,
+                  completed: false,
+                })
+                .then((res) => console.log(res))
+                .catch((e) => console.log(e));
             })}
           >
             <TextInput
@@ -196,20 +198,15 @@ const Tasklist = (props) => {
               mt="xl"
             />
             <DateInput
+              icon={<FontAwesomeIcon icon={faCalendar} />}
               label="Due Date"
               {...form.getInputProps("due_date")}
               mb="md"
               classNames={{ month: classes.month }}
               hideOutsideDates={true}
             />
-            <Checkbox
-              label="Completed"
-              mb="sm"
-              mt="xl"
-              {...form.getInputProps("completed")}
-            />
             <button
-              onClick={close}
+              onClick={form.isValid() ? close : null}
               className="px-4 py-2 rounded-xl bg-[var(--primary)] font-semibold text-white w-full"
             >
               Add
@@ -217,7 +214,13 @@ const Tasklist = (props) => {
           </form>
         </Drawer>
         <span class="px-3 text-2xl text-muted">
-          <i className="fas fa-plus cursor-pointer" onClick={open}></i>
+          <i
+            className="fas fa-plus cursor-pointer"
+            onClick={() => {
+              form.reset();
+              open();
+            }}
+          ></i>
         </span>
       </div>
       {tasks ? (
