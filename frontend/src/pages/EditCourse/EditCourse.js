@@ -8,40 +8,110 @@ import Quill from "../../components/EditCourse/Quill";
 import Sections from "../../components/EditCourse/Sections";
 import Save from "../../components/EditCourse/Save";
 import Options from "../../components/EditCourse/Options";
+import axios from "axios";
 
 const EditCourse = () => {
-  const sectionsData = [
-    {
-      title: "Course Overview",
-      subsections: [
-        { name: "Introduction", time: "8m 42s" },
-        { name: "Introduction to TypeScript", time: "50m 32s" },
-        { name: "Comparing Angular to AngularJS", time: "12m 10s" },
-      ],
-    },
-    {
-      title: "Creating and Communicating Between Angular Components",
-      subsections: [
-        { name: "Introduction2", time: "8m 42s" },
-        { name: "Introduction to TypeScript2", time: "50m 32s" },
-        { name: "Comparing Angular to AngularJS2", time: "12m 10s" },
-      ],
-    },
-    {
-      title: "Exploring the Angular Tempalte Syntax",
-      subsections: [
-        { name: "Introduction3", time: "8m 42s" },
-        { name: "Introduction to TypeScript3", time: "50m 32s" },
-        { name: "Comparing Angular to AngularJS3", time: "12m 10s" },
-      ],
-    },
-  ];
+  const id = 1;
 
-  const [sections, setSections] = useState(sectionsData);
+  const [sections, setSections] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [tags, setTags] = useState([]);
 
-  const category = ["VueJS", "Angular", "React"];
+  useEffect(()=>{
+    axios.get('http://127.0.0.1:8000/get-sections/1/')
+    .then((res)=>{
+      console.log("Sections recieved.");
+      setSections(res.data);
+      console.log(sections);
+      console.log("Sections set!");
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
 
-  const tags = ["Javascript", "Angular", "Bootstrap", "CSS", "HTML"];
+    // axios.get('http://127.0.0.1:8000/get-category/')
+    // .then((res)=>{
+    //   console.log("Categories recieved.")
+    //   setCategory(res.data);
+    //   console.log(category, "categories");
+    //   console.log("Categories set.");
+    // })
+    // .catch((err)=>{
+    //   console.log(err);
+    // })
+
+    // axios.get('http://127.0.0.1:8000/get-tags/')
+    // .then((res)=>{
+    //   console.log("Tags recieved.");
+    //   setTags(res.data);
+    //   console.log(tags, "tags");
+    //   console.log("Tags set.");
+    // })
+
+  }, [])
+
+  useEffect(()=>{
+    axios.get('http://127.0.0.1:8000/get-tags/')
+    .then((res)=>{
+      console.log("Tags recieved.");
+      setTags(res.data);
+      console.log(tags, "tags");
+      console.log("Tags set.");
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  }, [])
+
+  useEffect(()=>{
+    axios.get('http://127.0.0.1:8000/get-category/')
+    .then((res)=>{
+      console.log("Categories recieved.")
+      setCategory(res.data);
+      console.log(category, "categories");
+      console.log("Categories set.");
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  }, [])
+
+  // if(tags.length==0){
+  //   return null;
+  // }
+
+  // const sectionsData = [
+  //   {
+  //     title: "Course Overview",
+  //     subsections: [
+  //       { name: "Introduction", time: "8m 42s" },
+  //       { name: "Introduction to TypeScript", time: "50m 32s" },
+  //       { name: "Comparing Angular to AngularJS", time: "12m 10s" },
+  //     ],
+  //   },
+  //   {
+  //     title: "Creating and Communicating Between Angular Components",
+  //     subsections: [
+  //       { name: "Introduction2", time: "8m 42s" },
+  //       { name: "Introduction to TypeScript2", time: "50m 32s" },
+  //       { name: "Comparing Angular to AngularJS2", time: "12m 10s" },
+  //     ],
+  //   },
+  //   {
+  //     title: "Exploring the Angular Tempalte Syntax",
+  //     subsections: [
+  //       { name: "Introduction3", time: "8m 42s" },
+  //       { name: "Introduction to TypeScript3", time: "50m 32s" },
+  //       { name: "Comparing Angular to AngularJS3", time: "12m 10s" },
+  //     ],
+  //   },
+  // ];
+
+  // const [sections, setSections] = useState(sectionData);
+
+  // const [category, setCategory] = useState([])
+
+  // const tags = ["Javascript", "Angular", "Bootstrap", "CSS", "HTML"];
 
   const useStyles = createStyles((theme) => ({
     root: {
@@ -91,6 +161,10 @@ const EditCourse = () => {
   useEffect(() => {
     console.log(desc);
   }, [desc]);
+
+  if(sections.length==0 || tags.length==0 || category.length==0){
+    return null;
+  }
 
   return (
     <div className="container p-8">

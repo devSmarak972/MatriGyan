@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
+
 
 function Heading({details}) {
   return (
@@ -19,21 +22,22 @@ function Heading({details}) {
               <h1 className="h2 m-0">{details.data.title}</h1>
               <div className="rating mb-8pt d-inline-flex">
                 <div className="rating__item">
-                  <i className="material-icons">star</i>
+                  <FontAwesomeIcon icon={faStar} />
                 </div>
                 <div className="rating__item">
-                  <i className="material-icons">star</i>
+                  <FontAwesomeIcon icon={faStar} />
                 </div>
                 <div className="rating__item">
-                  <i className="material-icons">star</i>
+                  <FontAwesomeIcon icon={faStar} />
                 </div>
                 <div className="rating__item">
-                  <i className="material-icons">star</i>
+                  <FontAwesomeIcon icon={faStar} />
                 </div>
                 <div className="rating__item">
-                  <i className="material-icons">star_border</i>
+                  <FontAwesomeIcon icon={faStarHalfAlt} />
                 </div>
               </div>
+
             </div>
           </div>
           {/* <div className="ml-lg-16pt">

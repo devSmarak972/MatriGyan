@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from 'react-router-dom';
+
 
 const Footer = () => {
   return (
@@ -25,19 +27,19 @@ const Footer = () => {
                 <h2 className="footer-title">For Instructor</h2>
                 <ul>
                   <li>
-                    <a href="instructor-profile.html">Profile</a>
+                    <Link to='/educator/profile'><a href="#">Profile</a></Link>
                   </li>
                   <li>
-                    <a href="login.html">Login</a>
+                    <Link to='/login'><a href="#">Login</a></Link>
                   </li>
                   <li>
-                    <a href="register.html">Register</a>
+                    <Link to='/signup'><a href="register.html">Register</a></Link>
                   </li>
                   <li>
-                    <a href="instructor-list.html">Instructor</a>
+                    <Link to='/educator'><a href="#">Instructor</a></Link>
                   </li>
                   <li>
-                    <a href="deposit-instructor-dashboard.html"> Dashboard</a>
+                  <Link to='/educator'><a href="#">Dashboard</a></Link>
                   </li>
                 </ul>
               </div>
@@ -47,19 +49,21 @@ const Footer = () => {
                 <h2 className="footer-title">For Student</h2>
                 <ul>
                   <li>
-                    <a href="student-profile.html">Profile</a>
+                    <Link to='/educator/profile'><a href="#">Profile</a></Link>
                   </li>
                   <li>
-                    <a href="login.html">Login</a>
+                    <Link to='/login'><a href="login.html">Login</a></Link>
                   </li>
                   <li>
-                    <a href="register.html">Register</a>
+                    <Link to='/signup'><a href="register.html">Register</a></Link>
                   </li>
                   <li>
                     <a href="students-list.html">Student</a>
+                    <Link to='/student/profile'></Link>
                   </li>
                   <li>
-                    <a href="deposit-student-dashboard.html"> Dashboard</a>
+                    
+                    <Link to='/student'><a href="deposit-student-dashboard.html"> Dashboard</a></Link>
                   </li>
                 </ul>
               </div>

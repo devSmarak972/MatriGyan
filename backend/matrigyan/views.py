@@ -624,6 +624,7 @@ def deleteQuiz(request, id):
 def addQuestion(request, id):
 	question = QuestionSerializer(data=request.data)
 	if question.is_valid():
+
 			question.save()
 			que = Question.objects.get(id=question.data['id'])
 			quiz = Quiz.objects.get(id=id)
@@ -777,7 +778,7 @@ def addEvent(request, id):
 
 @api_view(['GET'])
 def getEvents(request,id):
-	events = Event.objects.filter(course__id=id)
+	events = Event.objects.filter(user__id=id)
 	if events!=None:
 		serialized_events = EventSerializer(events, many=True)
 		return Response({"success":True,"data":serialized_events.data})
@@ -950,3 +951,19 @@ def editEducator(request,id):
 		return Response({"success":True,"educator":ser_educator,"message":"Educator details updated"})
 	else:
 		return Response({"success":False, "educator":ser_educator, "message":"Failed to update info."})
+
+@api_view(['GET'])
+def searchCourses(request):
+	data = request.data
+	search = data['course']
+	search = search.lower()
+	courses = Course.objects.all()
+	course_list = []
+	for course in courses:
+		if search in course.title.lower():
+			course_list.append(course)
+	if len(course_list)==0:
+		return Response({"success":False, "message":"No such course found."})
+	else:
+		ser_courses = CourseSerializer(course_list, many=True)
+		return Response({"success":True, "courses":ser_courses, "message":"Courses found."})

@@ -68,4 +68,5 @@ urlpatterns = [
     path('get-educator/<int:id>/', views.getEducator),
     path('edit-student/<int:id>/', views.editStudent),
     path('edit-educator/<int:id>/', views.editEducator),
+    path('search-courses/', views.searchCourses),
 ]

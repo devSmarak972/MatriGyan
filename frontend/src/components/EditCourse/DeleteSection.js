@@ -1,9 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, TextInput, Button, Select, PasswordInput } from "@mantine/core";
+import axios from "axios";
 
 const DeleteSection = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [value, setName] = useState(null);
+  const [section_id,setId] = useState(0);
+  const [sid, setSid] = useState("");
+
+  const handleIdChange = (id_section)=>{
+    setId(id_section);
+    setSid(section_id.toString());
+    console.log("id is : ",section_id);
+  }
+
+  const handleChangeSection = (value) =>{
+    setName(value);
+    console.log("name is ",value);
+    for(let i=0;i<props.sections.length;i++){
+      if(props.sections[i].title===value){
+        handleIdChange(props.sections[i].id);
+        console.log("props id :",props.sections[i].id);
+        break;
+      }
+    }
+  }
+
+  const DeleteSection = (sid) =>{
+    console.log("sid : ",sid);
+    axios.delete(`http://127.0.0.1:8000/delete-section/${sid}`)
+    .then((res)=>{
+      console.log('Section deleted.');
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  }
+
   return (
     <div>
       <Modal
@@ -33,7 +67,6 @@ const DeleteSection = (props) => {
         >
           <div className="flex flex-column gap-3">
             <Select
-              label="Choose section to delete"
               placeholder="Choose Section"
               data={props.sections.map((section) => section.title)}
               withAsterisk
@@ -44,6 +77,8 @@ const DeleteSection = (props) => {
                 timingFunction: "ease",
               }}
               searchable
+              value={value}
+              onChange={handleChangeSection}
             />
             <PasswordInput
               placeholder="asd123"
@@ -55,7 +90,16 @@ const DeleteSection = (props) => {
           <Button
             onClick={() => {
               if (props.form.isValid()) {
+                for(let i=0;i<props.sections.length;i++){
+                  if(props.sections[i].title===value){
+                    console.log('Yes');
+                    handleIdChange(props.sections[i].id);
+                    DeleteSection(sid);
+                    break;
+                  }
+                }
                 close();
+
               }
             }}
             type="submit"
