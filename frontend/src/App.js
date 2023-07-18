@@ -26,6 +26,7 @@ import InDev from "./pages/InDev/InDev";
 import ResourceView from "./pages/ResourceView";
 import {ToastContainer} from "react-toastify"
 import ProfilePage from "./pages/ProfilePage";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
 function App() {
   return (

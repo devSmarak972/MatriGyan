@@ -606,13 +606,11 @@ def deleteQuiz(request, id):
 def addQuestion(request, id):
 	question = QuestionSerializer(data=request.data)
 	if question.is_valid():
-			question.save()
-			que = Question.objects.get(id=question.data['id'])
-			quiz = Quiz.objects.get(id=id)
-			# print("Quiz questions: ", que)
-			quiz.questions.add(que)
-      quiz.save()
-			return Response({"success":True,"data":question.data,"message":"Question added!","question":question.data})
+		question.save()
+		que = Question.objects.get(id=question.data['id'])
+		quiz = Quiz.objects.get(id=id)
+		quiz.questions.add(que)
+		return Response({"success":True,"data":question.data,"message":"Question added!","question":question.data})
 	return Response({"success":False,"message":"Question not added."})
 
 @api_view(['POST'])

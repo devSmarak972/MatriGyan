@@ -17,7 +17,7 @@ const Options = (props) => {
             <label className="form-label font-semibold">Category</label>
             <Select
               placeholder="Pick one"
-              data={props.category}
+              data={props.category.map((cate)=>cate.category)}
               {...props.form.getInputProps("category")}
               transitionProps={{
                 transition: "pop-top-left",
@@ -48,7 +48,7 @@ const Options = (props) => {
               Tags
             </label>
             <MultiSelect
-              data={props.tags}
+              data={props.tags.map((tag)=>tag.tagname)}
               placeholder="Choose tags"
               {...props.form.getInputProps("tags")}
               transitionProps={{

@@ -9,6 +9,7 @@ import AddVideo from "./AddVideo";
 import DeleteVideo from "./DeleteVideo";
 
 const Sections = (props) => {
+  console.log(props.sections, "sections");
   const form1 = useForm({
     initialValues: { sectionName: "" },
     validate: {
@@ -86,7 +87,7 @@ const Sections = (props) => {
       </div>
       <div id="accordion-collapse" data-accordion="collapse">
         <Accordion
-          defaultValue={props.sections[0].title}
+          defaultValue="Select"
           classNames={props.classes}
           className={props.classes.root}
         >
@@ -97,12 +98,12 @@ const Sections = (props) => {
               </Accordion.Control>
               <Accordion.Panel>
                 <div className="flex flex-column divide-y">
-                  {section.subsections.map((subsection) => (
+                  {section.videos.map((video) => (
                     <div className="flex justify-between py-2">
                       <Link className="font-normal text-slate-400" to="#">
-                        {subsection.name}
+                        {video.title}
                       </Link>
-                      <span>{subsection.time}</span>
+                      <span>{video.time}</span>
                     </div>
                   ))}
                 </div>
