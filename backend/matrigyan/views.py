@@ -932,3 +932,19 @@ def editEducator(request,id):
 		return Response({"success":True,"educator":ser_educator,"message":"Educator details updated"})
 	else:
 		return Response({"success":False, "educator":ser_educator, "message":"Failed to update info."})
+
+@api_view(['GET'])
+def searchCourses(request):
+	data = request.data
+	search = data['course']
+	search = search.lower()
+	courses = Course.objects.all()
+	course_list = []
+	for course in courses:
+		if search in course.title.lower():
+			course_list.append(course)
+	if len(course_list)==0:
+		return Response({"success":False, "message":"No such course found."})
+	else:
+		ser_courses = CourseSerializer(course_list, many=True)
+		return Response({"success":True, "courses":ser_courses, "message":"Courses found."})
