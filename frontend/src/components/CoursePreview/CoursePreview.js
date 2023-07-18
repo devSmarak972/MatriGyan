@@ -4,23 +4,33 @@ import Feedb from './Feedb'
 import Heading from './Heading'
 import './preview.css'
 import Comments from './Comments'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 function CoursePreview() {
   const params = useParams();
   const [details, setDetails] = useState("");
 
   const getCourse = () => {
+    // const navigate=useNavigate();
     fetch(`http://127.0.0.1:8000/get-course/${params.id}`, {
       method: "get"
     })
       .then((response) => response.json())
       .then((data) => {
+        if(!data.success)
+        {window.location.href="http://localhost:3000/not-found"
+         const notify=()=>toast("Course not found!")
+        notify();
+        }
+        else
         setDetails(data);
       })
       .catch((error) => {
         console.error(error);
+
+         window.location.href="http://localhost:3000/not-found"
       });
   };
 

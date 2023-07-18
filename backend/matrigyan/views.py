@@ -329,9 +329,12 @@ def getCourses(request):
 
 @api_view(['GET'])
 def getCourse(request, id):
-	course = Course.objects.get(id=id)
+	course = Course.objects.filter(id=id).first()
+	if not course:
+		return Response({"success":False,"message":"course not found"})
 	students=course.student_enrolled.all().values_list("user")
 	enrolled=False
+ 
 	# sections=course.coursesection_set.all()
 	# sections=SectionSerializer(sections,many=True)
 	# print(request.user,list(students))
@@ -341,7 +344,7 @@ def getCourse(request, id):
 		enrolled=True
 		print("enrolled")
 	c = CourseSerializer(course, many=False)
-	return Response({"data":c.data,"isEnrolled":enrolled})
+	return Response({"success":True,"data":c.data,"isEnrolled":enrolled})
 @api_view(['GET'])
 def getEducatorDashData(request):
 	print(request.user)
@@ -465,6 +468,10 @@ def addTask(request):
 @api_view(['POST'])
 def editTask(request,id):
 	# print(request.data)
+	task=Task.objects.get(id=id)
+	if not task:
+		return Response({"success":False,"message":"Task not found"})
+		
 	task = TaskSerializer(instance=task,data=request.data)
 	# print(course.data)
 	if task.is_valid():
