@@ -757,7 +757,7 @@ def addEvent(request, id):
 
 @api_view(['GET'])
 def getEvents(request,id):
-	events = Event.objects.filter(course__id=id)
+	events = Event.objects.filter(user__id=id)
 	if events!=None:
 		serialized_events = EventSerializer(events, many=True)
 		return Response({"success":True,"data":serialized_events.data})

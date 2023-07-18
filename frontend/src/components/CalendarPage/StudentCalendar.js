@@ -8,7 +8,7 @@ import "./Calendar.css";
 import Events from "./Events.json"
 
 const DemoApp = (props) => {
-  const [eventsall, setEvents] = useState(Events);
+  const [events, setEvents] = useState(props.data);
 
   return (
     <FullCalendar
@@ -19,7 +19,7 @@ const DemoApp = (props) => {
         center: window.innerWidth >= 640 ? "title" : "",
         right: "prev,next",
       }}
-      events={eventsall}
+      events={events}
       nowIndicator={true}
       editable={true}
       droppable={true}

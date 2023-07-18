@@ -1,6 +1,8 @@
 import { faUser } from "@fortawesome/fontawesome-free-solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { Link } from 'react-router-dom';
+
 
 const Courses = () => {
   return (
@@ -12,9 +14,11 @@ const Courses = () => {
             <h2>Featured Courses</h2>
           </div>
           <div className="all-btn all-category d-flex align-items-center">
-            <a href="course-list" className="btn btn-primary">
+            <Link to='/courses'>
+            <a href="#" className="btn btn-primary">
               All Courses
             </a>
+            </Link>
           </div>
         </div>
         <div className="section-text aos" data-aos="fade-up">
