@@ -3,12 +3,13 @@ import Sidebar from "../components/StudentDashboard/Sidebar";
 import DemoApp from "../components/CalendarPage/StudentCalendar";
 import axios from "axios";
 
-const CalendarPage = () => {
+const CalendarPage = (props) => {
 
   const [data,setData] = useState([]);
+  const [user_id, setID] = useState(props.id);
 
   useEffect(()=>{
-    axios.get("http://127.0.0.1:8000/get-events/1/")
+    axios.get(`http://127.0.0.1:8000/get-events/${user_id}/`)
     .then((res)=>{
       console.log(res.data.data);
       setData(res.data.data);
