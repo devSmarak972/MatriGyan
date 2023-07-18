@@ -33,7 +33,7 @@ STAGING = True if ENVIRONMENT == "STAGING" else False
 
 DEBUG = False if PROD else True
 
-
+AZURE_STORAGE_CONNECTIONSTRING="DefaultEndpointsProtocol=https;AccountName=matrigyan;AccountKey=lgQbT5xCpYkX6pTc5xY9mnrx5bLtcp+QWSdz+f94y8JCa9Ilp5Ta/C+IV7p9UGWq2GYYcLyogfaW+AStyRSAtw==;EndpointSuffix=core.windows.net"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 

@@ -23,9 +23,9 @@ const Resources = () => {
     })
   }, [])
 
-  if(resources.length==0){
-    return null;
-  }
+  // if(resources.length==0){
+  //   return null;
+  // }
 
   // useEffect(() => {
   //   setResources({

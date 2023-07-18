@@ -26,6 +26,8 @@ from .common import update_first_and_last_name
 import json
 from .models import *
 from .serializers import *
+import uuid
+
 # Create your views here.
 # from .serializers import CourseSerializer
 import backend.settings as matrigyan_settings
@@ -327,9 +329,12 @@ def getCourses(request):
 
 @api_view(['GET'])
 def getCourse(request, id):
-	course = Course.objects.get(id=id)
+	course = Course.objects.filter(id=id).first()
+	if not course:
+		return Response({"success":False,"message":"course not found"})
 	students=course.student_enrolled.all().values_list("user")
 	enrolled=False
+ 
 	# sections=course.coursesection_set.all()
 	# sections=SectionSerializer(sections,many=True)
 	# print(request.user,list(students))
@@ -339,7 +344,7 @@ def getCourse(request, id):
 		enrolled=True
 		print("enrolled")
 	c = CourseSerializer(course, many=False)
-	return Response({"data":c.data,"isEnrolled":enrolled})
+	return Response({"success":True,"data":c.data,"isEnrolled":enrolled})
 @api_view(['GET'])
 def getEducatorDashData(request):
 	print(request.user)
@@ -448,12 +453,25 @@ def addTask(request):
 		if due_date:
 			task.due_date=due_date
 		task.save()
+		print(task.data)
+		taskobj=Task.objects.get(id=task.data.get("id"))
+		user=Student.objects.get(user_id=taskobj.user)
+		if not user:
+			user=Educator.objects.get(user_id=taskobj.user)
+			if not user:		
+				return Response({"success":False,"message":"Not a student or educator"})
+		user.task.add(taskobj)
+		user.save()
 		return Response({"success":True,"message":"Task Created","task":task.data})
 	return Response({"success":False,"message":"Invalid input","errors":task.errors})
 
 @api_view(['POST'])
 def editTask(request,id):
 	# print(request.data)
+	task=Task.objects.get(id=id)
+	if not task:
+		return Response({"success":False,"message":"Task not found"})
+		
 	task = TaskSerializer(instance=task,data=request.data)
 	# print(course.data)
 	if task.is_valid():
@@ -606,11 +624,14 @@ def deleteQuiz(request, id):
 def addQuestion(request, id):
 	question = QuestionSerializer(data=request.data)
 	if question.is_valid():
-		question.save()
-		que = Question.objects.get(id=question.data['id'])
-		quiz = Quiz.objects.get(id=id)
-		quiz.questions.add(que)
-		return Response({"success":True,"data":question.data,"message":"Question added!","question":question.data})
+
+			question.save()
+			que = Question.objects.get(id=question.data['id'])
+			quiz = Quiz.objects.get(id=id)
+			# print("Quiz questions: ", que)
+			quiz.questions.add(que)
+			quiz.save()
+			return Response({"success":True,"data":question.data,"message":"Question added!","question":question.data})
 	return Response({"success":False,"message":"Question not added."})
 
 @api_view(['POST'])

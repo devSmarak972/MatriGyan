@@ -195,7 +195,7 @@ class QuizAnswer(models.Model):
 	
 class Task(models.Model):
 	name = models.CharField(max_length=250)
-	user=models.ForeignKey(User,on_delete=models.CASCADE)
+	user=models.ForeignKey(User,on_delete=models.CASCADE,blank=True)
 	due_date=models.DateTimeField(default=timezone.now, null=True, blank=True)
 	completed=models.BooleanField(default=False,blank=True)
 	def __str__(self):
