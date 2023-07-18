@@ -37,8 +37,8 @@ const AddVideo = (props) => {
                   min = min % 60;
                   return {
                     title: section.title,
-                    subsections: [
-                      ...section.subsections,
+                    videos: [
+                      ...section.videos,
                       {
                         name: values.name,
                         time: hr + "hr " + min + "m " + sec + "s",
@@ -66,7 +66,7 @@ const AddVideo = (props) => {
               searchable
             />
             <TextInput
-              label="Subsection Name"
+              label="Video Name"
               placeholder="Introduction to React States"
               withAsterisk
               {...props.form.getInputProps("name")}
