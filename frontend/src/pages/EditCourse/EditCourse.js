@@ -20,6 +20,8 @@ const EditCourse = () => {
   const [tags, settags] = useState([]);
   const [desc, setDesc] = useState("");
   const [name, setname] = useState("");
+  const [optionscategory, setoptioncategory] = useState([]);
+  const [optionstags, setoptiontags] = useState([]);
   const form = useForm({
     initialValues: {
       title: "",
@@ -70,6 +72,8 @@ const EditCourse = () => {
         setDesc(data.data.description);
         setcategory(data.data.category);
         settags(data.data.tags);
+        setoptioncategory(data.data.category);
+        setoptiontags(data.data.tags);
       })
       .catch((error) => {
         console.error(error);
@@ -78,13 +82,13 @@ const EditCourse = () => {
 
   useEffect(() => {
     getCourse();
-    
   }, []);
+console.log({category, tags})
 
   // if (!details) {
   //   return null;
   // }
-  console.log({name, desc, sections, category, tags})
+
   const handleTitleChange = (value) => {
     setname(value);
   };
@@ -122,7 +126,7 @@ const EditCourse = () => {
             <div className="col-span-1 sm:col-span-2">
               <Save form = {form} name = {name} desc={desc} category={category} tags={tags}/>
               {/* <Video form={form} /> */}
-              <Options form={form} category={category} tags={tags}/>
+              <Options form={form} category={category} tags={tags} optionscategory={optionscategory} optionstags={optionstags} setcategory={setcategory} settags={settags}/>
             </div>
           </div>
         </main>

@@ -9,21 +9,20 @@ const DeleteSection = (props) => {
   const handleDelete = () => {
     if (props.form.isValid()) {
       const sectionName = props.form.values.sectionName;
-      const updatedSections = props.sections.filter(
-        (section) => section.title !== sectionName
-      );
-  
-      // Update the state directly with the updated sections
-      props.setSections(updatedSections);
-  
-      // Close the modal and navigate to the desired page
-      close();
+      
       // Make the API call to delete the section
       fetch(`http://127.0.0.1:8000/delete-section/${sectionName}`, {
         method: "delete"
       })
         .then((result) => {
+          props.setSections(() =>
+              props.sections.filter(
+                (section) => section.title !== sectionName
+              )
+            );
+          props.form.reset();
           console.log(result);
+          close();
         })
         .catch((err) => {
           console.log(err);
