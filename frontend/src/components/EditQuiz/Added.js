@@ -34,6 +34,7 @@ import "react-quill/dist/quill.snow.css";
 import "./added.css";
 import axios from "axios";
 import { Form } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const questionTruncate = (text, maxLength) => {
   if (text.length <= maxLength) {
@@ -156,14 +157,12 @@ const Added = (props) => {
                         type: item.type,
                         correct: item.correct,
                         incorrect: item.incorrect,
-                        quesMedia:
-                          item.quesMedia ,
-                        ansMedia:
-                          item.ansMedia,
-                          // new File([b64toBlob(item.ansMedia)], "solution.png", {
-                          //   type: "image/png",
-                          //   lastModified: new Date().getTime(),
-                          // }),
+                        quesMedia: item.quesMedia,
+                        ansMedia: item.ansMedia,
+                        // new File([b64toBlob(item.ansMedia)], "solution.png", {
+                        //   type: "image/png",
+                        //   lastModified: new Date().getTime(),
+                        // }),
                         solutionDesc: item.solutionDesc,
                       });
                       open();
@@ -188,6 +187,7 @@ const Added = (props) => {
                         )
                         .then((res) => console.log(res))
                         .catch((e) => console.log(e));
+                      toast("Question Deleted.");
                     }}
                   >
                     Delete Question
@@ -362,6 +362,7 @@ const Added = (props) => {
                     .catch((e) => console.log(e));
                 })
                 .catch((e) => console.log(e));
+              toast("Question Edited Successfully!");
             }
             setEditingQ(0);
             close();

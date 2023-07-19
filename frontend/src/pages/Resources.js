@@ -9,6 +9,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button, Group, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import DeleteResource from "../components/Resources/DeleteResource";
+import { toast } from "react-toastify";
 
 const Resources = () => {
   const [search, setSearch] = useState("");
@@ -134,9 +135,7 @@ const Resources = () => {
                     }
                   });
                 });
-                setTimeout(() => {
-                  console.log(resources);
-                }, 3000);
+                toast("Resource Added Successfully!");
               })}
             >
               <TextInput

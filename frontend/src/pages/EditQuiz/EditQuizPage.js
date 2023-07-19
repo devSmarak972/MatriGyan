@@ -110,7 +110,6 @@ const EditQuizPage = () => {
       subject: "",
     },
     validate: {
-      course: (value) => (value.length === 0 ? "Choose a course" : null),
       time: (value) =>
         value.length === 0 || value === 0
           ? "Allot a non-zero time in minutes"

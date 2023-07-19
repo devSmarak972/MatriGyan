@@ -82,7 +82,6 @@ const StudentDashboard = () => {
               avgtestscore={Data.avgTestScore ? Data.avgTestScore : 30}
             />
             <Tests tests={Data.my_tests} attempted={Data.attempted_tests} />
-            <LiveLectures lectures={Data.live_classes} />
             {Data.enrolled_courses ? (
               <CompletedCourses
                 courses={
@@ -99,6 +98,12 @@ const StudentDashboard = () => {
             ) : (
               ""
             )}
+            {Data.tasks ? (
+              <Tasklist tasks={Data.tasks}></Tasklist>
+            ) : (
+              <p className="p-3">Loading...</p>
+            )}
+            <LiveLectures lectures={Data.live_classes} />
             <div class="flex flex-col col-span-12 sm:col-span-6 lg:col-span-4">
               <div class="flex justify-between">
                 <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
@@ -108,7 +113,7 @@ const StudentDashboard = () => {
                   <i className="fas fa-plus"></i>
                 </span>
               </div>
-              <div className="noHoverCard card px-4 py-2 mb-2 h-auto justify-center flex flex-col gap-y-2">
+              {/* <div className="noHoverCard card px-4 py-2 mb-2 h-auto justify-center flex flex-col gap-y-2">
                 {Data.on_courses && Data.on_courses.length !== 0 ? (
                   Data.on_courses.map((el) => {
                     var tags = el.tags.map((tagd) => tagd.tagname);
@@ -125,14 +130,12 @@ const StudentDashboard = () => {
                     No ongoing courses. Enroll to some course to get started!
                   </p>
                 )}
-              </div>
+              </div> */}
+              <p className="noHoverCard card p-4 mb-2 h-auto justify-center flex flex-col gap-y-2 col-span-2">
+                Feature in development, coming soon!
+              </p>
             </div>
-            {Data.tasks ? (
-              <Tasklist tasks={Data.tasks}></Tasklist>
-            ) : (
-              <p className="p-3">Loading...</p>
-            )}
-            <div class="flex flex-col col-span-12 sm:col-span-6 lg:col-span-4">
+            {/* <div class="flex flex-col col-span-12 sm:col-span-6 lg:col-span-4">
               <div class="flex justify-between">
                 <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
                   Calendar
@@ -146,7 +149,7 @@ const StudentDashboard = () => {
               </div>
 
               <DashboardCalendar></DashboardCalendar>
-            </div>
+            </div> */}
           </div>
         </main>
       </div>

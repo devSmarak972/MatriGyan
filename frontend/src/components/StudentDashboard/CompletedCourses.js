@@ -69,7 +69,9 @@ const CompletedCourses = (props) => {
                 return <Course {...el} />;
               })
           ) : (
-            <p>No courses completed</p>
+            <p className="noHoverCard card p-4 mb-2 h-auto justify-center flex flex-col gap-y-2 col-span-2">
+              No courses completed yet. Complete a course to view stats!
+            </p>
           )}
         </div>
       </div>
