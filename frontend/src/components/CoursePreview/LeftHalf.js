@@ -4,6 +4,8 @@ import { Link } from "react-scroll";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlayCircle, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import parse from 'html-react-parser'
+import ReactPlayer from 'react-player'
+
 function LeftHalf(props) {
   console.log(props)
   const [videoURL, setvideoURL] = useState(
@@ -53,12 +55,13 @@ function LeftHalf(props) {
           </div>
           <div className="player__embed">
             {isPlaying && (
-              <iframe
-                className="embed-responsive-item"
-                src={videoURL}
-                title="Vimeo Video Player"
-                allowFullScreen
-              ></iframe>
+              // <video
+              //   className="embed-responsive-item"
+              //   src={videoURL}
+              //   title="Video Player"
+              //   allowFullScreen
+              // ></video>
+              <ReactPlayer playing={isPlaying} url={videoURL} controls={true}></ReactPlayer>
             )}
           </div>
         </div>

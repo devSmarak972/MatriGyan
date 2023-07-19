@@ -31,6 +31,7 @@ async function handleVideoSubmit(values){
             "Accept-Language": "en-US,en;q=0.8",
             "Content-Type": `multipart/form-data; boundary=${videoData._boundary}`,
           },
+          withCredentials:true
         }
       )
       .then(async (res) => {
