@@ -10,7 +10,7 @@ import { toast } from 'react-toastify'
 
 function CoursePreview() {
   const params = useParams();
-  const [details, setDetails] = useState("");
+  const [details, setDetails] = useState({});
 
   const getCourse = () => {
     // const navigate=useNavigate();
@@ -33,15 +33,15 @@ function CoursePreview() {
          window.location.href="http://localhost:3000/not-found"
       });
   };
-
+// console.log(details,"details in coursepreview")
   useEffect(() => {
     getCourse();
   }, []);
 
   // Render child components only when details are available
-  if (!details) {
-    return null;
-  }
+  // if (!details) {
+  //   return null;
+  // }
 
   return (
     <div className="course-preview">

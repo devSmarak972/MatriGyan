@@ -4,13 +4,13 @@ import { Modal, TextInput, Button, Select, PasswordInput } from "@mantine/core";
 
 const DeleteVideo = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
-  console.log(props.form.values);
+  // console.log(props.form.values);
   console.log(
     props.form.values.sectionName === ""
       ? []
       : props.sections
           .find((section) => section.title === props.form.values.sectionName)
-          .subsections.map((subsection) => subsection.name)
+          .videos.map((subsection) => subsection.title)
   );
   return (
     <div>
@@ -37,8 +37,8 @@ const DeleteVideo = (props) => {
                 if (section.title === values.sectionName) {
                   return {
                     title: section.title,
-                    subsections: section.subsections.filter(
-                      (subsection) => subsection.name !== values.videoName
+                    videos: section.videos.filter(
+                      (subsection) => subsection.title !== values.videoName
                     ),
                   };
                 } else return section;
@@ -72,7 +72,7 @@ const DeleteVideo = (props) => {
                         (section) =>
                           section.title === props.form.values.sectionName
                       )
-                      .subsections.map((subsection) => subsection.name)
+                      .videos.map((subsection) => subsection.title)
               }
               withAsterisk
               {...props.form.getInputProps("videoName")}

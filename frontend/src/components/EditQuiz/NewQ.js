@@ -18,6 +18,7 @@ import {
   FileInput,
 } from "@mantine/core";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const NewQ = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -32,7 +33,7 @@ const NewQ = (props) => {
 
   return (
     <div>
-      <Modal centered opened={opened} onClose={close} title="Authentication">
+      <Modal centered opened={opened} onClose={close} title="Add question">
         <form
           onSubmit={props.form.onSubmit(async (values) => {
             let quesID = undefined;
@@ -47,8 +48,10 @@ const NewQ = (props) => {
                   values.option2,
                   values.option3,
                   values.option4,
+                
+                  
                 ].map((opt) => ({
-                  value: opt,
+                  "value": opt
                 })),
                 image: values.quesMedia,
                 marks: values.correct,
@@ -69,6 +72,13 @@ const NewQ = (props) => {
                   }
                 )
                 .then(async (res) => {
+                  console.log(res.data)
+                  // var data=JSON.parse(res.data);
+                  if(!res.data["success"])
+                  {
+                    toast("Failed to add question");
+                    return -1;
+                  }
                   let solData = new FormData();
                   let solDataObj = {
                     answer: props.form.values.answer[0],
@@ -78,9 +88,10 @@ const NewQ = (props) => {
                   for (let key in solDataObj) {
                     solData.append(key, solDataObj[key]);
                   }
+                  console.log(res.data.data["id"])
                   await axios
                     .post(
-                      `http://localhost:8000/add-solution/${res.data.id}/`,
+                      `http://localhost:8000/add-solution/${res.data.data["id"]}/`,
                       solData,
                       {
                         headers: {
@@ -92,11 +103,13 @@ const NewQ = (props) => {
                     )
                     .then((res) => console.log(res.data))
                     .catch((e) => console.log(e));
-                  return res.data.id;
+                  return res.data.data.id;
                 })
                 .catch((e) => console.log(e));
             }
             console.log(quesID);
+            if(quesID>0)
+            {
             props.setQuestions((prev) => [
               ...prev,
               {
@@ -120,8 +133,12 @@ const NewQ = (props) => {
                 ansMedia: values.ansMedia ? fileToDataUri(values.ansMedia) : "",
               },
             ]);
+          }
             close();
-          })}
+          })
+        
+        }
+          
         >
           <Textarea
             label="Question"
