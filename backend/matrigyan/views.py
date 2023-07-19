@@ -348,6 +348,9 @@ def getCourse(request, id):
 		return Response({"success":False,"message":"course not found"})
 	students=course.student_enrolled.all().values_list("user")
 	enrolled=False
+	feedbacks=course.feedback_set.all()
+	feedbacks=FeedbackSerializer(feedbacks, many=True)
+
  
 	# sections=course.coursesection_set.all()
 	# sections=SectionSerializer(sections,many=True)
@@ -358,7 +361,7 @@ def getCourse(request, id):
 		enrolled=True
 		print("enrolled")
 	c = CourseSerializer(course, many=False)
-	return Response({"success":True,"data":c.data,"isEnrolled":enrolled})
+	return Response({"success":True,"data":c.data,"isEnrolled":enrolled,"feedbacks":feedbacks.data})
 @api_view(['GET'])
 def getEducatorDashData(request):
 	print(request.user)

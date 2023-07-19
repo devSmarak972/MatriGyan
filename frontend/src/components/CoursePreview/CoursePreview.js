@@ -58,7 +58,7 @@ console.log(details,"details in coursepreview")
         <Heading title={details.data.title} rating={details.data.rating}></Heading>
         <Body {...details.data} isEnrolled={details.isEnrolled}></Body>
         <Comments comments={details.data?.comments}></Comments>
-        <Feedb {...details.data} isEnrolled={details.isEnrolled}></Feedb>
+        <Feedb feedbacks={details?.feedbacks} isEnrolled={details.isEnrolled}></Feedb>
       </div>
       }
     </div>
