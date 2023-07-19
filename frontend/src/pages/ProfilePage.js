@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPen } from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +6,7 @@ import Sidebar from "../components/StudentDashboard/Sidebar";
 import { useDisclosure } from "@mantine/hooks";
 import { Avatar, Modal, createStyles } from "@mantine/core";
 import UploadAvatar from "../components/ProfilePage/UploadAvatar";
+import axios from 'axios';
 
 const useStyles = createStyles(() => ({
   content: {
@@ -17,6 +18,27 @@ const ProfilePage = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [avatar, setAvatar] = useState(null);
   const { classes } = useStyles();
+  const [userDetails,setDetails] = useState({"user":{"first_name":"Name","last_name":""}});
+  const [first_name, setName] = useState("Name");
+
+  useEffect(()=>{
+    const fetchDetails = async ()=>{
+      try{
+        const res = await axios.get('http://127.0.0.1:8000/get-user/1/');
+        console.log(res.data);
+        setDetails(res.data);
+      } catch(error){
+        console.log(error);
+      }
+    }
+
+    fetchDetails();
+  }, [])
+
+  useEffect(()=>{
+    console.log(userDetails);
+    setName(userDetails.user.first_name);
+  }, [userDetails])
 
   const initials = (name) => {
     const words = name.split(" ");
@@ -49,11 +71,11 @@ const ProfilePage = (props) => {
           </Modal>
           <Avatar
             className={`${avatar && "drop-shadow-[0_0_10px_rgba(0,0,0,0.1)]"} translate-y-1/2 rounded-full w-[120px] h-[120px] object-cover object-center mx-auto mt-[50px]`}
-            src={avatar}
-            alt="Anish Datta"
+            src={!userDetails.is_student && userDetails.educator.profile_pic}
+            alt={userDetails.user.first_name}
             color="violet"
             children={
-              <span className="text-xl">{initials("Anish Datta")}</span>
+              <span className="text-xl">{initials("Full Name")}</span>
             }
           ></Avatar>
           <FontAwesomeIcon
@@ -62,14 +84,22 @@ const ProfilePage = (props) => {
             className="scale-90 cursor-pointer text-white bg-[var(--primary)] rounded-full p-2 absolute left-1/2 translate-x-[27px] translate-y-[27px]"
           />
         </div>
-        <span className="text-xl font-semibold mt-4">Anish Datta</span>
+        <span className="text-xl font-semibold mt-4">{userDetails.user.first_name} {userDetails.user.last_name}</span>
         <div className="grid grid-cols-1 sm:grid-cols-2 w-full px-6 gap-6 mt-8 max-w-[350px] sm:max-w-[700px]">
           <div className="col-span-1 flex flex-col">
             <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
-              Name
+              First Name
             </span>
             <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-              Anish Datta
+            {userDetails.user.first_name}
+            </span>
+          </div>
+          <div className="col-span-1 flex flex-col">
+            <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
+              Last Name
+            </span>
+            <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
+            {userDetails.user.last_name}
             </span>
           </div>
           <div className="col-span-1 flex flex-col">
@@ -77,18 +107,18 @@ const ProfilePage = (props) => {
               Email
             </span>
             <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-              anishd3139@gmail.com
+              {userDetails.user.email}
             </span>
           </div>
           <div className="col-span-1 flex flex-col">
             <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
-              Phone
+              Username
             </span>
             <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-              +91 861 727 9674
+            {userDetails.user.username}
             </span>
           </div>
-          {props.userType === 2 && (
+          {/* {props.userType === 2 && (
             <div className="col-span-1 flex flex-col">
               <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
                 School
@@ -97,21 +127,21 @@ const ProfilePage = (props) => {
                 Dehli Public School, Ruby Park
               </span>
             </div>
-          )}
-          {props.userType === 1 && (
+          )} */}
+          {userDetails.is_student && (
             <div className="col-span-1 flex flex-col">
               <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
-                Class
+                Phone
               </span>
               <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-                XI
+                {userDetails.is_student && userDetails.student.phone}
               </span>
             </div>
           )}
           {props.userType === 1 && (
             <div className="col-span-1 flex flex-col">
               <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
-                Exams
+                Courses
               </span>
               <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
                 JEE Mains, KVPY
