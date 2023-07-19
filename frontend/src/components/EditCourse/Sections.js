@@ -98,7 +98,7 @@ const Sections = (props) => {
               </Accordion.Control>
               <Accordion.Panel>
                 <div className="flex flex-column divide-y">
-                  {section.videos.map((video) => (
+                  {section.videos?.map((video) => (
                     <div className="flex justify-between py-2">
                       <Link className="font-normal text-slate-400" to="#">
                         {video.title}

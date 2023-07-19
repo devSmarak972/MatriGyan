@@ -17,19 +17,20 @@ USAGE: python blob_samples_hello_world.py
 """
 
 import os
-
-
+import datetime
+from datetime import timedelta
 # set up
 SOURCE_FILE = 'SampleSource.txt'
 DEST_FILE = 'BlockDestination.txt'
 import backend.settings as matrigyan_settings
-from azure.storage.blob import BlobServiceClient,BlobClient,BlobServiceClient, BlobBlock,ContainerClient
+from azure.storage.blob import generate_account_sas,BlobServiceClient,BlobClient,BlobServiceClient, BlobBlock,ContainerClient
 
 class BlobHandler(object):
 
     connection_string = matrigyan_settings.AZURE_STORAGE_CONNECTIONSTRING
     #--Begin Blob Samples-----------------------------------------------------------------
-
+    accName="matrigyan"
+    accKey="lgQbT5xCpYkX6pTc5xY9mnrx5bLtcp+QWSdz+f94y8JCa9Ilp5Ta/C+IV7p9UGWq2GYYcLyogfaW+AStyRSAtw=="
     def create_container1(self,container_name):
 
         # Instantiate a new BlobServiceClient using a connection string
@@ -63,10 +64,18 @@ class BlobHandler(object):
         #     container_client.delete_container()
     def uploadBlob(self,container_name,blob_name,file):
         blob = BlobClient.from_connection_string(conn_str=self.connection_string, container_name=container_name, blob_name=blob_name)
-        print(blob)
+        # print(blob)
         with file as data:
             blob.upload_blob(data)
-            
+            return blob
+    def GetBlobUrl(self,containerName,blobName):
+        # blobService = BlockBlobService(account_name=accountName, account_key=accountKey)
+        # blobService=BlobServiceClient.from_connection_string(self.connection_string)
+        # sas_token = generate_account_sas(account_name=self.accName,account_key=self.accKey,containerName,"READ", datetime.utcnow() + timedelta(hours=1))
+        sas_token = generate_account_sas(account_name=self.accName,account_key=self.accKey,container_name=containerName,resource_types="co",permission="r",expiry=datetime.datetime.utcnow() + timedelta(hours=24) )
+        # print url
+        # return 'https://' + self.accName + '.blob.core.windows.net/' + containerName + '/'+blobName+'?' + sas_token
+        return 'https://' + self.accName + '.blob.core.windows.net/' + containerName + '/'+blobName+"?"+sas_token
     def downloadBlob(self,container_name,blob_name,filename):
         blob = BlobClient.from_connection_string(conn_str=self.connection_string, container_name=container_name, blob_name=blob_name)
 

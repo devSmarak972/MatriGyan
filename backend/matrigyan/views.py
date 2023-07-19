@@ -27,7 +27,7 @@ import json
 from .models import *
 from .serializers import *
 import uuid
-
+from .storage import BlobHandler
 # Create your views here.
 # from .serializers import CourseSerializer
 import backend.settings as matrigyan_settings
@@ -622,9 +622,20 @@ def deleteQuiz(request, id):
 
 @api_view(['POST'])
 def addQuestion(request, id):
+	# if isinstance(request.data, QueryDict): # optional
+	request.data._mutable = True
+	print(request.FILES['image'])
+	image=request.FILES['image']
+	name=image.name.split(".")[0]+"_question_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
+	bh=BlobHandler()
+	bh.uploadBlob("question-media",name,image)
+	url=bh.GetBlobUrl("question-media",name)
+	request.data['image'] = url
 	question = QuestionSerializer(data=request.data)
+	# print(url)
+	print(url)
 	if question.is_valid():
-
+			question.image=url
 			question.save()
 			que = Question.objects.get(id=question.data['id'])
 			quiz = Quiz.objects.get(id=id)
@@ -632,7 +643,7 @@ def addQuestion(request, id):
 			quiz.questions.add(que)
 			quiz.save()
 			return Response({"success":True,"data":question.data,"message":"Question added!","question":question.data})
-	return Response({"success":False,"message":"Question not added."})
+	return Response({"success":False,"message":"Question not added.","errors":question.errors})
 
 @api_view(['POST'])
 def editQuestion(request, id):
@@ -718,6 +729,16 @@ def deleteQuestion(request, id):
 
 @api_view(['POST'])
 def addSolution(request, id):
+	request.data._mutable = True
+	if 'media' in request.FILES:
+		print(request.FILES['media'])
+		image=request.FILES['media']
+		name=image.name.split(".")[0]+"_solution_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
+		bh=BlobHandler()
+		bh.uploadBlob("solution-media",name,image)
+		url=bh.GetBlobUrl("solution-media",name)
+		request.data['media'] = url	
+		print(url)
 	solution = SolutionSerializer(data=request.data)
 	if solution.is_valid():
 		solution.save()

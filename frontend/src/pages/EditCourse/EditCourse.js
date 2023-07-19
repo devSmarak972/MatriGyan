@@ -9,7 +9,7 @@ import Sections from "../../components/EditCourse/Sections";
 import Save from "../../components/EditCourse/Save";
 import Options from "../../components/EditCourse/Options";
 import axios from "axios";
-
+import {toast} from "react-toastify"
 const EditCourse = () => {
   const id = 1;
 
@@ -162,9 +162,9 @@ const EditCourse = () => {
     console.log(desc);
   }, [desc]);
 
-  if(sections.length==0 || tags.length==0 || category.length==0){
-    return null;
-  }
+  // if(sections.length==0 || tags.length==0 || category.length==0){
+  //   return toast("Course has no sections");
+  // }
 
   return (
     <div className="container p-8">
