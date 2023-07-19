@@ -793,7 +793,7 @@ def addEvent(request, id):
 	event.endRecur = data['endRecur']
 	event.startTime = data['startTime']
 	event.endTime = data['endTime']
-	event.course = Course.objects.get(id=id)
+	event.user = User.objects.get(id=id)
 	event.save()
 	ser_event = EventSerializer(event, many=False)
 	return Response({"success":True,"data":ser_event.data})
@@ -801,11 +801,13 @@ def addEvent(request, id):
 @api_view(['GET'])
 def getEvents(request,id):
 	events = Event.objects.filter(user__id=id)
-	if not events:
+	if events is None:
+		# serialized_events = EventSerializer(events, many=True)
+		# return Response({"success":True,"data":serialized_events.data})
+		return Response({"success":False, "message":"No events found"})
+	else:
 		serialized_events = EventSerializer(events, many=True)
 		return Response({"success":True,"data":serialized_events.data})
-	else:
-		return Response({"success":False, "message":"No events found"})
 	
 @api_view(['DELETE'])
 def deleteEvent(request, id):
@@ -931,20 +933,29 @@ def deleteResource(request, id):
 	return Response({"success":True, "message":"Resource deleted!"})
 
 @api_view(['GET'])
-def getUser(request):
-	if request.user.is_authenticated:
-		user = request.user
+def getUser(request,id):
+		user = User.objects.get(id=id)
+		print(user)
+		print(user.id)
 		ser_user = UserSerializer(user, many=False)
-		if Student.objects.get(id=user.id) != None:
+		stu = Student.objects.filter(user__id=id).first()
+		# print(stu.DoesNotExist)
+		if stu is None:
+			educator = Educator.objects.get(user__id=id)
+			ser_educator = EducatorSerializer(educator, many=False)
+			return Response({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data})
+			# student = Student.objects.get(user__id=user.id)
+			# ser_student = StudentSerializer(student, many=False)
+			# return Response({"success":True, "user":ser_user,"is_student":True,"student":ser_student})
+		else:
 			student = Student.objects.get(user__id=user.id)
 			ser_student = StudentSerializer(student, many=False)
-			return Response({"success":True, "user":ser_user,"is_student":True,"student":ser_student})
-		else:
-			educator = Educator.objects.get(id=user.id)
-			ser_educator = EducatorSerializer(educator, many=False)
-			return Response({"success":True, "is_student":False, "user":ser_user,"educator":ser_educator})
-	else:
-		return({"success":False,"message":"User not logged in."})
+			return Response({"success":True, "user":ser_user.data,"is_student":True,"student":ser_student.data})
+			# educator = Educator.objects.get(id=user.id)
+			# ser_educator = EducatorSerializer(educator, many=False)
+			# return Response({"success":True, "is_student":False, "user":ser_user,"educator":ser_educator})
+	# else:
+	# 	return({"success":False,"message":"User not logged in."})
 
 @api_view(['GET'])
 def getEducators(request):
@@ -952,13 +963,13 @@ def getEducators(request):
 	if educators is None:
 		return Response({"success":False,"message":"No educators."})
 	ser_educators = EducatorSerializer(educators, many=True)
-	return Response({"success":True, "educators":ser_educators})
+	return Response({"success":True, "educators":ser_educators.data})
 
 @api_view(['GET'])
 def getEducator(request, id):
 	educator = Educator.objects.get(id=id)
 	ser_educator = EducatorSerializer(educator, many=False)
-	return Response({"success":True, "educator":ser_educator})
+	return Response({"success":True, "educator":ser_educator.data})
 
 @api_view(['POST'])
 def editStudent(request,id):
@@ -966,9 +977,9 @@ def editStudent(request,id):
 	ser_student = StudentSerializer(instance=student, data=request.data)
 	if ser_student.is_valid():
 		ser_student.save()
-		return Response({"success":True,"student":ser_student,"message":"Student details updated"})
+		return Response({"success":True,"student":ser_student.data,"message":"Student details updated"})
 	else:
-		return Response({"success":False, "student":ser_student, "message":"Failed to update info."})
+		return Response({"success":False, "student":ser_student.data, "message":"Failed to update info."})
 	
 @api_view(['POST'])
 def editEducator(request,id):
@@ -976,9 +987,9 @@ def editEducator(request,id):
 	ser_educator = EducatorSerializer(instance=educator, data=request.data)
 	if ser_educator.is_valid():
 		ser_educator.save()
-		return Response({"success":True,"educator":ser_educator,"message":"Educator details updated"})
+		return Response({"success":True,"educator":ser_educator.data,"message":"Educator details updated"})
 	else:
-		return Response({"success":False, "educator":ser_educator, "message":"Failed to update info."})
+		return Response({"success":False, "educator":ser_educator.data, "message":"Failed to update info."})
 
 @api_view(['GET'])
 def searchCourses(request, search):
@@ -1040,3 +1051,5 @@ def filterDuration(request,duration):
 	else:
 		ser_courses = CourseSerializer(course_list,many=True)
 		return Response({"success":True,"courses":ser_courses.data})
+	
+# @api_view([''])
