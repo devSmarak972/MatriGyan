@@ -44,13 +44,14 @@ const NewQ = (props) => {
                 question: values.question,
                 type: values.type === "single" ? "SINGLE" : "MULTIPLE",
                 options: [
-                  {"value":values.option1},
-                  {"value":values.option2},
-                  {"value":values.option3},
-                  {"value":values.option4},
+                  values.option1,
+                  values.option2,
+                  values.option3,
+                  values.option4,
+                
                   
                 ].map((opt) => ({
-                  value: opt,
+                  "value": opt
                 })),
                 image: values.quesMedia,
                 marks: values.correct,

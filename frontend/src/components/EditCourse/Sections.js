@@ -9,7 +9,7 @@ import AddVideo from "./AddVideo";
 import DeleteVideo from "./DeleteVideo";
 
 const Sections = (props) => {
-  console.log(props.sections, "sections");
+  // console.log(props.sections, "sections");
   const form1 = useForm({
     initialValues: { sectionName: "" },
     validate: {
@@ -39,6 +39,7 @@ const Sections = (props) => {
       timemins: "",
       timesecs: "",
       video: "",
+      videofile:""
     },
     validate: {
       sectionName: (value) =>

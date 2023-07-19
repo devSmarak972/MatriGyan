@@ -530,9 +530,10 @@ def addSection(request, id):
 	return Response({"success":False,"data":sec.data,"message":"Section not added"})
 
 @api_view(['POST'])
-def addVideo(request,course_id):
-	print(request.data["order_id"])
-	course_section = CourseSection.objects.get(course_id=course_id,order_id=request.data["order_id"])
+def addVideo(request):
+	section_id=request.data["section_id"]
+	# course_section = CourseSection.objects.get(course_id=course_id,order_id=request.data["order_id"])
+	course_section = CourseSection.objects.get(id=section_id)
 	creator=course_section.course.educator
 	print(creator)
 	data=request.data.copy()
@@ -988,3 +989,13 @@ def searchCourses(request):
 	else:
 		ser_courses = CourseSerializer(course_list, many=True)
 		return Response({"success":True, "courses":ser_courses, "message":"Courses found."})
+
+@api_view(['GET'])
+def getSAS(request):
+	bh=BlobHandler()
+	container=request.data.get("container","video")
+	sas=bh.GetSASToken(container)
+	print(sas)
+	# sas="hello"
+	return Response({"success":True, "message":"SAS token generated","sas":sas})
+	

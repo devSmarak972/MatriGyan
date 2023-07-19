@@ -148,11 +148,13 @@ const EditCourse = () => {
 
   const form = useForm({
     initialValues: {
+      // section_id:"",
       title: "",
       category: "",
       price: "",
       tags: "",
       video: "",
+      // videofile:"",
     },
   });
 

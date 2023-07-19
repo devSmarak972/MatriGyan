@@ -4,7 +4,7 @@ import { Modal, TextInput, Button, Select, PasswordInput } from "@mantine/core";
 
 const DeleteVideo = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
-  console.log(props.form.values);
+  // console.log(props.form.values);
   console.log(
     props.form.values.sectionName === ""
       ? []
