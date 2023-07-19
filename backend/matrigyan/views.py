@@ -27,7 +27,7 @@ import json
 from .models import *
 from .serializers import *
 import uuid
-
+from .storage import BlobHandler
 # Create your views here.
 # from .serializers import CourseSerializer
 import backend.settings as matrigyan_settings
@@ -532,23 +532,31 @@ def enrollCourse(request, id):
 
 @api_view(['POST'])
 def addSection(request, id):
-	course = Course.objects.get(id=id)
+	print("course exist")
+	course = Course.objects.filter(id=id).first()
+	if not course:
+		return Response({"success":False,"message":"course does not exist"})
 	sec = SectionSerializer(data=request.data)
 	if sec.is_valid():
+		print("here")
+		sec.save()
 		title = sec.data['title']
 		# duration = int(sec.data['duration'])
 		order_id = int(sec.data['order_id'])
 		course_id = id
-		section = CourseSection(course_id=course_id,title=title, order_id=order_id)
+  
+		section = CourseSection(course=course,title=title, order_id=order_id)
 		section.save()
 		# course.sections.add(section)
 		return Response({"success":True,"data":"Section added!","message":"Section added!"})
 	return Response({"success":False,"data":sec.data,"message":"Section not added"})
 
 @api_view(['POST'])
-def addVideo(request,course_id):
-	print(request.data["order_id"])
-	course_section = CourseSection.objects.get(course_id=course_id,order_id=request.data["order_id"])
+def addVideo(request):
+	section_id=request.data["section_id"]
+	print(section_id)
+	# course_section = CourseSection.objects.get(course_id=course_id,order_id=request.data["order_id"])
+	course_section = CourseSection.objects.get(id=section_id)
 	creator=course_section.course.educator
 	print(creator)
 	data=request.data.copy()
@@ -640,9 +648,20 @@ def deleteQuiz(request, id):
 
 @api_view(['POST'])
 def addQuestion(request, id):
+	# if isinstance(request.data, QueryDict): # optional
+	request.data._mutable = True
+	print(request.FILES['image'])
+	image=request.FILES['image']
+	name=image.name.split(".")[0]+"_question_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
+	bh=BlobHandler()
+	bh.uploadBlob("question-media",name,image)
+	url=bh.GetBlobUrl("question-media",name)
+	request.data['image'] = url
 	question = QuestionSerializer(data=request.data)
+	# print(url)
+	print(url)
 	if question.is_valid():
-
+			question.image=url
 			question.save()
 			que = Question.objects.get(id=question.data['id'])
 			quiz = Quiz.objects.get(id=id)
@@ -650,7 +669,7 @@ def addQuestion(request, id):
 			quiz.questions.add(que)
 			quiz.save()
 			return Response({"success":True,"data":question.data,"message":"Question added!","question":question.data})
-	return Response({"success":False,"message":"Question not added."})
+	return Response({"success":False,"message":"Question not added.","errors":question.errors})
 
 @api_view(['POST'])
 def editQuestion(request, id):
@@ -738,6 +757,16 @@ def deleteQuestion(request, id):
 
 @api_view(['POST'])
 def addSolution(request, id):
+	request.data._mutable = True
+	if 'media' in request.FILES:
+		print(request.FILES['media'])
+		image=request.FILES['media']
+		name=image.name.split(".")[0]+"_solution_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
+		bh=BlobHandler()
+		bh.uploadBlob("solution-media",name,image)
+		url=bh.GetBlobUrl("solution-media",name)
+		request.data['media'] = url	
+		print(url)
 	solution = SolutionSerializer(data=request.data)
 	if solution.is_valid():
 		solution.save()
@@ -1007,6 +1036,7 @@ def searchCourses(request, search):
 	if len(course_list)==0:
 		return Response({"success":False, "message":"No such course found."})
 	else:
+
 		ser_courses = CourseSerializer(course_list,many=True)
 		print(ser_courses)
 		return Response({"success":True, "courses":ser_courses.data, "message":"Courses found."})
@@ -1052,4 +1082,14 @@ def filterDuration(request,duration):
 		ser_courses = CourseSerializer(course_list,many=True)
 		return Response({"success":True,"courses":ser_courses.data})
 	
-# @api_view([''])
+
+
+@api_view(['GET'])
+def getSAS(request):
+	bh=BlobHandler()
+	container=request.data.get("container","video")
+	sas=bh.GetSASToken(container)
+	print(sas)
+	# sas="hello"
+	return Response({"success":True, "message":"SAS token generated","sas":sas})
+

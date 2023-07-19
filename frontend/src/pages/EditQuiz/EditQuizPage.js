@@ -86,10 +86,10 @@ const EditQuizPage = () => {
         value.length === 0 ? "Choose credits for correct answer" : null,
       incorrect: (value) =>
         value.length === 0 ? "Choose credits for correct answer" : null,
-      option1: (value) => (value.length === 0 ? "Enter option 1" : null),
-      option2: (value) => (value.length === 0 ? "Enter option 2" : null),
-      option3: (value) => (value.length === 0 ? "Enter option 3" : null),
-      option4: (value) => (value.length === 0 ? "Enter option 4" : null),
+      option1: (value) => (value?.length === 0 ? "Enter option 1" : null),
+      option2: (value) => (value?.length === 0 ? "Enter option 2" : null),
+      option3: (value) => (value?.length === 0 ? "Enter option 3" : null),
+      option4: (value) => (value?.length === 0 ? "Enter option 4" : null),
       answer: (value) =>
         value.length === 0
           ? "Choose the correct answer(s)"

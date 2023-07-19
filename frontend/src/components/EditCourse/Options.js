@@ -1,7 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MultiSelect, Select } from "@mantine/core";
 
 const Options = (props) => {
+
+  const options = props.optionscategory.map((section) => ({
+    value: section.category,
+    label: section.category,
+  }));
+  const options1 = props.optionstags.map((section) => ({
+    value: section.tagname,
+    label: section.tagname,
+  }));
+  const getoptions = (selectedOptions) => {
+    const selectedCategories = selectedOptions.map((option) => option);
+    const updatedCategory = selectedCategories.map((cat) => ({
+      category: cat
+    }));
+    props.setcategory(updatedCategory);
+  };
+  
+  const getoptions1 = (selectedOptions) => {
+    const selectedTags = selectedOptions.map((option) => option);
+    const updatedTags = selectedTags.map((tag) => ({ tagname : tag}));
+    props.settags(updatedTags);
+  };
+  
+  
   return (
     <div>
       <div className="page-separator">
@@ -15,15 +39,16 @@ const Options = (props) => {
         <div className="card-body">
           <div className="form-group">
             <label className="form-label font-semibold">Category</label>
-            <Select
+            <MultiSelect
               placeholder="Pick one"
-              data={props.category.map((cate)=>cate.category)}
+              data={options}
               {...props.form.getInputProps("category")}
               transitionProps={{
                 transition: "pop-top-left",
                 duration: 100,
                 timingFunction: "ease",
               }}
+              onChange={getoptions}
             />
             <small className="form-text text-muted">Select a category.</small>
           </div>
@@ -48,7 +73,7 @@ const Options = (props) => {
               Tags
             </label>
             <MultiSelect
-              data={props.tags.map((tag)=>tag.tagname)}
+              data={options1}
               placeholder="Choose tags"
               {...props.form.getInputProps("tags")}
               transitionProps={{
@@ -56,6 +81,7 @@ const Options = (props) => {
                 duration: 100,
                 timingFunction: "ease",
               }}
+              onChange={getoptions1}
             />
             <small className="form-text text-muted">Select one or more tags.</small>
           </div>

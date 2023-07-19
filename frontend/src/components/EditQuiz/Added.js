@@ -157,17 +157,13 @@ const Added = (props) => {
                         correct: item.correct,
                         incorrect: item.incorrect,
                         quesMedia:
-                          item.quesMedia &&
-                          new File([b64toBlob(item.quesMedia)], "diagram.png", {
-                            type: "image/png",
-                            lastModified: new Date().getTime(),
-                          }),
+                          item.quesMedia ,
                         ansMedia:
-                          item.ansMedia &&
-                          new File([b64toBlob(item.ansMedia)], "solution.png", {
-                            type: "image/png",
-                            lastModified: new Date().getTime(),
-                          }),
+                          item.ansMedia,
+                          // new File([b64toBlob(item.ansMedia)], "solution.png", {
+                          //   type: "image/png",
+                          //   lastModified: new Date().getTime(),
+                          // }),
                         solutionDesc: item.solutionDesc,
                       });
                       open();
