@@ -1,27 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import {
-  Checkbox,
-  Drawer,
-  Modal,
-  TextInput,
-  createStyles,
-} from "@mantine/core";
+import { Drawer, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import CheckboxItem from "../../components/StudentDashboard/CheckboxItem";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
-
-const useStyles = createStyles(() => ({
-  month: {
-    zIndex: 500,
-  },
-}));
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Tasklist = (props) => {
-  console.log(props.tasks);
+  // console.log(props.tasks);
   // var tasks = [
   //   {
   //     title: "Coordinate Geometry DPP",
@@ -60,13 +50,12 @@ const Tasklist = (props) => {
       due_date: (value) => (!value ? "Choose due date" : null),
     },
   });
-  const { classes } = useStyles();
 
   const [tasks, settasks] = useState(false);
   // const tasks=useRef([]);
   var today = new Date();
   // console.log(tasks, ":tasks");
-  console.log(form.values);
+  // console.log(form.values);
 
   var num = 0;
   useEffect(() => {
@@ -74,12 +63,16 @@ const Tasklist = (props) => {
       if (el.completed) num++;
       var end = new Date(el.due_date);
       // end.setMinutes(end.getMinutes() + el.time);
-      var status = today < el.due_date ? 2 : 1;
+      var status = today < end ? 2 : 1;
       var date =
-        "" + end.getFullYear() + "-" + end.getMonth() + "-" + end.getDate();
-      // console.log(
-      //   end.getFullYear() + "-" + end.getMonth() + "-" + end.getDate()
-      // );
+        "" +
+        end.getFullYear() +
+        "-" +
+        (end.getMonth() + 1) +
+        "-" +
+        end.getDate();
+
+      console.log(status, el.completed);
       return {
         id: el.id,
         title: el.name,
@@ -99,13 +92,25 @@ const Tasklist = (props) => {
         completed: el.completed,
       };
     });
+
+    taskstmp.map((task) => {
+      if (task.completed && new Date() > new Date(task.date)) {
+        num--;
+      }
+    });
+    taskstmp = taskstmp.filter((task) => {
+      if (!task.completed) return true;
+      if (task.completed && new Date() > new Date(task.date)) return false;
+      return true;
+    });
+
     settasks({ tasks: taskstmp, numcompleted: num });
     // return () => setnumcompleted(num);
   }, []);
 
   console.log("TASKS: ", tasks);
 
-  function handleCheck(el) {
+  const handleCheck = async (el) => {
     console.log(el.currentTarget.id);
     var id = parseInt(el.currentTarget.id.substring(5));
     if (tasks) {
@@ -117,11 +122,17 @@ const Tasklist = (props) => {
       };
       tmptasks.tasks.find((it) => it.id === id).completed =
         !el.currentTarget.checked;
+
       if (el.currentTarget.checked) {
         tmptasks.numcompleted += 1;
         tmptasks.tasks.find((it) => it.id === id).completed = true;
         tmptasks.tasks.find((it) => it.id === id).message = "Completed";
         tmptasks.tasks.find((it) => it.id === id).messagetype = "text-success";
+
+        await axios
+          .get(`http://localhost:8000/update-task-status/${id}?status=True`)
+          .then((res) => console.log(res))
+          .catch((e) => console.log(e));
       } else {
         tmptasks.numcompleted -= 1;
         tmptasks.tasks.find((it) => it.id === id).completed = false;
@@ -133,15 +144,25 @@ const Tasklist = (props) => {
           new Date() < new Date(tmptasks.tasks.find((it) => it.id === id).date)
             ? "text-warning"
             : "text-danger";
+
+        await axios
+          .get(`http://localhost:8000/update-task-status/${id}?status=False`)
+          .then((res) => console.log(res))
+          .catch((e) => console.log(e));
       }
       settasks(tmptasks);
     } else {
       console.log("tasks not defined");
     }
-  }
+  };
+
+  const addedToast = () => toast("Added Task Successfully");
+
+  const editedToast = () => toast("Edited Task Successfully");
 
   return (
     <div class="flex flex-col col-span-12 sm:col-span-6 lg:col-span-4">
+      <ToastContainer></ToastContainer>
       <div class="flex justify-between">
         <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
           Tasklist
@@ -155,13 +176,23 @@ const Tasklist = (props) => {
         >
           <form
             onSubmit={form.onSubmit(async (values) => {
+              const taskID = await axios
+                .post("http://localhost:8000/add-task/", {
+                  name: values.name,
+                  due_date: values.due_date,
+                  user: 1,
+                  completed: false,
+                })
+                .then((res) => res.data.task.id)
+                .catch((e) => console.log(e));
+              addedToast();
               var num = tasks.numcompleted;
               var status = new Date() < values.due_date ? 2 : 1;
               var date =
                 "" +
                 values.due_date.getFullYear() +
                 "-" +
-                values.due_date.getMonth() +
+                (values.due_date.getMonth() + 1) +
                 "-" +
                 values.due_date.getDate();
 
@@ -170,7 +201,7 @@ const Tasklist = (props) => {
                 tasks: [
                   ...prev.tasks,
                   {
-                    id: prev.tasks.length + 1,
+                    id: taskID,
                     title: values.name,
                     date,
                     message: status === 2 ? "Pending" : "Delayed",
@@ -178,16 +209,6 @@ const Tasklist = (props) => {
                   },
                 ],
               }));
-
-              await axios
-                .post("http://localhost:8000/add-task/", {
-                  name: values.name,
-                  due_date: values.due_date,
-                  user: 1,
-                  completed: false,
-                })
-                .then((res) => console.log(res))
-                .catch((e) => console.log(e));
             })}
           >
             <TextInput
@@ -202,7 +223,6 @@ const Tasklist = (props) => {
               label="Due Date"
               {...form.getInputProps("due_date")}
               mb="md"
-              classNames={{ month: classes.month }}
               hideOutsideDates={true}
             />
             <button
@@ -231,7 +251,12 @@ const Tasklist = (props) => {
                 return (
                   <CheckboxItem
                     key={el.id}
-                    props={{ ...el, handleCheck: handleCheck }}
+                    props={{
+                      ...el,
+                      handleCheck: handleCheck,
+                      settasks: settasks,
+                      editedToast: editedToast,
+                    }}
                   ></CheckboxItem>
                 );
               })

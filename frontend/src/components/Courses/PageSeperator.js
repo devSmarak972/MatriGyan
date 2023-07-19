@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
 
-function PageSeperator({title}) {
+function PageSeperator({ title }) {
   return (
     <div className="page-separator">
-      <div className="page-separator__text">{title}</div>
+      <div class="text-base font-medium tracking-wide text-slate-700 dark:text-navy-100">
+        {title}
+      </div>
     </div>
-  )
+  );
 }
 
-export default PageSeperator
+export default PageSeperator;
