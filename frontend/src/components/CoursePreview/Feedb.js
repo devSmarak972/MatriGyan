@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Feedb({details}) {
-  console.log(details.title);
-  const comments = details && details.data.comments ? details.data.comments : [];
+function Feedb(props) {
+  console.log(props);
+  const comments = props && props.comments ? props.comments : [];
   return (
     <div class="page-section bg-alt">
       <div class="container page__container">

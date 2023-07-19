@@ -10,7 +10,7 @@ import { toast } from 'react-toastify'
 
 function CoursePreview() {
   const params = useParams();
-  const [details, setDetails] = useState({});
+  const [details, setDetails] = useState(false);
 
   const getCourse = () => {
     // const navigate=useNavigate();
@@ -25,7 +25,12 @@ function CoursePreview() {
         notify();
         }
         else
-        setDetails(data);
+        setDetails(state=>{
+          var tmp={...data};
+          tmp.educator=tmp.data.educator;
+          tmp.data.educator=tmp.educator.name;
+          return tmp;
+        });
       })
       .catch((error) => {
         console.error(error);
@@ -33,7 +38,7 @@ function CoursePreview() {
          window.location.href="http://localhost:3000/not-found"
       });
   };
-// console.log(details,"details in coursepreview")
+console.log(details,"details in coursepreview")
   useEffect(() => {
     getCourse();
   }, []);
@@ -44,13 +49,18 @@ function CoursePreview() {
   // }
 
   return (
+    
+
     <div className="course-preview">
+      {
+           details && 
       <div className='mdk-header-layout__content  page-content'>
-        <Heading details={details}></Heading>
-        <Body details={details}></Body>
-        <Feedb details={details}></Feedb>
-        {/* <Comments></Comments> */}
+        <Heading title={details.data.title} rating={details.data.rating}></Heading>
+        <Body {...details.data} isEnrolled={details.isEnrolled}></Body>
+        <Comments comments={details.data?.comments}></Comments>
+        <Feedb {...details.data} isEnrolled={details.isEnrolled}></Feedb>
       </div>
+      }
     </div>
   )
 }

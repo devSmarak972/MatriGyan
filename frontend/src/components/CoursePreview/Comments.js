@@ -1,10 +1,12 @@
 import React,{useState} from 'react'
 import { toast } from 'react-toastify'
 
-const Comments = () => {
+const Comments = (props) => {
     const [comments, setcomments] = useState([{"user":{"fullname":"user"},"comment":"This is a question","likes":1,"video":12,"course":1}])
     const [commentInput, setCommentInput] = useState("")
+    // var received={"user":{"fullname":"new commenter"},"comment":"This is a question","likes":0,"video":10,"course":1}
     var received={"user":{"fullname":"new commenter"},"comment":"This is a question","likes":0,"video":10,"course":1}
+    
     function addLike(event){
         var commentid=parseInt(event.currentTarget.id.substring(7));
         console.log(commentid,"comments",event.currentTarget.id);
