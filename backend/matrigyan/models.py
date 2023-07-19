@@ -216,7 +216,7 @@ class Course(models.Model):
 	# comments = models.ManyToManyField(Comment,blank=True)
 	educator=models.ForeignKey("Educator",on_delete=models.CASCADE,null=True,blank=True)
 	def __str__(self):
-		return self.title
+		return self.title+str(self.id)
 	@property
 	def rating(self):
 		feedbacks=self.feedback_set.all()

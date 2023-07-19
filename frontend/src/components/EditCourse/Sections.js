@@ -9,6 +9,7 @@ import AddVideo from "./AddVideo";
 import DeleteVideo from "./DeleteVideo";
 
 const Sections = (props) => {
+  
   const form1 = useForm({
     initialValues: { sectionName: "" },
     validate: {
@@ -38,6 +39,7 @@ const Sections = (props) => {
       timemins: "",
       timesecs: "",
       video: "",
+      videofile:""
     },
     validate: {
       sectionName: (value) =>
@@ -75,7 +77,18 @@ const Sections = (props) => {
           : null,
     },
   });
-
+  if (props.sections.length === 0) {
+    return (
+      <div>
+        <p>No sections available</p>
+        <AddSection
+          form={form1}
+          sections={props.sections}
+          setSections={props.setSections}
+        />
+      </div>
+    );
+  }
   return (
     <div>
       <div className="page-separator">
@@ -87,22 +100,22 @@ const Sections = (props) => {
       <div id="accordion-collapse" data-accordion="collapse">
         <Accordion
           defaultValue={props.sections[0].title}
-          classNames={props.classes}
-          className={props.classes.root}
+          // classNames={props.classes}
+          // className={props.classes.root}
         >
-          {props.sections.map((section) => (
+          {props.sections?.map((section) => (
             <Accordion.Item value={section.title}>
               <Accordion.Control>
                 <span className="font-semibold text-sm">{section.title}</span>
               </Accordion.Control>
               <Accordion.Panel>
                 <div className="flex flex-column divide-y">
-                  {section.subsections.map((subsection) => (
+                  {section.videos?.map((videos) => (
                     <div className="flex justify-between py-2">
-                      <Link className="font-normal text-slate-400" to="#">
-                        {subsection.name}
+                      <Link className="font-normal text-slate-400" to={videos.url}>
+                        {videos.title}
                       </Link>
-                      <span>{subsection.time}</span>
+                      <span>{videos.duration}</span>
                     </div>
                   ))}
                 </div>
