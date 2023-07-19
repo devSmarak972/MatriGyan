@@ -233,6 +233,7 @@ class EventSerializer(serializers.ModelSerializer):
 		model = Event
 		fields = "__all__"
 class TaskSerializer(serializers.ModelSerializer):
+    
 	class Meta:
 		model = Task
 		fields = "__all__"
