@@ -68,5 +68,8 @@ urlpatterns = [
     path('get-educator/<int:id>/', views.getEducator),
     path('edit-student/<int:id>/', views.editStudent),
     path('edit-educator/<int:id>/', views.editEducator),
-    path('search-courses/', views.searchCourses),
+    path('search-courses/<str:search>/', views.searchCourses),
+    path('filter-courses/<str:category>/<int:duration>/', views.filterCourses),
+    path('filter-courses/<str:category>/', views.filterCategory),
+    path('filter-course/<int:duration>/', views.filterDuration),
 ]
