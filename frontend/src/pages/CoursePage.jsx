@@ -7,18 +7,18 @@ import './CoursePage/css/app.css'
 import "../components/Courses/transition.css";
 import Sidebar from '../components/StudentDashboard/Sidebar'
 import axios from 'axios'
-import courseData from "../components/Courses/Details.json";
+// import courseData from "../components/Courses/Details.json";
 import Backdrop from "../components/Courses/Backdrop";
 
 import Filters from "../components/Courses/Filters";
 
 function CoursePage() {
+  const [isActive, setActive] = useState(false);
 
-  const [data,setData] = useState([]);
-   const [isActive, setActive] = useState(false);
   const handleclick = () => {
     setActive(!isActive);
   };
+
   useEffect(() => {
     if (isActive) {
       document.body.style.overflow = "hidden";
@@ -26,29 +26,35 @@ function CoursePage() {
       document.body.style.overflow = "auto";
     }
   }, [isActive]);
+
+  const [courses,setData] = useState([]);
+
   useEffect(()=>{
-    axios.get('http://127.0.0.1:8000/get-courses/')
+    axios.get("http://127.0.0.1:8000/get-courses/")
     .then((res)=>{
-      console.log("Data recieved!",res.data);
-      setData(res.data);
-      console.log("Data set successfuly!");
+      console.log("Data recieved");
+      console.log(res.data.data);
+      setData(res.data.data);
     })
     .catch((err)=>{
       console.log(err);
     })
   },[])
 
-console.log(data,"data");
+  if(courses.length==0){
+    return null;
+  }
+
   return (
     <div className="page-section tw-page">
       <Sidebar></Sidebar>
       <div className="container page__container pt-6">
-         {(data && data.length!==0)?
+         {(courses && courses.length!==0)?
          <>
           <Header onButtonClick={handleclick}></Header>
-          <Courses title="Popular Courses" courses={data}></Courses>
-          <Courses title="Development Courses" courses={data}></Courses>
-          <Courses title="Desgin Courses" courses={data}></Courses></>
+          <Courses title="Popular Courses" courses={courses}></Courses>
+          <Courses title="Development Courses" courses={courses}></Courses>
+          <Courses title="Desgin Courses" courses={courses}></Courses></>
 :<p className="m-auto p-3">Loading ...</p>}
       </div>
       <Backdrop isActive={isActive} onButtonClick={handleclick}></Backdrop>

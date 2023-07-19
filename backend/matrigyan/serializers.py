@@ -34,6 +34,8 @@ class VideoSerializer(serializers.ModelSerializer):
 class SectionSerializer(serializers.ModelSerializer):
 	videos=VideoSerializer(many=True,read_only=True,required=False)
 	duration=serializers.ReadOnlyField(read_only=True,required=False)
+	id = serializers.IntegerField(required=False)
+
 	class Meta:
 		model = CourseSection
 		fields = "__all__"
@@ -60,15 +62,15 @@ class QuestionSerializer(serializers.ModelSerializer):
 			print("validated question", validated_data)
 			options=[]
 			opt=[]
-            
+			
 			if "options" in validated_data:
 					options = validated_data.pop('options')
 					opt=[]
 			
 			question=instance
-            
+			
 			super().update(instance=instance, validated_data=validated_data)
-                
+				
 			for option in options:
 					el= Option.objects.create(value=option["value"])
 					opt+=[el]
@@ -233,6 +235,7 @@ class EventSerializer(serializers.ModelSerializer):
 		model = Event
 		fields = "__all__"
 class TaskSerializer(serializers.ModelSerializer):
+	
 	class Meta:
 		model = Task
 		fields = "__all__"
@@ -241,4 +244,19 @@ class ClassModelSerializer(serializers.ModelSerializer):
 	tags=CourseTagSerializer(read_only=True,many=True)
 	class Meta:
 		model = ClassModel
+		fields = "__all__"
+
+class ResourceSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Resource
+		fields = "__all__"
+
+class ResourceTagSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = ResourceTag
+		fields = "__all__"
+
+class UserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = User
 		fields = "__all__"

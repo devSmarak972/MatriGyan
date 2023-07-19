@@ -9,6 +9,8 @@ import Quill from "../../components/EditCourse/Quill";
 import Sections from "../../components/EditCourse/Sections";
 import Save from "../../components/EditCourse/Save";
 import Options from "../../components/EditCourse/Options";
+import axios from "axios";
+import {toast} from "react-toastify"
 
 
 
@@ -24,14 +26,16 @@ const EditCourse = () => {
   const [optionstags, setoptiontags] = useState([]);
   const form = useForm({
     initialValues: {
+      // section_id:"",
       title: "",
       category: "",
       price: "",
       tags: "",
       video: "",
+      // videofile:"",
     },
   });
-  
+  console.log("Sections added",sections);
   // const useStyles = createStyles((theme) => ({
   //   root: {
   //     borderRadius: theme.radius.sm,
@@ -84,6 +88,10 @@ const EditCourse = () => {
     getCourse();
   }, []);
 console.log({category, tags})
+
+  // if(sections.length==0 || tags.length==0 || category.length==0){
+  //   return toast("Course has no sections");
+  // }
 
   // if (!details) {
   //   return null;

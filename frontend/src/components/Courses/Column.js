@@ -3,6 +3,9 @@ import { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import "./transition.css"
 import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlayCircle, faStar, faStarHalfAlt, faStarBorder, faAccessTime } from "@fortawesome/free-solid-svg-icons";
+
 function Column({ cid, course, isTransitioning }) {
   
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -52,9 +55,8 @@ function Column({ cid, course, isTransitioning }) {
             {isPopoverOpen && (
               <span className="overlay__content">
                 <span className="overlay__action d-flex flex-column text-center">
-                  <i className="material-icons icon-32pt">
-                    play_circle_outline
-                  </i>
+                  <FontAwesomeIcon icon={faPlayCircle} className="icon-32pt" />
+
                   <span className="card-title text-white">Preview</span>
                 </span>
               </span>
@@ -86,19 +88,24 @@ function Column({ cid, course, isTransitioning }) {
             <div className="d-flex" style={{height: "27%"}}>
               <div className="rating flex">
                 <span className="rating__item">
-                  <span className="material-icons">star</span>
+                  <FontAwesomeIcon icon={faStar} />
+
                 </span>
                 <span className="rating__item">
-                  <span className="material-icons">star</span>
+                  <FontAwesomeIcon icon={faStar} />
+
                 </span>
                 <span className="rating__item">
-                  <span className="material-icons">star</span>
+                  <FontAwesomeIcon icon={faStar} />
+
                 </span>
                 <span className="rating__item">
-                  <span className="material-icons">star</span>
+                  <FontAwesomeIcon icon={faStar} />
+
                 </span>
                 <span className="rating__item">
-                  <span className="material-icons">star_border</span>
+                  <FontAwesomeIcon icon={faStarHalfAlt} />
+
                 </span>
               </div>
               {/* <small className="text-50">6 hours</small> */}

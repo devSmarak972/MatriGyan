@@ -3,8 +3,9 @@ import { useState } from "react";
 import { Link } from "react-scroll";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlayCircle, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-
-function LeftHalf({ details }) {
+import parse from 'html-react-parser'
+function LeftHalf(props) {
+  console.log(props)
   const [videoURL, setvideoURL] = useState(
     "https://player.vimeo.com/video/97243285?title=0&amp;byline=0&amp;portrait=0"
   );
@@ -31,9 +32,9 @@ function LeftHalf({ details }) {
     return activeAccordion === accordionId ? "show" : "";
   };
 
-  const tags_course = details && details.data.tags ? details.data.tags : [];
+  const tags_course = props && props.tags ? props.tags : [];
   const course_secion =
-    details && details.data.sections ? details.data.sections : [];
+    props && props.sections ? props.sections : [];
 
   return (
     <div className="col-lg-8">
@@ -66,7 +67,7 @@ function LeftHalf({ details }) {
       <div className="mb-24pt text-left">
         <span className="chip chip-outline-secondary d-inline-flex align-items-center mx-2">
           <i className="material-icons icon--left">schedule</i>
-          {/* {details.data.duration} */}
+          {/* {props.duration} */}
         </span>
         {tags_course.map((tag, index) => (
           <span
@@ -79,7 +80,7 @@ function LeftHalf({ details }) {
       </div>
 
       <p className="lead measure-lead text-70 mb-24pt text-left">
-        {details.data.description}
+        {parse(props.description)}
       </p>
 
       <div className="page-separator">
@@ -132,7 +133,7 @@ function LeftHalf({ details }) {
                   >
                     {video.title}
                   </Link>
-                  <span className="text-muted">{video.duration}h</span>
+                  <span className="text-muted">{video.duration} mins</span>
                 </div>
               ))}
             </div>

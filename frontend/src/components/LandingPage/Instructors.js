@@ -3,6 +3,8 @@ import OwlCarousel from "react-owl-carousel-autoheight";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import data from "./instructors.json";
+import { Link } from 'react-router-dom';
+
 
 const Instructors = () => {
   console.log(data);
@@ -15,9 +17,11 @@ const Instructors = () => {
             <h2>Study Material</h2>
           </div>
           <div className="all-btn all-category d-flex align-items-center">
-            <a href="course-list.html" className="btn btn-primary">
+            <Link to='/courses'>
+            <a href="#" className="btn btn-primary">
               All Courses
             </a>
+            </Link>
           </div>
         </div>
         <div className="section-text aos" data-aos="fade-up">

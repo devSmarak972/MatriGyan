@@ -39,6 +39,7 @@ const Sections = (props) => {
       timemins: "",
       timesecs: "",
       video: "",
+      videofile:""
     },
     validate: {
       sectionName: (value) =>
@@ -102,14 +103,14 @@ const Sections = (props) => {
           // classNames={props.classes}
           // className={props.classes.root}
         >
-          {props.sections.map((section) => (
+          {props.sections?.map((section) => (
             <Accordion.Item value={section.title}>
               <Accordion.Control>
                 <span className="font-semibold text-sm">{section.title}</span>
               </Accordion.Control>
               <Accordion.Panel>
                 <div className="flex flex-column divide-y">
-                  {section.videos.map((videos) => (
+                  {section.videos?.map((videos) => (
                     <div className="flex justify-between py-2">
                       <Link className="font-normal text-slate-400" to={videos.url}>
                         {videos.title}

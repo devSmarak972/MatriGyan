@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import {toast} from "react-toastify"
 const Save = (props) => {
   const title= props.name;
   const description = props.desc;
@@ -21,7 +22,7 @@ const Save = (props) => {
       })
       .then((result)=>{
         console.log(result);
-        alert("Saved Successfully");
+        toast("Saved Successfully");
         nagivate(`/course/${params.ID}/edit`);
       })
   };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -13,10 +13,12 @@ import { Drawer, Group, Button } from "@mantine/core";
 import "./Calendar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faRemove } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 const EducatorCalendar = () => {
   const [openedAdd, { open:openAdd, close:closeAdd }] = useDisclosure(false);
   const [openedDel, { open:openDel, close:closeDel }] = useDisclosure(false);
+  const [value,setValue] = useState(null);
 
   const handleSubmit = () => {
     console.log(form.values);
@@ -126,13 +128,14 @@ const EducatorCalendar = () => {
         ];
       }
     }
+
     form.reset();
   };
 
-  const handleRemove = () => {
-    data = data.filter((event) => event.title !== delform.values.find);
-    delform.reset();
-  };
+  // const handleRemove = () => {
+  //   data = data.filter((event) => event.title !== delform.values.find);
+  //   delform.reset();
+  // };
 
   const form = useForm({
     initialValues: {
@@ -188,6 +191,45 @@ const EducatorCalendar = () => {
     },
   });
 
+  const [user_id, setUserID] = useState(1);
+  const [events,setEvents] = useState([]);
+  
+  useEffect(()=>{
+    const fetchData = () =>{
+      try{
+        const res = axios.get(`http://127.0.0.1:8000/get-events/${user_id}/`);
+        setEvents(res.data.data);
+      } catch(error){
+        console.log(error);
+      }
+    }
+
+    fetchData();
+  }, [])
+
+  // if(events.length==0){
+  //   return null;
+  // }
+
+  const handleRemove = () => {
+    data = events.filter((event) => event.title !== delform.values.find);
+    console.log(delform.values,"delform values");
+    for(let i=0;i<events.length;i++){
+      if(events[i].title===delform.values.find){
+        setValue(events[i].id,"found id");
+        console.log(value,"set id");
+      }
+    }
+    axios.delete(`http://127.0.0.1:8000/delete-events/${value}/`)
+    .then((res)=>{
+      console.log(res);
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+    delform.reset();
+  };
+
   return (
     <div className="">
       <Drawer
@@ -211,7 +253,7 @@ const EducatorCalendar = () => {
       >
         {/* Drawer content */}
         <div className="order-last flex flex-col gap-8">
-          <DeleteEvent form={delform} handleRemove={handleRemove} data={data} />{" "}
+          <DeleteEvent form={delform} handleRemove={handleRemove} data={events} />{" "}
         </div>
       </Drawer>
 
@@ -250,7 +292,7 @@ const EducatorCalendar = () => {
             center: window.innerWidth >= 640 ? "title" : "",
             right: "prev,next",
           }}
-          events={data}
+          events={events}
           nowIndicator={true}
           editable={true}
           droppable={true}

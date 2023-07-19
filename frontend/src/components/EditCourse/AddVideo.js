@@ -2,10 +2,75 @@ import React from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, TextInput, Button, Select, NumberInput } from "@mantine/core";
 import Video from "./Video";
-
+import axios from "axios"
+import {toast} from "react-toastify"
 const AddVideo = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
-
+async function handleVideoSubmit(values){
+   console.log("submit");
+   var section_id=props.sections.find(el=>el.title===values.sectionName);
+   console.log(section_id,"sectionid")
+   section_id=section_id?section_id.id:0;
+    let videoData = new FormData();
+    let vidObj = {
+      title: values.name,
+      url: values.video,
+      section_id:section_id,
+      duration:values.timemins
+    };
+    for (let key in vidObj) {
+      videoData.append(key, vidObj[key]);
+    }
+    var videoId = await axios
+      .post(
+        `http://localhost:8000/add-video/`,
+        videoData,
+        {
+          headers: {
+            accept: "application/json",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Content-Type": `multipart/form-data; boundary=${videoData._boundary}`,
+          },
+        }
+      )
+      .then(async (res) => {
+        console.log(res.data)
+        // var data=JSON.parse(res.data);
+        if(!res.data["success"])
+        {
+          toast("Failed to add video");
+          return -1;
+        }
+        else return res.data.id
+      }).catch(err=>{
+          console.log(err.message);
+        });
+      props.setSections((prev) =>
+        prev.map((section) => {
+          if (section.title === values.sectionName) {
+            let sec = values.timesecs;
+            let min = values.timemins;
+            let hr = 0;
+            min = min + Math.floor(sec / 60);
+            sec = sec % 60;
+            hr = hr + Math.floor(min / 60);
+            min = min % 60;
+            return {
+              title: section.title,
+              videos: [
+                ...(section.videos?section.videos:[]),
+                {
+                  title:values.name,
+                  duration:values.timemins,
+                  url:values.url
+                },
+              ],
+            };
+          } else return section;
+        })
+      );
+      props.form.reset();
+  }
   return (
     <div>
       <Modal
@@ -24,31 +89,7 @@ const AddVideo = (props) => {
         }}
       >
         <form
-          onSubmit={props.form.onSubmit((values) => {
-            props.setSections((prev) =>
-              prev.map((section) => {
-                if (section.title === values.sectionName) {
-                  let sec = values.timesecs;
-                  let min = values.timemins;
-                  let hr = 0;
-                  min = min + Math.floor(sec / 60);
-                  sec = sec % 60;
-                  hr = hr + Math.floor(min / 60);
-                  min = min % 60;
-                  return {
-                    title: section.title,
-                    videos: [
-                      ...section.videos,
-                      {
-                        name: values.name,
-                        time: hr + "hr " + min + "m " + sec + "s",
-                      },
-                    ],
-                  };
-                } else return section;
-              })
-            );
-            props.form.reset();
+          onSubmit={props.form.onSubmit(async (values) =>{console.log("submitting",props.form.values); await handleVideoSubmit(values) 
           })}
         >
           <div className="flex flex-column gap-3">

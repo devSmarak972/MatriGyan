@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, TextInput, Button, Select, PasswordInput } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
@@ -65,7 +65,6 @@ const DeleteSection = (props) => {
         >
           <div className="flex flex-column gap-3">
             <Select
-              label="Choose section to delete"
               placeholder="Choose Section"
               data={options}
               withAsterisk
