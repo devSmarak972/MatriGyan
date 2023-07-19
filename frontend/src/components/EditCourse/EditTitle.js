@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextInput } from "@mantine/core";
 import { motion } from "framer-motion";
 
 const EditTitle = (props) => {
+  // const [name, setname]=useState("");
+  const handleChange = (e) => {
+    props.onTitlechange(e.target.value);
+  }
   return (
     <div>
       <div className="my-3 transition-all duration-[.25s]">
@@ -18,6 +22,8 @@ const EditTitle = (props) => {
         <TextInput
           placeholder="ReactJS"
           {...props.form.getInputProps("name")}
+          onChange={handleChange}
+          value={props.name}
         />
         {/* <small className="form-text text-muted">
           Please see our <a href="">course title guideline</a>

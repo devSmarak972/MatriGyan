@@ -2,6 +2,15 @@ import React from "react";
 import { MultiSelect, Select } from "@mantine/core";
 
 const Options = (props) => {
+  console.log(props.category);
+  const options = props.category.map((section) => ({
+    value: section.id,
+    label: section.category,
+  }));
+  const options1 = props.tags.map((section) => ({
+    value: section.tagname,
+    label: section.tagname,
+  }));
   return (
     <div>
       <div className="page-separator">
@@ -17,7 +26,7 @@ const Options = (props) => {
             <label className="form-label font-semibold">Category</label>
             <Select
               placeholder="Pick one"
-              data={props.category.map((cate)=>cate.category)}
+              data={options}
               {...props.form.getInputProps("category")}
               transitionProps={{
                 transition: "pop-top-left",
@@ -48,7 +57,7 @@ const Options = (props) => {
               Tags
             </label>
             <MultiSelect
-              data={props.tags.map((tag)=>tag.tagname)}
+              data={options1}
               placeholder="Choose tags"
               {...props.form.getInputProps("tags")}
               transitionProps={{

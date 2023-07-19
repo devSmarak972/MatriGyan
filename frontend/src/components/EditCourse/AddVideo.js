@@ -7,12 +7,15 @@ import {toast} from "react-toastify"
 const AddVideo = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
 async function handleVideoSubmit(values){
-   console.log("submit")
+   console.log("submit");
+   var section_id=props.sections.find(el=>el.title===values.sectionName);
+   console.log(section_id,"sectionid")
+   section_id=section_id?section_id.id:0;
     let videoData = new FormData();
     let vidObj = {
       title: values.name,
       url: values.video,
-      section_id:values.sectionName,
+      section_id:section_id,
       duration:values.timemins
     };
     for (let key in vidObj) {
@@ -54,11 +57,12 @@ async function handleVideoSubmit(values){
             min = min % 60;
             return {
               title: section.title,
-              subsections: [
-                ...section.subsections,
+              videos: [
+                ...(section.videos?section.videos:[]),
                 {
-                  name: values.name,
-                  time: hr + "hr " + min + "m " + sec + "s",
+                  title:values.name,
+                  duration:values.timemins,
+                  url:values.url
                 },
               ],
             };
@@ -103,7 +107,7 @@ async function handleVideoSubmit(values){
               searchable
             />
             <TextInput
-              label="Subsection Name"
+              label="Video Name"
               placeholder="Introduction to React States"
               withAsterisk
               {...props.form.getInputProps("name")}

@@ -1,43 +1,42 @@
 import React, { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, TextInput, Button, Select, PasswordInput } from "@mantine/core";
-import axios from "axios";
-
+import { useNavigate, useParams } from "react-router-dom";
 const DeleteSection = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
-  const [value, setName] = useState(null);
-  const [section_id,setId] = useState(0);
-  const [sid, setSid] = useState("");
-
-  const handleIdChange = (id_section)=>{
-    setId(id_section);
-    setSid(section_id.toString());
-    console.log("id is : ",section_id);
-  }
-
-  const handleChangeSection = (value) =>{
-    setName(value);
-    console.log("name is ",value);
-    for(let i=0;i<props.sections.length;i++){
-      if(props.sections[i].title===value){
-        handleIdChange(props.sections[i].id);
-        console.log("props id :",props.sections[i].id);
-        break;
-      }
+  const nagivate = useNavigate();
+  const params = useParams();
+  const handleDelete = () => {
+    if (props.form.isValid()) {
+      const sectionName = props.form.values.sectionName;
+      const updatedSections = props.sections.filter(
+        (section) => section.title !== sectionName
+      );
+  
+      // Update the state directly with the updated sections
+      props.setSections(updatedSections);
+  
+      // Close the modal and navigate to the desired page
+      close();
+      // Make the API call to delete the section
+      fetch(`http://127.0.0.1:8000/delete-section/${sectionName}`, {
+        method: "delete"
+      })
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }
-
-  const DeleteSection = (sid) =>{
-    console.log("sid : ",sid);
-    axios.delete(`http://127.0.0.1:8000/delete-section/${sid}`)
-    .then((res)=>{
-      console.log('Section deleted.');
-    })
-    .catch((err)=>{
-      console.log(err);
-    })
-  }
-
+  };
+  
+  
+  const options = props.sections.map((section) => ({
+    value: section.id,
+    label: section.title,
+  }));
+  
   return (
     <div>
       <Modal
@@ -68,7 +67,7 @@ const DeleteSection = (props) => {
           <div className="flex flex-column gap-3">
             <Select
               placeholder="Choose Section"
-              data={props.sections.map((section) => section.title)}
+              data={options}
               withAsterisk
               {...props.form.getInputProps("sectionName")}
               transitionProps={{
@@ -77,8 +76,7 @@ const DeleteSection = (props) => {
                 timingFunction: "ease",
               }}
               searchable
-              value={value}
-              onChange={handleChangeSection}
+              // onChange={handleSelectChange}
             />
             <PasswordInput
               placeholder="asd123"
@@ -88,20 +86,7 @@ const DeleteSection = (props) => {
             />
           </div>
           <Button
-            onClick={() => {
-              if (props.form.isValid()) {
-                for(let i=0;i<props.sections.length;i++){
-                  if(props.sections[i].title===value){
-                    console.log('Yes');
-                    handleIdChange(props.sections[i].id);
-                    DeleteSection(sid);
-                    break;
-                  }
-                }
-                close();
-
-              }
-            }}
+            onClick={handleDelete}
             type="submit"
             className="mt-4 text-white bg-[var(--primary)] hover:bg-[var(--primary-hover)] font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
           >

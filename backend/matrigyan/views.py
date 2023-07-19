@@ -516,14 +516,20 @@ def enrollCourse(request, id):
 
 @api_view(['POST'])
 def addSection(request, id):
-	course = Course.objects.get(id=id)
+	print("course exist")
+	course = Course.objects.filter(id=id).first()
+	if not course:
+		return Response({"success":False,"message":"course does not exist"})
 	sec = SectionSerializer(data=request.data)
 	if sec.is_valid():
+		print("here")
+		sec.save()
 		title = sec.data['title']
 		# duration = int(sec.data['duration'])
 		order_id = int(sec.data['order_id'])
 		course_id = id
-		section = CourseSection(course_id=course_id,title=title, order_id=order_id)
+  
+		section = CourseSection(course=course,title=title, order_id=order_id)
 		section.save()
 		# course.sections.add(section)
 		return Response({"success":True,"data":"Section added!","message":"Section added!"})
@@ -532,6 +538,7 @@ def addSection(request, id):
 @api_view(['POST'])
 def addVideo(request):
 	section_id=request.data["section_id"]
+	print(section_id)
 	# course_section = CourseSection.objects.get(course_id=course_id,order_id=request.data["order_id"])
 	course_section = CourseSection.objects.get(id=section_id)
 	creator=course_section.course.educator

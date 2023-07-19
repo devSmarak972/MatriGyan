@@ -67,7 +67,7 @@ async function uploadVideoToStorage(file,setShowProgress)
     blockIds.push(blockId);
     await blobClient.stageBlock(blockId, chunk, chunkSize);
   }
-  await blobClient.commitBlockList(blockIds);
+  var commit=await blobClient.commitBlockList(blockIds);
  console.log("done");
  return 'https://' + account + '.blob.core.windows.net/' + containerName + '/'+blobName
     }
