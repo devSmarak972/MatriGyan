@@ -18,7 +18,7 @@ urlpatterns = [
     path('get-sas-key/',views.getSAS),
     path('add-tag/<int:id>/', views.addTag),
     path('get-comments/', views.getComment),
-    path('add-comments/<int:id>/', views.addComment),
+    path('add-comment', views.addComment),
     path('get-comments/<int:id>/', views.getCommentCourse),
     path('get-category/', views.getCategory),
     path('add-category/<int:id>/', views.addCategory),

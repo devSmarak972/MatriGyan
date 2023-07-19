@@ -18,14 +18,13 @@ const EditQuizPage = () => {
         const response = await axios
           .get(`http://localhost:8000/get-quiz/${ID}/`)
           .then((res) => {
-            console.log(res.data);
+            console.log(res.data.quiz,res.data.quiz.name);
             setData({
-              name: res.data.name,
-              topic: res.data.topic,
-              mins: res.data.time,
-              course: res.data.course,
-              questions: res.data.questions
-                .map((q) => ({
+              name: res.data.quiz.name,
+              topic: res.data.quiz.topic,
+              mins: res.data.quiz.time,
+              course: res.data.quiz.course,
+              questions: res.data.quiz?.questions?.map((q) => ({
                   id: q.id,
                   qnumber: q.qnumber,
                   question: q.question,
@@ -41,10 +40,10 @@ const EditQuizPage = () => {
                 .sort((a, b) => a.qnumber - b.qnumber),
             });
             form2.setValues({
-              name: res.data.name,
-              topic: res.data.topic,
-              time: res.data.time,
-              subject: res.data.subject,
+              name: res.data.quiz.name,
+              topic: res.data.quiz.topic,
+              time: res.data.quiz.time,
+              subject: res.data.quiz.subject,
             });
           });
       } catch (e) {
@@ -58,6 +57,7 @@ const EditQuizPage = () => {
   const [questions, setQuestions] = useState(data.questions);
 
   useEffect(() => {
+    console.log(data,"data")
     setQuestions(data.questions);
   }, [data]);
 

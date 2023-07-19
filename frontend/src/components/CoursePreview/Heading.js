@@ -1,10 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faStarHalfAlt} from "@fortawesome/free-solid-svg-icons";
 
-
-function Heading({details}) {
+function Heading(props) {
+  var rate=[];
+  for(var i=0;i<5;i++)
+  {
+    if(i<props.rating)
+    rate.push(<div className="rating__item">
+    <FontAwesomeIcon icon={faStar} />
+  </div>)
+  else
+  rate.push(<div key={"star"+i} className="rating__item">
+    <FontAwesomeIcon style={{ color: 'white' }} icon={faStar} />
+  </div>)
+  }
   return (
     <div className="page-section bg-alt border-bottom-2">
       <div className="container page__container">
@@ -19,23 +30,11 @@ function Heading({details}) {
               />
             </div>
             <div className="flex text-left" style={{flexDirection:"column"}}> 
-              <h1 className="h2 m-0">{details?.data.title}</h1>
+              <h1 className="h2 m-0">{props.title}</h1>
               <div className="rating mb-8pt d-inline-flex">
-                <div className="rating__item">
-                  <FontAwesomeIcon icon={faStar} />
-                </div>
-                <div className="rating__item">
-                  <FontAwesomeIcon icon={faStar} />
-                </div>
-                <div className="rating__item">
-                  <FontAwesomeIcon icon={faStar} />
-                </div>
-                <div className="rating__item">
-                  <FontAwesomeIcon icon={faStar} />
-                </div>
-                <div className="rating__item">
-                  <FontAwesomeIcon icon={faStarHalfAlt} />
-                </div>
+                {
+                rate
+                }
               </div>
 
             </div>
