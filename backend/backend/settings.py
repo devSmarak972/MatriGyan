@@ -43,9 +43,14 @@ SECRET_KEY = 'django-insecure-(27h%fzc7bs+d=_!lxtp49l@p@agm7+5e9_!4weof-=+a0f&ja
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 KEEP_LOGGED_DURATION=51840000 #60 days
-
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+ALLOWED_HOSTS = [
+    'localhost',
+],
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
 
 # Email
 # AWS_SES_ACCESS_KEY_ID = env('AWS_SES_ACCESS_KEY_ID')
@@ -59,7 +64,6 @@ EMAIL_BACKEND = 'django_ses.SESBackend'
 # Application definition
 
 INSTALLED_APPS = [
-        'corsheaders',
 
     'channels',
     'daphne',
@@ -71,6 +75,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
     'matrigyan',
     
 ]
@@ -91,19 +96,30 @@ CORS_ALLOW_HEADERS=['accept',
 'x-requested-with']
 # CORS_ALLOW_CREDENTIALS=True
 CORS_EXPOSE_HEADERS=["*"]
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_ALL_ORIGINS  = True
 CORS_ORIGIN_WHITELIST = (
        'http://localhost:3000',
 )
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-] # If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
+"https://domain.com",
+"https://api.domain.com",
+"http://localhost:3000",
+"http://127.0.0.1:3000"
+]# If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
 CORS_ALLOWED_ORIGIN_REGEXES = [
     'http://localhost:3000',
 ]
+CORS_ALLOW_METHODS = [
+'DELETE',
+'GET',
+'OPTIONS',
+'PATCH',
+'POST',
+'PUT',
+]
+
 MIDDLEWARE = [
-        'corsheaders.middleware.CorsMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -123,7 +139,7 @@ REST_FRAMEWORK = {
     ]
 }
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1440),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 ROOT_URLCONF = 'backend.urls'

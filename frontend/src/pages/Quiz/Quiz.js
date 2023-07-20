@@ -19,14 +19,17 @@ const Quiz = () => {
       try {
         const response = await axios
           .get(`http://localhost:8000/get-quiz/${ID}/`,{withCredentials:true})
-          .then((res) => {
+          .then((res) => {return res.data})
+          .then((res)=>{
             // if()
-            // throw res.message;
+            console.log(res.quiz)
+            if(!res.success)
+            throw res.message;
             setData({
-              name: res.data.name,
-              topic: res.data.topic,
-              mins: res.data.time,
-              questions: res.data.questions.map((q) => ({
+              name: res.quiz.name,
+              topic: res.quiz.topic,
+              mins: res.quiz.time,
+              questions: res.quiz.questions?.map((q) => ({
                 id: q.id,
                 question: q.question,
                 options: q.options,
@@ -38,8 +41,8 @@ const Quiz = () => {
                 status: "unanswered",
                 image: q.image,
               })),
-            });
-            setStart(parseInt(res.data.time))
+          });
+            setStart(parseInt(res.quiz.time))
           });
       } catch (e) {
         console.log("Error fetching data: ", e);
@@ -53,7 +56,7 @@ const Quiz = () => {
   const [question, setQuestion] = useState(0);
   const [selected, setSelected] = useState([]);
   // const [start, setStart] = useState(JSON.parse(localStorage.getItem("timer")));
-  const [start, setStart] = useState(20);
+  const [start, setStart] = useState(5);
   const [opened, { open, close }] = useDisclosure(false);
 
   const Completionist = () => <span>Time Up!</span>;
@@ -100,6 +103,11 @@ const Quiz = () => {
                       })),
                     }, {withCredentials:true})
                     .then((res) => {
+                      if(res.data.success)
+                      {
+                      navigate(`/quiz/${ID}/end`,{replace:true});
+                      toast("Test Submitted Successfully!")
+                      }
                     })
                     .catch((e) => {
                       const notify=()=>toast("Test submitted successfully");
@@ -423,8 +431,8 @@ const Quiz = () => {
               >
                 Back
               </button>
-              <Link
-                to={`/quiz/${ID}/end`}
+              <button
+                // to={`/quiz/${ID}/end`}
                 onClick={async () => {
                   close();
                   localStorage.removeItem("timer");
@@ -443,9 +451,16 @@ const Quiz = () => {
                       })),
                     }, {withCredentials:true})
                     .then((res) => {
+                      console.log(res.data);
+                      if(res.data.success)
+                      {
+                      window.location.href=`/quiz/${ID}/end`;
+                      toast("Test Submitted Successfully!")
+                      }
+
                     })
                     .catch((e) => {
-                      const notify=()=>toast("Test submitted successfully");
+                      const notify=()=>toast("Test not submitted!");
                       notify()
                       console.log(e);
                     });
@@ -459,7 +474,7 @@ const Quiz = () => {
                 className="font-medium text-[var(--primary)] bg-blue-200 px-3 py-1.5 rounded-lg"
               >
                 Submit
-              </Link>
+              </button>
             </div>
           </Modal>
 

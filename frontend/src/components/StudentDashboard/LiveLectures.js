@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import LiveLecture from "./LiveLecture";
 
 const LiveLectures = (props) => {
-  console.log(props,"lectures renderer")
+  // console.log(props,"lectures renderer")
   return (
     <div className="col-span-12 sm:col-span-6 lg:col-span-4">
       <div className="flex items-center justify-between">
@@ -17,7 +17,7 @@ const LiveLectures = (props) => {
           View All
         </a>
       </div>
-      <div className="mt-3 flex flex-col justify-between space-y-4">
+      {/* <div className="mt-3 flex flex-col justify-between space-y-4">
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -36,10 +36,15 @@ const LiveLectures = (props) => {
               );
             })
           ) : (
-            <p>No live lectures upcoming</p>
+            <p className="noHoverCard card p-4 mb-2 h-auto justify-center flex flex-col gap-y-2 col-span-2">
+              No courses completed yet. Complete a course to view stats!
+            </p>
           )}
         </motion.div>
-      </div>
+      </div> */}
+      <p className="noHoverCard card p-4 mb-2 h-auto justify-center flex flex-col gap-y-2 col-span-2">
+        Feature in development, coming soon!
+      </p>
     </div>
   );
 };

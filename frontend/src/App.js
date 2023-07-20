@@ -24,7 +24,7 @@ import MyItems from "./pages/MyContents";
 import Page404 from "./pages/Page404/Page404";
 import InDev from "./pages/InDev/InDev";
 import ResourceView from "./pages/ResourceView";
-import {ToastContainer} from "react-toastify"
+import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/ProfilePage";
 import EditProfile from "./pages/EditProfile";
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -40,8 +40,14 @@ function App() {
           {/* <Route path="/search" element={<SearchLanding />} /> */}
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/signup" element={<LoginSignup />} />
-          <Route path="/student/profile" element={<ProfilePage userType={1} />} />
-          <Route path="/educator/profile" element={<ProfilePage userType={2} />} />
+          <Route
+            path="/student/profile"
+            element={<ProfilePage userType={1} />}
+          />
+          <Route
+            path="/educator/profile"
+            element={<ProfilePage userType={2} />}
+          />
           <Route path="/student" element={<StudentDashboard />} />
           <Route path="/courses" element={<CoursePage />} />
           <Route path="/educator/contents" element={<MyContents />} />
@@ -58,10 +64,14 @@ function App() {
           <Route path="/quiz/:ID/end" element={<PostQuiz />} />
           <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
           <Route path="/course/:id" element={<CoursePreview />} />
+          <Route path="/resourceview/:ID" element={<ResourceView />} />
           <Route path="/not-found" element={<Page404 />} />
           <Route path="/developing" element={<InDev />} />
+<<<<<<< HEAD
           <Route path="/resourceview" element={<ResourceView />}/>
           <Route path="/edit/profile" element={<EditProfile />} />
+=======
+>>>>>>> d0b79aaf2f3ca14a04aa54f1f9e3757aaa486fce
         </Routes>
       </div>
     </Router>

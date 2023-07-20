@@ -69,6 +69,7 @@ const NewQ = (props) => {
                       "Accept-Language": "en-US,en;q=0.8",
                       "Content-Type": `multipart/form-data; boundary=${quesData._boundary}`,
                     },
+                    withCredentials:true
                   }
                 )
                 .then(async (res) => {

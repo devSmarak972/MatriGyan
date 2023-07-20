@@ -158,7 +158,7 @@ class Question(models.Model):
 	solution = models.ForeignKey(Solution, on_delete=models.CASCADE, null=True, blank=True)
 	marks=models.IntegerField(default=1,blank=True)
 	def __str__(self):
-		return str(self.qnumber) + self.question
+		return str(self.qnumber) + self.question+"_"+str(self.id)
 
 class Quiz(models.Model):
 	name = models.CharField(max_length=250)
@@ -168,7 +168,7 @@ class Quiz(models.Model):
 	questions = models.ManyToManyField(Question,blank=True)
 	time=models.IntegerField(default=1,blank=True)
 	def __str__(self):
-		return (self.topic + self.subject)
+		return (self.topic + self.subject+"_"+str(self.id))
 	@property
 	def number_of_questions(self):
 		return len(self.questions.all())
