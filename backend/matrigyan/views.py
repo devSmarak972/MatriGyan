@@ -92,12 +92,14 @@ def check_to_login_registered_user(request):
 		return {"message": msg, "redirect": False, "success": False}
 	else:
 		username = user.first().username
-	auth_user = authenticate(username=username, password=password)
+	auth_user = authenticate(request,username=username, password=password)
 	utype="undefined"
 	if auth_user is not None:
+		print(auth_user)
 		if auth_user.is_active:
 			login(request, auth_user)
 			msg = "Signed in successfully!"
+		   
 			redirect = True
 			request.session.set_expiry(matrigyan_settings.KEEP_LOGGED_DURATION)
 			educator=Educator.objects.filter(user=auth_user.id).first()
@@ -993,7 +995,11 @@ def deleteResource(request, id):
 	return Response({"success":True, "message":"Resource deleted!"})
 
 @api_view(['GET'])
-def getUser(request,id):
+def getUser(request):
+		print(request.user)
+		if not request.user.is_authenticated:
+			return Response({"success":False,"message":"Not Logged in"})
+		id=request.user.id
 		user = User.objects.get(id=id)
 		print(user)
 		print(user.id)
@@ -1121,6 +1127,21 @@ def getSAS(request):
 	container=request.data.get("container","video")
 	sas=bh.GetSASToken(container)
 	print(sas)
+	# sas="hello"
+	return Response({"success":True, "message":"SAS token generated","sas":sas})
+
+@api_view(['POST'])
+def updateProfile(request):
+	if 'profile_img' in request.FILES:
+		print(request.FILES['profile_img'])
+		image=request.FILES['profile_img']
+		name=image.name.split(".")[0][:10]+"_profile_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
+		bh=BlobHandler()
+		bh.uploadBlob("profile-media",name,image)
+		url=bh.GetBlobUrl("profile-media",name)
+		request.data['profile_img'] = url	
+		print(url)
+  
 	# sas="hello"
 	return Response({"success":True, "message":"SAS token generated","sas":sas})
 

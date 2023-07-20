@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPen } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../components/StudentDashboard/Sidebar";
 import { useDisclosure } from "@mantine/hooks";
+import {toast} from "react-toastify";
 import { Avatar, Modal, createStyles } from "@mantine/core";
 import UploadAvatar from "../components/ProfilePage/UploadAvatar";
 import axios from 'axios';
+import { getCookie } from "../utils/apiCaller";
 
 const useStyles = createStyles(() => ({
   content: {
@@ -18,26 +20,52 @@ const ProfilePage = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [avatar, setAvatar] = useState(null);
   const { classes } = useStyles();
-  const [userDetails,setDetails] = useState({"user":{"first_name":"Name","last_name":""}});
+  const [userDetails,setDetails] = useState(false);
   const [first_name, setName] = useState("Name");
-
   useEffect(()=>{
     const fetchDetails = async ()=>{
+      console.log(getCookie("csrftoken"),"csrf");
+      
       try{
-        const res = await axios.get('http://127.0.0.1:8000/get-user/1/');
+        const config = {
+        withCredentials: true,
+        // headers: {
+        //   "X-CSRFToken": getCookie("csrftoken"),
+        // },
+      };
+      console.log("config", "config");
+        const res = await axios.get('http://localhost:8000/get-user',config);
         console.log(res.data);
+        if(!res.data.success)
+        {
+          if(res.data.message==="Not Logged in")
+          {
+            toast("Not Logged in");
+          window.location.href="/login";
+        }
+        else{
+        toast("Something went wrong")
+        window.location.href="/";
+        }
+          
+        }
+        else
         setDetails(res.data);
-      } catch(error){
+      }
+      catch(error){
         console.log(error);
       }
     }
+  
+  
+    
 
     fetchDetails();
   }, [])
 
   useEffect(()=>{
     console.log(userDetails);
-    setName(userDetails.user.first_name);
+    setName(userDetails.user?.first_name);
   }, [userDetails])
 
   const initials = (name) => {
@@ -50,10 +78,11 @@ const ProfilePage = (props) => {
     return initials.join("");
   };
 
-  return (
+  return userDetails?(
     <div className="h-screen">
       <Sidebar />
       <div className="h-screen main-content pb-8 flex flex-col items-center md:ml-[var(--main-sidebar-width)]">
+        
         <div className="relative bg-gradient-to-br from-white to-[var(--primary)] w-full mb-[60px]">
           <Modal
             centered
@@ -164,9 +193,10 @@ const ProfilePage = (props) => {
             />
           </Link>
         </div>
+        
       </div>
     </div>
-  );
+  ):(<p className="text-muted">Loading...</p>);
 };
 
 export default ProfilePage;

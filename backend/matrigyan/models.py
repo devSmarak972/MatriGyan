@@ -4,8 +4,10 @@ import random
 from django.utils import timezone
 
 class Student(models.Model):
+
 	std=models.IntegerField(default=11)
 	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+	profile_pic = models.TextField(default="https://t3.ftcdn.net/jpg/01/18/01/98/360_F_118019822_6CKXP6rXmVhDOzbXZlLqEM2ya4HhYzSV.jpg", null=True, blank=True)
 	first_name=models.TextField(default="")
 	full_name=models.TextField(default="")
 	last_name=models.TextField(default="")
@@ -28,7 +30,7 @@ class Student(models.Model):
 class Educator(models.Model):
 	name=models.CharField(max_length=255)
 	# std=models.IntegerField(default=11)
-	profile_pic = models.CharField(max_length=200, null=True, blank=True)
+	profile_pic = models.TextField(default="https://t3.ftcdn.net/jpg/01/18/01/98/360_F_118019822_6CKXP6rXmVhDOzbXZlLqEM2ya4HhYzSV.jpg" ,null=True, blank=True)
 	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 	taughtTime=models.IntegerField(default=0,blank=True)
 	task=models.ManyToManyField("Task",related_name="educator_task",blank=True)
@@ -211,7 +213,7 @@ class Course(models.Model):
 	# sections=models.ManyToManyField("CourseSection",blank=True)
 	category=models.ManyToManyField("CourseCategory",blank=True)
 	tags=models.ManyToManyField("CourseTag",blank=True)
-	image = models.TextField(default="",null=True, blank=True)
+	image = models.TextField(default="logo.jpg",null=True, blank=True)
 	quizes = models.ManyToManyField(Quiz,blank=True)
 	# comments = models.ManyToManyField(Comment,blank=True)
 	educator=models.ForeignKey("Educator",on_delete=models.CASCADE,null=True,blank=True)

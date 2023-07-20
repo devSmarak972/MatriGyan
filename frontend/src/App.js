@@ -64,8 +64,9 @@ function App() {
           <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
           <Route path="/course/:id" element={<CoursePreview />} />
           <Route path="/resourceview/:ID" element={<ResourceView />} />
-          <Route path="/not-found" element={<Page404 />} />
           <Route path="/developing" element={<InDev />} />
+          <Route path="/not-found" element={<Page404 />} />
+          <Route path="*" element={<Page404 />} /> . 
         </Routes>
       </div>
     </Router>
