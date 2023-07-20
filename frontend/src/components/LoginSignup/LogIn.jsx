@@ -54,19 +54,20 @@ const LogIn = (props) => {
         { data },
         { withCredentials: true }
       )
-      .then((res) => {
+      .then(async (res) => {
         console.log(res);
         console.log(res.data, res.headers);
 
         if (res.data["redirect"] === true) {
           if (res.data["utype"] === "student") {
             console.log("STUUUUUUDENT: ", res.data);
-            props.user.current = getUser()
+            props.user.current = await getUser()
               .then((res) => res)
               .catch((e) => console.log(e));
+            console.log(props.user.current);
             navigate("../student");
           } else if (res.data["utype"] === "educator") {
-            props.user.current = getUser()
+            props.user.current = await getUser()
               .then((res) => res)
               .catch((e) => console.log(e));
             navigate("../educator");

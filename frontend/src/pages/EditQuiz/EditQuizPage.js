@@ -11,7 +11,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import { getUser } from "../../utils/getUser";
-const EditQuizPage = () => {
+const EditQuizPage = (props) => {
   const { ID } = useParams();
   const [data, setData] = useState({});
   const user = useRef(false);
@@ -39,7 +39,7 @@ const EditQuizPage = () => {
               window.location.href = "/not-found";
               return;
             }
-            if (res.data.quiz.creator_id !== user.current.educator.id) {
+            if (res.data.quiz.creator_id !== user.current?.educator?.id) {
               toast("You are not authorised to edit this course");
               window.location.href("/educator");
               return;
@@ -150,7 +150,7 @@ const EditQuizPage = () => {
 
   return (
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar />
+      <Sidebar user={props.user} />
       <main className="main-content w-full pb-8 px-[var(--margin-x)]">
         <span className="text-[1.75rem] font-bold text-slate-700 mb-8">
           Edit Quiz

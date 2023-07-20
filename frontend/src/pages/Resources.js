@@ -12,7 +12,7 @@ import DeleteResource from "../components/Resources/DeleteResource";
 import { toast } from "react-toastify";
 import checkUser from "../utils/checkUser.js";
 
-const Resources = () => {
+const Resources = (props) => {
   const [search, setSearch] = useState("");
 
   const [resources, setResources] = useState([]);
@@ -21,20 +21,8 @@ const Resources = () => {
   const [educatorID, setEducatorID] = useState();
 
   useEffect(() => {
-    // const userCheck = async () => {
-    //   const user = await checkUser();
-    //   console.log(await checkUser());
-    //   setIsEducator(!checkUser().is_student);
-    // };
-    // userCheck();
-
-    checkUser()
-      .then((data) => {
-        console.log(data);
-        setIsEducator(!data.is_student);
-        setEducatorID(data.user.id);
-      })
-      .catch((e) => console.log(e));
+    setEducatorID(props.user.current?.user?.id);
+    setIsEducator(props.user.current?.code === 2);
   }, []);
 
   console.log(isEducator);
@@ -62,7 +50,7 @@ const Resources = () => {
     axios
       .get("http://127.0.0.1:8000/get-resources/")
       .then((res) => {
-        // console.log(res.data.sections);
+        console.log(res.data.sections);
         setResources(res.data.sections);
         // console.log(resources, "resources");
       })
@@ -79,7 +67,7 @@ const Resources = () => {
 
   return (
     <div className="min-h-[100vh]  flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar></Sidebar>
+      <Sidebar user={props.user}></Sidebar>
       <div className="main-content w-full px-[var(--margin-x)]">
         <div className="form-wrapper mt-3 flex gap-3">
           <Modal centered opened={opened} onClose={close} title="New Resource">

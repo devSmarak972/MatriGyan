@@ -40,7 +40,6 @@ function App() {
     getUser()
       .then((data) => {
         user.current = data;
-        console.log("hiovsevsl", data);
       })
       .catch((e) => console.log(e));
   }, []);
@@ -55,23 +54,37 @@ function App() {
           {/* <Route path="/search" element={<SearchLanding />} /> */}
           <Route path="/login" element={<LoginSignup user={user} />} />
           <Route path="/signup" element={<LoginSignup user={user} />} />
-          <Route path="/student/profile" element={<ProfilePage />} />
-          <Route path="/educator/profile" element={<ProfilePage />} />
+          <Route
+            path="/student/profile"
+            element={<ProfilePage user={user} />}
+          />
+          <Route
+            path="/educator/profile"
+            element={<ProfilePage user={user} />}
+          />
           <Route path="/student" element={<StudentDashboard user={user} />} />
-          <Route path="/courses" element={<CoursePage />} />
+          <Route path="/courses" element={<CoursePage user={user} />} />
           <Route
             path="/educator/contents"
             element={<MyContents user={user} />}
           />
-          <Route path="/resources" element={<Resources />} />
+          <Route path="/resources" element={<Resources user={user} />} />
           <Route path="/educator" element={<EducatorDashboard user={user} />} />
-          <Route path="/course/:ID/edit" element={<EditCourse />} />
-          <Route path="/student/calendar" element={<StudentCalendarPage />} />
-          <Route path="/educator/calendar" element={<EducatorCalendarPage />} />
-          <Route path="/quiz/:ID/edit" element={<EditQuizPage />} />
+          <Route path="/course/:ID/edit" element={<EditCourse user={user} />} />
+          <Route
+            path="/student/calendar"
+            element={<StudentCalendarPage user={user} />}
+          />
+          <Route
+            path="/educator/calendar"
+            element={<EducatorCalendarPage user={user} />}
+          />
+          <Route path="/quiz/:ID/edit" element={<EditQuizPage user={user} />} />
           <Route
             path="/quiz/new"
-            element={<NewQuizPage user={user} userID={user.current?.user?.id} />}
+            element={
+              <NewQuizPage user={user} userID={user.current?.user?.id} />
+            }
           />
           <Route path="/live/:ID" element={<InDev />} />
           <Route path="/quiz/:ID" element={<Quiz />} />

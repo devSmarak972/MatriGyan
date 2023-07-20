@@ -14,7 +14,7 @@ import {
   faTowerBroadcast,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Sidebar = () => {
+const Sidebar = (props) => {
   const [sidebar, setSidebar] = useState(0);
   const [open, setOpen] = useState(0);
 
@@ -149,7 +149,7 @@ const Sidebar = () => {
                 color: "white",
                 marginTop: "0",
                 fontWeight: "500",
-                transition: "0.2s all ease"
+                transition: "0.2s all ease",
               }}
             />
           </div>
@@ -185,7 +185,13 @@ const Sidebar = () => {
               <button x-ref="popperRef" className="avatar h-12 w-12">
                 <img
                   className="rounded-full"
-                  src="StudentDashboard/images/avatar/avatar-12.jpg"
+                  src={
+                    props.user?.current?.code === 1
+                      ? props.user?.current?.student?.profile_pic
+                      : props.user?.current?.code === 2
+                      ? props.user?.current?.educator?.profile_pic
+                      : null
+                  }
                   alt="avatar"
                 />
                 <span className="absolute right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-success dark:border-navy-700"></span>

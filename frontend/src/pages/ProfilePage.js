@@ -19,9 +19,11 @@ const useStyles = createStyles(() => ({
 const ProfilePage = (props) => {
   const nav = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
-  const [avatar, setAvatar] = useState(null);
-  const { classes } = useStyles();
   const [userDetails, setDetails] = useState(false);
+  const [avatar, setAvatar] = useState(
+    "https://t3.ftcdn.net/jpg/01/18/01/98/360_F_118019822_6CKXP6rXmVhDOzbXZlLqEM2ya4HhYzSV.jpg"
+  );
+  const { classes } = useStyles();
   const [first_name, setName] = useState("Name");
   var userType;
   useEffect(() => {
@@ -61,6 +63,13 @@ const ProfilePage = (props) => {
   useEffect(() => {
     console.log(userDetails);
     setName(userDetails.user?.first_name);
+    setAvatar(
+      userDetails.code === 1
+        ? userDetails.student.profile_pic
+        : userDetails.code === 2
+        ? userDetails.educator.profile_pic
+        : null
+    );
   }, [userDetails]);
 
   const initials = (name) => {
@@ -73,9 +82,13 @@ const ProfilePage = (props) => {
     return initials.join("");
   };
 
+  useEffect(() => {
+    console.log(avatar?.substr(0, 40));
+  }, [avatar]);
+
   return userDetails ? (
     <div className="h-screen">
-      <Sidebar />
+      <Sidebar user={props.user} />
       <div className="h-screen main-content pb-8 flex flex-col items-center md:ml-[var(--main-sidebar-width)]">
         <div className="relative bg-gradient-to-br from-white to-[var(--primary)] w-full mb-[60px]">
           <Modal
@@ -90,16 +103,19 @@ const ProfilePage = (props) => {
               close={close}
               preview={avatar}
               setAvatar={setAvatar}
+              data={userDetails}
             />
           </Modal>
           <Avatar
             className={`${
               avatar && "drop-shadow-[0_0_10px_rgba(0,0,0,0.1)]"
             } translate-y-1/2 rounded-full w-[120px] h-[120px] object-cover object-center mx-auto mt-[50px]`}
-            src={!userDetails.is_student && userDetails.educator.profile_pic}
+            src={avatar}
             alt={userDetails.user.first_name}
             color="violet"
-            children={<span className="text-xl">{initials("Full Name")}</span>}
+            children={
+              <img src="https://t3.ftcdn.net/jpg/01/18/01/98/360_F_118019822_6CKXP6rXmVhDOzbXZlLqEM2ya4HhYzSV.jpg" />
+            }
           ></Avatar>
           <FontAwesomeIcon
             icon={faPen}
@@ -176,7 +192,7 @@ const ProfilePage = (props) => {
         </div>
         <div className="h-full flex flex-col justify-end">
           <Link
-            to={userType === 1 ? "/student" : "/educator"}
+            to={props.user?.current?.code === 1 ? "/student" : "/educator"}
             className="py-4 group flex gap-2 items-center"
           >
             <span className="align-bottom font-semibold text-[15px] group-hover:text-[var(--primary)] ease-in-out duration-300">
@@ -184,7 +200,7 @@ const ProfilePage = (props) => {
             </span>
             <FontAwesomeIcon
               icon={faArrowRight}
-              className="text-slate-600 group-hover:bg-[var(--primary)] group-hover:text-white p-1.5 group-hover:scale-125 w-[15px] h-[15px] group-hover:-rotate-45 rounded-full ease-in-out duration-300"
+              className="text-slate-600 group-hover:bg-[var(--primary)] group-hover:text-white p-1.5 group-hover:scale-125 w-[13px] h-[13px] group-hover:-rotate-45 rounded-full ease-in-out duration-300"
             />
           </Link>
         </div>

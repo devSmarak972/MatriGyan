@@ -21,7 +21,7 @@ function MyContents(props) {
 
   return (
     <div className="page-section tw-page">
-      <Sidebar></Sidebar>
+      <Sidebar user={props.user}></Sidebar>
       <div className="container page__container pt-6">
         <Courses title="My Courses" courseData={courseData}></Courses>
       </div>
