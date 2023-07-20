@@ -195,9 +195,10 @@ const EducatorCalendar = () => {
   const [events,setEvents] = useState([]);
   
   useEffect(()=>{
-    const fetchData = () =>{
+    const fetchData = async () =>{
       try{
-        const res = axios.get(`http://127.0.0.1:8000/get-events/${user_id}/`);
+        const res = await axios.get(`http://127.0.0.1:8000/get-events/${user_id}/`);
+        console.log("fetch complete.");
         setEvents(res.data.data);
       } catch(error){
         console.log(error);
