@@ -22,6 +22,7 @@ const ProfilePage = (props) => {
   const { classes } = useStyles();
   const [userDetails,setDetails] = useState(false);
   const [first_name, setName] = useState("Name");
+  var userType;
   useEffect(()=>{
     const fetchDetails = async ()=>{
       console.log(getCookie("csrftoken"),"csrf");
@@ -50,7 +51,10 @@ const ProfilePage = (props) => {
           
         }
         else
+        {
         setDetails(res.data);
+        userType=res.data.is_student?1:2;
+        }
       }
       catch(error){
         console.log(error);
@@ -148,7 +152,7 @@ const ProfilePage = (props) => {
             {userDetails.user.username}
             </span>
           </div>
-          {/* {props.userType === 2 && (
+          {/* {userType === 2 && (
             <div className="col-span-1 flex flex-col">
               <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
                 School
@@ -168,7 +172,7 @@ const ProfilePage = (props) => {
               </span>
             </div>
           )}
-          {props.userType === 1 && (
+          {userType === 1 && (
             <div className="col-span-1 flex flex-col">
               <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
                 Courses
@@ -181,7 +185,7 @@ const ProfilePage = (props) => {
         </div>
         <div className="h-full flex flex-col justify-end">
           <Link
-            to={props.userType === 1 ? "/student" : "/educator"}
+            to={userType === 1 ? "/student" : "/educator"}
             className="py-4 group flex gap-2 items-center"
           >
             <span className="align-bottom font-semibold text-[15px] group-hover:text-[var(--primary)] ease-in-out duration-300">

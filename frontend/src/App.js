@@ -39,13 +39,13 @@ function App() {
           {/* <Route path="/search" element={<SearchLanding />} /> */}
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/signup" element={<LoginSignup />} />
-          <Route
+          {/* <Route
             path="/student/profile"
             element={<ProfilePage userType={1} />}
-          />
+          /> */}
           <Route
-            path="/educator/profile"
-            element={<ProfilePage userType={2} />}
+            path="/profile"
+            element={<ProfilePage  />}
           />
           <Route path="/student" element={<StudentDashboard />} />
           <Route path="/courses" element={<CoursePage />} />
