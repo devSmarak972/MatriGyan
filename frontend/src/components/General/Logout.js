@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-const Logout = () => {
+const Logout = (props) => {
   const navigate = useNavigate();
   function handleLogout(e) {
     const config = {
@@ -16,6 +16,7 @@ const Logout = () => {
       console.log(res.data, "received data");
       if (res.data.success) {
         toast("Logged Out Successfully.");
+        props.user.current = 0;
         navigate("/");
       }
     });

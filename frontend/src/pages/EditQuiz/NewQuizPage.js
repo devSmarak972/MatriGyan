@@ -9,20 +9,12 @@ import OtherDetails from "../../components/EditQuiz/OtherDetails";
 import axios from "axios";
 import checkUser from "../../utils/checkUser";
 
-const NewQuizPage = () => {
+const NewQuizPage = (props) => {
   const [questions, setQuestions] = useState([]);
 
-  console.log(questions);
-
-  useEffect(() => {
-    checkUser()
-      .then((data) => {
-        if (data.is_student) {
-          window.location.href = "/not-found";
-        }
-      })
-      .catch((e) => console.log(e));
-  });
+  if (props.user !== 2) {
+    window.location.href = "/not-found";
+  }
 
   const form1 = useForm({
     initialValues: {

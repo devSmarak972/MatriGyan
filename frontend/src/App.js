@@ -27,22 +27,22 @@ import ResourceView from "./pages/ResourceView";
 import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/ProfilePage";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import checkUser from "./utils/checkUser";
-import { useEffect, useState } from "react";
+import { getUser } from "./utils/getUser";
+import { useEffect, useRef, useState } from "react";
 
 function App() {
-  const [user, setUser] = useState(0);
+  const user = useRef(0);
   // user types are:
   //0 for anonymous user
   //1 for student
   //2 for educator
   useEffect(() => {
-    checkUser() 
+    getUser()
       .then((data) => {
         console.log(data);
         if (data.success) {
-          if (data.is_student) setUser(1);
-          else setUser(2);
+          if (data.is_student) user.current = 1;
+          else user.current = 2;
         }
       })
       .catch((e) => console.log(e));
@@ -58,105 +58,31 @@ function App() {
           {/* <Route path="/search" element={<SearchLanding />} /> */}
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/signup" element={<LoginSignup />} />
+          <Route path="/student/profile" element={<ProfilePage />} />
+          <Route path="/educator/profile" element={<ProfilePage />} />
+          <Route path="/student" element={<StudentDashboard user={user} />} />
           <Route path="/courses" element={<CoursePage />} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route
-            path="/student"
-            element={
-              user === 0 ? (
-                <LoginSignup />
-              ) : user === 1 ? (
-                <StudentDashboard />
-              ) : (
-                <Page404 />
-              )
-            }
-          />
-          <Route
-            path="/student/calendar"
-            element={
-              user === 0 ? (
-                <LoginSignup />
-              ) : user === 1 ? (
-                <StudentCalendarPage />
-              ) : (
-                <Page404 />
-              )
-            }
-          />
           <Route
             path="/educator/contents"
-            element={user === 2 ? <MyContents /> : <Page404 />}
+            element={<MyContents user={user} />}
           />
-          <Route
-            path="/educator"
-            element={
-              user === 0 ? (
-                <LoginSignup />
-              ) : user === 2 ? (
-                <EducatorDashboard />
-              ) : (
-                <Page404 />
-              )
-            }
-          />
-          <Route
-            path="/course/:ID/edit"
-            element={user === 2 ? <EditCourse /> : <Page404 />}
-          />
-          {/* <Route path="/course/add" element={< />} /> */}
-          <Route
-            path="/educator/calendar"
-            element={
-              user === 0 ? (
-                <LoginSignup />
-              ) : user === 2 ? (
-                <EducatorCalendarPage />
-              ) : (
-                <Page404 />
-              )
-            }
-          />
-          <Route
-            path="/quiz/:ID/edit"
-            element={user === 2 ? <EditQuizPage /> : <Page404 />}
-          />
-          <Route
-            path="/quiz/new"
-            element={user === 2 ? <NewQuizPage /> : <Page404 />}
-          />
-          <Route
-            path="/live/:ID"
-            element={user === 0 ? <LoginSignup /> : <Liveclass />}
-          />
-          <Route
-            path="/quiz/:ID"
-            element={user === 0 ? <LoginSignup /> : <Quiz />}
-          />
-          <Route
-            path="/quiz/:ID/start"
-            element={user === 0 ? <LoginSignup /> : <PreQuiz />}
-          />
-          <Route
-            path="/quiz/:ID/end"
-            element={user === 0 ? <LoginSignup /> : <PostQuiz />}
-          />
-          <Route
-            path="/quiz/:ID/review"
-            element={user === 0 ? <LoginSignup /> : <ReviewQuiz />}
-          />
-          <Route
-            path="/course/:id"
-            element={user === 0 ? <LoginSignup /> : <CoursePreview />}
-          />
-          <Route
-            path="/resourceview/:ID"
-            element={user === 0 ? <LoginSignup /> : <ResourceView />}
-          />
-          <Route path="/developing" element={<InDev />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/educator" element={<EducatorDashboard user={user} />} />
+          <Route path="/course/:ID/edit" element={<EditCourse user={user} />} />
+          <Route path="/student/calendar" element={<StudentCalendarPage />} />
+          <Route path="/educator/calendar" element={<EducatorCalendarPage />} />
+          <Route path="/quiz/:ID/edit" element={<EditQuizPage />} />
+          <Route path="/quiz/new" element={<NewQuizPage user={user} />} />
+          <Route path="/live/:ID" element={<InDev />} />
+          <Route path="/quiz/:ID" element={<Quiz />} />
+          <Route path="/quiz/:ID/start" element={<PreQuiz user={user} />} />
+          <Route path="/quiz/:ID/end" element={<PostQuiz user={user} />} />
+          <Route path="/quiz/:ID/review" element={<ReviewQuiz user={user} />} />
+          <Route path="/course/:id" element={<CoursePreview />} />
+          <Route path="/resourceview/:ID" element={<ResourceView user={user} />} />
           <Route path="/not-found" element={<Page404 />} />
-          <Route path="*" element={<Page404 />} /> .
+          <Route path="/developing" element={<InDev />} />
+          <Route path="/*" element={<Page404 />} />
         </Routes>
       </div>
     </Router>

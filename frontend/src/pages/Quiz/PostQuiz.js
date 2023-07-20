@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 // import data from "./quiz-answered.json";
 import { motion } from "framer-motion";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 const PostQuiz = () => {
+  const nav = useNavigate();
   const { ID } = useParams();
   const [data, setData] = useState({});
   useEffect(() => {
@@ -40,8 +41,12 @@ const PostQuiz = () => {
           }
         })
         .catch((e) => {
-          const error = () => toast(e);
-          error();
+          toast(e);
+          if (e === "Not logged in") {
+            nav("/login");
+          } else if (e === "Quiz not attempted!") {
+            nav(`/quiz/${ID}/start`);
+          }
           console.log(e);
         });
     }, 300);

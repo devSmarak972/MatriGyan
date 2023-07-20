@@ -97,7 +97,7 @@ CORS_ALLOW_HEADERS=['accept',
 'x-requested-with',
 "Cookie"
 ]
-CSRF_USE_SESSIONS=True
+# CSRF_USE_SESSIONS=True
 CSRF_COOKIE_NAME="csrftoken"
 # CORS_ALLOW_CREDENTIALS=True
 CORS_EXPOSE_HEADERS=["*","Cookie"]
