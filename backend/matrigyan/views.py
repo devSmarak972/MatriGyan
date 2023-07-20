@@ -296,7 +296,7 @@ def addComment(request):
 		com.validated_data['user'] = student
 		com.save()
 		# course = Course.objects.get(id=id)
-        
+		
 		return Response({"success":True,"message":"Comment added!","comment":com.data})
 	else:
 		return Response({"success":False,"message":"Comment not added.","comment":com.data})
@@ -700,13 +700,29 @@ def editQuestion(request, id):
 	marks=request.data.get("marks",False)
 	options=request.data.get("options",False)
 	image=request.data.get("image",False)
+	
 	ques=request.data.get("question",False)
 	# return Response("reached")
 	# print(request.data)
 	
+		
+	# print(url)
+	
+	
 	# print(name,topic,subject,time)
 	if not( type or marks or options or image or ques):
 		return Response({"success":False,"message":"No changes"})
+	
+	request.data._mutable = True
+	print(request.FILES['image'])
+	image=request.FILES['image']
+	if image:
+		name=image.name.split(".")[0]+"_question_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
+		bh=BlobHandler()
+		bh.uploadBlob("question-media",name,image)
+		url=bh.GetBlobUrl("question-media",name)
+		request.data['image'] = url
+		print(url)
 	# if type:
 	# 	question.type=type
 	# if ques:
