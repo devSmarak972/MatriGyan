@@ -1,4 +1,4 @@
-import React from "react";
+wimport React from "react";
 import Sidebar from "../components/StudentDashboard/Sidebar";
 
 const EditQuizPage = () => {
