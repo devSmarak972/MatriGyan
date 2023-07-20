@@ -5,3 +5,4 @@ django-environ
 django-cors-headers
 azure-blob-storage
 channels["daphne"]
+gitPython

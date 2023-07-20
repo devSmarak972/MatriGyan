@@ -13,6 +13,7 @@ import Tasklist from "../../components/StudentDashboard/Tasklist";
 import axios from "axios";
 import EducatorClass from "../../components/EducatorDashboard/EducatorClass";
 import { Navigate, useNavigate } from "react-router-dom";
+import {toast} from "react-toastify"
 const EducatorDashboard = () => {
   const navigate=useNavigate()
   var classes = [
@@ -60,12 +61,16 @@ const EducatorDashboard = () => {
         if(res.code===2)
         navigate("/student")
         else
-        navigate("/")
+        navigate("/login")
 
        }
        if (mounted.current) {
          setData(res.data);
        }
+     }).catch(err=>{
+      toast(err.message)
+      navigate("/")
+
      });
      return () => (mounted.current = false);
    }, []);

@@ -46,6 +46,7 @@ const StudentDashboard = () => {
           if (res.code === 2) navigate("/educator");
           else navigate("/login");
         }
+      
         if (mounted.current) {
           setData(res.data);
         }
@@ -53,6 +54,7 @@ const StudentDashboard = () => {
       .catch((err) => {
         const notify = () => toast(err.message);
         notify();
+        navigate("/")
       });
     return () => (mounted.current = false);
   }, []);
