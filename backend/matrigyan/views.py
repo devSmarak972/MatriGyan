@@ -281,19 +281,26 @@ def getComment(request):
 		sc = CommentSerializer(comments, many=True)
 		return Response({"success":True, "comments":sc.data})
 
-@api_view(['POST'])
-def addComment(request, id):
-	student = Student.objects.get(id=request.user.id)
-	com = CommentSerializer(data=request.data)
+@api_view(['GET']) 
+def addComment(request):
+	print(request.user)
+	if request.user.is_authenticated:
+		student = Student.objects.get(user_id=request.user.id)
+		if not student:
+			return Response({"success":False,"message":"not a student"})
+	else:
+		return Response({"success":False,"message":"not a student"})
+	print(request.data,request.GET)
+	com = CommentSerializer(data=request.GET)
 	if com.is_valid():
 		com.validated_data['user'] = student
 		com.save()
-		course = Course.objects.get(id=id)
-		course.comments.add(com)
+		# course = Course.objects.get(id=id)
+		
 		return Response({"success":True,"message":"Comment added!","comment":com.data})
 	else:
 		return Response({"success":False,"message":"Comment not added.","comment":com.data})
-	
+
 @api_view(['GET'])
 def getCategory(request):
 	categories = CourseCategory.objects.all()
@@ -348,6 +355,8 @@ def getCourse(request, id):
 		return Response({"success":False,"message":"course not found"})
 	students=course.student_enrolled.all().values_list("user")
 	enrolled=False
+	feedbacks=course.feedback_set.all()
+	feedbacks=FeedbackSerializer(feedbacks, many=True)
  
 	# sections=course.coursesection_set.all()
 	# sections=SectionSerializer(sections,many=True)
@@ -358,7 +367,13 @@ def getCourse(request, id):
 		enrolled=True
 		print("enrolled")
 	c = CourseSerializer(course, many=False)
-	return Response({"success":True,"data":c.data,"isEnrolled":enrolled})
+	return Response({"success":True,"data":c.data,"isEnrolled":enrolled,"feedbacks":feedbacks.data})
+# def addLike(request):
+# 	res=getUser(request,request.user.id)
+#     if(res.success)
+#        res.user
+# 	return Response({"success":True,"data":c.data,"isEnrolled":enrolled,"feedbacks":feedbacks.data})
+
 @api_view(['GET'])
 def getEducatorDashData(request):
 	print(request.user)
@@ -685,13 +700,29 @@ def editQuestion(request, id):
 	marks=request.data.get("marks",False)
 	options=request.data.get("options",False)
 	image=request.data.get("image",False)
+	
 	ques=request.data.get("question",False)
 	# return Response("reached")
 	# print(request.data)
 	
+		
+	# print(url)
+	
+	
 	# print(name,topic,subject,time)
 	if not( type or marks or options or image or ques):
 		return Response({"success":False,"message":"No changes"})
+	
+	request.data._mutable = True
+	print(request.FILES['image'])
+	image=request.FILES['image']
+	if image:
+		name=image.name.split(".")[0]+"_question_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
+		bh=BlobHandler()
+		bh.uploadBlob("question-media",name,image)
+		url=bh.GetBlobUrl("question-media",name)
+		request.data['image'] = url
+		print(url)
 	# if type:
 	# 	question.type=type
 	# if ques:
@@ -933,7 +964,7 @@ def addResource(request, id):
 	tag_name = data['tagname']
 	tag_name = tag_name.lower()
 	exists = ResourceTag.objects.filter(name=tag_name).first()
-	if exists==None:
+	if exists is None:
 		new_tag = ResourceTag(name=tag_name)
 		new_tag.save()
 		resource = Resource(image=data['image'],description=data['description'],title=data['title'],file_url=data['file_url'])
@@ -950,7 +981,7 @@ def addResource(request, id):
 	resource.creator = creator
 	resource.tagname = old_tag
 	resource.save()
-	ser_res = ResourceSerializer(resource, many=True)
+	ser_res = ResourceSerializer(resource, many=False)
 	ser_tag = ResourceTagSerializer(old_tag, many=False)
 	return Response({"success":True, "resource":ser_res.data,"tag":ser_tag.data})
 

@@ -48,7 +48,7 @@ const PostQuiz = () => {
   if (JSON.stringify(data) === "{}") return null;
 
   localStorage.removeItem("timer");
-  var id = 1;
+  // var {ID} = useParams();
   let marks = 0;
   let total = 0;
   let attempted = 0;
@@ -146,7 +146,7 @@ const PostQuiz = () => {
         </div>
         <div className="flex justify-between items-center">
           <Link
-            to={"/quiz/" + id + "/review"}
+            to={"/quiz/" + ID + "/review"}
             className="font-medium text-[var(--primary)]"
           >
             Check Your Mistakes
