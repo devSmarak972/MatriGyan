@@ -54,7 +54,7 @@ const Sections = (props) => {
         value === "" || value === 0
           ? "Please enter seconds (at least 1)"
           : null,
-      video: (value) => (value.length === 0 ? "Please enter video URL" : null),
+      video: (value) => (value?.length === 0 ? "Please enter video URL" : null),
     },
   });
 

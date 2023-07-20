@@ -36,7 +36,7 @@ return (
       {/* <div className="card"> */}
       
       {
-        !isNaN(showProgress)?<Progress value={showProgress}></Progress> :(
+         (typeof showProgress == 'number')?<Progress value={showProgress}></Progress> :(
           showProgress?
         <div className="embed-responsive embed-responsive-16by9 w-full">
         <iframe

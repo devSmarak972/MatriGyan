@@ -1,12 +1,16 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { toast } from 'react-toastify'
-
+import axios from "axios"
+import { useParams } from 'react-router-dom'
 const Comments = (props) => {
-    const [comments, setcomments] = useState([{"user":{"fullname":"user"},"comment":"This is a question","likes":1,"video":12,"course":1}])
+    const [comments, setcomments] = useState([{"user":{"full_name":"user"},"comment":"This is a question","likes":1,"video":12,"course":1}])
     const [commentInput, setCommentInput] = useState("")
     // var received={"user":{"fullname":"new commenter"},"comment":"This is a question","likes":0,"video":10,"course":1}
-    var received={"user":{"fullname":"new commenter"},"comment":"This is a question","likes":0,"video":10,"course":1}
-    
+    var received={"user":{"full_name":"new commenter"},"comment":"This is a question","likes":0,"video":10,"course":1}
+    useEffect(()=>{
+        setcomments(props.comments);
+
+    },[])
     function addLike(event){
         var commentid=parseInt(event.currentTarget.id.substring(7));
         console.log(commentid,"comments",event.currentTarget.id);
@@ -18,7 +22,10 @@ const Comments = (props) => {
             return tmp;
         })
 
+
     }
+    const params = useParams();
+
     function addComment(){
         if(commentInput==="")
          {  
@@ -26,7 +33,19 @@ const Comments = (props) => {
            notify();
         }
         received["comment"]=commentInput;
-        setcomments([...comments,received]);
+        axios.get("http://localhost:8000/add-comment"+`?comment=${commentInput}&video=1&course=${params.id}`,{
+           
+            withCredentials:true
+        
+        }).then(res=>{
+            if(!res.data.success)
+            {
+                toast("Failed to add comment: "+res.data.message);
+                return;
+            }
+
+            setcomments([...comments,res.data.comment]);
+        })
     }
   return (
     <section className="page-section relative flex items-center justify-center antialiased bg-alt  min-w-screen">
@@ -41,7 +60,7 @@ const Comments = (props) => {
           <div className="flex flex-row">
              <img className="object-cover w-12 h-12 border-2 border-gray-300 rounded-full" alt="Noob master's avatar" src="https://images.unsplash.com/photo-1517070208541-6ddc4d3efbcb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;faces=1&amp;faceindex=1&amp;facepad=2.5&amp;w=500&amp;h=500&amp;q=80"/>
              <div className="flex-col mt-1">
-                <div className="flex items-center flex-1 px-4 font-bold leading-tight">{comment.user.fullname}<span className="ml-2 text-xs font-normal text-gray-500">29-3-2023</span></div>
+                <div className="flex items-center flex-1 px-4 font-bold leading-tight">{comment.user.full_name}<span className="ml-2 text-xs font-normal text-gray-500">29-3-2023</span></div>
                 <div className="flex-1 px-2 ml-2 text-sm font-medium leading-loose text-gray-600">{comment.comment}</div>
                 <p className="flex pt-2 items-center">
                     <span className="p-2">{comment.likes}</span>

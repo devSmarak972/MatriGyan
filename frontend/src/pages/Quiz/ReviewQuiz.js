@@ -302,7 +302,7 @@ const ReviewQuiz = () => {
             Quiz Summary
           </Link>
           <Link
-            to="/student-dashboard"
+            to="/student"
             className="font-medium text-[var(--primary)] mt-[-20px] rounded-lg"
           >
             Return to Dashboard

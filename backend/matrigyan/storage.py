@@ -80,7 +80,7 @@ class BlobHandler(object):
         # blobService = BlockBlobService(account_name=accountName, account_key=accountKey)
         # blobService=BlobServiceClient.from_connection_string(self.connection_string)
         # sas_token = generate_account_sas(account_name=self.accName,account_key=self.accKey,containerName,"READ", datetime.utcnow() + timedelta(hours=1))
-        sas_token = generate_account_sas(account_name=self.accName,account_key=self.accKey,container_name=containerName,resource_types="co",permission="wracu",expiry=datetime.datetime.utcnow() + timedelta(hours=24) )
+        sas_token = generate_account_sas(account_name=self.accName,account_key=self.accKey,container_name=containerName,resource_types="sco",permission="wracu",expiry=datetime.datetime.utcnow() + timedelta(hours=24) )
         # print url
         # return 'https://' + self.accName + '.blob.core.windows.net/' + containerName + '/'+blobName+'?' + sas_token
         return sas_token

@@ -14,12 +14,16 @@ const PreQuiz = () => {
             withCredentials: true,
           })
           .then((res) => {
-            console.log("Quiz questions: ", res.data);
+            if(res.data.success)
+            return res.data
+            
+          }).then((res)=>{
+            console.log("Quiz questions: ", res.quiz);
             setData({
-              name: res.data.name,
-              topic: res.data.topic,
-              mins: res.data.time,
-              questions: res.data.questions.map((q) => ({
+              name: res.quiz.name,
+              topic: res.quiz.topic,
+              mins: res.quiz.time,
+              questions: res.quiz.questions.map((q) => ({
                 question: q.question,
                 options: q.options,
                 type: q.type === "SINGLE" ? "single" : "multi",

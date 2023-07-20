@@ -59,17 +59,19 @@ const NewQ = (props) => {
               for (let key in quesDataObj) {
                 quesData.append(key, quesDataObj[key]);
               }
+              const config={
+                headers: {
+                  accept: "application/json",
+                  "Accept-Language": "en-US,en;q=0.8",
+                  "Content-Type": `multipart/form-data; boundary=${quesData._boundary}`,
+                },
+                withCredentials:true
+              };
               quesID = await axios
                 .post(
                   `http://localhost:8000/add-question/${props.ID}/`,
                   quesData,
-                  {
-                    headers: {
-                      accept: "application/json",
-                      "Accept-Language": "en-US,en;q=0.8",
-                      "Content-Type": `multipart/form-data; boundary=${quesData._boundary}`,
-                    },
-                  }
+                  config
                 )
                 .then(async (res) => {
                   console.log(res.data)

@@ -41,9 +41,9 @@ function CoursePage() {
     })
   },[])
 
-  if(courses.length==0){
-    return null;
-  }
+  // if(courses.length==0){
+  //   return null;
+  // }
 
   return (
     <div className="page-section tw-page">
@@ -52,9 +52,9 @@ function CoursePage() {
          {(courses && courses.length!==0)?
          <>
           <Header onButtonClick={handleclick}></Header>
-          <Courses title="Popular Courses" courses={courses}></Courses>
-          <Courses title="Development Courses" courses={courses}></Courses>
-          <Courses title="Desgin Courses" courses={courses}></Courses></>
+          <Courses title="All Courses" courses={courses}></Courses>
+          <Courses title="Recent Courses" courses={courses}></Courses>
+          <Courses title="Popular Courses" courses={courses}></Courses></>
 :<p className="m-auto p-3">Loading ...</p>}
       </div>
       <Backdrop isActive={isActive} onButtonClick={handleclick}></Backdrop>

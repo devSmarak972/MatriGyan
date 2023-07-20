@@ -9,7 +9,7 @@ var maxBlockSize=1024*1024;//1MBto be shifted to consts
 async function uploadVideoToStorage(file,setShowProgress)
 {
     const config = {
-        withCredentials: true,
+        // withCredentials: true,
         // headers: {
         //   "X-CSRFToken": getCookie("csrftoken"),
         // },
@@ -57,7 +57,7 @@ async function uploadVideoToStorage(file,setShowProgress)
   console.log(blobClient)
   const blockIds = [];
   for (let i = 0; i < blockCount; i++) {
-    setShowProgress(i*100/blockCount)
+    setShowProgress((i+1)*100/blockCount)
     console.log(i);
     const start = i * maxBlockSize;
     const end = Math.min(start + maxBlockSize, fileSize);
@@ -68,6 +68,11 @@ async function uploadVideoToStorage(file,setShowProgress)
     await blobClient.stageBlock(blockId, chunk, chunkSize);
   }
   var commit=await blobClient.commitBlockList(blockIds);
+  blobServiceClient.setProperties({
+    defaultServiceVersion: "2021-04-10"
+})
+.then(res => console.log("Set Properties response", res))
+.catch(err => console.error("Set Properties error", err));
  console.log("done");
  return 'https://' + account + '.blob.core.windows.net/' + containerName + '/'+blobName
     }
