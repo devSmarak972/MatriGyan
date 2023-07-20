@@ -26,6 +26,7 @@ import InDev from "./pages/InDev/InDev";
 import ResourceView from "./pages/ResourceView";
 import {ToastContainer} from "react-toastify"
 import ProfilePage from "./pages/ProfilePage";
+import EditProfile from "./pages/EditProfile";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
           <Route path="/not-found" element={<Page404 />} />
           <Route path="/developing" element={<InDev />} />
           <Route path="/resourceview" element={<ResourceView />}/>
+          <Route path="/edit/profile" element={<EditProfile />} />
         </Routes>
       </div>
     </Router>

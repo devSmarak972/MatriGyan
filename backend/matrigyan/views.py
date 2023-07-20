@@ -933,7 +933,7 @@ def addResource(request, id):
 	tag_name = data['tagname']
 	tag_name = tag_name.lower()
 	exists = ResourceTag.objects.filter(name=tag_name).first()
-	if exists==None:
+	if exists is None:
 		new_tag = ResourceTag(name=tag_name)
 		new_tag.save()
 		resource = Resource(image=data['image'],description=data['description'],title=data['title'],file_url=data['file_url'])
@@ -944,13 +944,13 @@ def addResource(request, id):
 		ser_res = ResourceSerializer(resource, many=False)
 		ser_tag = ResourceTagSerializer(new_tag, many=False)
 		return Response({"success":True, "resource":ser_res.data,"tag":ser_tag.data})
-	old_tag = ResourceTag.objects.get(name=tag_name)
+	old_tag = ResourceTag.objects.filter(name=tag_name)[0]
 	resource = Resource(image=data['image'],description=data['description'],title=data['title'],file_url=data['file_url'])
 	creator = Educator.objects.get(id=id)
 	resource.creator = creator
 	resource.tagname = old_tag
 	resource.save()
-	ser_res = ResourceSerializer(resource, many=True)
+	ser_res = ResourceSerializer(resource, many=False)
 	ser_tag = ResourceTagSerializer(old_tag, many=False)
 	return Response({"success":True, "resource":ser_res.data,"tag":ser_tag.data})
 
@@ -1002,23 +1002,44 @@ def getEducator(request, id):
 
 @api_view(['POST'])
 def editStudent(request,id):
-	student = Student.objects.get(id=id)
-	ser_student = StudentSerializer(instance=student, data=request.data)
-	if ser_student.is_valid():
-		ser_student.save()
-		return Response({"success":True,"student":ser_student.data,"message":"Student details updated"})
-	else:
-		return Response({"success":False, "student":ser_student.data, "message":"Failed to update info."})
+	data = request.data
+	first_name = data['first_name']
+	last_name = data['last_name']
+	email = data['email']
+	username = data['username']
+	phone = data['phone']
+	user = User.objects.get(id=id)
+	student = Student.objects.get(user__id=id)
+	user.first_name = first_name
+	user.last_name = last_name
+	user.email = email
+	user.username = username
+	student.phone=phone
+	user.save()
+	student.save()
+	ser_user = UserSerializer(user, many=False)
+	ser_student = StudentSerializer(student, many=False)
+	return Response({"success":True,"user":ser_user.data,"student":ser_student.data})
 	
 @api_view(['POST'])
 def editEducator(request,id):
-	educator = Educator.objects.get(id=id)
-	ser_educator = EducatorSerializer(instance=educator, data=request.data)
-	if ser_educator.is_valid():
-		ser_educator.save()
-		return Response({"success":True,"educator":ser_educator.data,"message":"Educator details updated"})
-	else:
-		return Response({"success":False, "educator":ser_educator.data, "message":"Failed to update info."})
+	data = request.data
+	first_name = data['first_name']
+	last_name = data['last_name']
+	email = data['email']
+	username = data['username']
+	user = User.objects.get(id=id)
+	educator = Educator.objects.get(user__id=id)
+	user.first_name = first_name
+	user.last_name = last_name
+	user.email = email
+	user.username = username
+	user.save()
+	educator.name = user.first_name + user.last_name
+	educator.save()
+	ser_user = UserSerializer(user, many=False)
+	ser_educator = EducatorSerializer(educator, many=False)
+	return Response({"success":True,"user":ser_user.data,"educator":ser_educator.data})
 
 @api_view(['GET'])
 def searchCourses(request, search):
