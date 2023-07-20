@@ -52,7 +52,7 @@ const LogIn = (props) => {
     var data = form.values;
 
     axios
-      .post(`http://localhost:8000/api/login/email`, { data }, {withCredentials:true})
+      .post(`${process.env.REACT_APP_BACKEND_URL}/api/login/email`, { data }, {withCredentials:true})
       .then((res) => {
         console.log(res);
         console.log(res.data, res.headers);

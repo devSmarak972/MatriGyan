@@ -10,7 +10,7 @@ const Logout = () => {
             //   "X-CSRFToken": getCookie("csrftoken"),
             // },
           };
-        axios.get(`http://localhost:8000/api/logout`, config).then((res) => {
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/logout`, config).then((res) => {
             console.log(res);
             console.log(res.data, "received data");
             if(res.data.success)

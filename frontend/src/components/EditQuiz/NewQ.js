@@ -69,7 +69,7 @@ const NewQ = (props) => {
               };
               quesID = await axios
                 .post(
-                  `http://localhost:8000/add-question/${props.ID}/`,
+                  `${process.env.REACT_APP_BACKEND_URL}/add-question/${props.ID}/`,
                   quesData,
                   config
                 )
@@ -93,7 +93,7 @@ const NewQ = (props) => {
                   console.log(res.data.data["id"])
                   await axios
                     .post(
-                      `http://localhost:8000/add-solution/${res.data.data["id"]}/`,
+                      `${process.env.REACT_APP_BACKEND_URL}/add-solution/${res.data.data["id"]}/`,
                       solData,
                       {
                         headers: {

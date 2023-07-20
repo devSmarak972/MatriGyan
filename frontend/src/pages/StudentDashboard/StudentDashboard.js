@@ -38,13 +38,13 @@ const StudentDashboard = () => {
     };
     console.log("config", "config");
     axios
-      .get(`http://localhost:8000/student-dashboard-data`, config)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/student-dashboard-data`, config)
       .then((res) => {
         console.log(res);
         console.log(res.data, "received data");
         if (!res.data.success) {
           if (res.code === 2) navigate("/educator");
-          else navigate("/");
+          else navigate("/login");
         }
         if (mounted.current) {
           setData(res.data);

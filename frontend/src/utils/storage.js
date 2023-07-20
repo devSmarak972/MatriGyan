@@ -15,7 +15,7 @@ async function uploadVideoToStorage(file,setShowProgress)
         // },
       };
     var sas = false;
-    sas=await axios.get("http://localhost:8000/get-sas-key/?container=video",config).then(res=>{
+    sas=await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-sas-key/?container=video`,config).then(res=>{
     console.log(res);    
     return res.data.sas;
     }).catch(err=>{

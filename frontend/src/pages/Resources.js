@@ -72,7 +72,7 @@ const Resources = () => {
                 });
                 console.log("RESOURCES: ", resources);
                 let resourceID = await axios
-                  .post(`http://localhost:8000/add-resource/2/`, {
+                  .post(`${process.env.REACT_APP_BACKEND_URL}/add-resource/2/`, {
                     title: values.name,
                     description: values.desc,
                     image: values.image,

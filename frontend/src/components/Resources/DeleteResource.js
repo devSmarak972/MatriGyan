@@ -12,7 +12,7 @@ const DeleteResource = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/get-user/2/`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/get-user/2/`)
       .then((res) => console.log(res))
       .catch((e) => console.log(e));
   });

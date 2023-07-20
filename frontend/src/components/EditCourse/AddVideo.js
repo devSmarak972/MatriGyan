@@ -23,7 +23,7 @@ async function handleVideoSubmit(values){
     }
     var videoId = await axios
       .post(
-        `http://localhost:8000/add-video/`,
+        `${process.env.REACT_APP_BACKEND_URL}/add-video/`,
         videoData,
         {
           headers: {

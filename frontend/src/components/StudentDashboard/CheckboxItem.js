@@ -66,7 +66,7 @@ const CheckboxItem = ({ props }) => {
             onSubmit={form.onSubmit(async (values) => {
               const x = new Date(values.due_date);
               const taskID = await axios
-                .post(`http://localhost:8000/edit-task/${props.id}`, {
+                .post(`${process.env.REACT_APP_BACKEND_URL}/edit-task/${props.id}`, {
                   name: values.name,
                   due_date: values.due_date,
                   user: 1,
@@ -151,7 +151,7 @@ const CheckboxItem = ({ props }) => {
             icon={<FontAwesomeIcon icon={faTrashCan} />}
             className="text-red-400"
             onClick={() => {
-              // await axios.delete(`http://localhost:8000/`)
+              // await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/`)
               props.settasks((prev) => ({
                 numcompleted:
                   prev.numcompleted +

@@ -195,7 +195,7 @@ const SignUp = (props) => {
     var data = form.values;
 
     axios
-      .post(`http://localhost:8000/api/register/email`, { data })
+      .post(`${process.env.REACT_APP_BACKEND_URL}/api/register/email`, { data })
       .then((res) => {
         console.log(res);
         console.log(res.data);

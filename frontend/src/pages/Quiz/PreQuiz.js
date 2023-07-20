@@ -10,7 +10,7 @@ const PreQuiz = () => {
     const fetchData = async () => {
       try {
         const response = await axios
-          .get(`http://localhost:8000/get-quiz/${ID}/`, {
+          .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz/${ID}/`, {
             withCredentials: true,
           })
           .then((res) => {

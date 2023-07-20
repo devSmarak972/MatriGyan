@@ -52,7 +52,7 @@ const EducatorDashboard = () => {
        // },
      };
      console.log("config", "config");
-     axios.get(`http://localhost:8000/educator-dashboard-data`, config).then((res) => {
+     axios.get(`${process.env.REACT_APP_BACKEND_URL}/educator-dashboard-data`, config).then((res) => {
        console.log(res);
        console.log(res.data, "received data");
        if(!res.data.success)
