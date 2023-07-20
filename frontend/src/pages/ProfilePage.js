@@ -29,9 +29,9 @@ const ProfilePage = (props) => {
   };
 
   return (
-    <div>
+    <div className="h-screen">
       <Sidebar />
-      <div className="main-content pb-8 flex flex-col items-center md:ml-[var(--main-sidebar-width)]">
+      <div className="h-screen main-content pb-8 flex flex-col items-center md:ml-[var(--main-sidebar-width)]">
         <div className="relative bg-gradient-to-br from-white to-[var(--primary)] w-full mb-[60px]">
           <Modal
             centered
@@ -48,7 +48,9 @@ const ProfilePage = (props) => {
             />
           </Modal>
           <Avatar
-            className={`${avatar && "drop-shadow-[0_0_10px_rgba(0,0,0,0.1)]"} translate-y-1/2 rounded-full w-[120px] h-[120px] object-cover object-center mx-auto mt-[50px]`}
+            className={`${
+              avatar && "drop-shadow-[0_0_10px_rgba(0,0,0,0.1)]"
+            } translate-y-1/2 rounded-full w-[120px] h-[120px] object-cover object-center mx-auto mt-[50px]`}
             src={avatar}
             alt="Anish Datta"
             color="violet"
@@ -119,18 +121,20 @@ const ProfilePage = (props) => {
             </div>
           )}
         </div>
-        <Link
-          to={props.userType === 1 ? "/student" : "/educator"}
-          className="fixed bottom-8 group flex gap-2 items-center"
-        >
-          <span className="font-semibold text-[15px] group-hover:text-[var(--primary)] ease-in-out duration-300">
-            Go to Dashboard
-          </span>
-          <FontAwesomeIcon
-            icon={faArrowRight}
-            className="text-slate-600 group-hover:bg-[var(--primary)] group-hover:text-white p-1.5 group-hover:scale-125 w-[15px] h-[15px] group-hover:-rotate-45 rounded-full ease-in-out duration-300"
-          />
-        </Link>
+        <div className="h-full flex flex-col justify-end">
+          <Link
+            to={props.userType === 1 ? "/student" : "/educator"}
+            className="py-4 group flex gap-2 items-center"
+          >
+            <span className="align-bottom font-semibold text-[15px] group-hover:text-[var(--primary)] ease-in-out duration-300">
+              Go to Dashboard
+            </span>
+            <FontAwesomeIcon
+              icon={faArrowRight}
+              className="text-slate-600 group-hover:bg-[var(--primary)] group-hover:text-white p-1.5 group-hover:scale-125 w-[15px] h-[15px] group-hover:-rotate-45 rounded-full ease-in-out duration-300"
+            />
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -964,7 +964,7 @@ def addResource(request, id):
 	tag_name = data['tagname']
 	tag_name = tag_name.lower()
 	exists = ResourceTag.objects.filter(name=tag_name).first()
-	if exists==None:
+	if exists is None:
 		new_tag = ResourceTag(name=tag_name)
 		new_tag.save()
 		resource = Resource(image=data['image'],description=data['description'],title=data['title'],file_url=data['file_url'])
@@ -981,7 +981,7 @@ def addResource(request, id):
 	resource.creator = creator
 	resource.tagname = old_tag
 	resource.save()
-	ser_res = ResourceSerializer(resource, many=True)
+	ser_res = ResourceSerializer(resource, many=False)
 	ser_tag = ResourceTagSerializer(old_tag, many=False)
 	return Response({"success":True, "resource":ser_res.data,"tag":ser_tag.data})
 

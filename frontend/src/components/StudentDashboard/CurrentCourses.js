@@ -98,7 +98,7 @@ const CurrentCourses = (props) => {
             slides-per-view={slides}
             space-between="25"
           >
-            {props.courses ? (
+            {props.courses && props.courses.length !== 0 ? (
               props.courses
                 .map((el) => {
                   return {
@@ -106,26 +106,33 @@ const CurrentCourses = (props) => {
                     enrolled: el.enrolled,
                     ongoing: el.ongoing,
                     coursename: el.title,
-                    percent: parseInt(Math.random()*90+10),
+                    percent: parseInt(Math.random() * 90 + 10),
                     educator: el.educator.name,
                     image: el.image
                       ? el.image
                       : "https://i.ytimg.com/vi/dfUDCgaFOBE/maxresdefault.jpg",
-                    duration: el.duration?el.duration:0,
-                    id:el.id
+                    duration: el.duration ? el.duration : 0,
+                    id: el.id,
                   };
                 })
                 .map((el) => {
-                  console.log(el,"courses of educator")
+                  console.log(el, "courses of educator");
                   return (
                     <swiper-slide>
-                      <Course key={el.coursename+"_"+el.id} {...el} type={type} />
+                      <Course
+                        key={el.coursename + "_" + el.id}
+                        {...el}
+                        type={type}
+                      />
                     </swiper-slide>
                   );
                 })
             ) : (
-              <p className="text-center text-muted">{props.type==="educator"?"No courses created":
-              "No Courses enrolled"}</p>
+              <p className="noHoverCard w-full card p-4 mb-2 h-auto justify-center flex flex-col gap-y-2 col-span-2">
+                {props.type === "educator"
+                  ? "Create courses to see them in dashboard!"
+                  : "Enrol in a course to see them in dashboard!"}
+              </p>
             )}
           </swiper-container>
         </div>
