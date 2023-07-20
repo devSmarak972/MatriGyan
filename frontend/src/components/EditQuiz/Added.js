@@ -280,12 +280,8 @@ const Added = (props) => {
                     incorrect: props.form.values.incorrect,
                     answer: props.form.values.answer,
                     solutionDesc: props.form.values.solutionDesc,
-                    quesMedia: props.form.values.quesMedia
-                      ? fileToDataUri(props.form.values.quesMedia)
-                      : "",
-                    ansMedia: props.form.values.ansMedia
-                      ? fileToDataUri(props.form.values.ansMedia)
-                      : "",
+                    quesMedia: props.form.values.quesMedia,
+                    ansMedia: props.form.values.ansMedia,
                   };
               })
             );
