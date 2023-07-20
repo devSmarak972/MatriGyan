@@ -600,7 +600,10 @@ def deleteVideo(request, id):
 
 @api_view(['GET'])
 def getQuiz(request, id):
-	quizes = Quiz.objects.get(id=id)
+	quizes = Quiz.objects.filter(id=id).first()
+	if not quizes:
+		return Response({"success":False, "message":"quiz does not exist"})
+		
 	qs = QuizSerializer(quizes, many=False)
 	return Response({"success":True, "quiz":qs.data})
 
@@ -666,19 +669,21 @@ def deleteQuiz(request, id):
 @api_view(['POST'])
 def addQuestion(request, id):
 	# if isinstance(request.data, QueryDict): # optional
-	request.data._mutable = True
-	print(request.FILES['image'])
-	image=request.FILES['image']
-	name=image.name.split(".")[0]+"_question_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
-	bh=BlobHandler()
-	bh.uploadBlob("question-media",name,image)
-	url=bh.GetBlobUrl("question-media",name)
-	request.data['image'] = url
+	# request.data._mutable = True
+	if "image" in request.FILES:
+		print(request.FILES['image'])
+		image=request.FILES['image']
+		name=image.name.split(".")[0]+"_question_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
+		bh=BlobHandler()
+		bh.uploadBlob("question-media",name,image)
+		url=bh.GetBlobUrl("question-media",name)
+		request.data['image'] = url
+		print(request.data)
+		print(url)
 	question = QuestionSerializer(data=request.data)
 	# print(url)
-	print(url)
 	if question.is_valid():
-			question.image=url
+			# question.image=url
 			question.save()
 			que = Question.objects.get(id=question.data['id'])
 			quiz = Quiz.objects.get(id=id)
@@ -998,7 +1003,7 @@ def deleteResource(request, id):
 def getUser(request):
 		print(request.user)
 		if not request.user.is_authenticated:
-			return Response({"success":False,"message":"Not Logged in"})
+			return Response({"success":False,"message":"Not Logged in","code":0})
 		id=request.user.id
 		user = User.objects.get(id=id)
 		print(user)
@@ -1009,14 +1014,14 @@ def getUser(request):
 		if stu is None:
 			educator = Educator.objects.get(user__id=id)
 			ser_educator = EducatorSerializer(educator, many=False)
-			return Response({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data})
+			return Response({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data,"code":2})
 			# student = Student.objects.get(user__id=user.id)
 			# ser_student = StudentSerializer(student, many=False)
 			# return Response({"success":True, "user":ser_user,"is_student":True,"student":ser_student})
 		else:
 			student = Student.objects.get(user__id=user.id)
 			ser_student = StudentSerializer(student, many=False)
-			return Response({"success":True, "user":ser_user.data,"is_student":True,"student":ser_student.data})
+			return Response({"success":True, "user":ser_user.data,"is_student":True,"student":ser_student.data,"code":1})
 			# educator = Educator.objects.get(id=user.id)
 			# ser_educator = EducatorSerializer(educator, many=False)
 			# return Response({"success":True, "is_student":False, "user":ser_user,"educator":ser_educator})
