@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { createStyles } from "@mantine/core";
@@ -11,10 +11,9 @@ import Save from "../../components/EditCourse/Save";
 import Options from "../../components/EditCourse/Options";
 import axios from "axios";
 import {toast} from "react-toastify"
-
-
-
+import { getUser } from "../../utils/getUser";
 const EditCourse = () => {
+  const user=useRef(false);
   const params = useParams();
   const [details, setDetails] = useState(null);
   const [sections, setSections] = useState([]);
@@ -66,6 +65,8 @@ const EditCourse = () => {
   // }));
   
   const getCourse = () => {
+
+
     fetch(`http://127.0.0.1:8000/get-course/${params.ID}`, {
       method: "get",
     })
@@ -85,6 +86,20 @@ const EditCourse = () => {
   };
 
   useEffect(() => {
+    (async () => {
+      user.current=await getUser();
+      if(user.current.code===0)
+      {
+        toast("Login to access course")
+        window.location.href="/login"
+      }
+     if(user.current.code===1)
+    {
+     toast("Unauthorized access")
+      window.location.href="/student"
+    }
+    
+   })();
     getCourse();
   }, []);
 console.log({category, tags})

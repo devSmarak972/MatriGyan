@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect,useRef, useState } from 'react'
 import Header from '../components/Courses/Header'
 import Courses from '../components/Courses/Courses'
 import './CoursePage/css/material-icons.css'
@@ -11,9 +11,18 @@ import axios from 'axios'
 import Backdrop from "../components/Courses/Backdrop";
 
 import Filters from "../components/Courses/Filters";
-
+import { getUser } from '../utils/getUser'
 function CoursePage() {
   const [isActive, setActive] = useState(false);
+  const user=useRef(false);
+  useEffect(()=>{
+    (async () => {
+       user.current=await getUser();
+      
+    })();
+   
+    
+  },[])
 
   const handleclick = () => {
     setActive(!isActive);

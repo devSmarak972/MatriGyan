@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useRef} from "react";
 import Sidebar from "../../components/EducatorDashboard/Sidebar";
 import Added from "../../components/EditQuiz/Added";
 import Save from "../../components/EditQuiz/Save";
@@ -8,11 +8,31 @@ import NewQ from "../../components/EditQuiz/NewQ";
 import OtherDetails from "../../components/EditQuiz/OtherDetails";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import {toast} from "react-toastify"
+import {toast} from "react-toastify";
+
+import { getUser } from "../../utils/getUser";
 const EditQuizPage = () => {
 	const { ID } = useParams();
 	const [data, setData] = useState({});
+	const user=useRef(false);
 	useEffect(() => {
+			(async () => {
+				 user.current=await getUser();
+				 if(user.current.code===0)
+				 {
+           toast("Login to access quiz")
+					 window.location.href="/login"
+				 }
+				if(user.current.code===1)
+			 {
+				toast("Unauthorized access")
+				 window.location.href="/student"
+			 }
+			 
+			})();
+		 
+			
+		
 		const fetchData = async () => {
 			try {
 				const response = await axios
@@ -23,6 +43,13 @@ const EditQuizPage = () => {
 						{
 							toast(res.data.message)
 							window.location.href="/not-found"
+							return;
+						}
+						if(res.data.quiz.creator_id!==user.current.educator.id)
+						{
+							toast("You are not authorised to edit this course")
+							window.location.href("/educator");
+              return;
 						}
 						setData({
 							name: res.data.quiz.name,
