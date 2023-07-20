@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import axios from "axios";
@@ -9,12 +9,13 @@ import "../../pages/LoginSignup/LoginSignup.css";
 // import setCookie
 // import {useCookies} from "react-cookie"
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { getUser } from "../../utils/getUser";
 
 const LogIn = (props) => {
-  const user=useRef(false);
+  const nav = useNavigate();
+  const user = useRef(false);
   // const [cookies, setCookie, removeCookie] = useCookies(["csrftoken"]);
   const navigate = useNavigate();
   const form = useForm({
@@ -29,24 +30,17 @@ const LogIn = (props) => {
       password: (value) => (value.length === 0 ? "Enter Password" : null),
     },
   });
-  
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     (async () => {
-       user.current=await getUser();//set this to props.user and remove async
-      if(user.current.code===1)
-     {
-       window.location.href="/student"
-     }
-     else if(user.current.code===2)
-     {
-  
-       window.location.href="/educator"
-     }
+      user.current = await getUser(); //set this to props.user and remove async
+      if (user.current.code === 1) {
+        window.location.href = "/student";
+      } else if (user.current.code === 2) {
+        window.location.href = "/educator";
+      }
     })();
-   
-    
-  },[])
+  }, []);
   const handleLogin = (event) => {
     event.preventDefault();
 
@@ -66,9 +60,13 @@ const LogIn = (props) => {
         console.log(res.data, res.headers);
 
         if (res.data["redirect"] === true) {
-          if (res.data["utype"] === "student") navigate("../student");
-          else if (res.data["utype"] === "educator") navigate("../student");
-          else navigate("/");
+          if (res.data["utype"] === "student") {
+            props.user.current = 1;
+            navigate("../student");
+          } else if (res.data["utype"] === "educator") {
+            props.user.current = 2;
+            navigate("../student");
+          } else navigate("/");
 
           // setCookie('csrftoken', , { path: '/' });
 

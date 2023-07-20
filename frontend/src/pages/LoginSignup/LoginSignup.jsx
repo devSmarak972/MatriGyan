@@ -5,7 +5,7 @@ import Illustration from "../../components/LoginSignup/Illustration";
 import SignUp from "../../components/LoginSignup/SignUp";
 
 
-const Landing = () => {
+const Landing = (props) => {
   const [page, setPage] = useState(1);
 
   const handleSwitch = (n) => {
@@ -14,9 +14,9 @@ const Landing = () => {
 
   return (
     <div className="landing">
-      <SignUp page={page} handleSwitch={handleSwitch} />
+      <SignUp user={props.user} page={page} handleSwitch={handleSwitch} />
       <Illustration page={page} />
-      <LogIn page={page} handleSwitch={handleSwitch} />
+      <LogIn user={props.user} page={page} handleSwitch={handleSwitch} />
     </div>
   );
 };

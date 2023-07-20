@@ -56,8 +56,8 @@ function App() {
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
           {/* <Route path="/search" element={<SearchLanding />} /> */}
-          <Route path="/login" element={<LoginSignup />} />
-          <Route path="/signup" element={<LoginSignup />} />
+          <Route path="/login" element={<LoginSignup user={user}/>} />
+          <Route path="/signup" element={<LoginSignup user={user} />} />
           <Route path="/student/profile" element={<ProfilePage />} />
           <Route path="/educator/profile" element={<ProfilePage />} />
           <Route path="/student" element={<StudentDashboard user={user} />} />
