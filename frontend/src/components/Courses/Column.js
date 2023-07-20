@@ -5,7 +5,7 @@ import "./transition.css"
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlayCircle, faStar, faStarHalfAlt, faStarBorder, faAccessTime } from "@fortawesome/free-solid-svg-icons";
-
+const parse = require('html-react-parser');
 function Column({ cid, course, isTransitioning }) {
   
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -70,9 +70,6 @@ function Column({ cid, course, isTransitioning }) {
                   {course.title}
                 </a>
               
-                <p className="text-50 text-left font-weight-bold mb-4pt">
-                  {course.description}
-                </p>
               </div>
               <div>
                 <Tooltip effect="solid" place="top" />

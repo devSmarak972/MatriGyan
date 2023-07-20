@@ -89,18 +89,24 @@ CORS_ALLOW_HEADERS=['accept',
 'accept-encoding',
 'authorization',
 'content-type',
+'Access-Control-Allow-Credentials'
 'dnt',
 'origin',
 'user-agent',
 'x-csrftoken',
-'x-requested-with']
+'x-requested-with',
+"Cookie"
+]
+CSRF_USE_SESSIONS=True
+CSRF_COOKIE_NAME="csrftoken"
 # CORS_ALLOW_CREDENTIALS=True
-CORS_EXPOSE_HEADERS=["*"]
+CORS_EXPOSE_HEADERS=["*","Cookie"]
 CORS_ALLOW_ALL_ORIGINS  = True
 CORS_ORIGIN_WHITELIST = (
        'http://localhost:3000',
 )
 CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = [
 "https://domain.com",
 "https://api.domain.com",
