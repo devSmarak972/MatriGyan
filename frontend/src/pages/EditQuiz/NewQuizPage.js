@@ -7,11 +7,22 @@ import { useForm } from "@mantine/form";
 import NewQ from "../../components/EditQuiz/NewQ";
 import OtherDetails from "../../components/EditQuiz/OtherDetails";
 import axios from "axios";
+import checkUser from "../../utils/checkUser";
 
-const EditQuizPage = () => {
+const NewQuizPage = () => {
   const [questions, setQuestions] = useState([]);
 
   console.log(questions);
+
+  useEffect(() => {
+    checkUser()
+      .then((data) => {
+        if (data.is_student) {
+          window.location.href = "/not-found";
+        }
+      })
+      .catch((e) => console.log(e));
+  });
 
   const form1 = useForm({
     initialValues: {
@@ -109,4 +120,4 @@ const EditQuizPage = () => {
   );
 };
 
-export default EditQuizPage;
+export default NewQuizPage;

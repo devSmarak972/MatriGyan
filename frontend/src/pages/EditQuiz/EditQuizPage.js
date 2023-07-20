@@ -8,23 +8,36 @@ import NewQ from "../../components/EditQuiz/NewQ";
 import OtherDetails from "../../components/EditQuiz/OtherDetails";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import checkUser from "../../utils/checkUser";
 
 const EditQuizPage = () => {
   const { ID } = useParams();
   const [data, setData] = useState({});
+
+  useEffect(() => {
+    checkUser()
+      .then((data) => {
+        if (data.is_student) {
+          window.location.href = "/not-found";
+        }
+      })
+      .catch((e) => console.log(e));
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios
           .get(`http://localhost:8000/get-quiz/${ID}/`)
           .then((res) => {
-            console.log(res.data.quiz,res.data.quiz.name);
+            console.log(res.data.quiz, res.data.quiz.name);
             setData({
               name: res.data.quiz.name,
               topic: res.data.quiz.topic,
               mins: res.data.quiz.time,
               course: res.data.quiz.course,
-              questions: res.data.quiz?.questions?.map((q) => ({
+              questions: res.data.quiz?.questions
+                ?.map((q) => ({
                   id: q.id,
                   qnumber: q.qnumber,
                   question: q.question,
@@ -57,7 +70,7 @@ const EditQuizPage = () => {
   const [questions, setQuestions] = useState(data.questions);
 
   useEffect(() => {
-    console.log(data,"data")
+    console.log(data, "data");
     setQuestions(data.questions);
   }, [data]);
 

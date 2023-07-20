@@ -1,3 +1,19 @@
+import axios from "axios";
+
 const getUser = async () => {
-  await axios(`http://localhost:8000/get-user/1/`);
+  try {
+    const res = await axios.get(`http://localhost:8000/get-user/`);
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+  // await axios
+  //   .get(`http://localhost:8000/get-user/`)
+  //   .then((res) => {
+  //     // console.log(res.data);
+  //     return res.data;
+  //   })
+  //   .catch((e) => console.log(e));
 };
+
+export default getUser;

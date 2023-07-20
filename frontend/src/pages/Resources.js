@@ -10,11 +10,34 @@ import { Modal, Button, Group, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import DeleteResource from "../components/Resources/DeleteResource";
 import { toast } from "react-toastify";
+import checkUser from "../utils/checkUser.js";
 
 const Resources = () => {
   const [search, setSearch] = useState("");
 
   const [resources, setResources] = useState([]);
+
+  const [isEducator, setIsEducator] = useState();
+  const [educatorID, setEducatorID] = useState();
+
+  useEffect(() => {
+    // const userCheck = async () => {
+    //   const user = await checkUser();
+    //   console.log(await checkUser());
+    //   setIsEducator(!checkUser().is_student);
+    // };
+    // userCheck();
+
+    checkUser()
+      .then((data) => {
+        console.log(data);
+        setIsEducator(!data.is_student);
+        setEducatorID(data.user.id);
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
+  console.log(isEducator);
 
   const form = useForm({
     initialValues: {
@@ -62,15 +85,6 @@ const Resources = () => {
           <Modal centered opened={opened} onClose={close} title="New Resource">
             <form
               onSubmit={form.onSubmit(async (values) => {
-                console.log("HIIII ", {
-                  title: values.name,
-                  description: values.desc,
-                  image: values.image,
-                  file_url: values.fileUrl,
-                  creator: 2,
-                  tagname: values.tagname,
-                });
-                console.log("RESOURCES: ", resources);
                 let resourceID = await axios
                   .post(`http://localhost:8000/add-resource/2/`, {
                     title: values.name,
@@ -80,13 +94,12 @@ const Resources = () => {
                     creator: 2,
                     tagname: values.tagname,
                   })
-                  .then((res) => res.data.resource.id)
+                  .then((res) => {
+                    console.log("Resource Added");
+                    return res.data.resource.id;
+                  })
                   .catch((e) => console.log(e));
                 await setResources((prev) => {
-                  console.log(
-                    "HIIIIIIIVASDOVO",
-                    prev.map((section) => !section.sectionname.toLowerCase())
-                  );
                   if (
                     !prev
                       .map((section) => section.sectionname.toLowerCase())
@@ -180,18 +193,20 @@ const Resources = () => {
               </button>
             </form>
           </Modal>
-          <button
-            onClick={open}
-            className="flex items-center gap-2 bg-[var(--primary)] text-white py-1.5 px-3 rounded-lg"
-          >
-            <span className="font-semibold text-xl">+</span>
-            <span className="font-medium w-max">New</span>
-          </button>
+          {isEducator && (
+            <button
+              onClick={open}
+              className="flex items-center gap-2 bg-[var(--primary)] text-white py-1.5 px-3 rounded-lg"
+            >
+              <span className="font-semibold text-xl">+</span>
+              <span className="font-medium w-max">New</span>
+            </button>
+          )}
           <FilterTopBar
             search={search}
             handleSearch={handleSearch}
           ></FilterTopBar>
-          <DeleteResource />
+          {isEducator && <DeleteResource id={educatorID} />}
         </div>
         <div className="container-lg page__container">
           {resources

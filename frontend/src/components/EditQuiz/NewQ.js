@@ -48,10 +48,8 @@ const NewQ = (props) => {
                   values.option2,
                   values.option3,
                   values.option4,
-                
-                  
                 ].map((opt) => ({
-                  "value": opt
+                  value: opt,
                 })),
                 image: values.quesMedia,
                 marks: values.correct,
@@ -69,14 +67,13 @@ const NewQ = (props) => {
                       "Accept-Language": "en-US,en;q=0.8",
                       "Content-Type": `multipart/form-data; boundary=${quesData._boundary}`,
                     },
-                    withCredentials:true
+                    withCredentials: true,
                   }
                 )
                 .then(async (res) => {
-                  console.log(res.data)
+                  console.log(res.data);
                   // var data=JSON.parse(res.data);
-                  if(!res.data["success"])
-                  {
+                  if (!res.data["success"]) {
                     toast("Failed to add question");
                     return -1;
                   }
@@ -89,7 +86,7 @@ const NewQ = (props) => {
                   for (let key in solDataObj) {
                     solData.append(key, solDataObj[key]);
                   }
-                  console.log(res.data.data["id"])
+                  console.log(res.data.data["id"]);
                   await axios
                     .post(
                       `http://localhost:8000/add-solution/${res.data.data["id"]}/`,
@@ -109,8 +106,7 @@ const NewQ = (props) => {
                 .catch((e) => console.log(e));
             }
             console.log(quesID);
-            if(quesID>0)
-            {
+
             props.setQuestions((prev) => [
               ...prev,
               {
@@ -134,12 +130,9 @@ const NewQ = (props) => {
                 ansMedia: values.ansMedia ? fileToDataUri(values.ansMedia) : "",
               },
             ]);
-          }
+
             close();
-          })
-        
-        }
-          
+          })}
         >
           <Textarea
             label="Question"

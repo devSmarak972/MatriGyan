@@ -18,11 +18,14 @@ import { useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import getUser from "../../utils/checkUser";
 const StudentDashboard = () => {
   const navigate = useNavigate();
   const [Data, setData] = useState({});
   const mounted = useRef(false);
   const [loader, setLoader] = useState(true);
+
+  getUser();
 
   useEffect(() => {
     console.log(loader, "loader");
