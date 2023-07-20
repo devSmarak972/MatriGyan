@@ -458,7 +458,9 @@ def getStudentDashData(request):
 
 @api_view(['DELETE'])
 def deleteCourse(request, id):
-	course = Course.objects.get(id=id)
+	course = Course.objects.filter(id=id).first()
+	if course is None:
+		return Response({"success":False,"message":"No course found."})
 	course.delete()
 	return Response({"success":True,"message":"Course deleted!"})
 
@@ -586,25 +588,33 @@ def addVideo(request):
 
 @api_view(['DELETE'])
 def deleteSection(request, id):
-	section = CourseSection.objects.get(id=id)
+	section = CourseSection.objects.filter(id=id).first()
+	if section is None:
+		return Response({"success":False,"message":"No section found."})
 	section.delete()
 	return Response({"success":True,"message":"Section deleted!"})
 
 @api_view(['DELETE'])
 def deleteVideo(request, id):
-	vid = Video.objects.get(id=id)
+	vid = Video.objects.filter(id=id).first()
+	if vid is None:
+		return Response({"success":False, "message":"No video."})
 	vid.delete()
 	return Response({"success":True,"message":"Video deleted"})
 
 @api_view(['GET'])
 def getQuiz(request, id):
-	quizes = Quiz.objects.get(id=id)
+	quizes = Quiz.objects.filter(id=id).first()
+	if quizes is None:
+		return Response({"success":False,"message":"No quiz."})
 	qs = QuizSerializer(quizes, many=False)
 	return Response({"success":True, "quiz":qs.data})
 
 @api_view(['GET'])
 def getCourseQuiz(request, id):
-	course = Course.objects.get(id=id)
+	course = Course.objects.filter(id=id).first()
+	if course is None:
+		return Response({"success":False,"message":"No course."})
 	quizes = course.quizes.all()
 	if quizes is None:
 		return Response({"success":False,"message":"No quizes."})
@@ -618,8 +628,12 @@ def createQuiz(request):
 		quiz.save()
   
 		if "course_id" in request.data.keys():
-			course = Course.objects.get(id=request.data["course_id"])
-			course_quiz = Quiz.objects.get(id = quiz.data['id'])
+			course = Course.objects.filter(id=request.data["course_id"]).first()
+			if course is None:
+				return Response({"success":False,"message":"No course."})
+			course_quiz = Quiz.objects.filter(id = quiz.data['id']).first()
+			if course_quiz is None:
+				return Response({"success":False,"message":"No quiz"})
 			course.quizes.add(course_quiz)
 
 		return Response({"success":True,"quiz":quiz.data,"message":"Quiz created!"})
