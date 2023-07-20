@@ -15,6 +15,26 @@ const Quiz = () => {
   // localStorage.setItem("timer", 10);
   const navigate = useNavigate();
   useEffect(() => {
+    const allowedCheck = async () => {
+      await axios
+        .get(`http://localhost:8000/get-quiz-response/${ID}/`)
+        .then((res) => {
+          const mes = res.data.message;
+          if (mes === "Quiz Response Found") {
+            console.log("EASG AEFVAEVA");
+            toast("Quiz Already Attempted.");
+            navigate(`../../quiz/${ID}/end`);
+          } else if (mes === "Not logged in") {
+            toast("Please Log In First.");
+            navigate("../../login");
+          } else if (mes === "Not a student") {
+            toast("Log In as a Student to Give Quiz.");
+            navigate("../../login");
+          }
+        })
+        .catch((e) => console.log(e));
+    };
+    allowedCheck();
     const fetchData = async () => {
       try {
         const response = await axios

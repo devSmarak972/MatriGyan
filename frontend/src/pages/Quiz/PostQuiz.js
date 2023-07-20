@@ -10,37 +10,39 @@ const PostQuiz = () => {
   useEffect(() => {
     setTimeout(() => {
       const fetchData = axios
-        .get(`http://localhost:8000/get-quiz-response/${ID}/`,{withCredentials:true})
+        .get(`http://localhost:8000/get-quiz-response/${ID}/`, {
+          withCredentials: true,
+        })
         .then((res) => {
-          if(res.data.success)
-          setData({
-            name: res.data.response.quiz.name,
-            topic: res.data.response.quiz.topic,
-            mins: res.data.response.quiz.time,
-            questions: res.data.answers.map((ans) => ({
-              id: ans.question.id,
-              question: ans.question.question,
-              options: ans.question.options,
-              type: ans.question.type === "SINGLE" ? "single" : "multi",
-              correct: ans.question.marks,
-              incorrect: ans.question.type === "SINGLE" ? -1 : -2,
-              answer: [parseInt(ans.question.solution.answer)],
-              selected:
-                ans.answer.length > 0
-                  ? ans.answer.split(" ").map((i) => parseInt(i) - 1)
-                  : [],
-              status: ans.answer.length === 0 ? "unanswered" : "answered",
-              image: ans.question.image,
-            })),
-          });
-          else{
-            throw res.data.message
+          if (res.data.success)
+            setData({
+              name: res.data.response.quiz.name,
+              topic: res.data.response.quiz.topic,
+              mins: res.data.response.quiz.time,
+              questions: res.data.answers.map((ans) => ({
+                id: ans.question.id,
+                question: ans.question.question,
+                options: ans.question.options,
+                type: ans.question.type === "SINGLE" ? "single" : "multi",
+                correct: ans.question.marks,
+                incorrect: ans.question.type === "SINGLE" ? -1 : -2,
+                answer: [parseInt(ans.question.solution?.answer)],
+                selected:
+                  ans.answer.length > 0
+                    ? ans.answer.split(" ").map((i) => parseInt(i) - 1)
+                    : [],
+                status: ans.answer.length === 0 ? "unanswered" : "answered",
+                image: ans.question.image,
+              })),
+            });
+          else {
+            throw res.data.message;
           }
         })
         .catch((e) => {
-          const error=()=>toast(e);
+          const error = () => toast(e);
           error();
-          console.log(e)
+          console.log(e);
         });
     }, 300);
   }, []);
@@ -71,7 +73,7 @@ const PostQuiz = () => {
         attempted++;
         negative -= data.questions[i].incorrect;
       }
-    } 
+    }
   }
 
   const fraction = Math.max(0, marks / total);

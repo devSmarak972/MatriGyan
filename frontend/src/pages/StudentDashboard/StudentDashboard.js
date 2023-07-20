@@ -44,7 +44,10 @@ const StudentDashboard = () => {
         console.log(res.data, "received data");
         if (!res.data.success) {
           if (res.code === 2) navigate("/educator");
-          else navigate("/");
+          else {
+            toast("Please Login first.");
+            navigate("/login");
+          }
         }
         if (mounted.current) {
           setData(res.data);
