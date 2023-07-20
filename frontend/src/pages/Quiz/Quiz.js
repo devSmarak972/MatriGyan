@@ -12,19 +12,22 @@ import { toast } from "react-toastify";
 const Quiz = () => {
   const { ID } = useParams();
   const [data, setData] = useState({});
-  localStorage.setItem("timer",10);
-  const navigate=useNavigate()
+  // localStorage.setItem("timer", 10);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios
-          .get(`http://localhost:8000/get-quiz/${ID}/`,{withCredentials:true})
-          .then((res) => {return res.data})
-          .then((res)=>{
+          .get(`http://localhost:8000/get-quiz/${ID}/`, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            return res.data;
+          })
+          .then((res) => {
             // if()
-            console.log(res.quiz)
-            if(!res.success)
-            throw res.message;
+            console.log(res.quiz);
+            if (!res.success) throw res.message;
             setData({
               name: res.quiz.name,
               topic: res.quiz.topic,
@@ -36,17 +39,17 @@ const Quiz = () => {
                 type: q.type === "SINGLE" ? "single" : "multi",
                 correct: q.marks,
                 incorrect: q.type === "SINGLE" ? -1 : -2,
-                answer: [parseInt(q.solution.answer)],
+                answer: [parseInt(q.solution?.answer)],
                 selected: [],
                 status: "unanswered",
                 image: q.image,
               })),
-          });
-            setStart(parseInt(res.quiz.time))
+            });
+            // setStart(parseInt(res.quiz.time));
           });
       } catch (e) {
         console.log("Error fetching data: ", e);
-        navigate("/not-found",{replace:true})
+        navigate("/not-found", { replace: true });
       }
     };
 
@@ -55,8 +58,8 @@ const Quiz = () => {
 
   const [question, setQuestion] = useState(0);
   const [selected, setSelected] = useState([]);
-  // const [start, setStart] = useState(JSON.parse(localStorage.getItem("timer")));
-  const [start, setStart] = useState(5);
+  const [start, setStart] = useState(JSON.parse(localStorage.getItem("timer")));
+  // const [start, setStart] = useState(5);
   const [opened, { open, close }] = useDisclosure(false);
 
   const Completionist = () => <span>Time Up!</span>;
@@ -74,7 +77,7 @@ const Quiz = () => {
     }
   };
 
-  // const 
+  // const
 
   if (JSON.stringify(data) === "{}") return null;
 
@@ -92,28 +95,31 @@ const Quiz = () => {
             <div className="flex items-center justify-between sm:justify-center w-full text-lg text-white bg-[var(--primary)] p-3">
               <Countdown
                 renderer={renderer}
-                date={Date.now()+start + data.mins * 60 * 1000}
+                date={start + data.mins * 60 * 1000}
                 onComplete={async () => {
                   await axios
-                    .post(`http://localhost:8000/add-quiz-response/${ID}/`,{
-                      quiz_id: parseInt(ID),
-                      // student: 6,
-                      answers: data.questions.map((q) => ({
-                        question_id: q.id,
-                        answer: q.selected.join(" "),
-                        marks: q.correct,
-                      })),
-                    }, {withCredentials:true})
-                    .then((res) => {
-                      if(res.data.success)
+                    .post(
+                      `http://localhost:8000/add-quiz-response/${ID}/`,
                       {
-                      navigate(`/quiz/${ID}/end`,{replace:true});
-                      toast("Test Submitted Successfully!")
+                        quiz_id: parseInt(ID),
+                        // student: 6,
+                        answers: data.questions.map((q) => ({
+                          question_id: q.id,
+                          answer: q.selected.join(" "),
+                          marks: q.correct,
+                        })),
+                      },
+                      { withCredentials: true }
+                    )
+                    .then((res) => {
+                      if (res.data.success) {
+                        navigate(`/quiz/${ID}/end`, { replace: true });
+                        toast("Test Submitted Successfully!");
                       }
                     })
                     .catch((e) => {
-                      const notify=()=>toast("Test submitted successfully");
-                      notify()
+                      const notify = () => toast("Test submitted successfully");
+                      notify();
                       console.log(e);
                     });
                   window.location.href = `/quiz/${ID}/end`;
@@ -442,28 +448,30 @@ const Quiz = () => {
 
                   // console.log(csrftoken)
                   await axios
-                    .post(`http://localhost:8000/add-quiz-response/${ID}/`,{
-                      quiz_id: parseInt(ID),
-                      // student: 6,
-                      answers: data.questions.map((q) => ({
-                        question_id: q.id,
-                        answer: q.selected.join(" "),
-                        marks: q.correct,
-                        // 'csrfmiddlewaretoken':csrftoken
-                      })),
-                    }, {withCredentials:true})
+                    .post(
+                      `http://localhost:8000/add-quiz-response/${ID}/`,
+                      {
+                        quiz_id: parseInt(ID),
+                        // student: 6,
+                        answers: data.questions.map((q) => ({
+                          question_id: q.id,
+                          answer: q.selected.join(" "),
+                          marks: q.correct,
+                          // 'csrfmiddlewaretoken':csrftoken
+                        })),
+                      },
+                      { withCredentials: true }
+                    )
                     .then((res) => {
                       console.log(res.data);
-                      if(res.data.success)
-                      {
-                      window.location.href=`/quiz/${ID}/end`;
-                      toast("Test Submitted Successfully!")
+                      if (res.data.success) {
+                        window.location.href = `/quiz/${ID}/end`;
+                        toast("Test Submitted Successfully!");
                       }
-
                     })
                     .catch((e) => {
-                      const notify=()=>toast("Test not submitted!");
-                      notify()
+                      const notify = () => toast("Test not submitted!");
+                      notify();
                       console.log(e);
                     });
                   // await axios
