@@ -25,12 +25,15 @@ function CoursePreview() {
         notify();
         }
         else
-        setDetails(state=>{
-          var tmp={...data};
-          tmp.educator=tmp.data.educator;
-          tmp.data.educator=tmp.educator.name;
+        setDetails((state) => {
+          var tmp = { ...data };
+          if (tmp.data.educator) {
+            tmp.educator = tmp.data.educator;
+            tmp.data.educator = tmp.educator.name;
+          }
           return tmp;
         });
+        
       })
       .catch((error) => {
         console.error(error);

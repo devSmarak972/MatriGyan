@@ -16,21 +16,18 @@ import { getCookie } from "../../utils/apiCaller";
 import Loader from "../../loader";
 import { useNavigate } from "react-router-dom";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const StudentDashboard = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [Data, setData] = useState({});
   const mounted = useRef(false);
-  const [loader, setLoader] = useState(true)
+  const [loader, setLoader] = useState(true);
 
-  useEffect(()=>{
-    
-    console.log(loader,"loader")
+  useEffect(() => {
+    console.log(loader, "loader");
     setLoader(false);
-    
- 
-},[])
+  }, []);
   useEffect(() => {
     mounted.current = true;
     const config = {
@@ -40,107 +37,122 @@ const StudentDashboard = () => {
       // },
     };
     console.log("config", "config");
-    axios.get(`http://localhost:8000/student-dashboard-data`, config).then((res) => {
-      console.log(res);
-      console.log(res.data, "received data");
-      if(!res.data.success)
-       {
-        if(res.code===2)
-        navigate("/educator")
-        else
-        navigate("/")
-
-       }
-      if (mounted.current) {
-        setData(res.data);
-      }
-    }).catch(err=>{
-
-      const notify = () => toast(err.message);
-       notify();
-    });
+    axios
+      .get(`http://localhost:8000/student-dashboard-data`, config)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data, "received data");
+        if (!res.data.success) {
+          if (res.code === 2) navigate("/educator");
+          else navigate("/");
+        }
+        if (mounted.current) {
+          setData(res.data);
+        }
+      })
+      .catch((err) => {
+        const notify = () => toast(err.message);
+        notify();
+      });
     return () => (mounted.current = false);
   }, []);
 
- 
   var comp = 0;
   if (Object.keys(Data).length)
     comp = Data.enrolled_courses.length - Data.on_courses.length;
   return (
     <>
-    <ToastContainer></ToastContainer>
-    {loader?<Loader></Loader>:""}
-    <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar utype={"student"}/>
-      <main className="main-content w-full pb-8 ml-5">
-        <Welcome name={Data.name} />
-        <CurrentCourses courses={Data.enrolled_courses} type="student" />
-        <div className="mt-4 grid grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
-          <Statistics1
-            completed={comp}
-            inprogress={Data.on_courses ? Data.on_courses.length : 0}
-          />
-          <Statistics2
-            watchtimehrs={Data ? Data.totalWatchTime : 0}
-            watchtimemin={20}
-            tests={Data.attempted_tests ? Data.attempted_tests.length : 0}
-            totaltests={Data.my_tests ? Data.my_tests.length : 0}
-            avgtestscore={Data.avgTestScore ? Data.avgTestScore : 30}
-          />
-          <Tests tests={Data.my_tests} attempted={Data.attempted_tests} />
-          <LiveLectures lectures={Data.live_classes} />
-          {Data.enrolled_courses ? (
-            <CompletedCourses
-              courses={Data.on_courses.length!==0?Data.enrolled_courses.filter(
-                (x) => !Data.on_courses.reduce((val,el)=>(x.id===el.id)||val)
-              ):[]}
+      <ToastContainer></ToastContainer>
+      {loader ? <Loader></Loader> : ""}
+      <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
+        <Sidebar utype={"student"} />
+        <main className="main-content w-full pb-8 ml-5">
+          <Welcome name={Data.name} />
+          <CurrentCourses courses={Data.enrolled_courses} type="student" />
+          <div className="mt-4 grid grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
+            <Statistics1
+              completed={comp}
+              inprogress={Data.on_courses ? Data.on_courses.length : 0}
             />
-          ) : (
-            ""
-          )}
-        </div>
-        <div class="mt-4 grid col-4 grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6 w-100">
-          <div class="flex flex-col  col-span-4">
-            <div class="flex justify-between">
-              <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
-                Classes
-              </h2>
-              <span class="px-3 text-2xl text-muted">
-                <i className="fas fa-plus"></i>
-              </span>
-            </div>
-            <div className="noHoverCard card px-4 py-2 mb-2 h-auto justify-center flex flex-col gap-y-2">
-              {(Data.on_courses && Data.on_courses.length!==0)? (
-                Data.on_courses.map((el) => {
-                  var tags=el.tags.map(tagd=>tagd.tagname);
-                  return <ItemCard educator={el.educator.name} title={el.title} tags={tags}></ItemCard>;
-                })
-              ) : (
-                <p className="p-3">
-                  No ongoing courses. Enroll to some course to get started! 
+            <Statistics2
+              watchtimehrs={Data ? Data.totalWatchTime : 0}
+              watchtimemin={20}
+              tests={Data.attempted_tests ? Data.attempted_tests.length : 0}
+              totaltests={Data.my_tests ? Data.my_tests.length : 0}
+              avgtestscore={Data.avgTestScore ? Data.avgTestScore : 30}
+            />
+            <Tests tests={Data.my_tests} attempted={Data.attempted_tests} />
+            {Data.enrolled_courses ? (
+              <CompletedCourses
+                courses={
+                  Data.on_courses.length !== 0
+                    ? Data.enrolled_courses.filter(
+                        (x) =>
+                          !Data.on_courses.reduce(
+                            (val, el) => x.id === el.id || val
+                          )
+                      )
+                    : []
+                }
+              />
+            ) : (
+              ""
+            )}
+            {Data.tasks ? (
+              <Tasklist tasks={Data.tasks}></Tasklist>
+            ) : (
+              <p className="p-3">Loading...</p>
+            )}
+            <LiveLectures lectures={Data.live_classes} />
+            <div class="flex flex-col col-span-12 sm:col-span-6 lg:col-span-4">
+              <div class="flex justify-between">
+                <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
+                  Classes
+                </h2>
+                <span class="px-3 text-2xl text-muted">
+                  <i className="fas fa-plus"></i>
+                </span>
+              </div>
+              {/* <div className="noHoverCard card px-4 py-2 mb-2 h-auto justify-center flex flex-col gap-y-2">
+                {Data.on_courses && Data.on_courses.length !== 0 ? (
+                  Data.on_courses.map((el) => {
+                    var tags = el.tags.map((tagd) => tagd.tagname);
+                    return (
+                      <ItemCard
+                        educator={el.educator.name}
+                        title={el.title}
+                        tags={tags}
+                      ></ItemCard>
+                    );
+                  })
+                ) : (
+                  <p className="p-3">
+                    No ongoing courses. Enroll to some course to get started!
+                  </p>
+                )}
+              </div> */}
+              <p className="noHoverCard card p-4 mb-2 h-auto justify-center flex flex-col gap-y-2 col-span-2">
+                Feature in development, coming soon!
               </p>
-              )}
             </div>
-          </div>
-          {Data.tasks?<Tasklist tasks={Data.tasks}></Tasklist>:<p className="p-3">Loading...</p>}
-          <div class="flex flex-col col-span-4">
-            <div class="flex justify-between">
-              <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
-                Calendar
-              </h2>
-              <a
-                href="#"
-                class="pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70"
-              >
-                View
-              </a>
-            </div>
+            {/* <div class="flex flex-col col-span-12 sm:col-span-6 lg:col-span-4">
+              <div class="flex justify-between">
+                <h2 class="px-3 text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100 ">
+                  Calendar
+                </h2>
+                <a
+                  href="#"
+                  class="pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70"
+                >
+                  View
+                </a>
+              </div>
 
-            <DashboardCalendar></DashboardCalendar>
+              <DashboardCalendar></DashboardCalendar>
+            </div> */}
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
     </>
   );
 };

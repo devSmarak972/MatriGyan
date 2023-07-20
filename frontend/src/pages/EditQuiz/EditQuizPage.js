@@ -32,10 +32,10 @@ const EditQuizPage = () => {
                   type: q.type === "SINGLE" ? "single" : "multi",
                   correct: q.marks,
                   incorrect: q.type === "SINGLE" ? -1 : -2,
-                  answer: [parseInt(q.solution.answer)],
-                  solutionDesc: q.solution.solution,
+                  answer: [parseInt(q.solution?.answer)],
+                  solutionDesc: q.solution?.solution,
                   quesMedia: q.image,
-                  ansMedia: q.solution.media,
+                  ansMedia: q.solution?.media,
                 }))
                 .sort((a, b) => a.qnumber - b.qnumber),
             });
@@ -110,7 +110,6 @@ const EditQuizPage = () => {
       subject: "",
     },
     validate: {
-      course: (value) => (value.length === 0 ? "Choose a course" : null),
       time: (value) =>
         value.length === 0 || value === 0
           ? "Allot a non-zero time in minutes"
