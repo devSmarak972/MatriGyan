@@ -17,7 +17,7 @@ import os
 import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-APP_DATA_ROOT = '/efs'
+# APP_DATA_ROOT = '/efs'
 env = environ.Env()
 
 environ.Env.read_env()
@@ -65,8 +65,7 @@ EMAIL_BACKEND = 'django_ses.SESBackend'
 
 INSTALLED_APPS = [
 
-    'channels',
-    'daphne',
+    # 'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,7 +76,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'matrigyan',
-    
+
 ]
 
 ALLOWED_HOSTS=['http://localhost:3000',"*"]
@@ -220,16 +219,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-ASGI_APPLICATION = "backend.asgi.application"
+# ASGI_APPLICATION = "backend.asgi.application"
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("127.0.0.1", 6379)],
+#         },
+#     },
+# }
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:3000",

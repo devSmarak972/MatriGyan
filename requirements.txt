@@ -3,6 +3,7 @@ djangorestframework
 djangorestframework-simplejwt
 django-environ
 django-cors-headers
-azure-blob-storage
-channels["daphne"]
+azure-storage-blob
+channels
+daphne
 gitPython
