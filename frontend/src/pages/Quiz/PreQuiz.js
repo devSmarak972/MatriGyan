@@ -14,10 +14,9 @@ const PreQuiz = () => {
             withCredentials: true,
           })
           .then((res) => {
-            if(res.data.success)
-            return res.data
-            
-          }).then((res)=>{
+            if (res.data.success) return res.data;
+          })
+          .then((res) => {
             console.log("Quiz questions: ", res.quiz);
             setData({
               name: res.quiz.name,
@@ -29,7 +28,7 @@ const PreQuiz = () => {
                 type: q.type === "SINGLE" ? "single" : "multi",
                 correct: q.marks,
                 incorrect: q.type === "SINGLE" ? -1 : -2,
-                answer: [parseInt(q.solution.answer)],
+                answer: [parseInt(q.solution?.answer)],
                 image: q.image,
               })),
             });
