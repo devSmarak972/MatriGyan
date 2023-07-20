@@ -361,7 +361,7 @@ const Added = (props) => {
                     .then((res) => console.log(res))
                     .catch((e) => console.log(e));
                 })
-                .catch((e) => console.log(e));
+                .catch((e) => console.log(e.response.data));
               toast("Question Edited Successfully!");
             }
             setEditingQ(0);

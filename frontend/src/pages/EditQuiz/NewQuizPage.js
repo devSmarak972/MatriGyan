@@ -8,12 +8,15 @@ import NewQ from "../../components/EditQuiz/NewQ";
 import OtherDetails from "../../components/EditQuiz/OtherDetails";
 import axios from "axios";
 import checkUser from "../../utils/checkUser";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const NewQuizPage = (props) => {
+  const nav = useNavigate();
   const [questions, setQuestions] = useState([]);
-
-  if (props.user !== 2) {
-    window.location.href = "/not-found";
+  console.log(props.user.current.code, 2);
+  if (props.user.current.code !== 2) {
+    nav("/not-found");
   }
 
   const form1 = useForm({
@@ -104,7 +107,12 @@ const NewQuizPage = (props) => {
             />
           </div>
           <div>
-            <OtherDetails form={form2} questions={questions} axiosType="add" />
+            <OtherDetails
+              userID={props.userID}
+              form={form2}
+              questions={questions}
+              axiosType="add"
+            />
           </div>
         </div>
       </main>

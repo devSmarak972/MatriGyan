@@ -15,7 +15,7 @@ import data from "../components/Resources/resources.json";
 import PageSeperator from "../components/Courses/PageSeperator";
 
 function MyContents(props) {
-  if (props.user !== 2) {
+  if (props.user.current.code !== 2) {
     window.location.href = "/not-found";
   }
 

@@ -15,7 +15,6 @@ import { getUser } from "../../utils/getUser";
 
 const LogIn = (props) => {
   const nav = useNavigate();
-  const user = useRef(false);
   // const [cookies, setCookie, removeCookie] = useCookies(["csrftoken"]);
   const navigate = useNavigate();
   const form = useForm({
@@ -33,10 +32,10 @@ const LogIn = (props) => {
 
   useEffect(() => {
     (async () => {
-      user.current = await getUser(); //set this to props.user and remove async
-      if (user.current.code === 1) {
+      // user.current = await getUser(); //set this to props.user and remove async
+      if (props.user.current.code === 1) {
         window.location.href = "/student";
-      } else if (user.current.code === 2) {
+      } else if (props.user.current.code === 2) {
         window.location.href = "/educator";
       }
     })();
@@ -61,11 +60,16 @@ const LogIn = (props) => {
 
         if (res.data["redirect"] === true) {
           if (res.data["utype"] === "student") {
-            props.user.current = 1;
+            console.log("STUUUUUUDENT: ", res.data);
+            props.user.current = getUser()
+              .then((res) => res)
+              .catch((e) => console.log(e));
             navigate("../student");
           } else if (res.data["utype"] === "educator") {
-            props.user.current = 2;
-            navigate("../student");
+            props.user.current = getUser()
+              .then((res) => res)
+              .catch((e) => console.log(e));
+            navigate("../educator");
           } else navigate("/");
 
           // setCookie('csrftoken', , { path: '/' });

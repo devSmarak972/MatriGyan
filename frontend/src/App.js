@@ -31,7 +31,7 @@ import { getUser } from "./utils/getUser";
 import { useEffect, useRef, useState } from "react";
 
 function App() {
-  const user = useRef(0);
+  const user = useRef({});
   // user types are:
   //0 for anonymous user
   //1 for student
@@ -39,11 +39,8 @@ function App() {
   useEffect(() => {
     getUser()
       .then((data) => {
-        console.log(data);
-        if (data.success) {
-          if (data.is_student) user.current = 1;
-          else user.current = 2;
-        }
+        user.current = data;
+        console.log("hiovsevsl", data);
       })
       .catch((e) => console.log(e));
   }, []);
@@ -56,7 +53,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
           {/* <Route path="/search" element={<SearchLanding />} /> */}
-          <Route path="/login" element={<LoginSignup user={user}/>} />
+          <Route path="/login" element={<LoginSignup user={user} />} />
           <Route path="/signup" element={<LoginSignup user={user} />} />
           <Route path="/student/profile" element={<ProfilePage />} />
           <Route path="/educator/profile" element={<ProfilePage />} />
@@ -68,18 +65,24 @@ function App() {
           />
           <Route path="/resources" element={<Resources />} />
           <Route path="/educator" element={<EducatorDashboard user={user} />} />
-          <Route path="/course/:ID/edit" element={<EditCourse user={user} />} />
+          <Route path="/course/:ID/edit" element={<EditCourse />} />
           <Route path="/student/calendar" element={<StudentCalendarPage />} />
           <Route path="/educator/calendar" element={<EducatorCalendarPage />} />
           <Route path="/quiz/:ID/edit" element={<EditQuizPage />} />
-          <Route path="/quiz/new" element={<NewQuizPage user={user} />} />
+          <Route
+            path="/quiz/new"
+            element={<NewQuizPage user={user} userID={user.current?.user?.id} />}
+          />
           <Route path="/live/:ID" element={<InDev />} />
           <Route path="/quiz/:ID" element={<Quiz />} />
-          <Route path="/quiz/:ID/start" element={<PreQuiz user={user} />} />
-          <Route path="/quiz/:ID/end" element={<PostQuiz user={user} />} />
-          <Route path="/quiz/:ID/review" element={<ReviewQuiz user={user} />} />
+          <Route path="/quiz/:ID/start" element={<PreQuiz />} />
+          <Route path="/quiz/:ID/end" element={<PostQuiz />} />
+          <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
           <Route path="/course/:id" element={<CoursePreview />} />
-          <Route path="/resourceview/:ID" element={<ResourceView user={user} />} />
+          <Route
+            path="/resourceview/:ID"
+            element={<ResourceView user={user} />}
+          />
           <Route path="/not-found" element={<Page404 />} />
           <Route path="/developing" element={<InDev />} />
           <Route path="/*" element={<Page404 />} />

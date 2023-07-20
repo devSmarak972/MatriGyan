@@ -2,6 +2,7 @@ import { NumberInput, Select, TextInput } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import Save from "./Save";
 import axios from "axios";
+import { getUser } from "../../utils/getUser";
 
 const OtherDetails = (props) => {
   const [courses, setCourses] = useState({});
@@ -25,16 +26,27 @@ const OtherDetails = (props) => {
       <form
         onSubmit={props.form.onSubmit(async (values) => {
           if (props.axiosType === "add") {
+            console.log({
+              creator_id: props.userID,
+              name: values.name,
+              topic: values.topic,
+              subject: values.subject,
+              time: values.time,
+              course_id: values.course,
+            });
             const quizID = await axios
               .post(`http://localhost:8000/create-quiz/`, {
-                creator_id: 1,
+                creator_id: props.userID,
                 name: values.name,
                 topic: values.topic,
                 subject: values.subject,
                 time: values.time,
                 course_id: values.course,
               })
-              .then((res) => res.data.quiz.id)
+              .then((res) => {
+                console.log(res.data);
+                return res.data.quiz.id;
+              })
               .catch((e) => console.log(e));
 
             await axios
@@ -68,6 +80,7 @@ const OtherDetails = (props) => {
                   }
                 )
                 .then(async (res) => {
+                  console.log(res);
                   let solData = new FormData();
                   let solDataObj = {
                     answer: q.answer[0],
@@ -79,7 +92,7 @@ const OtherDetails = (props) => {
                   }
                   await axios
                     .post(
-                      `http://localhost:8000/add-solution/${res.data.id}/`,
+                      `http://localhost:8000/add-solution/${res.data.data.id}/`,
                       solData,
                       {
                         headers: {
@@ -156,6 +169,8 @@ const OtherDetails = (props) => {
         />
         <Select
           label="Quiz Course"
+          searchable
+          allowDeselect
           placeholder="Select course to add quiz to"
           data={courses.data.map((course) => ({
             value: course.id,

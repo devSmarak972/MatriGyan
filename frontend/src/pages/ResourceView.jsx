@@ -14,7 +14,7 @@ function ResourceView(props) {
 
   const [data, setData] = useState({});
 
-  if (props.user.current === 0) {
+  if (props.user.current.code === 0) {
     toast("Please Login First!");
     nav("/login");
   }
