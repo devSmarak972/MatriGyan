@@ -9,7 +9,7 @@ async function getUser() {
     withCredentials: true,
   };
   const user = await axios
-    .get("http://localhost:8000/get-user/", config)
+    .get(`${process.env.REACT_APP_BACKEND_URL}/get-user/`, config)
     .then((res) => {
       console.log(res);
       if (res.data.success) return res.data;

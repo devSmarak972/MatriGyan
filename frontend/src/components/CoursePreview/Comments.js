@@ -33,7 +33,7 @@ const Comments = (props) => {
            notify();
         }
         received["comment"]=commentInput;
-        axios.get("http://localhost:8000/add-comment"+`?comment=${commentInput}&video=1&course=${params.id}`,{
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/add-comment`+`?comment=${commentInput}&video=1&course=${params.id}`,{
            
             withCredentials:true
         

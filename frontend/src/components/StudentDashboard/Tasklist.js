@@ -132,7 +132,7 @@ const Tasklist = (props) => {
         tmptasks.tasks.find((it) => it.id === id).messagetype = "text-success";
 
         await axios
-          .get(`http://localhost:8000/update-task-status/${id}?status=True`)
+          .get(`${process.env.REACT_APP_BACKEND_URL}/update-task-status/${id}?status=True`)
           .then((res) => console.log(res))
           .catch((e) => console.log(e));
       } else {
@@ -148,7 +148,7 @@ const Tasklist = (props) => {
             : "text-danger";
 
         await axios
-          .get(`http://localhost:8000/update-task-status/${id}?status=False`)
+          .get(`${process.env.REACT_APP_BACKEND_URL}/update-task-status/${id}?status=False`)
           .then((res) => console.log(res))
           .catch((e) => console.log(e));
       }
@@ -179,7 +179,7 @@ const Tasklist = (props) => {
           <form
             onSubmit={form.onSubmit(async (values) => {
               const taskID = await axios
-                .post("http://localhost:8000/add-task/", {
+                .post(`${process.env.REACT_APP_BACKEND_URL}/add-task/`, {
                   name: values.name,
                   due_date: values.due_date,
                   user: 1,

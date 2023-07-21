@@ -32,6 +32,28 @@ from .storage import BlobHandler
 # from .serializers import CourseSerializer
 import backend.settings as matrigyan_settings
 
+import git
+# from django.shortcuts import render
+# from django.http import HttpResponse
+# from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def update(request):
+    
+    if request.method == "POST":
+        '''
+        pass the path of the diectory where your project will be 
+        stored on PythonAnywhere in the git.Repo() as parameter.
+        Here the name of my directory is "test.pythonanywhere.com"
+        '''
+        repo = git.Repo("../") 
+        origin = repo.remotes.origin
+
+        origin.pull()
+
+        return HttpResponse("Updated code on PythonAnywhere")
+    else:
+        return HttpResponse("Couldn't update the code on PythonAnywhere")
 
 class CourseApi(APIView):
 	authentication_classes = [JWTAuthentication,TokenAuthentication, SessionAuthentication]
@@ -720,10 +742,10 @@ def editQuestion(request, id):
 	if not( type or marks or options or image or ques):
 		return Response({"success":False,"message":"No changes"})
 	
-	request.data._mutable = True
-	print(request.FILES['image'])
-	image=request.FILES['image']
 	if image:
+		request.data._mutable = True
+		print(request.FILES['image'])
+		image=request.FILES['image']
 		name=image.name.split(".")[0]+"_question_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
 		bh=BlobHandler()
 		bh.uploadBlob("question-media",name,image)

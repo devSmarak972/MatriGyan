@@ -87,7 +87,7 @@ const Resources = (props) => {
               onSubmit={form.onSubmit(async (values) => {
                 let resourceID = await axios
                   .post(
-                    `http://localhost:8000/add-resource/${props.user?.current?.user?.id}/`,
+                    `${process.env.REACT_APP_BACKEND_URL}/add-resource/${props.user?.current?.user?.id}/`,
                     {
                       title: values.name,
                       description: values.desc,

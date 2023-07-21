@@ -11,7 +11,7 @@ const PostQuiz = () => {
   useEffect(() => {
     setTimeout(() => {
       const fetchData = axios
-        .get(`http://localhost:8000/get-quiz-response/${ID}/`, {
+        .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz-response/${ID}/`, {
           withCredentials: true,
         })
         .then((res) => {

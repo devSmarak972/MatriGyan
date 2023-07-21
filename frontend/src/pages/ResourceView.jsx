@@ -21,7 +21,7 @@ function ResourceView(props) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/get-resource/${ID}/`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/get-resource/${ID}/`)
       .then((res) => setData(res.data.resource))
       .catch((e) => console.log(e));
   }, []);

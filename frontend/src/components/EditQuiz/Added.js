@@ -201,7 +201,7 @@ const Added = (props) => {
                       );
                       await axios
                         .delete(
-                          `http://localhost:8000/delete-question/${item.id}/`
+                          `${process.env.REACT_APP_BACKEND_URL}/delete-question/${item.id}/`
                         )
                         .then((res) => console.log(res))
                         .catch((e) => console.log(e));
@@ -337,7 +337,7 @@ const Added = (props) => {
               }
               await axios
                 .post(
-                  `http://localhost:8000/edit-question/${
+                  `${process.env.REACT_APP_BACKEND_URL}/edit-question/${
                     props.questions[editingQ - 1].id
                   }/`,
                   quesData,
@@ -362,7 +362,7 @@ const Added = (props) => {
                   console.log("Question edited: ", res.data);
                   await axios
                     .post(
-                      `http://localhost:8000/edit-solution/${res.data.question.solution.id}/`,
+                      `${process.env.REACT_APP_BACKEND_URL}/edit-solution/${res.data.question.solution.id}/`,
                       solData,
                       {
                         headers: {

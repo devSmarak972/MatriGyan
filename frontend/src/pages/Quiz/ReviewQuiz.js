@@ -15,7 +15,7 @@ const ReviewQuiz = () => {
   const [data, setData] = useState({});
   useEffect(() => {
     const fetchData = axios
-      .get(`http://localhost:8000/get-quiz-response/${ID}/`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz-response/${ID}/`)
       .then((res) => {
         console.log(res);
 

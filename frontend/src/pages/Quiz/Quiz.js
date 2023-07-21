@@ -38,7 +38,7 @@ const Quiz = () => {
     const fetchData = async () => {
       try {
         const response = await axios
-          .get(`http://localhost:8000/get-quiz/${ID}/`, {
+          .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz/${ID}/`, {
             withCredentials: true,
           })
           .then((res) => {
@@ -119,7 +119,7 @@ const Quiz = () => {
                 onComplete={async () => {
                   await axios
                     .post(
-                      `http://localhost:8000/add-quiz-response/${ID}/`,
+                      `${process.env.REACT_APP_BACKEND_URL}/add-quiz-response/${ID}/`,
                       {
                         quiz_id: parseInt(ID),
                         // student: 6,
@@ -469,7 +469,7 @@ const Quiz = () => {
                   // console.log(csrftoken)
                   await axios
                     .post(
-                      `http://localhost:8000/add-quiz-response/${ID}/`,
+                      `${process.env.REACT_APP_BACKEND_URL}/add-quiz-response/${ID}/`,
                       {
                         quiz_id: parseInt(ID),
                         // student: 6,
@@ -495,7 +495,7 @@ const Quiz = () => {
                       console.log(e);
                     });
                   // await axios
-                  //   .get(`http://localhost:8000/get-quiz-response/6/${ID}/`)
+                  //   .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz-response/6/${ID}/`)
                   //   .then((res) => console.log(res))
                   //   .catch((e) => {
                   //     console.log(e);

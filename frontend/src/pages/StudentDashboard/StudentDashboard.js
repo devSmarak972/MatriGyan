@@ -40,7 +40,7 @@ const StudentDashboard = (props) => {
     };
     console.log("config", "config");
     axios
-      .get(`http://localhost:8000/student-dashboard-data`, config)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/student-dashboard-data`, config)
       .then((res) => {
         console.log(res);
         console.log(res.data, "received data");
@@ -51,6 +51,7 @@ const StudentDashboard = (props) => {
             navigate("/login");
           }
         }
+      
         if (mounted.current) {
           setData(res.data);
         }
@@ -58,6 +59,7 @@ const StudentDashboard = (props) => {
       .catch((err) => {
         const notify = () => toast(err.message);
         notify();
+        navigate("/")
       });
     return () => (mounted.current = false);
   }, []);

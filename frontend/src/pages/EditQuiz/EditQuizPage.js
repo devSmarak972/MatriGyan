@@ -31,7 +31,7 @@ const EditQuizPage = (props) => {
     const fetchData = async () => {
       try {
         const response = await axios
-          .get(`http://localhost:8000/get-quiz/${ID}/`)
+          .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz/${ID}/`)
           .then((res) => {
             console.log(res.data.quiz, res.data.quiz.name);
             if (!res.data.success) {

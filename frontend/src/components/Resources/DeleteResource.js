@@ -28,7 +28,7 @@ const DeleteResource = (props) => {
         <form
           onSubmit={form.onSubmit(async (values) => {
             await axios
-              .delete(`http://localhost:8000/delete-resource/${values.resID}/`)
+              .delete(`${process.env.REACT_APP_BACKEND_URL}/delete-resource/${values.resID}/`)
               .then((res) => {
                 toast("Resource Deleted.");
                 props.setEducatorRes((prev) => ({

@@ -50,7 +50,7 @@ const LogIn = (props) => {
 
     axios
       .post(
-        `http://localhost:8000/api/login/email`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/login/email`,
         { data },
         { withCredentials: true }
       )
