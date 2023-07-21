@@ -1,0 +1,10 @@
+env
+frontend/node_modules
+backend/matrigyan/migrations
+backend/db.sqlite3
+*/__pycache__
+*.pyc
+templates/
+# *.env_dev
+# *.env_prod
+frontend/build

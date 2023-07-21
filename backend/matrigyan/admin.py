@@ -1,0 +1,25 @@
+from django.contrib import admin
+
+# Register your models here.
+from .models import *
+admin.site.register(Course)
+admin.site.register(CourseCategory)
+admin.site.register(CourseSection)
+admin.site.register(CourseTag)
+admin.site.register(ClassModel)
+admin.site.register(Video)
+admin.site.register(Feedback)
+admin.site.register(Comment)
+admin.site.register(Student)
+admin.site.register(Educator)
+admin.site.register(Quiz)
+admin.site.register(Question)
+admin.site.register(Option)
+admin.site.register(Solution)
+admin.site.register(Event)
+admin.site.register(Task)
+admin.site.register(QuizResponse)
+admin.site.register(QuizAnswer)
+admin.site.register(Resource)
+admin.site.register(ResourceTag)
+# admin.site.register(Video)
