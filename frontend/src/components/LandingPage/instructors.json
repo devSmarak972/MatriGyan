@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Rahul Gupta",
+    "subtitle": "Educator",
+    "students": 50,
+    "image": "/LandingPage/assets/img/user/educator2.jpg"
+  },
+  {
+    "name": "Anit Thakur",
+    "subtitle": "Educator",
+    "students": 50,
+    "image": "/LandingPage/assets/img/user/educator4.jpg"
+  },
+  {
+    "name": "Richard Feynman",
+    "subtitle": "Educator",
+    "students": 50,
+    "image": "/LandingPage/assets/img/user/educator5.jpg"
+  },
+  {
+    "name": "Walter Lewin",
+    "subtitle": "Educator",
+    "students": 50,
+    "image": "https://edge.uacdn.net/static/thumbnail/user/15f37ed161cb4585a5b4a99b07a22aff.png"
+  },
+  {
+    "name": "Rahul Gupta",
+    "subtitle": "Educator",
+    "students": 50,
+    "image": "/LandingPage/assets/img/user/educator2.jpg"
+  },
+  {
+    "name": "Anit Thakur",
+    "subtitle": "Educator",
+    "students": 50,
+    "image": "/LandingPage/assets/img/user/educator4.jpg"
+  },
+  {
+    "name": "Rahul Gupta",
+    "subtitle": "Educator",
+    "students": 50,
+    "image": "/LandingPage/assets/img/user/educator5.jpg"
+  },
+  {
+    "name": "Rahul Gupta",
+    "subtitle": "Educator",
+    "students": 50,
+    "image": "https://edge.uacdn.net/static/thumbnail/user/15f37ed161cb4585a5b4a99b07a22aff.png"
+  }
+]

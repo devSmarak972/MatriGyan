@@ -1,0 +1,33 @@
+{
+  "sections": [
+    {
+      "sectionname": "Recent uploads",
+      "cards": [
+        {
+          "bgimage": "https://entri.app/blog/wp-content/uploads/2020/04/JEE-blog-thumbnail-1-750x375.png",
+          "name": "JEE Mains study Material",
+          "description": "Complete study material for JEE Mains covering all the important aspects of the syllabus prepared by esteemed faculties with 10+ years of experience",
+          "avatar": "https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png",
+          "uploader": "Roshan Kumar",
+          "date": "12/7/2023"
+        },
+        {
+          "bgimage": "https://entri.app/blog/wp-content/uploads/2020/04/JEE-blog-thumbnail-1-750x375.png",
+          "name": "JEE Advanced study Material",
+          "description": "Complete study material for JEE Mains covering all the important aspects of the syllabus prepared by esteemed faculties with 10+ years of experience",
+          "avatar": "https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png",
+          "uploader": "Roshan Kumar",
+          "date": "12/7/2023"
+        },
+        {
+          "bgimage": "https://entri.app/blog/wp-content/uploads/2020/04/JEE-blog-thumbnail-1-750x375.png",
+          "name": "KVPY Question Papers",
+          "description": "Complete study material for JEE Mains covering all the important aspects of the syllabus prepared by esteemed faculties with 10+ years of experience",
+          "avatar": "https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png",
+          "uploader": "Roshan Kumar",
+          "date": "12/7/2023"
+        }
+      ]
+    }
+  ]
+}
