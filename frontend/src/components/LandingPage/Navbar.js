@@ -5,6 +5,7 @@ import {
   faArrowRight,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
   const [scroll, setScroll] = useState(false);
@@ -34,7 +35,8 @@ const Navbar = (props) => {
                   <span></span>
                 </span>
               </a>
-              <a href="index.html" className="navbar-brand logo">
+              <Link to='/'>
+              <a href="#" className="navbar-brand logo">
                 <img
                   src="/logo-bg.png"
                   className=""
@@ -42,6 +44,7 @@ const Navbar = (props) => {
                   style={{ "max-height": "100px" }}
                 />
               </a>
+              </Link>
             </div>
             
             {props.searchPage? (
@@ -86,14 +89,21 @@ const Navbar = (props) => {
 
             <ul className="nav header-navbar-rht">
               <li className="nav-item">
+                {/* <a className="nav-link header-sign" href="login">
+                  Login
+                </a> */}
+                <Link to='/login'>
                 <a className="nav-link header-sign" href="login">
-                  Signin
+                  Login
                 </a>
+                </Link>
               </li>
               <li className="nav-item">
+                <Link to='/signup'>
                 <a className="nav-link header-login" href="signup">
                   Signup
                 </a>
+                </Link>
               </li>
             </ul>
           </div>

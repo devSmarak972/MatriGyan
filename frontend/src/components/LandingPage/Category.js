@@ -2,6 +2,7 @@ import React from 'react'
 import OwlCarousel from "react-owl-carousel-autoheight";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
+import { Link } from 'react-router-dom';
 const Category = () => {
   return (
     <section className="section how-it-works">
@@ -12,9 +13,11 @@ const Category = () => {
             <h2>Top Category</h2>
           </div>
           <div className="all-btn all-category d-flex align-items-center">
-            <a href="job-category.html" className="btn btn-primary">
+            <Link to='/developing'>
+            <a href="#" className="btn btn-primary">
               All Categories
             </a>
+            </Link>
           </div>
         </div>
         <div className="section-text aos" data-aos="fade-up">

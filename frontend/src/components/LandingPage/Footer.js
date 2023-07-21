@@ -130,10 +130,10 @@ const Footer = () => {
                 <div className="privacy-policy">
                   <ul>
                     <li>
-                      <a href="term-condition.html">Terms</a>
+                      <Link to='/not-found'><a href="">Terms</a></Link>
                     </li>
                     <li>
-                      <a href="privacy-policy.html">Privacy</a>
+                    <Link to='/not-found'><a href="">Privacy</a></Link>
                     </li>
                   </ul>
                 </div>
