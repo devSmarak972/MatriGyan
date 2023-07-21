@@ -17,15 +17,9 @@ const Resources = (props) => {
 
   const [resources, setResources] = useState([]);
 
-  const [isEducator, setIsEducator] = useState();
-  const [educatorID, setEducatorID] = useState();
+  const [educatorRes, setEducatorRes] = useState({});
 
-  useEffect(() => {
-    setEducatorID(props.user.current?.user?.id);
-    setIsEducator(props.user.current?.code === 2);
-  }, []);
-
-  console.log(isEducator);
+  const [userID, setUserID] = useState();
 
   const form = useForm({
     initialValues: {
@@ -59,11 +53,29 @@ const Resources = (props) => {
       });
   }, []);
 
+  useEffect(() => {
+    setUserID(props.user?.current?.user?.id);
+  });
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/educator-resource/${userID}/`)
+      .then((res) => {
+        console.log("DEL DATA: ", res.data);
+        setEducatorRes(res.data);
+      })
+      .catch((e) => console.log(e));
+  }, [userID]);
+
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
 
   const [opened, { open, close }] = useDisclosure(false);
+
+  if (JSON.toString(educatorRes) === "{}") return null;
+
+  console.log(educatorRes);
 
   return (
     <div className="min-h-[100vh]  flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
@@ -74,16 +86,24 @@ const Resources = (props) => {
             <form
               onSubmit={form.onSubmit(async (values) => {
                 let resourceID = await axios
-                  .post(`http://localhost:8000/add-resource/2/`, {
-                    title: values.name,
-                    description: values.desc,
-                    image: values.image,
-                    file_url: values.fileUrl,
-                    creator: 2,
-                    tagname: values.tagname,
-                  })
+                  .post(
+                    `http://localhost:8000/add-resource/${props.user?.current?.user?.id}/`,
+                    {
+                      title: values.name,
+                      description: values.desc,
+                      image: values.image,
+                      file_url: values.fileUrl,
+                      creator: 2,
+                      tagname: values.tagname,
+                    }
+                  )
                   .then((res) => {
                     console.log("Resource Added");
+                    setEducatorRes((prev) => ({
+                      ...prev,
+                      resources: [...prev.resources, res.data.resource],
+                    }));
+                    console.log(educatorRes);
                     return res.data.resource.id;
                   })
                   .catch((e) => console.log(e));
@@ -91,7 +111,7 @@ const Resources = (props) => {
                   if (
                     !prev
                       .map((section) => section.sectionname.toLowerCase())
-                      .includes(values.tagname)
+                      .includes(values.tagname?.toLowerCase())
                   ) {
                     return [
                       {
@@ -181,7 +201,7 @@ const Resources = (props) => {
               </button>
             </form>
           </Modal>
-          {isEducator && (
+          {props.user?.current?.code === 2 && (
             <button
               onClick={open}
               className="flex items-center gap-2 bg-[var(--primary)] text-white py-1.5 px-3 rounded-lg"
@@ -194,7 +214,14 @@ const Resources = (props) => {
             search={search}
             handleSearch={handleSearch}
           ></FilterTopBar>
-          {isEducator && <DeleteResource id={educatorID} />}
+          {props.user?.current?.code === 2 && (
+            <DeleteResource
+              educatorRes={educatorRes}
+              setEducatorRes={setEducatorRes}
+              resources={resources}
+              setResources={setResources}
+            />
+          )}
         </div>
         <div className="container-lg page__container">
           {resources
