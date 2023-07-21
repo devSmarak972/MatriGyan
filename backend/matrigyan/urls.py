@@ -73,4 +73,5 @@ urlpatterns = [
     path('filter-courses/<str:category>/<int:duration>/', views.filterCourses),
     path('filter-courses/<str:category>/', views.filterCategory),
     path('filter-course/<int:duration>/', views.filterDuration),
+    path('enroll-student/<int:id>/', views.enrollStudent),
 ]

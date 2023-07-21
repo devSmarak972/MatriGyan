@@ -1159,3 +1159,19 @@ def getSAS(request):
 	# sas="hello"
 	return Response({"success":True, "message":"SAS token generated","sas":sas})
 
+@api_view(['GET'])
+def enrollStudent(request,id):
+	user = request.user
+	if user.is_authenticated:
+		student = Student.objects.filter(user__id=user.id).first()
+		if student is None:
+			ser_user = UserSerializer(user,many=False)
+			return Response({"success":False,"message":"No student","user":ser_user.data})
+		course = Course.objects.filter(id=id).first()
+		if course is None:
+			return Response({"success":False,"message":"No course."})
+		student.enrolled_course.add(course)
+		ser_student=StudentSerializer(student,many=False)
+		ser_course=CourseSerializer(course,many=False)
+		return Response({"success":True,"student":ser_student.data,"course":ser_course.data})
+	return Response({"success":False,"message":"User not logged in."})
