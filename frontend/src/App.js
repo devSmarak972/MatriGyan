@@ -41,13 +41,13 @@ function App() {
           {/* <Route path="/search" element={<SearchLanding />} /> */}
           <Route path="/login" element={<LoginSignup />} />
           <Route path="/signup" element={<LoginSignup />} />
-          <Route
+          {/* <Route
             path="/student/profile"
             element={<ProfilePage userType={1} />}
-          />
+          /> */}
           <Route
-            path="/educator/profile"
-            element={<ProfilePage userType={2} />}
+            path="/profile"
+            element={<ProfilePage  />}
           />
           <Route path="/student" element={<StudentDashboard />} />
           <Route path="/courses" element={<CoursePage />} />
@@ -67,10 +67,12 @@ function App() {
           <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
           <Route path="/course/:id" element={<CoursePreview />} />
           <Route path="/resourceview/:ID" element={<ResourceView />} />
-          <Route path="/not-found" element={<Page404 />} />
           <Route path="/developing" element={<InDev />} />
           <Route path="/resourceview" element={<ResourceView />}/>
           <Route path="/edit/profile" element={<EditProfile />} />
+
+          <Route path="/not-found" element={<Page404 />} />
+          <Route path="*" element={<Page404 />} /> . 
         </Routes>
       </div>
     </Router>

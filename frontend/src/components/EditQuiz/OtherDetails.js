@@ -8,7 +8,7 @@ const OtherDetails = (props) => {
   useEffect(() => {
     const f = async () => {
       try {
-        await axios.get(`http://localhost:8000/get-courses/`).then((res) => {
+        await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-courses/`).then((res) => {
           setCourses(res.data);
         });
       } catch (e) {
@@ -26,7 +26,7 @@ const OtherDetails = (props) => {
         onSubmit={props.form.onSubmit(async (values) => {
           if (props.axiosType === "add") {
             const quizID = await axios
-              .post(`http://localhost:8000/create-quiz/`, {
+              .post(`${process.env.REACT_APP_BACKEND_URL}/create-quiz/`, {
                 creator_id: 1,
                 name: values.name,
                 topic: values.topic,
@@ -38,7 +38,7 @@ const OtherDetails = (props) => {
               .catch((e) => console.log(e));
 
             await axios
-              .get(`http://localhost:8000/get-quiz/${quizID}/`)
+              .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz/${quizID}/`)
               .then((res) => console.log(res.data))
               .catch((e) => console.log(e));
 
@@ -57,7 +57,7 @@ const OtherDetails = (props) => {
               }
               const quesID = await axios
                 .post(
-                  `http://localhost:8000/add-question/${quizID}/`,
+                  `${process.env.REACT_APP_BACKEND_URL}/add-question/${quizID}/`,
                   quesData,
                   {
                     headers: {
@@ -79,7 +79,7 @@ const OtherDetails = (props) => {
                   }
                   await axios
                     .post(
-                      `http://localhost:8000/add-solution/${res.data.id}/`,
+                      `${process.env.REACT_APP_BACKEND_URL}/add-solution/${res.data.id}/`,
                       solData,
                       {
                         headers: {
@@ -96,7 +96,7 @@ const OtherDetails = (props) => {
             });
           } else if (props.axiosType === "edit") {
             const quesIDs = await axios
-              .post(`http://localhost:8000/edit-quiz/${props.ID}/`, {
+              .post(`${process.env.REACT_APP_BACKEND_URL}/edit-quiz/${props.ID}/`, {
                 name: values.name,
                 topic: values.topic,
                 subject: values.subject,
@@ -109,7 +109,7 @@ const OtherDetails = (props) => {
               .catch((e) => console.log(e));
 
             await axios
-              .post(`http://localhost:8000/set-question-order/${props.ID}/`, {
+              .post(`${process.env.REACT_APP_BACKEND_URL}/set-question-order/${props.ID}/`, {
                 qnos: props.questions.map((q, i) => ({
                   question_id: q.id,
                   qnumber: i + 1,

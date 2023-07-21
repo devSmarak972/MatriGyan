@@ -8,7 +8,7 @@ const OtherDetails = (props) => {
   useEffect(() => {
     const f = async () => {
       try {
-        await axios.get(`http://localhost:8000/get-courses/`).then((res) => {
+        await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-courses/`).then((res) => {
           setCourses(res.data);
         });
       } catch (e) {
@@ -25,11 +25,11 @@ const OtherDetails = (props) => {
       <form
         onSubmit={props.form.onSubmit(async (values) => {
           // await axios
-          //   .get(`http://localhost:8000/get-quiz/${props.ID}/`)
+          //   .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz/${props.ID}/`)
           //   .then((res) => console.log(res.data))
           //   .catch((e) => console.log(e));
           const quesIDs = await axios
-            .post(`http://localhost:8000/edit-quiz/${props.ID}/`, {
+            .post(`${process.env.REACT_APP_BACKEND_URL}/edit-quiz/${props.ID}/`, {
               name: values.name,
               topic: values.topic,
               subject: values.subject,
@@ -46,7 +46,7 @@ const OtherDetails = (props) => {
           props.questions.map(async (q, i) => {
             if (quesIDs.includes(q.id)) {
               await axios
-                .post(`http://localhost:8000/edit-question/${q.id}/`, {
+                .post(`${process.env.REACT_APP_BACKEND_URL}/edit-question/${q.id}/`, {
                   qnumber: i + 1,
                   question: q.question,
                   type: q.type === "single" ? "SINGLE" : "MULTIPLE",
@@ -62,7 +62,7 @@ const OtherDetails = (props) => {
                   });
                   await axios
                     .post(
-                      `http://localhost:8000/edit-solution/${res.data.question.solution.id}/`,
+                      `${process.env.REACT_APP_BACKEND_URL}/edit-solution/${res.data.question.solution.id}/`,
                       {
                         answer: q.answer[0],
                         solution: q.solutionDesc,
@@ -75,7 +75,7 @@ const OtherDetails = (props) => {
                 .catch((e) => console.log(e));
             } else {
               await axios
-                .post(`http://localhost:8000/add-question/${props.ID}/`, {
+                .post(`${process.env.REACT_APP_BACKEND_URL}/add-question/${props.ID}/`, {
                   qnumber: i + 1,
                   question: q.question,
                   type: q.type === "single" ? "SINGLE" : "MULTIPLE",
@@ -86,7 +86,7 @@ const OtherDetails = (props) => {
                 .then(async (res) => {
                   await axios
                     .post(
-                      `http://localhost:8000/add-solution/${res.data.id}/`,
+                      `${process.env.REACT_APP_BACKEND_URL}/add-solution/${res.data.id}/`,
                       {
                         answer: q.answer[0],
                         solution: q.solutionDesc,
@@ -102,7 +102,7 @@ const OtherDetails = (props) => {
 
           quesIDs.map(async (id) => {
             if (!props.questions.map((q) => q.id).includes(id)) {
-              await axios(`http://localhost:8000/delete-question/${id}/`).then(
+              await axios(`${process.env.REACT_APP_BACKEND_URL}/delete-question/${id}/`).then(
                 (res) => {
                   console.log(res.data);
                 }

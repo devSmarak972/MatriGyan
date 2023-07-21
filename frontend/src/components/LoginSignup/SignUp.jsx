@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
@@ -26,8 +26,27 @@ import "../../pages/LoginSignup/LoginSignup.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserSelect from "./UserSelect";
+import { getUser } from "../../utils/getUser";
 const SignUp = (props) => {
+  const user=useRef(false);
+
   const navigate = useNavigate();
+  useEffect(()=>{
+    (async () => {
+       user.current=await getUser();
+      if(user.current.code===1)
+     {
+       window.location.href="/student"
+     }
+     else if(user.current.code===2)
+     {
+  
+       window.location.href="/educator"
+     }
+    })();
+   
+    
+  },[])
   const [userType, setUserType] = useState(0);
   const [active, setActive] = useState(0);
   const [subactive, setSubactive] = useState(0);
@@ -176,7 +195,7 @@ const SignUp = (props) => {
     var data = form.values;
 
     axios
-      .post(`http://localhost:8000/api/register/email`, { data })
+      .post(`${process.env.REACT_APP_BACKEND_URL}/api/register/email`, { data })
       .then((res) => {
         console.log(res);
         console.log(res.data);

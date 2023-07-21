@@ -32,6 +32,28 @@ from .storage import BlobHandler
 # from .serializers import CourseSerializer
 import backend.settings as matrigyan_settings
 
+import git
+# from django.shortcuts import render
+# from django.http import HttpResponse
+# from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def update(request):
+    
+    if request.method == "POST":
+        '''
+        pass the path of the diectory where your project will be 
+        stored on PythonAnywhere in the git.Repo() as parameter.
+        Here the name of my directory is "test.pythonanywhere.com"
+        '''
+        repo = git.Repo("../") 
+        origin = repo.remotes.origin
+
+        origin.pull()
+
+        return HttpResponse("Updated code on PythonAnywhere")
+    else:
+        return HttpResponse("Couldn't update the code on PythonAnywhere")
 
 class CourseApi(APIView):
 	authentication_classes = [JWTAuthentication,TokenAuthentication, SessionAuthentication]
@@ -92,12 +114,14 @@ def check_to_login_registered_user(request):
 		return {"message": msg, "redirect": False, "success": False}
 	else:
 		username = user.first().username
-	auth_user = authenticate(username=username, password=password)
+	auth_user = authenticate(request,username=username, password=password)
 	utype="undefined"
 	if auth_user is not None:
+		print(auth_user)
 		if auth_user.is_active:
 			login(request, auth_user)
 			msg = "Signed in successfully!"
+		   
 			redirect = True
 			request.session.set_expiry(matrigyan_settings.KEEP_LOGGED_DURATION)
 			educator=Educator.objects.filter(user=auth_user.id).first()
@@ -605,8 +629,10 @@ def deleteVideo(request, id):
 @api_view(['GET'])
 def getQuiz(request, id):
 	quizes = Quiz.objects.filter(id=id).first()
-	if quizes is None:
-		return Response({"success":False,"message":"No quiz."})
+
+	if not quizes:
+		return Response({"success":False, "message":"quiz does not exist"})
+		
 	qs = QuizSerializer(quizes, many=False)
 	return Response({"success":True, "quiz":qs.data})
 
@@ -680,19 +706,21 @@ def deleteQuiz(request, id):
 @api_view(['POST'])
 def addQuestion(request, id):
 	# if isinstance(request.data, QueryDict): # optional
-	request.data._mutable = True
-	print(request.FILES['image'])
-	image=request.FILES['image']
-	name=image.name.split(".")[0]+"_question_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
-	bh=BlobHandler()
-	bh.uploadBlob("question-media",name,image)
-	url=bh.GetBlobUrl("question-media",name)
-	request.data['image'] = url
+	# request.data._mutable = True
+	if "image" in request.FILES:
+		print(request.FILES['image'])
+		image=request.FILES['image']
+		name=image.name.split(".")[0]+"_question_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
+		bh=BlobHandler()
+		bh.uploadBlob("question-media",name,image)
+		url=bh.GetBlobUrl("question-media",name)
+		request.data['image'] = url
+		print(request.data)
+		print(url)
 	question = QuestionSerializer(data=request.data)
 	# print(url)
-	print(url)
 	if question.is_valid():
-			question.image=url
+			# question.image=url
 			question.save()
 			que = Question.objects.get(id=question.data['id'])
 			quiz = Quiz.objects.get(id=id)
@@ -729,10 +757,10 @@ def editQuestion(request, id):
 	if not( type or marks or options or image or ques):
 		return Response({"success":False,"message":"No changes"})
 	
-	request.data._mutable = True
-	print(request.FILES['image'])
-	image=request.FILES['image']
 	if image:
+		request.data._mutable = True
+		print(request.FILES['image'])
+		image=request.FILES['image']
 		name=image.name.split(".")[0]+"_question_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
 		bh=BlobHandler()
 		bh.uploadBlob("question-media",name,image)
@@ -1035,10 +1063,12 @@ def deleteResource(request, id):
 	return Response({"success":True, "message":"Resource deleted!"})
 
 @api_view(['GET'])
-def getUser(request,id):
-		user = User.objects.filter(id=id).first()
-		if user is None:
-			return Response({"success":False,"message":"No user."})
+def getUser(request):
+		print(request.user)
+		if not request.user.is_authenticated:
+			return Response({"success":False,"message":"Not Logged in","code":0})
+		id=request.user.id
+		user = User.objects.get(id=id)
 		print(user)
 		print(user.id)
 		ser_user = UserSerializer(user, many=False)
@@ -1049,7 +1079,7 @@ def getUser(request,id):
 			if educator is None:
 				return Response({"success":False,"message":"No educator found."})
 			ser_educator = EducatorSerializer(educator, many=False)
-			return Response({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data})
+			return Response({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data,"code":2})
 			# student = Student.objects.get(user__id=user.id)
 			# ser_student = StudentSerializer(student, many=False)
 			# return Response({"success":True, "user":ser_user,"is_student":True,"student":ser_student})
@@ -1058,7 +1088,7 @@ def getUser(request,id):
 			if student is None:
 				return Response({"success":False,"message":"No student."})
 			ser_student = StudentSerializer(student, many=False)
-			return Response({"success":True, "user":ser_user.data,"is_student":True,"student":ser_student.data})
+			return Response({"success":True, "user":ser_user.data,"is_student":True,"student":ser_student.data,"code":1})
 			# educator = Educator.objects.get(id=user.id)
 			# ser_educator = EducatorSerializer(educator, many=False)
 			# return Response({"success":True, "is_student":False, "user":ser_user,"educator":ser_educator})
@@ -1217,3 +1247,19 @@ def enrollStudent(request,id):
 		ser_course=CourseSerializer(course,many=False)
 		return Response({"success":True,"student":ser_student.data,"course":ser_course.data})
 	return Response({"success":False,"message":"User not logged in."})
+
+@api_view(['POST'])
+def updateProfile(request):
+	if 'profile_img' in request.FILES:
+		print(request.FILES['profile_img'])
+		image=request.FILES['profile_img']
+		name=image.name.split(".")[0][:10]+"_profile_"+str(uuid.uuid1())+"."+image.name.split(".")[1]
+		bh=BlobHandler()
+		bh.uploadBlob("profile-media",name,image)
+		url=bh.GetBlobUrl("profile-media",name)
+		request.data['profile_img'] = url	
+		print(url)
+  
+	# sas="hello"
+	return Response({"success":True, "message":"SAS token generated","sas":sas})
+

@@ -10,22 +10,25 @@ const PreQuiz = () => {
     const fetchData = async () => {
       try {
         const response = await axios
-          .get(`http://localhost:8000/get-quiz/${ID}/`, {
+          .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz/${ID}/`, {
             withCredentials: true,
           })
           .then((res) => {
-            console.log("Quiz questions: ", res.data);
+            if (res.data.success) return res.data;
+          })
+          .then((res) => {
+            console.log("Quiz questions: ", res.quiz);
             setData({
-              name: res.data.name,
-              topic: res.data.topic,
-              mins: res.data.time,
-              questions: res.data.questions.map((q) => ({
+              name: res.quiz.name,
+              topic: res.quiz.topic,
+              mins: res.quiz.time,
+              questions: res.quiz.questions.map((q) => ({
                 question: q.question,
                 options: q.options,
                 type: q.type === "SINGLE" ? "single" : "multi",
                 correct: q.marks,
                 incorrect: q.type === "SINGLE" ? -1 : -2,
-                answer: [parseInt(q.solution.answer)],
+                answer: [parseInt(q.solution?.answer)],
                 image: q.image,
               })),
             });

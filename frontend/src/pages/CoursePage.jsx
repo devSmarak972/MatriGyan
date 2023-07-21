@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect,useRef, useState } from 'react'
 import Header from '../components/Courses/Header'
 import Courses from '../components/Courses/Courses'
 import './CoursePage/css/material-icons.css'
@@ -11,9 +11,18 @@ import axios from 'axios'
 import Backdrop from "../components/Courses/Backdrop";
 
 import Filters from "../components/Courses/Filters";
-
+import { getUser } from '../utils/getUser'
 function CoursePage() {
   const [isActive, setActive] = useState(false);
+  const user=useRef(false);
+  useEffect(()=>{
+    (async () => {
+       user.current=await getUser();
+      
+    })();
+   
+    
+  },[])
 
   const handleclick = () => {
     setActive(!isActive);
@@ -46,6 +55,7 @@ function CoursePage() {
     getCourses();
   },[])
 
+
   return (
     <div className="page-section tw-page">
       <Sidebar></Sidebar>
@@ -53,9 +63,9 @@ function CoursePage() {
          {(courses && courses.length!==0)?
          <>
           <Header onButtonClick={handleclick}></Header>
-          <Courses title="Popular Courses" courses={courses}></Courses>
-          <Courses title="Development Courses" courses={courses}></Courses>
-          <Courses title="Desgin Courses" courses={courses}></Courses></>
+          <Courses title="All Courses" courses={courses}></Courses>
+          <Courses title="Recent Courses" courses={courses}></Courses>
+          <Courses title="Popular Courses" courses={courses}></Courses></>
 :<p className="m-auto p-3">Loading ...</p>}
       </div>
       <Backdrop isActive={isActive} onButtonClick={handleclick}></Backdrop>

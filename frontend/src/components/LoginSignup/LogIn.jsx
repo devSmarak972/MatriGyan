@@ -1,5 +1,5 @@
-import React from "react";
-import { useState } from "react";
+import React, { useRef } from "react";
+import { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import axios from "axios";
@@ -11,8 +11,10 @@ import "../../pages/LoginSignup/LoginSignup.css";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getUser } from "../../utils/getUser";
 
 const LogIn = (props) => {
+  const user=useRef(false);
   // const [cookies, setCookie, removeCookie] = useCookies(["csrftoken"]);
   const navigate = useNavigate();
   const form = useForm({
@@ -26,13 +28,31 @@ const LogIn = (props) => {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
+  
+  
+  useEffect(()=>{
+    (async () => {
+       user.current=await getUser();//set this to props.user and remove async
+      if(user.current.code===1)
+     {
+       window.location.href="/student"
+     }
+     else if(user.current.code===2)
+     {
+  
+       window.location.href="/educator"
+     }
+    })();
+   
+    
+  },[])
   const handleLogin = (event) => {
     event.preventDefault();
 
     var data = form.values;
 
     axios
-      .post(`http://localhost:8000/api/login/email`, { data }, {withCredentials:true})
+      .post(`${process.env.REACT_APP_BACKEND_URL}/api/login/email`, { data }, {withCredentials:true})
       .then((res) => {
         console.log(res);
         console.log(res.data, res.headers);
