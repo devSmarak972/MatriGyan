@@ -1,9 +1,0 @@
-django
-djangorestframework
-djangorestframework-simplejwt
-django-environ
-django-cors-headers
-azure-storage-blob
-channels
-daphne
-gitPython
