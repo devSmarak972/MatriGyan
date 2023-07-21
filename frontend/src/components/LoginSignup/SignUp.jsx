@@ -28,13 +28,13 @@ import "react-toastify/dist/ReactToastify.css";
 import UserSelect from "./UserSelect";
 import { getUser } from "../../utils/getUser";
 const SignUp = (props) => {
-  const navigate = useNavigate();
+  const nav = useNavigate();
   useEffect(() => {
     (async () => {
       if (props.user.current.code === 1) {
-        window.location.href = "/student";
+        nav("/student");
       } else if (props.user.current.code === 2) {
-        window.location.href = "/educator";
+        nav("/educator");
       }
     })();
   }, []);
@@ -110,13 +110,11 @@ const SignUp = (props) => {
   };
   const accCreated = () => {
     toast("Account Created Successfully");
-    props.user.current = getUser()
-      .then((res) => res)
-      .catch((e) => console.log(e));
+    props.setLoader(true);
     if (props.user.current.code === 1) {
-      window.location.href = "/student";
+      nav("/student");
     } else {
-      window.location.href = "/educator";
+      nav("/educator");
     }
   };
   const form = useForm({

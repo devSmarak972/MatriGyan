@@ -72,7 +72,6 @@ const Tasklist = (props) => {
         "-" +
         end.getDate();
 
-      console.log(status, el.completed);
       return {
         id: el.id,
         title: el.name,
@@ -109,8 +108,6 @@ const Tasklist = (props) => {
     settasks({ tasks: taskstmp, numcompleted: num });
     // return () => setnumcompleted(num);
   }, []);
-
-  console.log("TASKS: ", tasks);
 
   const handleCheck = async (el) => {
     console.log(el.currentTarget.id);

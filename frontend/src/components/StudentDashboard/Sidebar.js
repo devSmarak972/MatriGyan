@@ -14,7 +14,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = (props) => {
-  console.log("PROPS.USER", props.user);
   const [sidebar, setSidebar] = useState(0);
   const [open, setOpen] = useState(0);
   var utype = props.utype ? props.utype : "student";

@@ -42,9 +42,9 @@ const Resources = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/get-resources/")
+      .get(`${process.env.REACT_APP_BACKEND_URL}/get-resources/`)
       .then((res) => {
-        console.log(res.data.sections);
+        console.log(res.data.sections, " RES.DATA");
         setResources(res.data.sections);
         // console.log(resources, "resources");
       })
@@ -59,7 +59,7 @@ const Resources = (props) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/educator-resource/${userID}/`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/educator-resource/${userID}/`)
       .then((res) => {
         console.log("DEL DATA: ", res.data);
         setEducatorRes(res.data);

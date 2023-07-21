@@ -13,7 +13,7 @@ import Tasklist from "../../components/StudentDashboard/Tasklist";
 import axios from "axios";
 import EducatorClass from "../../components/EducatorDashboard/EducatorClass";
 import { Navigate, useNavigate } from "react-router-dom";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 const EducatorDashboard = (props) => {
   const navigate = useNavigate();
   var classes = [
@@ -54,7 +54,10 @@ const EducatorDashboard = (props) => {
     };
     console.log("config", "config");
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/educator-dashboard-data`, config)
+      .get(
+        `${process.env.REACT_APP_BACKEND_URL}/educator-dashboard-data`,
+        config
+      )
       .then((res) => {
         console.log(res);
         console.log(res.data, "received data");
@@ -65,11 +68,11 @@ const EducatorDashboard = (props) => {
         if (mounted.current) {
           setData(res.data);
         }
-      }).catch(err=>{
-      toast(err.message)
-      navigate("/")
-
-     });
+      })
+      .catch((err) => {
+        // toast(err.message)
+        navigate("/");
+      });
     return () => (mounted.current = false);
   }, []);
 
@@ -77,7 +80,7 @@ const EducatorDashboard = (props) => {
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
       <Sidebar user={props.user} />
       <main className="main-content w-full pb-8">
-        <Welcome user={props.user} />
+        <Welcome user={props.user} setLoader={props.setLoader} />
         <CurrentCourses courses={Data.courses} type="educator" />
         <div className="mt-4 grid grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
           {/* <Statistics1 completed={5} inprogress={3} /> */}

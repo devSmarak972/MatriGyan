@@ -11,18 +11,12 @@ async function getUser() {
   const user = await axios
     .get(`${process.env.REACT_APP_BACKEND_URL}/get-user/`, config)
     .then((res) => {
-      console.log(res);
       if (res.data.success) return res.data;
       else {
-        // if(res.data.code===0)
-        // {
-        // toast(res.data.message);
-        console.log(res.data.message);
         return res.data;
       }
     })
     .catch((err) => {
-      toast("Failed to fetch user");
       return false;
     });
   return user;

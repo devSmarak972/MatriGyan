@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-scroll";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlayCircle, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import parse from 'html-react-parser'
-import ReactPlayer from 'react-player'
+import {
+  faPlayCircle,
+  faCheckCircle,
+  faCaretDown,
+  faLock,
+} from "@fortawesome/free-solid-svg-icons";
+import parse from "html-react-parser";
+import ReactPlayer from "react-player";
 
 function LeftHalf(props) {
-  console.log(props)
+  console.log(props);
+
+  const [locked, setLocked] = useState(0);
+  useEffect(() => {
+    if (props.user?.current?.code === 0 || !props.isEnrolled) {
+      setLocked(1);
+    }
+  }, []);
+
+  console.log("LOCKED: ", locked);
+  console.log(props.user?.current?.code);
+  console.log(!props.isEnrolled);
+
   const [videoURL, setvideoURL] = useState(
     "https://player.vimeo.com/video/97243285?title=0&amp;byline=0&amp;portrait=0"
   );
@@ -30,13 +47,11 @@ function LeftHalf(props) {
   };
 
   const isAccordionOpen = (accordionId) => {
-    console.log("Checking accordion:", accordionId);
     return activeAccordion === accordionId ? "show" : "";
   };
 
   const tags_course = props && props.tags ? props.tags : [];
-  const course_secion =
-    props && props.sections ? props.sections : [];
+  const course_secion = props && props.sections ? props.sections : [];
 
   return (
     <div className="col-lg-8">
@@ -49,7 +64,10 @@ function LeftHalf(props) {
                 "--player-image": "url(public/images/illustration/player.svg)",
               }}
             ></div>
-            <button className="btn btn-primary" onClick={handlePlayClick}>
+            <button
+              className="btn btn-primary cursor-pointer"
+              onClick={handlePlayClick}
+            >
               <span className="material-icons">play_arrow</span>
             </button>
           </div>
@@ -61,7 +79,11 @@ function LeftHalf(props) {
               //   title="Video Player"
               //   allowFullScreen
               // ></video>
-              <ReactPlayer playing={isPlaying} url={videoURL} controls={true}></ReactPlayer>
+              <ReactPlayer
+                playing={isPlaying}
+                url={videoURL}
+                controls={true}
+              ></ReactPlayer>
             )}
           </div>
         </div>
@@ -97,13 +119,31 @@ function LeftHalf(props) {
         {course_secion.map((item, index) => (
           <div className="accordion__item" key={item.id}>
             <button
-              className="accordion__toggle"
+              className={`accordion__toggle rounded-[0.45rem] ${
+                locked ? "bg-gray-200" : ""
+              }`}
               style={{ border: "none" }}
-              onClick={() => handleAccordionToggle(`course-toc-${item.id}`)}
+              onClick={() =>
+                !locked && handleAccordionToggle(`course-toc-${item.id}`)
+              }
             >
               <span className="flex">{item.title}</span>
               <span className="accordion__toggle-icon">
-                <FontAwesomeIcon icon={faPlayCircle} />
+                {!locked ? (
+                  <FontAwesomeIcon
+                    icon={faCaretDown}
+                    size="lg"
+                    rotation={
+                      isAccordionOpen(`course-toc-${item.id}`) ? 180 : 0
+                    }
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    size="md"
+                    icon={faLock}
+                    style={{ color: "#9c9c9c" }}
+                  />
+                )}
               </span>
             </button>
             <div
@@ -129,9 +169,8 @@ function LeftHalf(props) {
                     className="flex scroll-link"
                     to="js-player"
                     spy={true}
-        smooth={true}
-        duration={500}
-        
+                    smooth={true}
+                    duration={500}
                     onClick={() => handlePlay(video.url)}
                   >
                     {video.title}

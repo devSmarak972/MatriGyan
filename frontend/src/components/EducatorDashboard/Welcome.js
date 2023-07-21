@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import Logout from "../General/Logout";
 
 const Welcome = (props) => {
-  function handleLogout(e) {}
+  console.log(props, " WELCOME PROPS");
+  // function handleLogout(e) {}
   return (
     <div className="flex gap-2 sticky px-[var(--margin-x)]">
       <span className="text-[1.75rem] font-bold text-slate-700 dark:text-navy-100">
@@ -18,7 +19,7 @@ const Welcome = (props) => {
           Educator
         </span>
       </motion.div>
-      <Logout user={props.user}></Logout>
+      <Logout {...props}></Logout>
     </div>
   );
 };

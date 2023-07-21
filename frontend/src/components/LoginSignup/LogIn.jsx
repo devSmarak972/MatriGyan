@@ -30,12 +30,18 @@ const LogIn = (props) => {
     },
   });
 
+  const [userType, setUserType] = useState(0);
+  useEffect(() => {
+    setUserType(props.user?.current?.code);
+    console.log(userType);
+  }, [props.user.current]);
+
   useEffect(() => {
     (async () => {
       // user.current = await getUser(); //set this to props.user and remove async
-      if (props.user.current.code === 1) {
+      if (userType === 1) {
         window.location.href = "/student";
-      } else if (props.user.current.code === 2) {
+      } else if (userType === 2) {
         window.location.href = "/educator";
       }
     })();
@@ -55,22 +61,19 @@ const LogIn = (props) => {
         { withCredentials: true }
       )
       .then(async (res) => {
-        console.log(res);
-        console.log(res.data, res.headers);
+        // console.log(res);
+        // console.log(res.data, res.headers);
 
         if (res.data["redirect"] === true) {
           if (res.data["utype"] === "student") {
-            console.log("STUUUUUUDENT: ", res.data);
-            props.user.current = await getUser()
-              .then((res) => res)
-              .catch((e) => console.log(e));
-            console.log(props.user.current);
+            // console.log("STUUUUUUDENT: ", res.data);
+            props.setLoader(true);
             navigate("../student");
+            toast("Logged In Successfully!");
           } else if (res.data["utype"] === "educator") {
-            props.user.current = await getUser()
-              .then((res) => res)
-              .catch((e) => console.log(e));
+            props.setLoader(true);
             navigate("../educator");
+            toast("Logged In Successfully!");
           } else navigate("/");
 
           // setCookie('csrftoken', , { path: '/' });

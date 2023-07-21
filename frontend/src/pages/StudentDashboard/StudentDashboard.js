@@ -25,9 +25,8 @@ const StudentDashboard = (props) => {
   const [Data, setData] = useState({});
   const mounted = useRef(false);
   const [loader, setLoader] = useState(true);
-
+  console.log(props);
   useEffect(() => {
-    console.log(loader, "loader");
     setLoader(false);
   }, []);
   useEffect(() => {
@@ -38,12 +37,12 @@ const StudentDashboard = (props) => {
       //   "X-CSRFToken": getCookie("csrftoken"),
       // },
     };
-    console.log("config", "config");
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/student-dashboard-data`, config)
+      .get(
+        `${process.env.REACT_APP_BACKEND_URL}/student-dashboard-data`,
+        config
+      )
       .then((res) => {
-        console.log(res);
-        console.log(res.data, "received data");
         if (!res.data.success) {
           if (res.code === 2) navigate("/educator");
           else {
@@ -51,7 +50,7 @@ const StudentDashboard = (props) => {
             navigate("/login");
           }
         }
-      
+
         if (mounted.current) {
           setData(res.data);
         }
@@ -59,7 +58,7 @@ const StudentDashboard = (props) => {
       .catch((err) => {
         const notify = () => toast(err.message);
         notify();
-        navigate("/")
+        navigate("/");
       });
     return () => (mounted.current = false);
   }, []);
@@ -74,7 +73,11 @@ const StudentDashboard = (props) => {
       <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
         <Sidebar utype={"student"} user={props.user} />
         <main className="main-content w-full pb-8 ml-5">
-          <Welcome name={Data.name} user={props.user} />
+          <Welcome
+            name={Data.name}
+            user={props.user}
+            setLoader={props.setLoader}
+          />
           <CurrentCourses courses={Data.enrolled_courses} type="student" />
           <div className="mt-4 grid grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
             <Statistics1
