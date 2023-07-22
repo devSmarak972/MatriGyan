@@ -1065,7 +1065,7 @@ def deleteResource(request, id):
 	resource.delete()
 	return Response({"success":True, "message":"Resource deleted!"})
 
-@api_view(['GET'])
+@csrf_exempt
 def getUser(request):
 		print(request.user)
 		if not request.user.is_authenticated:
