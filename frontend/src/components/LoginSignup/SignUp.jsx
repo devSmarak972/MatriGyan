@@ -218,8 +218,8 @@ const SignUp = (props) => {
       setActive((prev) => prev);
     } else if (active === 2 && subactive === 0) setActive((prev) => prev);
     else if (active === 2 && subactive === 1) {
-      // verifyOTP();
-      setActive((prev) => prev + 1);
+      verifyOTP();
+      // setActive((prev) => prev + 1);
     } else {
       setActive((prev) => prev + 1);
     }
@@ -231,8 +231,8 @@ const SignUp = (props) => {
     if (form.validate().hasErrors) {
       return setSubactive((prev) => prev);
     } else if (active === 2 && subactive === 0) {
-      setSubactive(1);
-      // sendOTP();
+      // setSubactive(1);
+      sendOTP();
     }
   };
 

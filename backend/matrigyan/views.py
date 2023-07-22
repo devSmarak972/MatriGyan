@@ -20,7 +20,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from .autoreload import reload
 from .models import Course,CourseCategory,CourseSection,Comment,CourseTag,Student,Educator
 from .common import update_first_and_last_name
 import json
@@ -50,8 +50,9 @@ def update(request):
         origin = repo.remotes.origin
 
         origin.pull()
-
+        reload()
         return HttpResponse("Updated code on PythonAnywhere")
+    
     else:
         return HttpResponse("Couldn't update the code on PythonAnywhere")
 

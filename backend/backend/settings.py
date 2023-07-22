@@ -49,6 +49,7 @@ ALLOWED_HOSTS = [
     'localhost','matrigyan.com','www.matrigyan.com'
 ],
 CORS_ORIGIN_WHITELIST = [
+
     'http://localhost:3000','https://matrigyan.com',
 ]
 
@@ -79,6 +80,7 @@ INSTALLED_APPS = [
 
 ]
 
+
 ALLOWED_HOSTS=['http://localhost:3000','https://matrigyan.com',"*"]
 
 # CORS_ORIGIN_ALLOW_ALL = True
@@ -102,6 +104,7 @@ CSRF_COOKIE_NAME="csrftoken"
 CORS_EXPOSE_HEADERS=["*","Cookie"]
 CORS_ALLOW_ALL_ORIGINS  = True
 CORS_ORIGIN_WHITELIST = (
+
        'http://localhost:3000','https://matrigyan.com',
 )
 CORS_ALLOW_CREDENTIALS = True
@@ -232,5 +235,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # }
 
 # CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",
+#     'http://localhost:3000','https://matrigyan.com'
 # ]

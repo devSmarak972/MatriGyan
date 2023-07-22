@@ -8,3 +8,4 @@ templates/
 frontend/build
 # *.env_dev
 # *.env_prod
+frontend/build
