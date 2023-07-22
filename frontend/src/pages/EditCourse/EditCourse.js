@@ -12,7 +12,7 @@ import Options from "../../components/EditCourse/Options";
 import axios from "axios";
 import {toast} from "react-toastify"
 import { getUser } from "../../utils/getUser";
-const EditCourse = () => {
+const EditCourse = (props) => {
   const user=useRef(false);
   const params = useParams();
   const [details, setDetails] = useState(null);
@@ -118,7 +118,7 @@ console.log({category, tags})
   return (
     <div className="container p-8">
       <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 p-8">
-        <Sidebar />
+        <Sidebar user={props.user} />
         <main className="main-content w-full pb-8">
           <Title />
           <div className="grid gap-[var(--margin-x)] grid-cols-1 sm:grid-cols-5 px-[var(--margin-x)]">

@@ -10,11 +10,16 @@ import { Modal, Button, Group, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import DeleteResource from "../components/Resources/DeleteResource";
 import { toast } from "react-toastify";
+import checkUser from "../utils/checkUser.js";
 
-const Resources = () => {
+const Resources = (props) => {
   const [search, setSearch] = useState("");
 
   const [resources, setResources] = useState([]);
+
+  const [educatorRes, setEducatorRes] = useState({});
+
+  const [userID, setUserID] = useState();
 
   const form = useForm({
     initialValues: {
@@ -37,9 +42,9 @@ const Resources = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/get-resources/")
+      .get(`${process.env.REACT_APP_BACKEND_URL}/get-resources/`)
       .then((res) => {
-        // console.log(res.data.sections);
+        console.log(res.data.sections, " RES.DATA");
         setResources(res.data.sections);
         // console.log(resources, "resources");
       })
@@ -48,49 +53,65 @@ const Resources = () => {
       });
   }, []);
 
+  useEffect(() => {
+    setUserID(props.user?.current?.user?.id);
+  });
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}/educator-resource/${userID}/`)
+      .then((res) => {
+        console.log("DEL DATA: ", res.data);
+        setEducatorRes(res.data);
+      })
+      .catch((e) => console.log(e));
+  }, [userID]);
+
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
 
   const [opened, { open, close }] = useDisclosure(false);
 
+  if (JSON.toString(educatorRes) === "{}") return null;
+
+  console.log(educatorRes);
+
   return (
     <div className="min-h-[100vh]  flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar></Sidebar>
+      <Sidebar user={props.user}></Sidebar>
       <div className="main-content w-full px-[var(--margin-x)]">
         <div className="form-wrapper mt-3 flex gap-3">
           <Modal centered opened={opened} onClose={close} title="New Resource">
             <form
               onSubmit={form.onSubmit(async (values) => {
-                console.log("HIIII ", {
-                  title: values.name,
-                  description: values.desc,
-                  image: values.image,
-                  file_url: values.fileUrl,
-                  creator: 2,
-                  tagname: values.tagname,
-                });
-                console.log("RESOURCES: ", resources);
                 let resourceID = await axios
-                  .post(`${process.env.REACT_APP_BACKEND_URL}/add-resource/2/`, {
-                    title: values.name,
-                    description: values.desc,
-                    image: values.image,
-                    file_url: values.fileUrl,
-                    creator: 2,
-                    tagname: values.tagname,
+                  .post(
+                    `${process.env.REACT_APP_BACKEND_URL}/add-resource/${props.user?.current?.user?.id}/`,
+                    {
+                      title: values.name,
+                      description: values.desc,
+                      image: values.image,
+                      file_url: values.fileUrl,
+                      creator: 2,
+                      tagname: values.tagname,
+                    }
+                  )
+                  .then((res) => {
+                    console.log("Resource Added");
+                    setEducatorRes((prev) => ({
+                      ...prev,
+                      resources: [...prev.resources, res.data.resource],
+                    }));
+                    console.log(educatorRes);
+                    return res.data.resource.id;
                   })
-                  .then((res) => res.data.resource.id)
                   .catch((e) => console.log(e));
                 await setResources((prev) => {
-                  console.log(
-                    "HIIIIIIIVASDOVO",
-                    prev.map((section) => !section.sectionname.toLowerCase())
-                  );
                   if (
                     !prev
                       .map((section) => section.sectionname.toLowerCase())
-                      .includes(values.tagname)
+                      .includes(values.tagname?.toLowerCase())
                   ) {
                     return [
                       {
@@ -180,18 +201,27 @@ const Resources = () => {
               </button>
             </form>
           </Modal>
-          <button
-            onClick={open}
-            className="flex items-center gap-2 bg-[var(--primary)] text-white py-1.5 px-3 rounded-lg"
-          >
-            <span className="font-semibold text-xl">+</span>
-            <span className="font-medium w-max">New</span>
-          </button>
+          {props.user?.current?.code === 2 && (
+            <button
+              onClick={open}
+              className="flex items-center gap-2 bg-[var(--primary)] text-white py-1.5 px-3 rounded-lg"
+            >
+              <span className="font-semibold text-xl">+</span>
+              <span className="font-medium w-max">New</span>
+            </button>
+          )}
           <FilterTopBar
             search={search}
             handleSearch={handleSearch}
           ></FilterTopBar>
-          <DeleteResource />
+          {props.user?.current?.code === 2 && (
+            <DeleteResource
+              educatorRes={educatorRes}
+              setEducatorRes={setEducatorRes}
+              resources={resources}
+              setResources={setResources}
+            />
+          )}
         </div>
         <div className="container-lg page__container">
           {resources

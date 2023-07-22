@@ -2,7 +2,6 @@ import React from "react";
 import Course from "./Course";
 
 const CompletedCourses = (props) => {
-  console.log(props.courses, "completed course");
 
   var courses = [
     {

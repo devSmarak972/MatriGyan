@@ -7,11 +7,17 @@ import { useForm } from "@mantine/form";
 import NewQ from "../../components/EditQuiz/NewQ";
 import OtherDetails from "../../components/EditQuiz/OtherDetails";
 import axios from "axios";
+import checkUser from "../../utils/checkUser";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
-const EditQuizPage = () => {
+const NewQuizPage = (props) => {
+  const nav = useNavigate();
   const [questions, setQuestions] = useState([]);
-
-  console.log(questions);
+  console.log(props.user.current.code, 2);
+  if (props.user.current.code !== 2) {
+    nav("/not-found");
+  }
 
   const form1 = useForm({
     initialValues: {
@@ -72,7 +78,7 @@ const EditQuizPage = () => {
 
   return (
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar />
+      <Sidebar user={props.user} />
       <main className="main-content w-full pb-8 px-[var(--margin-x)]">
         <span className="text-[1.75rem] font-bold text-slate-700 mb-8">
           New Quiz
@@ -101,7 +107,12 @@ const EditQuizPage = () => {
             />
           </div>
           <div>
-            <OtherDetails form={form2} questions={questions} axiosType="add" />
+            <OtherDetails
+              userID={props.userID}
+              form={form2}
+              questions={questions}
+              axiosType="add"
+            />
           </div>
         </div>
       </main>
@@ -109,4 +120,4 @@ const EditQuizPage = () => {
   );
 };
 
-export default EditQuizPage;
+export default NewQuizPage;

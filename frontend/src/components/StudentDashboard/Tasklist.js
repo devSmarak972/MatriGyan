@@ -72,7 +72,6 @@ const Tasklist = (props) => {
         "-" +
         end.getDate();
 
-      console.log(status, el.completed);
       return {
         id: el.id,
         title: el.name,
@@ -93,22 +92,22 @@ const Tasklist = (props) => {
       };
     });
 
-    taskstmp.map((task) => {
-      if (task.completed && new Date() > new Date(task.date)) {
-        num--;
-      }
-    });
-    taskstmp = taskstmp.filter((task) => {
-      if (!task.completed) return true;
-      if (task.completed && new Date() > new Date(task.date)) return false;
-      return true;
-    });
+    if (tasks) {
+      taskstmp.map((task) => {
+        if (task.completed && new Date() > new Date(task.date)) {
+          num--;
+        }
+      });
+      taskstmp = taskstmp.filter((task) => {
+        if (!task.completed) return true;
+        if (task.completed && new Date() > new Date(task.date)) return false;
+        return true;
+      });
+    } else taskstmp = [];
 
     settasks({ tasks: taskstmp, numcompleted: num });
     // return () => setnumcompleted(num);
   }, []);
-
-  console.log("TASKS: ", tasks);
 
   const handleCheck = async (el) => {
     console.log(el.currentTarget.id);

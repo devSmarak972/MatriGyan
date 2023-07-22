@@ -2,7 +2,6 @@ import React from "react";
 import Test from "./Test";
 
 const Tests = (props) => {
-  console.log("test", props);
   // col-span-12 flex flex-col sm:col-span-6 lg:col-span-4
   return (
     <div className="col-span-12 sm:col-span-6 lg:col-span-4">

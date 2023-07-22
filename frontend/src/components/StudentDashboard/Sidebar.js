@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,7 +16,8 @@ import {
 const Sidebar = (props) => {
   const [sidebar, setSidebar] = useState(0);
   const [open, setOpen] = useState(0);
-  var utype=props.utype?props.utype:"student"
+  var utype = props.utype ? props.utype : "student";
+
   return (
     <div className="sidebar print:hidden tw-dash-page">
       {window.innerWidth < 768 && (
@@ -58,7 +59,7 @@ const Sidebar = (props) => {
           </div>
           <div className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6">
             <Link
-              to={"/"+utype}
+              to={"/" + utype}
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Dashboard"
               data-tooltip-place="right"
@@ -92,7 +93,7 @@ const Sidebar = (props) => {
             </Link>
 
             <Link
-              to={"/"+utype+"/calendar"}
+              to={"/" + utype + "/calendar"}
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Calendar"
               data-tooltip-place="right"
@@ -131,7 +132,7 @@ const Sidebar = (props) => {
                 color: "white",
                 marginTop: "0",
                 fontWeight: "500",
-                transition: "0.3s all ease"
+                transition: "0.3s all ease",
               }}
             />
           </div>
@@ -167,7 +168,13 @@ const Sidebar = (props) => {
               <button x-ref="popperRef" className="avatar h-12 w-12 border-0">
                 <img
                   className="rounded-full"
-                  src="StudentDashboard/images/avatar/avatar-12.jpg"
+                  src={
+                    props.user?.current?.code === 1
+                      ? props.user?.current?.student?.profile_pic
+                      : props.user?.current?.code === 2
+                      ? props.user?.current?.educator?.profile_pic
+                      : null
+                  }
                   alt="avatar"
                 />
                 <span className="absolute right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-success dark:border-navy-700"></span>
