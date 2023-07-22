@@ -45,9 +45,9 @@ DEBUG = True
 
 KEEP_LOGGED_DURATION=51840000 #60 days
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000','https://matrigyan.com',"https://matrigyan972.pythonanywhere.com"]
-ALLOWED_HOSTS = [
-    'localhost','matrigyan.com','www.matrigyan.com',"matrigyan972.pythonanywhere.com","*"
-],
+# ALLOWED_HOSTS = [
+#     'localhost','matrigyan.com','www.matrigyan.com',"matrigyan972.pythonanywhere.com","*"
+# ],
 CORS_ORIGIN_WHITELIST = [
 
     'http://localhost:3000','https://matrigyan.com',"https://matrigyan972.pythonanywhere.com"
@@ -81,7 +81,7 @@ INSTALLED_APPS = [
 ]
 
 
-# ALLOWED_HOSTS=['http://localhost:3000','https://matrigyan.com',"*"]
+ALLOWED_HOSTS=["*"]
 
 # CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_ALL_ORIGINS = True
