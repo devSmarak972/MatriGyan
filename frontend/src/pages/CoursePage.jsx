@@ -38,21 +38,23 @@ function CoursePage() {
 
   const [courses,setData] = useState([]);
 
+  const getCourses = async ()=>{
+    try{
+      const res = await axios.get("http://127.0.0.1:8000/get-courses/");
+      console.log(res.data);
+      const data = res.data;
+      if(data.success){
+        setData(data.data);
+      }
+    } catch(error){
+      console.log(error);
+    }
+  }
+
   useEffect(()=>{
-    axios.get("http://127.0.0.1:8000/get-courses/")
-    .then((res)=>{
-      console.log("Data recieved");
-      console.log(res.data.data);
-      setData(res.data.data);
-    })
-    .catch((err)=>{
-      console.log(err);
-    })
+    getCourses();
   },[])
 
-  // if(courses.length==0){
-  //   return null;
-  // }
 
   return (
     <div className="page-section tw-page">

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { MultiSelect, Select } from "@mantine/core";
 
 const Options = (props) => {
-
   const options = props.optionscategory.map((section) => ({
     value: section.category,
     label: section.category,
