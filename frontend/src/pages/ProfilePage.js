@@ -32,13 +32,13 @@ const ProfilePage = (props) => {
 
       try {
         const config = {
-          withCredentials: true,
-          // headers: {
-          //   "X-CSRFToken": getCookie("csrftoken"),
-          // },
-        };
-        console.log("config", "config");
-        const res = await axios.get("http://localhost:8000/get-user", config);
+        withCredentials: true,
+        // headers: {
+        //   "X-CSRFToken": getCookie("csrftoken"),
+        // },
+      };
+      console.log("config", "config");
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-user`,config);
         console.log(res.data);
         if (!res.data.success) {
           if (res.data.message === "Not Logged in") {
@@ -111,6 +111,7 @@ const ProfilePage = (props) => {
               avatar && "drop-shadow-[0_0_10px_rgba(0,0,0,0.1)]"
             } translate-y-1/2 rounded-full w-[120px] h-[120px] object-cover object-center mx-auto mt-[50px]`}
             src={avatar}
+
             alt={userDetails.user.first_name}
             color="violet"
             children={

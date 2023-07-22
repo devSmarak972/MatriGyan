@@ -62,7 +62,7 @@ const EducatorDashboard = (props) => {
         console.log(res);
         console.log(res.data, "received data");
         if (!res.data.success) {
-          if (res.code === 2) navigate("/student");
+          if (res.data.code === 2) navigate("/student");
           else navigate("/login");
         }
         if (mounted.current) {

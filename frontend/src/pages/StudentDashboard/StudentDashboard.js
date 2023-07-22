@@ -43,8 +43,9 @@ const StudentDashboard = (props) => {
         config
       )
       .then((res) => {
+        console.log(res.data)
         if (!res.data.success) {
-          if (res.code === 2) navigate("/educator");
+          if (res.data.code === 2) navigate("/educator");
           else {
             toast("Please Login first.");
             navigate("/login");

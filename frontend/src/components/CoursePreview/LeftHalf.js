@@ -11,6 +11,8 @@ import {
 import parse from "html-react-parser";
 import ReactPlayer from "react-player";
 
+
+
 function LeftHalf(props) {
   console.log(props);
 
@@ -73,17 +75,8 @@ function LeftHalf(props) {
           </div>
           <div className="player__embed">
             {isPlaying && (
-              // <video
-              //   className="embed-responsive-item"
-              //   src={videoURL}
-              //   title="Video Player"
-              //   allowFullScreen
-              // ></video>
-              <ReactPlayer
-                playing={isPlaying}
-                url={videoURL}
-                controls={true}
-              ></ReactPlayer>
+
+              <ReactPlayer playing={isPlaying} url={videoURL} controls={true}></ReactPlayer>
             )}
           </div>
         </div>
@@ -144,6 +137,7 @@ function LeftHalf(props) {
                     style={{ color: "#9c9c9c" }}
                   />
                 )}
+
               </span>
             </button>
             <div
