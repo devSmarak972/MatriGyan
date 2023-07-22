@@ -39,22 +39,22 @@ import git
 
 @csrf_exempt
 def update(request):
-    
-    if request.method == "POST":
-        '''
-        pass the path of the diectory where your project will be 
-        stored on PythonAnywhere in the git.Repo() as parameter.
-        Here the name of my directory is "test.pythonanywhere.com"
-        '''
-        repo = git.Repo("../") 
-        origin = repo.remotes.origin
+	
+	if request.method == "POST":
+		'''
+		pass the path of the diectory where your project will be 
+		stored on PythonAnywhere in the git.Repo() as parameter.
+		Here the name of my directory is "test.pythonanywhere.com"
+		'''
+		repo = git.Repo("../") 
+		origin = repo.remotes.origin
 
-        origin.pull()
-        reload()
-        return HttpResponse("Updated code on PythonAnywhere")
-    
-    else:
-        return HttpResponse("Couldn't update the code on PythonAnywhere")
+		origin.pull()
+		reload()
+		return HttpResponse("Updated code on PythonAnywhere")
+	
+	else:
+		return HttpResponse("Couldn't update the code on PythonAnywhere")
 
 class CourseApi(APIView):
 	authentication_classes = [JWTAuthentication,TokenAuthentication, SessionAuthentication]
@@ -375,6 +375,7 @@ def getCourses(request):
 
 @api_view(['GET'])
 def getCourse(request, id):
+	print(request.user)
 	course = Course.objects.filter(id=id).first()
 	if not course:
 		return Response({"success":False,"message":"course not found"})
@@ -557,13 +558,14 @@ def getSections(request, id):
 	# 	return Response("No sections available!")
 @api_view(['GET'])
 def enrollCourse(request, id):
-	student=Student.objects.get(user=request.user)
+	
+	student=Student.objects.filter(user=request.user).first()
 	if not student:
-			return Response({"success":False,"message":"Not logged in"})
+			return Response({"success":False,"message":"Not a Student"})
 
 	course = Course.objects.filter(id=id).first()
 
-	if course!=None:
+	if course:
 		student.enrolled_course.add(course)
 		student.save()
 			
@@ -942,7 +944,7 @@ def addQuizResponse(request,quiz_id):
 	if not request.user.is_authenticated:
 			return Response({"success":False,"message":"Not logged in"})
 
-	student=Student.objects.get(user=request.user)
+	student=Student.objects.filter(user=request.user).first()
 	if not student:
 		return Response({"success":False,"message":"Not a student"})
 	student_id=student.id
@@ -1235,6 +1237,7 @@ def getSAS(request):
 @api_view(['GET'])
 def enrollStudent(request,id):
 	user = request.user
+	print(request.user)
 	if user.is_authenticated:
 		student = Student.objects.filter(user__id=user.id).first()
 		if student is None:
