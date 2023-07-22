@@ -138,7 +138,7 @@ const Sidebar = (props) => {
 
           <div className="flex flex-col items-center space-y-3 py-3">
             {/* <!-- Settings --> */}
-            <a
+            {/* <a
               href="form-layout-5.html"
               className="flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25"
             >
@@ -158,7 +158,7 @@ const Sidebar = (props) => {
                   d="M11.995 15.332c1.794 0 3.248-1.464 3.248-3.27 0-1.807-1.454-3.272-3.248-3.272-1.794 0-3.248 1.465-3.248 3.271 0 1.807 1.454 3.271 3.248 3.271Z"
                 />
               </svg>
-            </a>
+            </a> */}
 
             <div
               x-data="usePopper({placement:'right-end',offset:12})"

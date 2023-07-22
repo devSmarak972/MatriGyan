@@ -1,5 +1,6 @@
 import React from "react";
 import Course from "./Course";
+import { Link } from "react-router-dom";
 
 const CompletedCourses = (props) => {
   console.log(props.courses, "completed course");
@@ -40,12 +41,14 @@ const CompletedCourses = (props) => {
           <h2 className="text-lg font-bold tracking-wide text-slate-700 dark:text-navy-100">
             Completed Courses
           </h2>
+          <Link to='/developing'>
           <a
             href="#"
             class="border-b border-dotted border-current pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70"
           >
             View All
           </a>
+          </Link>
         </div>
         <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-5 lg:grid-cols-1">
           {props?.courses.length !== 0 ? (

@@ -24,6 +24,21 @@ const StudentDashboard = () => {
   const mounted = useRef(false);
   const [loader, setLoader] = useState(true);
 
+  const [courses,setCourses] = useState([]);
+  const getCourses = async ()=>{
+    try{
+      const res = await axios.get('http://127.0.0.1:8000/get-courses/')
+      const data = res.data
+      console.log(res.data);
+      setCourses(data.data);
+    } catch(error){
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
+    getCourses();
+  }, [])
+
   useEffect(() => {
     console.log(loader, "loader");
     setLoader(false);
@@ -70,7 +85,7 @@ const StudentDashboard = () => {
         <Sidebar utype={"student"} />
         <main className="main-content w-full pb-8 ml-5">
           <Welcome name={Data.name} />
-          <CurrentCourses courses={Data.enrolled_courses} type="student" />
+          <CurrentCourses courses={courses} type="student" />
           <div className="mt-4 grid grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
             <Statistics1
               completed={comp}
