@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPen } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../components/StudentDashboard/Sidebar";
 import { useDisclosure } from "@mantine/hooks";
-import {toast} from "react-toastify";
 import { Avatar, Modal, createStyles } from "@mantine/core";
 import UploadAvatar from "../components/ProfilePage/UploadAvatar";
 import axios from 'axios';
-import { getCookie } from "../utils/apiCaller";
+import { Input } from '@mantine/core';
+import { Button } from '@mantine/core';
 
 const useStyles = createStyles(() => ({
   content: {
@@ -16,60 +16,91 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-const ProfilePage = (props) => {
+const EditProfile = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [avatar, setAvatar] = useState(null);
   const { classes } = useStyles();
-  const [userDetails,setDetails] = useState(false);
-  const [first_name, setName] = useState("Name");
-  var userType;
+  const [userDetails,setDetails] = useState({"user":{"first_name":"Name","last_name":""}});
+  const [fname,setFname] = useState("");
+  const [lname,setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [phone,setPhone] = useState("");
+
+  const handleFname = (event) =>{
+    setFname(event.target.value);
+    console.log(fname);
+  }
+
+  const handlePhone = (event) =>{
+    setPhone(event.target.value);
+    console.log(phone);
+  }
+
+  const handleLname = (event) =>{
+    setLname(event.target.value);
+    console.log(lname);
+  }
+
+  const handleEmail = (event) =>{
+    setEmail(event.target.value);
+    console.log(email);
+  }
+
+  const handleUsername = (event) =>{
+    setUsername(event.target.value);
+    console.log(username);
+  }
+
+  const handleSubmit = ()=>{
+    if(userDetails.is_student){
+        console.log(fname,lname,email,username,phone);
+        axios.post(`http://127.0.0.1:8000/edit-student/2/`,{
+            first_name:fname,
+            last_name:lname,
+            email:email,
+            username:username,
+            phone:phone
+        })
+        .then((res)=>{
+            console.log(res);
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }else{
+        console.log(fname,lname,email,username);
+        axios.post(`http://127.0.0.1:8000/edit-educator/1/`, {
+            first_name:fname,
+            last_name:lname,
+            email:email,
+            username:username
+        })
+        .then((res)=>{  
+            console.log(res);
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+  }
+
   useEffect(()=>{
     const fetchDetails = async ()=>{
-      console.log(getCookie("csrftoken"),"csrf");
-      
       try{
-        const config = {
-        withCredentials: true,
-        // headers: {
-        //   "X-CSRFToken": getCookie("csrftoken"),
-        // },
-      };
-      console.log("config", "config");
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-user`,config);
+        const res = await axios.get('http://127.0.0.1:8000/get-user/2/');
         console.log(res.data);
-        if(!res.data.success)
-        {
-          if(res.data.message==="Not Logged in")
-          {
-            toast("Not Logged in");
-          window.location.href="/login";
-        }
-        else{
-        toast("Something went wrong")
-        window.location.href="/";
-        }
-          
-        }
-        else
-        {
         setDetails(res.data);
-        userType=res.data.is_student?1:2;
-        }
-      }
-      catch(error){
+      } catch(error){
         console.log(error);
       }
     }
-  
-  
-    
 
     fetchDetails();
   }, [])
 
   useEffect(()=>{
     console.log(userDetails);
-    setName(userDetails.user?.first_name);
   }, [userDetails])
 
   const initials = (name) => {
@@ -82,11 +113,10 @@ const ProfilePage = (props) => {
     return initials.join("");
   };
 
-  return userDetails?(
-    <div className="h-screen">
+  return (
+    <div>
       <Sidebar />
-      <div className="h-screen main-content pb-8 flex flex-col items-center md:ml-[var(--main-sidebar-width)]">
-        
+      <div className="main-content pb-8 flex flex-col items-center md:ml-[var(--main-sidebar-width)]">
         <div className="relative bg-gradient-to-br from-white to-[var(--primary)] w-full mb-[60px]">
           <Modal
             centered
@@ -106,7 +136,6 @@ const ProfilePage = (props) => {
             className={`${avatar && "drop-shadow-[0_0_10px_rgba(0,0,0,0.1)]"} translate-y-1/2 rounded-full w-[120px] h-[120px] object-cover object-center mx-auto mt-[50px]`}
             src={avatar} //{(!userDetails.is_student && userDetails.educator.profile_pic)}
             alt={userDetails.user.first_name}
-
             color="violet"
             children={
               <span className="text-xl">{initials("Full Name")}</span>
@@ -124,35 +153,46 @@ const ProfilePage = (props) => {
             <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
               First Name
             </span>
-            <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
+            <Input
+            value={fname}
+            onChange={handleFname}
+            placeholder={userDetails.user.first_name}
+            />
+            {/* <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
             {userDetails.user.first_name}
-            </span>
+            </span> */}
           </div>
           <div className="col-span-1 flex flex-col">
             <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
               Last Name
             </span>
-            <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-            {userDetails.user.last_name}
-            </span>
+            <Input
+            value={lname}
+            onChange={handleLname}
+            placeholder={userDetails.user.last_name}
+            />
           </div>
           <div className="col-span-1 flex flex-col">
             <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
               Email
             </span>
-            <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-              {userDetails.user.email}
-            </span>
+            <Input
+            value={email}
+            onChange={handleEmail}
+            placeholder={userDetails.user.email}
+            />
           </div>
           <div className="col-span-1 flex flex-col">
             <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
               Username
             </span>
-            <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-            {userDetails.user.username}
-            </span>
+            <Input
+            value={username}
+            onChange={handleUsername}
+            placeholder={userDetails.user.username}
+            />
           </div>
-          {/* {userType === 2 && (
+          {/* {props.userType === 2 && (
             <div className="col-span-1 flex flex-col">
               <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
                 School
@@ -167,12 +207,14 @@ const ProfilePage = (props) => {
               <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
                 Phone
               </span>
-              <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-                {userDetails.is_student && userDetails.student.phone}
-              </span>
+              <Input
+                value={phone}
+                placeholder={userDetails.is_student && userDetails.student.phone}
+                onChange={handlePhone}
+                />
             </div>
           )}
-          {userType === 1 && (
+          {props.userType === 1 && (
             <div className="col-span-1 flex flex-col">
               <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
                 Courses
@@ -183,24 +225,24 @@ const ProfilePage = (props) => {
             </div>
           )}
         </div>
-        <div className="h-full flex flex-col justify-end">
-          <Link
-            to={userType === 1 ? "/student" : "/educator"}
-            className="py-4 group flex gap-2 items-center"
-          >
-            <span className="align-bottom font-semibold text-[15px] group-hover:text-[var(--primary)] ease-in-out duration-300">
-              Go to Dashboard
-            </span>
-            <FontAwesomeIcon
-              icon={faArrowRight}
-              className="text-slate-600 group-hover:bg-[var(--primary)] group-hover:text-white p-1.5 group-hover:scale-125 w-[15px] h-[15px] group-hover:-rotate-45 rounded-full ease-in-out duration-300"
-            />
-          </Link>
-        </div>
-        
+        <Link
+          to={props.userType === 1 ? "/student" : "/educator"}
+          className="fixed bottom-8 group flex gap-2 items-center"
+        >
+          <span className="font-semibold text-[15px] group-hover:text-[var(--primary)] ease-in-out duration-300">
+            Go to Dashboard
+          </span>
+          <FontAwesomeIcon
+            icon={faArrowRight}
+            className="text-slate-600 group-hover:bg-[var(--primary)] group-hover:text-white p-1.5 group-hover:scale-125 w-[15px] h-[15px] group-hover:-rotate-45 rounded-full ease-in-out duration-300"
+          />
+        </Link>
+        <Button variant="light" color="blue" style={{"margin":"10px"}} onClick={handleSubmit}>
+        Save
+        </Button>
       </div>
     </div>
-  ):(<p className="text-muted">Loading...</p>);
+  );
 };
 
-export default ProfilePage;
+export default EditProfile;

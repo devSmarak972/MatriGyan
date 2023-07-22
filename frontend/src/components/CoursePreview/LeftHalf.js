@@ -2,9 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-scroll";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlayCircle, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import parse from 'html-react-parser'
-import ReactPlayer from 'react-player'
+import { faPlay, faCheckCircle } from "@fortawesome/free-solid-svg-icons"; // Import the desired Font Awesome icons
+import parse from 'html-react-parser';
+import ReactPlayer from 'react-player';
 
 function LeftHalf(props) {
   console.log(props)
@@ -55,12 +55,6 @@ function LeftHalf(props) {
           </div>
           <div className="player__embed">
             {isPlaying && (
-              // <video
-              //   className="embed-responsive-item"
-              //   src={videoURL}
-              //   title="Video Player"
-              //   allowFullScreen
-              // ></video>
               <ReactPlayer playing={isPlaying} url={videoURL} controls={true}></ReactPlayer>
             )}
           </div>
@@ -103,7 +97,7 @@ function LeftHalf(props) {
             >
               <span className="flex">{item.title}</span>
               <span className="accordion__toggle-icon">
-                <FontAwesomeIcon icon={faPlayCircle} />
+                <FontAwesomeIcon icon={faPlay} />
               </span>
             </button>
             <div
@@ -129,9 +123,8 @@ function LeftHalf(props) {
                     className="flex scroll-link"
                     to="js-player"
                     spy={true}
-        smooth={true}
-        duration={500}
-        
+                    smooth={true}
+                    duration={500}
                     onClick={() => handlePlay(video.url)}
                   >
                     {video.title}
