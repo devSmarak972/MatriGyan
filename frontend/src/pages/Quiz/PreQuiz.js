@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 // import data from "./quiz.json";
-import { Link, json, useParams } from "react-router-dom";
+import { Link, json, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
-const PreQuiz = () => {
+const PreQuiz = (props) => {
+  const navigate = useNavigate();
+
   const { ID } = useParams();
   const [data, setData] = useState({});
   useEffect(() => {

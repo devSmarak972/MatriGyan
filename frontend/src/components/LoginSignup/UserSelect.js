@@ -26,6 +26,7 @@ const UserSelect = (props) => {
         >
           <FontAwesomeIcon
             icon={faPersonChalkboard}
+            size="xl"
             className="user-icon-signup cursor-pointer mb-[-4px] mt-[4px] text-[var(--grey-dark)] w-[70px] h-[70px] rounded-full border-2 p-4 border-[var(--grey-dark)]"
           />
           <span className="user-name-signup font-medium uppercase text-[var(--grey-dark)]">
@@ -38,7 +39,8 @@ const UserSelect = (props) => {
         >
           <FontAwesomeIcon
             icon={faUserGraduate}
-            className="user-icon-signup cursor-pointer mb-[-4px] mt-[4px] text-[var(--grey-dark)] w-[60px] h-[60px] rounded-full border-2 p-7 border-[var(--grey-dark)]"
+            size="xl"
+            className="user-icon-signup cursor-pointer mb-[-4px] mt-[4px] text-[var(--grey-dark)] w-[70px] h-[70px] rounded-full border-2 p-4 border-[var(--grey-dark)]"
           />
           <span className="user-name-signup font-medium uppercase text-[var(--grey-dark)]">
             Student

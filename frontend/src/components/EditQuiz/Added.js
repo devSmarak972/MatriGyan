@@ -146,6 +146,24 @@ const Added = (props) => {
                   <button
                     onClick={() => {
                       props.form.reset();
+                      console.log("PREV VALUES: ", {
+                        question: item.question,
+                        option1: item.options[0],
+                        option2: item.options[1],
+                        option3: item.options[2],
+                        option4: item.options[3],
+                        answer: item.answer,
+                        type: item.type,
+                        correct: item.correct,
+                        incorrect: item.incorrect,
+                        quesMedia: item.quesMedia,
+                        ansMedia: item.ansMedia,
+                        // new File([b64toBlob(item.ansMedia)], "solution.png", {
+                        //   type: "image/png",
+                        //   lastModified: new Date().getTime(),
+                        // }),
+                        solutionDesc: item.solutionDesc,
+                      });
                       setEditingQ(index + 1);
                       props.form.setValues({
                         question: item.question,
@@ -280,12 +298,8 @@ const Added = (props) => {
                     incorrect: props.form.values.incorrect,
                     answer: props.form.values.answer,
                     solutionDesc: props.form.values.solutionDesc,
-                    quesMedia: props.form.values.quesMedia
-                      ? fileToDataUri(props.form.values.quesMedia)
-                      : "",
-                    ansMedia: props.form.values.ansMedia
-                      ? fileToDataUri(props.form.values.ansMedia)
-                      : "",
+                    quesMedia: props.form.values.quesMedia,
+                    ansMedia: props.form.values.ansMedia,
                   };
               })
             );
@@ -361,7 +375,7 @@ const Added = (props) => {
                     .then((res) => console.log(res))
                     .catch((e) => console.log(e));
                 })
-                .catch((e) => console.log(e));
+                .catch((e) => console.log(e.response.data));
               toast("Question Edited Successfully!");
             }
             setEditingQ(0);

@@ -17,7 +17,7 @@ const Welcome = (props) => {
           {props.name}
         </span>
       </motion.div>
-      <Logout></Logout>
+      <Logout {...props}></Logout>
     </div>
   );
 };
