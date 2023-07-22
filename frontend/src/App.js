@@ -26,6 +26,8 @@ import InDev from "./pages/InDev/InDev";
 import ResourceView from "./pages/ResourceView";
 import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/ProfilePage";
+import EditProfile from "./pages/EditProfile";
+import CreateCourse from "./pages/CreateCourse";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { getUser } from "./utils/getUser";
 import { useEffect, useRef, useState } from "react";
@@ -139,12 +141,16 @@ function App() {
                 path="/resourceview/:ID"
                 element={<ResourceView user={user} />}
               />
+          <Route path="/resourceview" element={<ResourceView />}/>
+
+<Route path="/edit/profile" element={<EditProfile />} />
+
               <Route path="/not-found" element={<Page404 />} />
               <Route path="/developing" element={<InDev />} />
               <Route path="/*" element={<Page404 />} />
             </>
           )}
-        </Routes>
+       </Routes>
       </div>
     </Router>
   );

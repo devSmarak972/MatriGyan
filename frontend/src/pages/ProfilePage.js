@@ -111,6 +111,7 @@ const ProfilePage = (props) => {
               avatar && "drop-shadow-[0_0_10px_rgba(0,0,0,0.1)]"
             } translate-y-1/2 rounded-full w-[120px] h-[120px] object-cover object-center mx-auto mt-[50px]`}
             src={avatar}
+
             alt={userDetails.user.first_name}
             color="violet"
             children={

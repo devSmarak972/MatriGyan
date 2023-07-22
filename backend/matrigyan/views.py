@@ -482,7 +482,9 @@ def getStudentDashData(request):
 
 @api_view(['DELETE'])
 def deleteCourse(request, id):
-	course = Course.objects.get(id=id)
+	course = Course.objects.filter(id=id).first()
+	if course is None:
+		return Response({"success":False,"message":"No course found."})
 	course.delete()
 	return Response({"success":True,"message":"Course deleted!"})
 
@@ -610,19 +612,24 @@ def addVideo(request):
 
 @api_view(['DELETE'])
 def deleteSection(request, id):
-	section = CourseSection.objects.get(id=id)
+	section = CourseSection.objects.filter(id=id).first()
+	if section is None:
+		return Response({"success":False,"message":"No section found."})
 	section.delete()
 	return Response({"success":True,"message":"Section deleted!"})
 
 @api_view(['DELETE'])
 def deleteVideo(request, id):
-	vid = Video.objects.get(id=id)
+	vid = Video.objects.filter(id=id).first()
+	if vid is None:
+		return Response({"success":False, "message":"No video."})
 	vid.delete()
 	return Response({"success":True,"message":"Video deleted"})
 
 @api_view(['GET'])
 def getQuiz(request, id):
 	quizes = Quiz.objects.filter(id=id).first()
+
 	if not quizes:
 		return Response({"success":False, "message":"quiz does not exist"})
 		
@@ -631,7 +638,9 @@ def getQuiz(request, id):
 
 @api_view(['GET'])
 def getCourseQuiz(request, id):
-	course = Course.objects.get(id=id)
+	course = Course.objects.filter(id=id).first()
+	if course is None:
+		return Response({"success":False,"message":"No course."})
 	quizes = course.quizes.all()
 	if quizes is None:
 		return Response({"success":False,"message":"No quizes."})
@@ -645,8 +654,12 @@ def createQuiz(request):
 		quiz.save()
   
 		if "course_id" in request.data.keys():
-			course = Course.objects.get(id=request.data["course_id"])
-			course_quiz = Quiz.objects.get(id = quiz.data['id'])
+			course = Course.objects.filter(id=request.data["course_id"]).first()
+			if course is None:
+				return Response({"success":False,"message":"No course."})
+			course_quiz = Quiz.objects.filter(id = quiz.data['id']).first()
+			if course_quiz is None:
+				return Response({"success":False,"message":"No quiz"})
 			course.quizes.add(course_quiz)
 
 		return Response({"success":True,"quiz":quiz.data,"message":"Quiz created!"})
@@ -656,7 +669,7 @@ def createQuiz(request):
 def editQuiz(request, id):
 	print(id)
 	# return Response("reached")
-	quiz=Quiz.objects.get(id=id)
+	quiz=Quiz.objects.filter(id=id).first()
 	if not quiz:
 		return Response({"success":False,"message":"No quiz exists with id"+id})
 	# print(request.data)
@@ -684,7 +697,9 @@ def editQuiz(request, id):
 
 @api_view(['DELETE'])
 def deleteQuiz(request, id):
-	quiz = Quiz.objects.get(id=id)
+	quiz = Quiz.objects.filter(id=id).first()
+	if quiz is None:
+		return Response({"success":False,"message":"No quiz found."})
 	quiz.delete()
 	return Response({"success":True,"message":'Quiz deleted!'})
 
@@ -802,7 +817,9 @@ def editSolution(request, id):
 	
 @api_view(['GET'])
 def getQuestions(request, id):
-	quiz = Quiz.objects.get(id=id)
+	quiz = Quiz.objects.filter(id=id).first()
+	if quiz is None:
+		return Response({"success":False,"message":"No quiz found."})
 	questions = quiz.questions.all()
 	if questions is None:
 		return Response({"success":False,"message":"No questions."})
@@ -811,7 +828,9 @@ def getQuestions(request, id):
 
 @api_view(['DELETE'])
 def deleteQuestion(request, id):
-	question = Question.objects.get(id=id)
+	question = Question.objects.filter(id=id).first()
+	if question is None:
+		return Response({"success":False,"message":"No question."})
 	question.delete()
 	return Response({"success":True,"message":"Question deleted!"})
 
@@ -838,7 +857,9 @@ def addSolution(request, id):
 
 @api_view(['DELETE'])
 def deleteSolution(request, id):
-	solution = Solution.objects.get(id=id)
+	solution = Solution.objects.filter(id=id).first()
+	if solution is None:
+		return Response({"success":False,"message":"No solution."})
 	solution.delete()
 	return Response({"success":True, "message":"Solution deleted"})
 
@@ -847,8 +868,12 @@ def addOption(request, id):
 	option = OptionSerializer(data=request.data)
 	if option.is_valid():
 		option.save()
-		question = Question.objects.get(id=id)
-		option_object = Option.objects.get(id=option.data['id'])
+		question = Question.objects.filter(id=id).first()
+		if question is None:
+			return Response({"success":False,"message":"No question."})
+		option_object = Option.objects.filter(id=option.data['id']).first()
+		if option_object is None:
+			return Response({"success":False,"message":"No options."})
 		question.options.add(option_object)
 		question=QuestionSerializer(question)
 		return Response({"question":question.data,"option_added":option_object.value,"success":True})
@@ -856,13 +881,17 @@ def addOption(request, id):
 
 @api_view(['DELETE'])
 def deleteOption(request, id):
-	option = Option.objects.get(id=id)
+	option = Option.objects.filter(id=id).first()
+	if option is None:
+		return Response({"success":False,"message":"No option."})
 	option.delete()
 	return Response({"success":True,"message":"Option deleted"})
 
 @api_view(['GET'])
 def getOptions(request, id):
-	question = Question.objects.get(id=id)
+	question = Question.objects.filter(id=id).first()
+	if question is None:
+		return Response({"success":False,"message":"No question."})
 	options = question.options.all()
 	if options is None:
 		return Response({"success":False,"message":"No options."})
@@ -900,7 +929,9 @@ def getEvents(request,id):
 	
 @api_view(['DELETE'])
 def deleteEvent(request, id):
-	event = Event.objects.get(id=id)
+	event = Event.objects.filter(id=id).first()
+	if event is None:
+		return Response({"success":False,"message":"No event."})
 	event.delete()
 	return Response({"success":True, "message":"Event deleted."})
 # @csrf_exempt
@@ -959,6 +990,8 @@ def getQuizResponse(request,quiz_id):
 @api_view(['GET'])
 def getResources(request):
 	tags = ResourceTag.objects.all()
+	if tags is None:
+		return Response({"success":False,"message":"No resources."})
 	sections = []
 	for tag in tags:
 		resources = Resource.objects.filter(tagname__id=tag.id)
@@ -975,7 +1008,9 @@ def getResources(request):
 
 @api_view(['GET'])
 def getParticularResource(request, id):
-	resource = Resource.objects.get(id=id)
+	resource = Resource.objects.filter(id=id).first()
+	if resource is None:
+		return Response({"success":False,"message":"No resources."})
 	serializedresource = ResourceSerializer(resource, many=False)
 	return Response({"success":True,"resource":serializedresource.data})
 
@@ -997,16 +1032,20 @@ def addResource(request, id):
 		new_tag = ResourceTag(name=tag_name)
 		new_tag.save()
 		resource = Resource(image=data['image'],description=data['description'],title=data['title'],file_url=data['file_url'])
-		creator = Educator.objects.get(id=id)
+		creator = Educator.objects.filter(id=id).first()
+		if creator is None:
+			return Response({"success":False,"message":"No educator."})
 		resource.creator = creator
 		resource.tagname = new_tag
 		resource.save()
 		ser_res = ResourceSerializer(resource, many=False)
 		ser_tag = ResourceTagSerializer(new_tag, many=False)
 		return Response({"success":True, "resource":ser_res.data,"tag":ser_tag.data})
-	old_tag = ResourceTag.objects.get(name=tag_name)
+	old_tag = ResourceTag.objects.filter(name=tag_name)[0]
 	resource = Resource(image=data['image'],description=data['description'],title=data['title'],file_url=data['file_url'])
-	creator = Educator.objects.get(id=id)
+	creator = Educator.objects.filter(id=id).first()
+	if creator is None:
+		return Response({"success":False,"message":"No educator."})
 	resource.creator = creator
 	resource.tagname = old_tag
 	resource.save()
@@ -1017,7 +1056,9 @@ def addResource(request, id):
 
 @api_view(['DELETE'])
 def deleteResource(request, id):
-	resource = Resource.objects.get(id=id)
+	resource = Resource.objects.filter(id=id).first()
+	if resource is None:
+		return Response({"success":False,"message":"No resource."})
 	resource.delete()
 	return Response({"success":True, "message":"Resource deleted!"})
 
@@ -1034,14 +1075,18 @@ def getUser(request):
 		stu = Student.objects.filter(user__id=id).first()
 		# print(stu.DoesNotExist)
 		if stu is None:
-			educator = Educator.objects.get(user__id=id)
+			educator = Educator.objects.filter(user__id=id).first()
+			if educator is None:
+				return Response({"success":False,"message":"No educator found."})
 			ser_educator = EducatorSerializer(educator, many=False)
 			return Response({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data,"code":2})
 			# student = Student.objects.get(user__id=user.id)
 			# ser_student = StudentSerializer(student, many=False)
 			# return Response({"success":True, "user":ser_user,"is_student":True,"student":ser_student})
 		else:
-			student = Student.objects.get(user__id=user.id)
+			student = Student.objects.filter(user__id=user.id).first()
+			if student is None:
+				return Response({"success":False,"message":"No student."})
 			ser_student = StudentSerializer(student, many=False)
 			return Response({"success":True, "user":ser_user.data,"is_student":True,"student":ser_student.data,"code":1})
 			# educator = Educator.objects.get(id=user.id)
@@ -1060,36 +1105,66 @@ def getEducators(request):
 
 @api_view(['GET'])
 def getEducator(request, id):
-	educator = Educator.objects.get(id=id)
+	educator = Educator.objects.filter(id=id).first()
+	if educator is None:
+		return Response({"success":False,"message":"No educator."})
 	ser_educator = EducatorSerializer(educator, many=False)
 	return Response({"success":True, "educator":ser_educator.data})
 
 @api_view(['POST'])
 def editStudent(request,id):
-	student = Student.objects.get(id=id)
-	ser_student = StudentSerializer(instance=student, data=request.data)
-	if ser_student.is_valid():
-		ser_student.save()
-		return Response({"success":True,"student":ser_student.data,"message":"Student details updated"})
-	else:
-		return Response({"success":False, "student":ser_student.data, "message":"Failed to update info."})
+	data = request.data
+	first_name = data['first_name']
+	last_name = data['last_name']
+	email = data['email']
+	username = data['username']
+	phone = data['phone']
+	user = User.objects.filter(id=id).first()
+	if user is None:
+		return Response({"success":False,"message":"No user."})
+	student = Student.objects.filter(user__id=id).first()
+	if student is None:
+		return Response({"success":False,"message":"No student."})
+	user.first_name = first_name
+	user.last_name = last_name
+	user.email = email
+	user.username = username
+	student.phone=phone
+	user.save()
+	student.save()
+	ser_user = UserSerializer(user, many=False)
+	ser_student = StudentSerializer(student, many=False)
+	return Response({"success":True,"user":ser_user.data,"student":ser_student.data})
 	
 @api_view(['POST'])
 def editEducator(request,id):
-	educator = Educator.objects.get(id=id)
-	ser_educator = EducatorSerializer(instance=educator, data=request.data)
-	if ser_educator.is_valid():
-		ser_educator.save()
-		return Response({"success":True,"educator":ser_educator.data,"message":"Educator details updated"})
-	else:
-		return Response({"success":False, "educator":ser_educator.data, "message":"Failed to update info."})
+	data = request.data
+	first_name = data['first_name']
+	last_name = data['last_name']
+	email = data['email']
+	username = data['username']
+	user = User.objects.filter(id=id).first()
+	if user is None:
+		return Response({"success":False,"message":"No user."})
+	educator = Educator.objects.filter(user__id=id).first()
+	if educator is None:
+		return Response({"success":False,"message":"No educator."})
+	user.first_name = first_name
+	user.last_name = last_name
+	user.email = email
+	user.username = username
+	user.save()
+	educator.name = user.first_name + user.last_name
+	educator.save()
+	ser_user = UserSerializer(user, many=False)
+	ser_educator = EducatorSerializer(educator, many=False)
+	return Response({"success":True,"user":ser_user.data,"educator":ser_educator.data})
 
 @api_view(['GET'])
 def searchCourses(request, search):
 	print(search)
 	search = search.lower()
 	courses = Course.objects.all()
-	print(courses)
 	if courses is None:
 		return Response({"success":False,"message":"No courses."})
 	course_list = []
@@ -1108,7 +1183,6 @@ def searchCourses(request, search):
 @api_view(['GET'])
 def filterCategory(request, category):
 	courses = Course.objects.filter(category__category=category.lower())
-	print(courses)
 	if courses is None:
 		return Response({"success":False,"message":"No courses."})
 	else:
@@ -1156,6 +1230,23 @@ def getSAS(request):
 	print(sas)
 	# sas="hello"
 	return Response({"success":True, "message":"SAS token generated","sas":sas})
+
+@api_view(['GET'])
+def enrollStudent(request,id):
+	user = request.user
+	if user.is_authenticated:
+		student = Student.objects.filter(user__id=user.id).first()
+		if student is None:
+			ser_user = UserSerializer(user,many=False)
+			return Response({"success":False,"message":"No student","user":ser_user.data})
+		course = Course.objects.filter(id=id).first()
+		if course is None:
+			return Response({"success":False,"message":"No course."})
+		student.enrolled_course.add(course)
+		ser_student=StudentSerializer(student,many=False)
+		ser_course=CourseSerializer(course,many=False)
+		return Response({"success":True,"student":ser_student.data,"course":ser_course.data})
+	return Response({"success":False,"message":"User not logged in."})
 
 @api_view(['POST'])
 def updateProfile(request):
