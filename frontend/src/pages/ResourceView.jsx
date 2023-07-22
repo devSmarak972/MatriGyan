@@ -46,7 +46,7 @@ function ResourceView(props) {
 
   return (
     <div className="min-h-[100vh] flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar user={props.user} />
+      <Sidebar user={props.user} tab={3} />
       <div className="main-content w-full px-[var(--margin-x)] flex flex-col lg:flex-row gap-8 mb-[var(--margin-x)]">
         <div className="flex flex-column gap-4 w-1/2">
           <span className="font-semibold text-xl">{data.title}</span>

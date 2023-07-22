@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../../utils/getUser";
 import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 const Logout = (props) => {
   console.log(props);
@@ -29,9 +31,13 @@ const Logout = (props) => {
   }
   return (
     <div className="menu flex align-center justify-center ml-auto">
-      <h3 onClick={handleLogout} className="cursor-pointer">
-        <i className="fa fa-sign-out"></i>
-      </h3>
+      <div
+        onClick={handleLogout}
+        className="cursor-pointer flex gap-2 items-center"
+      >
+        <FontAwesomeIcon icon={faArrowRightFromBracket} />
+        <span>Sign Out</span>
+      </div>
     </div>
   );
 };

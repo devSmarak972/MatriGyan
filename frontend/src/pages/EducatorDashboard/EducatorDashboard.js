@@ -78,7 +78,7 @@ const EducatorDashboard = (props) => {
 
   return (
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar user={props.user} />
+      <Sidebar user={props.user} tab={0} />
       <main className="main-content w-full pb-8">
         <Welcome user={props.user} setLoader={props.setLoader} />
         <CurrentCourses courses={Data.courses} type="educator" />

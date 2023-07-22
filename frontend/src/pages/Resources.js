@@ -79,7 +79,7 @@ const Resources = (props) => {
 
   return (
     <div className="min-h-[100vh]  flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar user={props.user}></Sidebar>
+      <Sidebar user={props.user} tab={3}></Sidebar>
       <div className="main-content w-full px-[var(--margin-x)]">
         <div className="form-wrapper mt-3 flex gap-3">
           <Modal centered opened={opened} onClose={close} title="New Resource">

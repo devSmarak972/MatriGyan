@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { createStyles } from "@mantine/core";
@@ -10,10 +10,10 @@ import Sections from "../../components/EditCourse/Sections";
 import Save from "../../components/EditCourse/Save";
 import Options from "../../components/EditCourse/Options";
 import axios from "axios";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 import { getUser } from "../../utils/getUser";
 const EditCourse = (props) => {
-  const user=useRef(false);
+  const user = useRef(false);
   const params = useParams();
   const [details, setDetails] = useState(null);
   const [sections, setSections] = useState([]);
@@ -34,7 +34,7 @@ const EditCourse = (props) => {
       // videofile:"",
     },
   });
-  console.log("Sections added",sections);
+  console.log("Sections added", sections);
   // const useStyles = createStyles((theme) => ({
   //   root: {
   //     borderRadius: theme.radius.sm,
@@ -43,7 +43,7 @@ const EditCourse = (props) => {
   //     position: "relative",
   //     zIndex: 0,
   //     transition: "transform 150ms ease",
-  
+
   //     "&[data-active]": {
   //       transform: "scale(1.03)",
   //       backgroundColor:
@@ -63,10 +63,8 @@ const EditCourse = (props) => {
   //     },
   //   },
   // }));
-  
+
   const getCourse = () => {
-
-
     fetch(`http://127.0.0.1:8000/get-course/${params.ID}`, {
       method: "get",
     })
@@ -87,22 +85,19 @@ const EditCourse = (props) => {
 
   useEffect(() => {
     (async () => {
-      user.current=await getUser();
-      if(user.current.code===0)
-      {
-        toast("Login to access course")
-        window.location.href="/login"
+      user.current = await getUser();
+      if (user.current.code === 0) {
+        toast("Login to access course");
+        window.location.href = "/login";
       }
-     if(user.current.code===1)
-    {
-     toast("Unauthorized access")
-      window.location.href="/student"
-    }
-    
-   })();
+      if (user.current.code === 1) {
+        toast("Unauthorized access");
+        window.location.href = "/student";
+      }
+    })();
     getCourse();
   }, []);
-console.log({category, tags})
+  console.log({ category, tags });
 
   // if(sections.length==0 || tags.length==0 || category.length==0){
   //   return toast("Course has no sections");
@@ -118,7 +113,7 @@ console.log({category, tags})
   return (
     <div className="container p-8">
       <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 p-8">
-        <Sidebar user={props.user} />
+        <Sidebar user={props.user} tab={1} />
         <main className="main-content w-full pb-8">
           <Title />
           <div className="grid gap-[var(--margin-x)] grid-cols-1 sm:grid-cols-5 px-[var(--margin-x)]">
@@ -147,9 +142,23 @@ console.log({category, tags})
             </div>
 
             <div className="col-span-1 sm:col-span-2">
-              <Save form = {form} name = {name} desc={desc} category={category} tags={tags}/>
+              <Save
+                form={form}
+                name={name}
+                desc={desc}
+                category={category}
+                tags={tags}
+              />
               {/* <Video form={form} /> */}
-              <Options form={form} category={category} tags={tags} optionscategory={optionscategory} optionstags={optionstags} setcategory={setcategory} settags={settags}/>
+              <Options
+                form={form}
+                category={category}
+                tags={tags}
+                optionscategory={optionscategory}
+                optionstags={optionstags}
+                setcategory={setcategory}
+                settags={settags}
+              />
             </div>
           </div>
         </main>
