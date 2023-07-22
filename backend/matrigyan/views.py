@@ -1028,8 +1028,13 @@ def getEducatorResource(request, id):
 @api_view(['POST'])
 def addResource(request, id):
 	data=request.data
+	print(request.user)
 	tag_name = data['tagname']
+	if not tag_name:
+			return Response({"success":False,"message":"No tags entered"})
+		
 	tag_name = tag_name.lower()
+ 
 	exists = ResourceTag.objects.filter(name=tag_name).first()
 	if exists is None:
 		new_tag = ResourceTag(name=tag_name)
