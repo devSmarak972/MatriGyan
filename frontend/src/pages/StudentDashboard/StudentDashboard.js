@@ -43,6 +43,7 @@ const StudentDashboard = (props) => {
         config
       )
       .then((res) => {
+        console.log(res.data)
         if (!res.data.success) {
           if (res.data.code === 2) navigate("/educator");
           else {
