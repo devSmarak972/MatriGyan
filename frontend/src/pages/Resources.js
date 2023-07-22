@@ -46,7 +46,7 @@ const Resources = (props) => {
       .then((res) => {
         console.log(res.data.sections, " RES.DATA");
         setResources(res.data.sections);
-        // console.log(resources, "resources");
+        console.log(resources, "resources");
       })
       .catch((err) => {
         console.log(err);
@@ -148,7 +148,7 @@ const Resources = (props) => {
                             image: values.image,
                             title: values.name,
                             file_url: values.fileUrl,
-                            // date: new Date(),
+                            creator: props.user?.current?.educator,
                           },
                           ...section.cards,
                         ],

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons"; // Import the desired Font Awesome icon
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function RightHalf(props) {
   console.log(props, "right");
@@ -43,6 +44,8 @@ function RightHalf(props) {
                         )
                         .then((res) => console.log(res))
                         .catch((e) => console.log(e));
+                      props.setEnrolled(true);
+                      toast("Enrolled Successfully!");
                     }}
                     class="btn btn-accent mb-8pt"
                   >
