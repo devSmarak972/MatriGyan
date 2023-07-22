@@ -64,7 +64,7 @@ function CoursePage(props) {
             <Courses title="Recent Courses" courses={courses}></Courses>
             <Courses title="Popular Courses" courses={courses}></Courses>
           </>
-        ) : ((courses.length===0)?<h5 className="text-muted">No courses available right now</h5>:(
+        ) : (( Array.isArray(courses))?<h5 className="text-muted">No courses available right now</h5>:(
           <p className="m-auto p-3">Loading ...</p>)
         )}
       </div>
