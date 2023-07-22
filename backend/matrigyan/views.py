@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 # coding: utf-8
+
 from django.template.loader import get_template
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponsePermanentRedirect,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -39,7 +40,6 @@ import git
 
 @csrf_exempt
 def update(request):
-	
 	if request.method == "POST":
 		'''
 		pass the path of the diectory where your project will be 
@@ -439,7 +439,7 @@ def getEducatorDashData(request):
 	return response
 @api_view(['GET'])
 def getStudentDashData(request):
-	print(request.user)
+	print(request.user,"dashboard")
 	student=Student.objects.filter(user=request.user.id).first()
 	if( not student):
 		educator=Educator.objects.filter(user=request.user.id).first()
@@ -1028,8 +1028,13 @@ def getEducatorResource(request, id):
 @api_view(['POST'])
 def addResource(request, id):
 	data=request.data
+	print(request.user)
 	tag_name = data['tagname']
+	if not tag_name:
+			return Response({"success":False,"message":"No tags entered"})
+		
 	tag_name = tag_name.lower()
+ 
 	exists = ResourceTag.objects.filter(name=tag_name).first()
 	if exists is None:
 		new_tag = ResourceTag(name=tag_name)
@@ -1065,11 +1070,11 @@ def deleteResource(request, id):
 	resource.delete()
 	return Response({"success":True, "message":"Resource deleted!"})
 
-@api_view(['GET'])
+@csrf_exempt
 def getUser(request):
 		print(request.user)
 		if not request.user.is_authenticated:
-			return Response({"success":False,"message":"Not Logged in","code":0})
+			return JsonResponse({"success":False,"message":"Not Logged in","code":0})
 		id=request.user.id
 		user = User.objects.get(id=id)
 		print(user)
@@ -1082,16 +1087,16 @@ def getUser(request):
 			if educator is None:
 				return Response({"success":False,"message":"No educator found."})
 			ser_educator = EducatorSerializer(educator, many=False)
-			return Response({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data,"code":2})
+			return JsonResponse({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data,"code":2})
 			# student = Student.objects.get(user__id=user.id)
 			# ser_student = StudentSerializer(student, many=False)
 			# return Response({"success":True, "user":ser_user,"is_student":True,"student":ser_student})
 		else:
 			student = Student.objects.filter(user__id=user.id).first()
 			if student is None:
-				return Response({"success":False,"message":"No student."})
+				return JsonResponse({"success":False,"message":"No student."})
 			ser_student = StudentSerializer(student, many=False)
-			return Response({"success":True, "user":ser_user.data,"is_student":True,"student":ser_student.data,"code":1})
+			return JsonResponse({"success":True, "user":ser_user.data,"is_student":True,"student":ser_student.data,"code":1})
 			# educator = Educator.objects.get(id=user.id)
 			# ser_educator = EducatorSerializer(educator, many=False)
 			# return Response({"success":True, "is_student":False, "user":ser_user,"educator":ser_educator})

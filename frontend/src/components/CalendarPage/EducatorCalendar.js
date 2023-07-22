@@ -197,7 +197,7 @@ const EducatorCalendar = () => {
   useEffect(()=>{
     const fetchData = async () =>{
       try{
-        const res = await axios.get(`http://127.0.0.1:8000/get-events/${user_id}/`);
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-events/${user_id}/`);
         console.log("fetch complete.");
         setEvents(res.data.data);
       } catch(error){
@@ -221,7 +221,7 @@ const EducatorCalendar = () => {
         console.log(value,"set id");
       }
     }
-    axios.delete(`http://127.0.0.1:8000/delete-events/${value}/`)
+    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/delete-events/${value}/`)
     .then((res)=>{
       console.log(res);
     })

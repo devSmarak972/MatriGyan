@@ -14,7 +14,7 @@ const Create = (props) => {
   const params = useParams();
   const nagivate = useNavigate();
   const handlesave = () =>{
-    axios.post('http://127.0.0.1:8000/create-course/', {
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/create-course/`, {
         title:props.name,
         description:props.desc,
         category:props.category,

@@ -70,7 +70,7 @@ const CreateCourse = () => {
   
   const getTags = async () => {
     try{
-        const res = await axios.get('http://127.0.0.1:8000/get-tags/');
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-tags/`,{withCredentials:true});
         const data = res.data;
         if(data.success){
             setoptiontags(data.tags);
@@ -82,7 +82,7 @@ const CreateCourse = () => {
 
   const getCategory = async () => {
     try{
-        const res = await axios.get('http://127.0.0.1:8000/get-category/');
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-category/`,{withCredentials:true});
         const data = res.data;
         if(data.success){
             setoptioncategory(data.categories);

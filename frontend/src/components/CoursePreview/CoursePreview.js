@@ -14,7 +14,7 @@ function CoursePreview(props) {
 
   const getCourse = () => {
     // const navigate=useNavigate();
-    fetch(`http://127.0.0.1:8000/get-course/${params.id}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/get-course/${params.id}`, {
       method: "get",
     })
       .then((response) => response.json())

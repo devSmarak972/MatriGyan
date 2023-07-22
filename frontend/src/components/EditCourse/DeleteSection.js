@@ -11,7 +11,7 @@ const DeleteSection = (props) => {
       const sectionName = props.form.values.sectionName;
       
       // Make the API call to delete the section
-      fetch(`http://127.0.0.1:8000/delete-section/${sectionName}`, {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/delete-section/${sectionName}`, {
         method: "delete"
       })
         .then((result) => {

@@ -32,12 +32,12 @@ function CoursePage(props) {
     }
   }, [isActive]);
 
-  const [courses, setData] = useState([]);
+  const [courses, setData] = useState(false);
 
 
   const getCourses = async ()=>{
     try{
-      const res = await axios.get("http://127.0.0.1:8000/get-courses/");
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-courses/`,{withCredentials:true});
       console.log(res.data);
       const data = res.data;
       if(data.success){
@@ -57,15 +57,15 @@ function CoursePage(props) {
     <div className="page-section tw-page">
       <Sidebar user={props.user} tab={1} />
       <div className="container page__container pt-6">
-        {courses && courses.length !== 0 ? (
+        {courses  ? (
           <>
             <Header onButtonClick={handleclick}></Header>
             <Courses title="All Courses" courses={courses}></Courses>
             <Courses title="Recent Courses" courses={courses}></Courses>
             <Courses title="Popular Courses" courses={courses}></Courses>
           </>
-        ) : (
-          <p className="m-auto p-3">Loading ...</p>
+        ) : (( Array.isArray(courses))?<h5 className="text-muted">No courses available right now</h5>:(
+          <p className="m-auto p-3">Loading ...</p>)
         )}
       </div>
       <Backdrop isActive={isActive} onButtonClick={handleclick}></Backdrop>

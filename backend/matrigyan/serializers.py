@@ -247,6 +247,8 @@ class ClassModelSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 class ResourceSerializer(serializers.ModelSerializer):
+	creator=EducatorSerializer(read_only=True)
+
 	class Meta:
 		model = Resource
 		fields = "__all__"

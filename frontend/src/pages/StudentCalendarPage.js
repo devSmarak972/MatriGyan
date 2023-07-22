@@ -9,7 +9,7 @@ const CalendarPage = (props) => {
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/get-events/${user_id}/`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/get-events/${user_id}/`)
       .then((res) => {
         console.log(res.data.data);
         setData(res.data.data);
