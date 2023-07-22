@@ -41,7 +41,7 @@ function CoursePreview(props) {
         window.location.href = "http://localhost:3000/not-found";
       });
   };
-  console.log(details, "details in coursepreview");
+  console.log(details, "details in coursepreview", props.user?.current);
   useEffect(() => {
     getCourse();
   }, []);

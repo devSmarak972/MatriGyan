@@ -140,16 +140,16 @@ function App() {
                 path="/resourceview/:ID"
                 element={<ResourceView user={user} />}
               />
-          <Route path="/resourceview" element={<ResourceView />}/>
+              <Route path="/resourceview" element={<ResourceView />} />
 
-<Route path="/edit/profile" element={<EditProfile />} />
+              <Route path="/edit/profile" element={<EditProfile />} />
 
               <Route path="/not-found" element={<Page404 />} />
               <Route path="/developing" element={<InDev />} />
               <Route path="/*" element={<Page404 />} />
             </>
           )}
-       </Routes>
+        </Routes>
       </div>
     </Router>
   );
