@@ -67,7 +67,7 @@ const EditCourse = (props) => {
   const getCourse = () => {
 
 
-    fetch(`http://127.0.0.1:8000/get-course/${params.ID}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/get-course/${params.ID}`, {
       method: "get",
     })
       .then((response) => response.json())

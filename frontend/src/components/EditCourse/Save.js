@@ -13,7 +13,7 @@ const Save = (props) => {
   const params = useParams();
   const nagivate = useNavigate();
   const handlesave = () =>{
-    fetch(`http://127.0.0.1:8000/edit-course/${params.ID}/`,{
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/edit-course/${params.ID}/`,{
         method:"post",
         headers: {
           'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const Save = (props) => {
       })
   };
   const handledelete = ()=>{
-    fetch(`http://127.0.0.1:8000/delete-course/${params.ID}/`,{
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/delete-course/${params.ID}/`,{
         method:"delete",
       })
       .then((result)=>{

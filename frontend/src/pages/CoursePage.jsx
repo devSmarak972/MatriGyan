@@ -37,7 +37,7 @@ function CoursePage(props) {
 
   const getCourses = async ()=>{
     try{
-      const res = await axios.get("http://127.0.0.1:8000/get-courses/");
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-courses/`,{withCredentials:true});
       console.log(res.data);
       const data = res.data;
       if(data.success){

@@ -62,7 +62,7 @@ const LogIn = (props) => {
       )
       .then(async (res) => {
         // console.log(res);
-        // console.log(res.data, res.headers);
+        console.log(res.data, res.headers,res.cookies);
 
         if (res.data["redirect"] === true) {
           if (res.data["utype"] === "student") {

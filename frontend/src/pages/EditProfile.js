@@ -55,7 +55,7 @@ const EditProfile = (props) => {
   const handleSubmit = ()=>{
     if(userDetails.is_student){
         console.log(fname,lname,email,username,phone);
-        axios.post(`http://127.0.0.1:8000/edit-student/2/`,{
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/edit-student/2/`,{
             first_name:fname,
             last_name:lname,
             email:email,
@@ -70,7 +70,7 @@ const EditProfile = (props) => {
         })
     }else{
         console.log(fname,lname,email,username);
-        axios.post(`http://127.0.0.1:8000/edit-educator/1/`, {
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/edit-educator/1/`, {
             first_name:fname,
             last_name:lname,
             email:email,
@@ -88,7 +88,7 @@ const EditProfile = (props) => {
   useEffect(()=>{
     const fetchDetails = async ()=>{
       try{
-        const res = await axios.get('http://127.0.0.1:8000/get-user/2/');
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-user/`,{withCredentials:true});
         console.log(res.data);
         setDetails(res.data);
       } catch(error){
