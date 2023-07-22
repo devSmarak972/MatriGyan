@@ -44,7 +44,7 @@ const StudentDashboard = (props) => {
       )
       .then((res) => {
         if (!res.data.success) {
-          if (res.code === 2) navigate("/educator");
+          if (res.data.code === 2) navigate("/educator");
           else {
             toast("Please Login first.");
             navigate("/login");
