@@ -35,7 +35,7 @@ const ProfilePage = (props) => {
         // },
       };
       console.log("config", "config");
-        const res = await axios.get('http://localhost:8000/get-user',config);
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-user`,config);
         console.log(res.data);
         if(!res.data.success)
         {
