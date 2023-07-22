@@ -32,7 +32,7 @@ function CoursePage(props) {
     }
   }, [isActive]);
 
-  const [courses, setData] = useState([]);
+  const [courses, setData] = useState(false);
 
 
   const getCourses = async ()=>{
@@ -57,15 +57,15 @@ function CoursePage(props) {
     <div className="page-section tw-page">
       <Sidebar user={props.user}></Sidebar>
       <div className="container page__container pt-6">
-        {courses && courses.length !== 0 ? (
+        {courses  ? (
           <>
             <Header onButtonClick={handleclick}></Header>
             <Courses title="All Courses" courses={courses}></Courses>
             <Courses title="Recent Courses" courses={courses}></Courses>
             <Courses title="Popular Courses" courses={courses}></Courses>
           </>
-        ) : (
-          <p className="m-auto p-3">Loading ...</p>
+        ) : ((courses.length===0)?<h5 className="text-muted">No courses available right now</h5>:(
+          <p className="m-auto p-3">Loading ...</p>)
         )}
       </div>
       <Backdrop isActive={isActive} onButtonClick={handleclick}></Backdrop>
