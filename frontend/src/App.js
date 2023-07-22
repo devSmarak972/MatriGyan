@@ -26,6 +26,8 @@ import InDev from "./pages/InDev/InDev";
 import ResourceView from "./pages/ResourceView";
 import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/ProfilePage";
+import EditProfile from "./pages/EditProfile";
+import CreateCourse from "./pages/CreateCourse";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
 function App() {
@@ -53,6 +55,7 @@ function App() {
           <Route path="/resources" element={<Resources />} />
           <Route path="/educator" element={<EducatorDashboard />} />
           <Route path="/course/:ID/edit" element={<EditCourse />} />
+          <Route path="/course/new" element={<CreateCourse />} />
           <Route path="/student/calendar" element={<StudentCalendarPage />} />
           <Route path="/educator/calendar" element={<EducatorCalendarPage />} />
           <Route path="/quiz/:ID/edit" element={<EditQuizPage />} />
@@ -65,6 +68,9 @@ function App() {
           <Route path="/course/:id" element={<CoursePreview />} />
           <Route path="/resourceview/:ID" element={<ResourceView />} />
           <Route path="/developing" element={<InDev />} />
+          <Route path="/resourceview" element={<ResourceView />}/>
+          <Route path="/edit/profile" element={<EditProfile />} />
+
           <Route path="/not-found" element={<Page404 />} />
           <Route path="*" element={<Page404 />} /> . 
         </Routes>

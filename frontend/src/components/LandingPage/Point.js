@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Point = () => {
   return (
@@ -31,9 +32,11 @@ const Point = () => {
                 </li>
               </ul>
               <div className="all-btn all-category d-flex align-items-center">
-                <a href="instructor-list.html" className="btn btn-primary">
+                <Link to='/developing'>
+                <a href="#" className="btn btn-primary">
                   Read More
                 </a>
+                </Link>
               </div>
             </div>
           </div>
