@@ -44,13 +44,13 @@ SECRET_KEY = 'django-insecure-(27h%fzc7bs+d=_!lxtp49l@p@agm7+5e9_!4weof-=+a0f&ja
 DEBUG = True
 
 KEEP_LOGGED_DURATION=51840000 #60 days
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000','https://matrigyan.com']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000','https://matrigyan.com',"https://matrigyan972.pythonanywhere.com"]
 ALLOWED_HOSTS = [
-    'localhost','matrigyan.com','www.matrigyan.com'
+    'localhost','matrigyan.com','www.matrigyan.com',"matrigyan972.pythonanywhere.com","*"
 ],
 CORS_ORIGIN_WHITELIST = [
 
-    'http://localhost:3000','https://matrigyan.com',
+    'http://localhost:3000','https://matrigyan.com',"https://matrigyan972.pythonanywhere.com"
 ]
 
 # Email
@@ -81,7 +81,7 @@ INSTALLED_APPS = [
 ]
 
 
-ALLOWED_HOSTS=['http://localhost:3000','https://matrigyan.com',"*"]
+# ALLOWED_HOSTS=['http://localhost:3000','https://matrigyan.com',"*"]
 
 # CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_ALL_ORIGINS = True
@@ -105,7 +105,7 @@ CORS_EXPOSE_HEADERS=["*","Cookie"]
 CORS_ALLOW_ALL_ORIGINS  = True
 CORS_ORIGIN_WHITELIST = (
 
-       'http://localhost:3000','https://matrigyan.com',
+       'http://localhost:3000','https://matrigyan.com',"https://matrigyan972.pythonanywhere.com"
 )
 CORS_ALLOW_CREDENTIALS = True
 
@@ -117,7 +117,7 @@ CORS_ALLOWED_ORIGINS = [
 'https://matrigyan.com'
 ]# If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    'http://localhost:3000','https://matrigyan.com',
+    'http://localhost:3000','https://matrigyan.com',"https://matrigyan972.pythonanywhere.com"
 ]
 CORS_ALLOW_METHODS = [
 'DELETE',

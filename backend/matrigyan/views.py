@@ -439,7 +439,7 @@ def getEducatorDashData(request):
 	return response
 @api_view(['GET'])
 def getStudentDashData(request):
-	print(request.user)
+	print(request.user,"dashboard")
 	student=Student.objects.filter(user=request.user.id).first()
 	if( not student):
 		educator=Educator.objects.filter(user=request.user.id).first()
