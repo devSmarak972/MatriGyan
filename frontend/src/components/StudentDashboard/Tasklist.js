@@ -181,7 +181,7 @@ const Tasklist = (props) => {
                   due_date: values.due_date,
                   user: 1,
                   completed: false,
-                })
+                },{withCredentials:true})
                 .then((res) => res.data.task.id)
                 .catch((e) => console.log(e));
               addedToast();

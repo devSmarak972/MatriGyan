@@ -50,7 +50,7 @@ def update(request):
 		origin = repo.remotes.origin
 
 		origin.pull()
-		reload()
+		# reload()
 		return HttpResponse("Updated code on PythonAnywhere")
 	
 	else:
