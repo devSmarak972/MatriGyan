@@ -175,17 +175,12 @@ const Tasklist = (props) => {
         >
           <form
             onSubmit={form.onSubmit(async (values) => {
-              const config={
-                headers:{
-                  "X-Csrftoken":getCookie("csrftoken")
-                },
-                withCredentials:true
-              }
+              
               const taskID = await axios
                 .post(`${process.env.REACT_APP_BACKEND_URL}/add-task/`, {
                   name: values.name,
                   due_date: values.due_date,
-                  user: 1,
+                  // user: 1,
                   completed: false,
                 },{withCredentials:true})
                 .then((res) => res.data.task.id)
