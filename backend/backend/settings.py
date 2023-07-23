@@ -94,7 +94,7 @@ CORS_ALLOW_HEADERS=['accept',
 'dnt',
 'origin',
 'user-agent',
-'x-csrftoken',
+'X-Csrftoken',
 'x-requested-with',
 
 "Cookie"
@@ -130,17 +130,17 @@ CORS_ALLOW_METHODS = [
 'PUT',
 ]
 if PROD is True:
-    SESSION_COOKIE_SECURE = True 
-    CSRF_COOKIE_SECURE = True 
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
     CSRF_COOKIE_SAMESITE = 'None'
     SESSION_COOKIE_SAMESITE = 'None'
 MIDDLEWARE = [
 
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -248,3 +248,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     'http://localhost:3000','https://matrigyan.com'
 # ]
 #test
+CSRF_HEADER_NAME="HTTP_X_CSRFTOKEN"
+CSRF_COOKIE_DOMAIN=".matrigyan.com"
+CSRF_COOKIE_HTTPONLY=False
+# CSRF_USE_SESSIONS=True
+
