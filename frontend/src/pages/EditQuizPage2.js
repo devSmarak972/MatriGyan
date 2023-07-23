@@ -1,10 +1,10 @@
-wimport React from "react";
+import React from "react";
 import Sidebar from "../components/StudentDashboard/Sidebar";
 
 const EditQuizPage = () => {
   return (
     <>
-    <Sidebar></Sidebar>
+    <Sidebar />
       <div className="tw-page">
         <div class="page-section border-bottom-2">
           <div class="container page__container">

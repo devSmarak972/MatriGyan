@@ -16,14 +16,6 @@ import ReactPlayer from "react-player";
 function LeftHalf(props) {
   console.log(props);
 
-  const [locked, setLocked] = useState(0);
-  useEffect(() => {
-    if (props.user?.current?.code === 0 || !props.isEnrolled) {
-      setLocked(1);
-    }
-  }, []);
-
-  console.log("LOCKED: ", locked);
   console.log(props.user?.current?.code);
   console.log(!props.isEnrolled);
 
@@ -113,16 +105,16 @@ function LeftHalf(props) {
           <div className="accordion__item" key={item.id}>
             <button
               className={`accordion__toggle rounded-[0.45rem] ${
-                locked ? "bg-gray-200" : ""
+                !props.enrolled ? "bg-gray-200" : ""
               }`}
               style={{ border: "none" }}
               onClick={() =>
-                !locked && handleAccordionToggle(`course-toc-${item.id}`)
+                props.enrolled && handleAccordionToggle(`course-toc-${item.id}`)
               }
             >
               <span className="flex">{item.title}</span>
               <span className="accordion__toggle-icon">
-                {!locked ? (
+                {props.enrolled ? (
                   <FontAwesomeIcon
                     icon={faCaretDown}
                     size="lg"

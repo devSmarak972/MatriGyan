@@ -48,11 +48,6 @@ function App() {
     };
     fetchData();
     console.log(user.current);
-    // getUser()
-    //   .then((data) => {
-    //     user.current = data;
-    //   })
-    //   .catch((e) => console.log(e));
   }, [loader]);
 
   console.log(user.current);
@@ -60,8 +55,6 @@ function App() {
   useEffect(() => {
     console.log("USER::::::  ", user.current);
   }, [user.current]);
-
-  // if (JSON.stringify(user.current) === "{}") return null;
 
   return (
     <Router>
@@ -110,13 +103,19 @@ function App() {
                 path="/course/:ID/edit"
                 element={<EditCourse user={user} />}
               />
-              <Route
-                path="/student/calendar"
+              {/* <Route
+                path="/calendar"
                 element={<StudentCalendarPage user={user} />}
-              />
+              /> */}
               <Route
-                path="/educator/calendar"
-                element={<EducatorCalendarPage user={user} />}
+                path="/calendar"
+                element={
+                  user.current.code === 1 ? (
+                    <StudentCalendarPage user={user} />
+                  ) : (
+                    <EducatorCalendarPage user={user} />
+                  )
+                }
               />
               <Route
                 path="/quiz/:ID/edit"
@@ -141,16 +140,16 @@ function App() {
                 path="/resourceview/:ID"
                 element={<ResourceView user={user} />}
               />
-          <Route path="/resourceview" element={<ResourceView />}/>
+              <Route path="/resourceview" element={<ResourceView />} />
 
-<Route path="/edit/profile" element={<EditProfile />} />
+              <Route path="/edit/profile" element={<EditProfile />} />
 
               <Route path="/not-found" element={<Page404 />} />
               <Route path="/developing" element={<InDev />} />
               <Route path="/*" element={<Page404 />} />
             </>
           )}
-       </Routes>
+        </Routes>
       </div>
     </Router>
   );

@@ -45,14 +45,24 @@ function ResourceCard(props) {
             href="#"
             className="flex items-center space-x-2 text-xs hover:text-slate-800 dark:hover:text-navy-100"
           >
-            <div className="avatar h-6 w-6">
-              <img
-                className="rounded-full"
-                src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png"
-                alt="avatar"
-              />
-            </div>
-            <span className="line-clamp-1">Ojas Modak</span>
+            {props.rdata?.creator?.profile_pic ? (
+              <div className="avatar h-6 w-6">
+                <img
+                  className="rounded-full"
+                  src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png"
+                  alt="avatar"
+                />
+              </div>
+            ) : (
+              <div className="avatar h-6 w-6">
+                <img
+                  className="rounded-full"
+                  src="https://t3.ftcdn.net/jpg/01/18/01/98/360_F_118019822_6CKXP6rXmVhDOzbXZlLqEM2ya4HhYzSV.jpg"
+                  alt="avatar"
+                />
+              </div>
+            )}
+            <span className="line-clamp-1">{props.rdata?.creator?.name}</span>
           </a>
           {/* <p className="m-0 flex shrink-0 items-center space-x-1.5 text-slate-400 dark:text-navy-300">
             <svg

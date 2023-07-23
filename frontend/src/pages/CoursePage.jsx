@@ -55,7 +55,7 @@ function CoursePage(props) {
 
   return (
     <div className="page-section tw-page">
-      <Sidebar user={props.user}></Sidebar>
+      <Sidebar user={props.user} tab={1} />
       <div className="container page__container pt-6">
         {courses  ? (
           <>
