@@ -78,7 +78,7 @@ const UploadAvatar = (props) => {
               .then((res) => console.log(res))
               .catch((e) => console.log(e));
             props.close();
-            window.location.reload();
+            // window.location.reload();
           }}
           className="bg-[var(--primary)] text-white w-full rounded-lg px-4 py-2 font-semibold w-full"
         >

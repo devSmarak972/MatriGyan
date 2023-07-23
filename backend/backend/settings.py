@@ -248,8 +248,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     'http://localhost:3000','https://matrigyan.com'
 # ]
 #test
+<<<<<<< HEAD
 CSRF_HEADER_NAME="HTTP_X_CSRFTOKEN"
 CSRF_COOKIE_DOMAIN=".matrigyan.com"
 CSRF_COOKIE_HTTPONLY=False
 # CSRF_USE_SESSIONS=True
 
+=======
+
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
+>>>>>>> 70e40b8146b4406056b70bc1df91a0457e429972

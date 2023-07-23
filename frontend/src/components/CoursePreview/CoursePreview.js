@@ -7,32 +7,31 @@ import Comments from "./Comments";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 function CoursePreview(props) {
   const params = useParams();
   const [details, setDetails] = useState(false);
 
-  const getCourse = () => {
+  const getCourse = async () => {
     // const navigate=useNavigate();
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/get-course/${params.id}`, {
-      method: "get",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.success) {
-          window.location.href = `${process.env.REACT_APP_BACKEND_URL}/not-found`;
+    await axios
+      .get(`${process.env.REACT_APP_BACKEND_URL}/get-course/${params.id}`)
+      .then((res) => {
+        if (!res.data?.success) {
+          window.location.href = "http://localhost:3000/not-found";
           const notify = () => toast("Course not found!");
           notify();
         } else {
           setDetails((state) => {
-            var tmp = { ...data };
+            var tmp = { ...res.data };
             if (tmp.data.educator) {
               tmp.educator = tmp.data.educator;
               tmp.data.educator = tmp.educator.name;
             }
             return tmp;
           });
-          console.log(data);
+          console.log(res.data);
         }
       })
       .catch((error) => {
@@ -41,7 +40,7 @@ function CoursePreview(props) {
         window.location.href = `${process.env.REACT_APP_BACKEND_URL}/not-found`;
       });
   };
-  console.log(details, "details in coursepreview");
+  console.log(details, "details in coursepreview", props.user?.current);
   useEffect(() => {
     getCourse();
   }, []);

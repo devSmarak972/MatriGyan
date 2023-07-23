@@ -78,7 +78,7 @@ const NewQuizPage = (props) => {
 
   return (
     <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar user={props.user} />
+      <Sidebar user={props.user} tab={1} />
       <main className="main-content w-full pb-8 px-[var(--margin-x)]">
         <span className="text-[1.75rem] font-bold text-slate-700 mb-8">
           New Quiz

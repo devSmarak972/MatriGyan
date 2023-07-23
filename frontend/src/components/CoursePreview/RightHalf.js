@@ -1,8 +1,9 @@
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock } from '@fortawesome/free-solid-svg-icons'; // Import the desired Font Awesome icon
+import React from "react";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons"; // Import the desired Font Awesome icon
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function RightHalf(props) {
   console.log(props, "right");
@@ -35,17 +36,27 @@ function RightHalf(props) {
               )}
               {props.user?.current?.code !== 0 && (
                 <div>
-                  <Link to="/signup" class="btn btn-accent mb-8pt">
+                  <button
+                    onClick={async () => {
+                      await axios
+                        .get(
+                          `${process.env.REACT_APP_BACKEND_URL}/enroll-student/${props.id}/`
+                        )
+                        .then((res) => console.log(res))
+                        .catch((e) => console.log(e));
+                      props.setEnrolled(true);
+                      toast("Enrolled Successfully!");
+                    }}
+                    class="btn btn-accent mb-8pt"
+                  >
                     Enroll
-                  </Link>
+                  </button>
                 </div>
               )}
-
             </div>
           </div>
         </>
       )}
-
 
       <div className="page-separator">
         <div className="page-separator__text">Course</div>
@@ -53,8 +64,7 @@ function RightHalf(props) {
 
       <Link to="/coursepage/angular" className="d-flex flex-nowrap mb-24pt">
         <span className="mr-16pt">
-          
-          <FontAwesomeIcon icon="book" size='xl'/>
+          <FontAwesomeIcon icon="book" size="xl" />
         </span>
         <span className="flex d-flex flex-column align-items-start">
           <span className="card-title">{props.title}</span>
@@ -88,7 +98,6 @@ function RightHalf(props) {
         my academic foundations in psychology and sociology and stay in tune
         with the latest digital marketing strategies through continued
         coursework.
-
       </p>
     </div>
   );
