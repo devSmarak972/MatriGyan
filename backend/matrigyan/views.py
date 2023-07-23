@@ -501,7 +501,9 @@ def addCourse(request):
 	return Response({"success":False,"message":"Invalid input","errors":course.errors})
 @api_view(['POST'])
 def addTask(request):
-	# print(request.data)
+	print(request.data)
+	
+	request.data.user=request.user
 	task = TaskSerializer(data=request.data)
 	# print(course.data)
 	if task.is_valid():
