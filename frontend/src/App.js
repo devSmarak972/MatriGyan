@@ -111,6 +111,10 @@ function App() {
                 element={<EditCourse user={user} />}
               />
               <Route
+                path="/course/add"
+                element={<CreateCourse user={user} />}
+              />
+              <Route
                 path="/student/calendar"
                 element={<StudentCalendarPage user={user} />}
               />

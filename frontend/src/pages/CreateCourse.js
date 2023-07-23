@@ -16,7 +16,7 @@ import Create from "../components/CreateCourse/Create";
 
 
 
-const CreateCourse = () => {
+const CreateCourse = (props) => {
   const params = useParams();
   const [details, setDetails] = useState(null);
   const [sections, setSections] = useState([]);
@@ -119,7 +119,7 @@ const CreateCourse = () => {
   return (
     <div className="container p-8">
       <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 p-8">
-        <Sidebar />
+        <Sidebar user={props.user} />
         <main className="main-content w-full pb-8">
           <CreateTitle />
           <div className="grid gap-[var(--margin-x)] grid-cols-1 sm:grid-cols-5 px-[var(--margin-x)]">
