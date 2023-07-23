@@ -502,8 +502,8 @@ def addCourse(request):
 @api_view(['POST'])
 def addTask(request):
 	print(request.data)
-	
-	request.data.user=request.user
+	request.data._mutable = True
+	request.data["user"]=request.user
 	task = TaskSerializer(data=request.data)
 	# print(course.data)
 	if task.is_valid():
