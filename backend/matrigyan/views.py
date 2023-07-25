@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 # coding: utf-8
+
 from django.template.loader import get_template
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponsePermanentRedirect,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -20,7 +21,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from .autoreload import reload
 from .models import Course,CourseCategory,CourseSection,Comment,CourseTag,Student,Educator
 from .common import update_first_and_last_name
 import json
@@ -39,21 +40,21 @@ import git
 
 @csrf_exempt
 def update(request):
-    
-    if request.method == "POST":
-        '''
-        pass the path of the diectory where your project will be 
-        stored on PythonAnywhere in the git.Repo() as parameter.
-        Here the name of my directory is "test.pythonanywhere.com"
-        '''
-        repo = git.Repo("../") 
-        origin = repo.remotes.origin
+	if request.method == "POST":
+		'''
+		pass the path of the diectory where your project will be 
+		stored on PythonAnywhere in the git.Repo() as parameter.
+		Here the name of my directory is "test.pythonanywhere.com"
+		'''
+		repo = git.Repo("../") 
+		origin = repo.remotes.origin
 
-        origin.pull()
-
-        return HttpResponse("Updated code on PythonAnywhere")
-    else:
-        return HttpResponse("Couldn't update the code on PythonAnywhere")
+		origin.pull()
+		# reload()
+		return HttpResponse("Updated code on PythonAnywhere")
+	
+	else:
+		return HttpResponse("Couldn't update the code on PythonAnywhere")
 
 class CourseApi(APIView):
 	authentication_classes = [JWTAuthentication,TokenAuthentication, SessionAuthentication]
@@ -374,6 +375,7 @@ def getCourses(request):
 
 @api_view(['GET'])
 def getCourse(request, id):
+	print(request.user)
 	course = Course.objects.filter(id=id).first()
 	if not course:
 		return Response({"success":False,"message":"course not found"})
@@ -437,7 +439,7 @@ def getEducatorDashData(request):
 	return response
 @api_view(['GET'])
 def getStudentDashData(request):
-	print(request.user)
+	print(request.user,"dashboard")
 	student=Student.objects.filter(user=request.user.id).first()
 	if( not student):
 		educator=Educator.objects.filter(user=request.user.id).first()
@@ -499,7 +501,12 @@ def addCourse(request):
 	return Response({"success":False,"message":"Invalid input","errors":course.errors})
 @api_view(['POST'])
 def addTask(request):
-	# print(request.data)
+	print(request.user)
+	if not request.user.is_authenticated:
+			return Response({"success":False,"message":"Not logged in"})
+	
+	request.data._mutable = True
+	request.data["user"]=request.user.id
 	task = TaskSerializer(data=request.data)
 	# print(course.data)
 	if task.is_valid():
@@ -556,13 +563,14 @@ def getSections(request, id):
 	# 	return Response("No sections available!")
 @api_view(['GET'])
 def enrollCourse(request, id):
-	student=Student.objects.get(user=request.user)
+	
+	student=Student.objects.filter(user=request.user).first()
 	if not student:
-			return Response({"success":False,"message":"Not logged in"})
+			return Response({"success":False,"message":"Not a Student"})
 
 	course = Course.objects.filter(id=id).first()
 
-	if course!=None:
+	if course:
 		student.enrolled_course.add(course)
 		student.save()
 			
@@ -941,7 +949,7 @@ def addQuizResponse(request,quiz_id):
 	if not request.user.is_authenticated:
 			return Response({"success":False,"message":"Not logged in"})
 
-	student=Student.objects.get(user=request.user)
+	student=Student.objects.filter(user=request.user).first()
 	if not student:
 		return Response({"success":False,"message":"Not a student"})
 	student_id=student.id
@@ -1025,8 +1033,13 @@ def getEducatorResource(request, id):
 @api_view(['POST'])
 def addResource(request, id):
 	data=request.data
+	print(request.user)
 	tag_name = data['tagname']
+	if not tag_name:
+			return Response({"success":False,"message":"No tags entered"})
+		
 	tag_name = tag_name.lower()
+ 
 	exists = ResourceTag.objects.filter(name=tag_name).first()
 	if exists is None:
 		new_tag = ResourceTag(name=tag_name)
@@ -1062,11 +1075,11 @@ def deleteResource(request, id):
 	resource.delete()
 	return Response({"success":True, "message":"Resource deleted!"})
 
-@api_view(['GET'])
+@csrf_exempt
 def getUser(request):
 		print(request.user)
 		if not request.user.is_authenticated:
-			return Response({"success":False,"message":"Not Logged in","code":0})
+			return JsonResponse({"success":False,"message":"Not Logged in","code":0})
 		id=request.user.id
 		user = User.objects.get(id=id)
 		print(user)
@@ -1079,16 +1092,16 @@ def getUser(request):
 			if educator is None:
 				return Response({"success":False,"message":"No educator found."})
 			ser_educator = EducatorSerializer(educator, many=False)
-			return Response({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data,"code":2})
+			return JsonResponse({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data,"code":2})
 			# student = Student.objects.get(user__id=user.id)
 			# ser_student = StudentSerializer(student, many=False)
 			# return Response({"success":True, "user":ser_user,"is_student":True,"student":ser_student})
 		else:
 			student = Student.objects.filter(user__id=user.id).first()
 			if student is None:
-				return Response({"success":False,"message":"No student."})
+				return JsonResponse({"success":False,"message":"No student."})
 			ser_student = StudentSerializer(student, many=False)
-			return Response({"success":True, "user":ser_user.data,"is_student":True,"student":ser_student.data,"code":1})
+			return JsonResponse({"success":True, "user":ser_user.data,"is_student":True,"student":ser_student.data,"code":1})
 			# educator = Educator.objects.get(id=user.id)
 			# ser_educator = EducatorSerializer(educator, many=False)
 			# return Response({"success":True, "is_student":False, "user":ser_user,"educator":ser_educator})
@@ -1237,6 +1250,7 @@ def getSAS(request):
 @api_view(['GET'])
 def enrollStudent(request,id):
 	user = request.user
+	print(request.user)
 	if user.is_authenticated:
 		student = Student.objects.filter(user__id=user.id).first()
 		if student is None:

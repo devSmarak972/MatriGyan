@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { Tooltip } from "react-tooltip";
@@ -12,11 +12,19 @@ import {
   faHouse,
   faBars,
   faTowerBroadcast,
+  faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import { Menu } from "@mantine/core";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { getUser } from "../../utils/getUser";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 
-const Sidebar = () => {
-  const [sidebar, setSidebar] = useState(0);
+const Sidebar = (props) => {
+  const sidebar = props.tab;
   const [open, setOpen] = useState(0);
+  const nav = useNavigate();
+  var utype = props.user?.current?.code === 1 ? "student" : "educator";
 
   return (
     <div className="sidebar print:hidden">
@@ -59,86 +67,81 @@ const Sidebar = () => {
           </div>
           <div className="is-scrollbar-hidden flex grow flex-col space-y-4 overflow-y-auto pt-6">
             <Link
-              to="#"
+              to={"/" + utype}
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Dashboard"
               data-tooltip-place="right"
               className={`relative flex h-11 w-11 items-center justify-center rounded-lg ${
                 sidebar === 0 ? `bg-[var(--background-light)]` : ``
               } text-primary outline-none transition-colors duration-200 hover:bg-[var(--background-light)] dark:bg-navy-600 dark:text-accent-light dark:hover:bg-navy-450 dark:active:bg-navy-450/90`}
-              onClick={() => setSidebar(0)}
             >
               <FontAwesomeIcon
                 icon={faHouse}
-                style={{ color: sidebar === 0 ? "#228bf0" : "#B6B6B6" }}
+                style={{ color: sidebar === 0 ? "var(--primary)" : "#B6B6B6" }}
                 className="scale-150"
               />
             </Link>
 
             <Link
-              to="#"
+              to="/courses"
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Courses"
               data-tooltip-place="right"
               className={`flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 ${
                 sidebar === 1 ? `bg-[var(--background-light)]` : ``
               } hover:bg-[var(--background-light)] active:bg-[var(--background-light)] dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25`}
-              onClick={() => setSidebar(1)}
             >
               <FontAwesomeIcon
                 icon={faBookOpen}
-                style={{ color: sidebar === 1 ? "#228bf0" : "#B6B6B6" }}
+                style={{ color: sidebar === 1 ? "var(--primary)" : "#B6B6B6" }}
                 className="scale-125"
               />
             </Link>
 
             <Link
-              to="#"
+              to={"/calendar"}
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Calendar"
               data-tooltip-place="right"
               className={`flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 ${
                 sidebar === 2 ? `bg-[var(--background-light)]` : ``
               } hover:bg-[var(--background-light)] active:bg-[var(--background-light)] dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25`}
-              onClick={() => setSidebar(2)}
             >
               <FontAwesomeIcon
                 icon={faCalendar}
-                style={{ color: sidebar === 2 ? "#228bf0" : "#B6B6B6" }}
+                style={{ color: sidebar === 2 ? "var(--primary)" : "#B6B6B6" }}
                 className="scale-150"
               />
             </Link>
 
             <Link
-              to="#"
+              to={"/resources"}
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Resources"
               data-tooltip-place="right"
               className={`flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 ${
                 sidebar === 3 ? `bg-[var(--background-light)]` : ``
               } hover:bg-[var(--background-light)] active:bg-[var(--background-light)] dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25`}
-              onClick={() => setSidebar(3)}
             >
               <FontAwesomeIcon
                 icon={faFileLines}
-                style={{ color: sidebar === 3 ? "#228bf0" : "#B6B6B6" }}
+                style={{ color: sidebar === 3 ? "var(--primary)" : "#B6B6B6" }}
                 className="scale-150"
               />
             </Link>
 
             <Link
-              to="#"
+              to="/developing"
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Live Classes"
               data-tooltip-place="right"
               className={`flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 ${
                 sidebar === 4 ? `bg-[var(--background-light)]` : ``
               } hover:bg-[var(--background-light)] active:bg-[var(--background-light)] dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25`}
-              onClick={() => setSidebar(4)}
             >
               <FontAwesomeIcon
                 icon={faTowerBroadcast}
-                style={{ color: sidebar === 4 ? "#228bf0" : "#B6B6B6" }}
+                style={{ color: sidebar === 4 ? "var(--primary)" : "#B6B6B6" }}
                 className="scale-125"
               />
             </Link>
@@ -149,34 +152,73 @@ const Sidebar = () => {
                 color: "white",
                 marginTop: "0",
                 fontWeight: "500",
-                transition: "0.2s all ease"
+                transition: "0.2s all ease",
               }}
             />
           </div>
 
           <div className="flex flex-col items-center space-y-3 py-3">
             {/* <!-- Settings --> */}
-            <a
-              href="form-layout-5.html"
-              className="flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25"
-            >
-              <svg
-                className="h-7 w-7"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-opacity="0.3"
-                  fill="currentColor"
-                  d="M2 12.947v-1.771c0-1.047.85-1.913 1.899-1.913 1.81 0 2.549-1.288 1.64-2.868a1.919 1.919 0 0 1 .699-2.607l1.729-.996c.79-.474 1.81-.192 2.279.603l.11.192c.9 1.58 2.379 1.58 3.288 0l.11-.192c.47-.795 1.49-1.077 2.279-.603l1.73.996a1.92 1.92 0 0 1 .699 2.607c-.91 1.58-.17 2.868 1.639 2.868 1.04 0 1.899.856 1.899 1.912v1.772c0 1.047-.85 1.912-1.9 1.912-1.808 0-2.548 1.288-1.638 2.869.52.915.21 2.083-.7 2.606l-1.729.997c-.79.473-1.81.191-2.279-.604l-.11-.191c-.9-1.58-2.379-1.58-3.288 0l-.11.19c-.47.796-1.49 1.078-2.279.605l-1.73-.997a1.919 1.919 0 0 1-.699-2.606c.91-1.58.17-2.869-1.639-2.869A1.911 1.911 0 0 1 2 12.947Z"
-                />
-                <path
-                  fill="currentColor"
-                  d="M11.995 15.332c1.794 0 3.248-1.464 3.248-3.27 0-1.807-1.454-3.272-3.248-3.272-1.794 0-3.248 1.465-3.248 3.271 0 1.807 1.454 3.271 3.248 3.271Z"
-                />
-              </svg>
-            </a>
+            <Menu position="right-start" shadow="xl">
+              <Menu.Target>
+                <button
+                  // href="form-layout-5.html"
+                  className="flex h-11 w-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-[var(--background-light)] active:bg-primary/25 dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25"
+                >
+                  <svg
+                    className="h-7 w-7"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-opacity="0.3"
+                      fill="currentColor"
+                      d="M2 12.947v-1.771c0-1.047.85-1.913 1.899-1.913 1.81 0 2.549-1.288 1.64-2.868a1.919 1.919 0 0 1 .699-2.607l1.729-.996c.79-.474 1.81-.192 2.279.603l.11.192c.9 1.58 2.379 1.58 3.288 0l.11-.192c.47-.795 1.49-1.077 2.279-.603l1.73.996a1.92 1.92 0 0 1 .699 2.607c-.91 1.58-.17 2.868 1.639 2.868 1.04 0 1.899.856 1.899 1.912v1.772c0 1.047-.85 1.912-1.9 1.912-1.808 0-2.548 1.288-1.638 2.869.52.915.21 2.083-.7 2.606l-1.729.997c-.79.473-1.81.191-2.279-.604l-.11-.191c-.9-1.58-2.379-1.58-3.288 0l-.11.19c-.47.796-1.49 1.078-2.279.605l-1.73-.997a1.919 1.919 0 0 1-.699-2.606c.91-1.58.17-2.869-1.639-2.869A1.911 1.911 0 0 1 2 12.947Z"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M11.995 15.332c1.794 0 3.248-1.464 3.248-3.27 0-1.807-1.454-3.272-3.248-3.272-1.794 0-3.248 1.465-3.248 3.271 0 1.807 1.454 3.271 3.248 3.271Z"
+                    />
+                  </svg>
+                </button>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item
+                  icon={<FontAwesomeIcon icon={faArrowRightFromBracket} />}
+                  onClick={() => {
+                    const config = {
+                      withCredentials: true,
+                      // headers: {
+                      //   "X-CSRFToken": getCookie("csrftoken"),
+                      // },
+                    };
+                    axios
+                      .get(
+                        `${process.env.REACT_APP_BACKEND_URL}/api/logout`,
+                        config
+                      )
+                      .then(async (res) => {
+                        if (res.data.success) {
+                          nav("/");
+                          props.user.current = await getUser()
+                            .then((res) => res)
+                            .catch((e) => console.log(e));
+                          toast("Logged Out Successfully.");
+                        }
+                      });
+                  }}
+                >
+                  Sign Out
+                </Menu.Item>
+                <Menu.Item
+                  onClick={() => nav("/profile")}
+                  icon={<FontAwesomeIcon icon={faUser} />}
+                >
+                  Profile
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
 
             <div
               x-data="usePopper({placement:'right-end',offset:12})"
@@ -185,8 +227,17 @@ const Sidebar = () => {
               <button x-ref="popperRef" className="avatar h-12 w-12">
                 <img
                   className="rounded-full"
-                  src="StudentDashboard/images/avatar/avatar-12.jpg"
+                  src={
+                    props.user?.current?.code === 1
+                      ? props.user?.current?.student?.profile_pic
+                      : props.user?.current?.code === 2
+                      ? props.user?.current?.educator?.profile_pic
+                      : null
+                  }
                   alt="avatar"
+                  onClick={() => {
+                    nav("/profile");
+                  }}
                 />
                 <span className="absolute right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-success dark:border-navy-700"></span>
               </button>

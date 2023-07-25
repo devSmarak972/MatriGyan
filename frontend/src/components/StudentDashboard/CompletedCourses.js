@@ -3,7 +3,6 @@ import Course from "./Course";
 import { Link } from "react-router-dom";
 
 const CompletedCourses = (props) => {
-  console.log(props.courses, "completed course");
 
   var courses = [
     {

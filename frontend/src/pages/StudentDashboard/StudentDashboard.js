@@ -18,12 +18,14 @@ import { useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const StudentDashboard = () => {
+import getUser from "../../utils/checkUser";
+
+const StudentDashboard = (props) => {
   const navigate = useNavigate();
   const [Data, setData] = useState({});
   const mounted = useRef(false);
   const [loader, setLoader] = useState(true);
-
+/*
   const [courses,setCourses] = useState([]);
   const getCourses = async ()=>{
     try{
@@ -38,9 +40,9 @@ const StudentDashboard = () => {
   useEffect(()=>{
     getCourses();
   }, [])
+*/
 
   useEffect(() => {
-    console.log(loader, "loader");
     setLoader(false);
   }, []);
   useEffect(() => {
@@ -51,17 +53,21 @@ const StudentDashboard = () => {
       //   "X-CSRFToken": getCookie("csrftoken"),
       // },
     };
-    console.log("config", "config");
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/student-dashboard-data`, config)
+      .get(
+        `${process.env.REACT_APP_BACKEND_URL}/student-dashboard-data`,
+        config
+      )
       .then((res) => {
-        console.log(res);
-        console.log(res.data, "received data");
+        console.log(res.data)
         if (!res.data.success) {
-          if (res.code === 2) navigate("/educator");
-          else navigate("/login");
+          if (res.data.code === 2) navigate("/educator");
+          else {
+            toast("Please Login first.");
+            navigate("/login");
+          }
         }
-      
+
         if (mounted.current) {
           setData(res.data);
         }
@@ -69,7 +75,7 @@ const StudentDashboard = () => {
       .catch((err) => {
         const notify = () => toast(err.message);
         notify();
-        navigate("/")
+        navigate("/");
       });
     return () => (mounted.current = false);
   }, []);
@@ -82,10 +88,15 @@ const StudentDashboard = () => {
       <ToastContainer></ToastContainer>
       {loader ? <Loader></Loader> : ""}
       <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-        <Sidebar utype={"student"} />
+        <Sidebar user={props.user} tab={0} />
         <main className="main-content w-full pb-8 ml-5">
-          <Welcome name={Data.name} />
-          <CurrentCourses courses={courses} type="student" />
+
+          <Welcome
+            name={Data.name}
+            user={props.user}
+            setLoader={props.setLoader}
+          />
+          <CurrentCourses courses={Data.enrolled_courses} type="student" />
           <div className="mt-4 grid grid-cols-12 gap-4 px-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
             <Statistics1
               completed={comp}

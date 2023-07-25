@@ -11,7 +11,7 @@ const AddSection = (props) => {
     if (props.form.isValid()) {
       const title = props.form.values.sectionName;
       const order_id= props.sections.length + 1;
-      fetch(`http://127.0.0.1:8000/add-section/${params.ID}/`,{
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/add-section/${params.ID}/`,{
         method:"post",
         headers: {
           'Content-Type': 'application/json',

@@ -3,14 +3,21 @@ import Sidebar from "../components/StudentDashboard/Sidebar";
 import ResourceViewPdf from "../components/Resources/ResourceViewPdf";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
-function ResourceView() {
+function ResourceView(props) {
+  const nav = useNavigate();
   const { ID } = useParams();
   const pdfRef = useRef(null);
 
   const [data, setData] = useState({});
+
+  if (props.user.current.code === 0) {
+    toast("Please Login First!");
+    nav("/login");
+  }
 
   useEffect(() => {
     axios
@@ -39,14 +46,15 @@ function ResourceView() {
 
   return (
     <div className="min-h-[100vh] flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
-      <Sidebar />
+      <Sidebar user={props.user} tab={3} />
       <div className="main-content w-full px-[var(--margin-x)] flex flex-col lg:flex-row gap-8 mb-[var(--margin-x)]">
         <div className="flex flex-column gap-4 w-1/2">
           <span className="font-semibold text-xl">{data.title}</span>
           {data.description && <p>{data.description}</p>}
           <div className="flex justify-between items-center">
             {/* <div className="flex flex-col gap-2"> */}
-              <div className="flex gap-2">
+            <div className="flex gap-2">
+              {data.creator.profile_pic ? (
                 <div className="avatar h-12 w-12">
                   <img
                     className="rounded-full"
@@ -54,12 +62,23 @@ function ResourceView() {
                     alt="avatar"
                   />
                 </div>
-                <div className="flex gap-1 flex-column">
-                  <span>Created by:</span>
-                  <span className="text-base font-semibold">Ojas Modak</span>
-                  {/* <span className="text-xs">14/07/2023</span> */}
+              ) : (
+                <div className="avatar h-12 w-12">
+                  <img
+                    className="rounded-full"
+                    src="https://t3.ftcdn.net/jpg/01/18/01/98/360_F_118019822_6CKXP6rXmVhDOzbXZlLqEM2ya4HhYzSV.jpg"
+                    alt="avatar"
+                  />
                 </div>
+              )}
+              <div className="flex gap-1 flex-column">
+                <span>Created by:</span>
+                <span className="text-base font-semibold">
+                  {data.creator.name}
+                </span>
+                {/* <span className="text-xs">14/07/2023</span> */}
               </div>
+            </div>
             {/* </div> */}
             {/* <button
               onClick={handleDownload}

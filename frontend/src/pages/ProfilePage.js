@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPen } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../components/StudentDashboard/Sidebar";
 import { useDisclosure } from "@mantine/hooks";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import { Avatar, Modal, createStyles } from "@mantine/core";
 import UploadAvatar from "../components/ProfilePage/UploadAvatar";
-import axios from 'axios';
+import axios from "axios";
 import { getCookie } from "../utils/apiCaller";
 
 const useStyles = createStyles(() => ({
@@ -17,17 +17,20 @@ const useStyles = createStyles(() => ({
 }));
 
 const ProfilePage = (props) => {
+  const nav = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
-  const [avatar, setAvatar] = useState(null);
+  const [userDetails, setDetails] = useState(false);
+  const [avatar, setAvatar] = useState(
+    "https://t3.ftcdn.net/jpg/01/18/01/98/360_F_118019822_6CKXP6rXmVhDOzbXZlLqEM2ya4HhYzSV.jpg"
+  );
   const { classes } = useStyles();
-  const [userDetails,setDetails] = useState(false);
   const [first_name, setName] = useState("Name");
   var userType;
-  useEffect(()=>{
-    const fetchDetails = async ()=>{
-      console.log(getCookie("csrftoken"),"csrf");
-      
-      try{
+  useEffect(() => {
+    const fetchDetails = async () => {
+      console.log(getCookie("csrftoken"), "csrf");
+
+      try {
         const config = {
         withCredentials: true,
         // headers: {
@@ -35,42 +38,39 @@ const ProfilePage = (props) => {
         // },
       };
       console.log("config", "config");
-        const res = await axios.get('http://localhost:8000/get-user',config);
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-user`,config);
         console.log(res.data);
-        if(!res.data.success)
-        {
-          if(res.data.message==="Not Logged in")
-          {
+        if (!res.data.success) {
+          if (res.data.message === "Not Logged in") {
             toast("Not Logged in");
-          window.location.href="/login";
+            nav("/login");
+          } else {
+            toast("Something went wrong");
+            nav("/");
+          }
+        } else {
+          setDetails(res.data);
+          userType = res.data.is_student ? 1 : 2;
         }
-        else{
-        toast("Something went wrong")
-        window.location.href="/";
-        }
-          
-        }
-        else
-        {
-        setDetails(res.data);
-        userType=res.data.is_student?1:2;
-        }
-      }
-      catch(error){
+      } catch (error) {
         console.log(error);
       }
-    }
-  
-  
-    
+    };
 
     fetchDetails();
-  }, [])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(userDetails);
     setName(userDetails.user?.first_name);
-  }, [userDetails])
+    setAvatar(
+      userDetails.code === 1
+        ? userDetails.student.profile_pic
+        : userDetails.code === 2
+        ? userDetails.educator.profile_pic
+        : null
+    );
+  }, [userDetails]);
 
   const initials = (name) => {
     const words = name.split(" ");
@@ -82,11 +82,14 @@ const ProfilePage = (props) => {
     return initials.join("");
   };
 
-  return userDetails?(
+  useEffect(() => {
+    console.log(avatar?.substr(0, 40));
+  }, [avatar]);
+
+  return userDetails ? (
     <div className="h-screen">
-      <Sidebar />
+      <Sidebar user={props.user} />
       <div className="h-screen main-content pb-8 flex flex-col items-center md:ml-[var(--main-sidebar-width)]">
-        
         <div className="relative bg-gradient-to-br from-white to-[var(--primary)] w-full mb-[60px]">
           <Modal
             centered
@@ -100,16 +103,19 @@ const ProfilePage = (props) => {
               close={close}
               preview={avatar}
               setAvatar={setAvatar}
+              data={userDetails}
             />
           </Modal>
           <Avatar
-            className={`${avatar && "drop-shadow-[0_0_10px_rgba(0,0,0,0.1)]"} translate-y-1/2 rounded-full w-[120px] h-[120px] object-cover object-center mx-auto mt-[50px]`}
-            src={avatar} //{(!userDetails.is_student && userDetails.educator.profile_pic)}
-            alt={userDetails.user.first_name}
+            className={`${
+              avatar && "drop-shadow-[0_0_10px_rgba(0,0,0,0.1)]"
+            } translate-y-1/2 rounded-full w-[120px] h-[120px] object-cover object-center mx-auto mt-[50px]`}
+            src={avatar}
 
+            alt={userDetails.user.first_name}
             color="violet"
             children={
-              <span className="text-xl">{initials("Full Name")}</span>
+              <img src="https://t3.ftcdn.net/jpg/01/18/01/98/360_F_118019822_6CKXP6rXmVhDOzbXZlLqEM2ya4HhYzSV.jpg" />
             }
           ></Avatar>
           <FontAwesomeIcon
@@ -118,14 +124,16 @@ const ProfilePage = (props) => {
             className="scale-90 cursor-pointer text-white bg-[var(--primary)] rounded-full p-2 absolute left-1/2 translate-x-[27px] translate-y-[27px]"
           />
         </div>
-        <span className="text-xl font-semibold mt-4">{userDetails.user.first_name} {userDetails.user.last_name}</span>
+        <span className="text-xl font-semibold mt-4">
+          {userDetails.user.first_name} {userDetails.user.last_name}
+        </span>
         <div className="grid grid-cols-1 sm:grid-cols-2 w-full px-6 gap-6 mt-8 max-w-[350px] sm:max-w-[700px]">
           <div className="col-span-1 flex flex-col">
             <span className="ml-2 mb-1 font-semibold text-[var(--grey-dark)]">
               First Name
             </span>
             <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-            {userDetails.user.first_name}
+              {userDetails.user.first_name}
             </span>
           </div>
           <div className="col-span-1 flex flex-col">
@@ -133,7 +141,7 @@ const ProfilePage = (props) => {
               Last Name
             </span>
             <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-            {userDetails.user.last_name}
+              {userDetails.user.last_name}
             </span>
           </div>
           <div className="col-span-1 flex flex-col">
@@ -149,7 +157,7 @@ const ProfilePage = (props) => {
               Username
             </span>
             <span className="bg-white px-3 py-2 drop-shadow-[0_3px_4px_rgba(0,0,0,0.03)] rounded-xl font-medium text-[var(--black)] ">
-            {userDetails.user.username}
+              {userDetails.user.username}
             </span>
           </div>
           {/* {userType === 2 && (
@@ -185,7 +193,7 @@ const ProfilePage = (props) => {
         </div>
         <div className="h-full flex flex-col justify-end">
           <Link
-            to={userType === 1 ? "/student" : "/educator"}
+            to={props.user?.current?.code === 1 ? "/student" : "/educator"}
             className="py-4 group flex gap-2 items-center"
           >
             <span className="align-bottom font-semibold text-[15px] group-hover:text-[var(--primary)] ease-in-out duration-300">
@@ -193,14 +201,15 @@ const ProfilePage = (props) => {
             </span>
             <FontAwesomeIcon
               icon={faArrowRight}
-              className="text-slate-600 group-hover:bg-[var(--primary)] group-hover:text-white p-1.5 group-hover:scale-125 w-[15px] h-[15px] group-hover:-rotate-45 rounded-full ease-in-out duration-300"
+              className="text-slate-600 group-hover:bg-[var(--primary)] group-hover:text-white p-1.5 group-hover:scale-125 w-[13px] h-[13px] group-hover:-rotate-45 rounded-full ease-in-out duration-300"
             />
           </Link>
         </div>
-        
       </div>
     </div>
-  ):(<p className="text-muted">Loading...</p>);
+  ) : (
+    <p className="text-muted">Loading...</p>
+  );
 };
 
 export default ProfilePage;

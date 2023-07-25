@@ -37,7 +37,7 @@ urlpatterns = [
     path('set-question-order/<int:id>/', views.editQuestionOrder),
     path('edit-solution/<int:id>/', views.editSolution),
     path('get-courses/', views.getCourses),
-    path('enroll-course/<int:id>/', views.enrollCourse),
+    path('enroll-course/<int:id>/', views.enrollStudent),
     path('educator-dashboard-data/', views.getEducatorDashData),
     path('student-dashboard-data/', views.getStudentDashData),
     path('get-course/<int:id>/', views.getCourse),

@@ -31,7 +31,7 @@ PROD = True if ENVIRONMENT == "PRODUCTION" else False
 DEV = True if ENVIRONMENT == "DEVELOPMENT" else False
 STAGING = True if ENVIRONMENT == "STAGING" else False
 
-DEBUG = False if PROD else True
+# DEBUG = False if PROD else True
 
 AZURE_STORAGE_CONNECTIONSTRING="DefaultEndpointsProtocol=https;AccountName=matrigyan;AccountKey=lgQbT5xCpYkX6pTc5xY9mnrx5bLtcp+QWSdz+f94y8JCa9Ilp5Ta/C+IV7p9UGWq2GYYcLyogfaW+AStyRSAtw==;EndpointSuffix=core.windows.net"
 # Quick-start development settings - unsuitable for production
@@ -43,13 +43,15 @@ SECRET_KEY = 'django-insecure-(27h%fzc7bs+d=_!lxtp49l@p@agm7+5e9_!4weof-=+a0f&ja
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-KEEP_LOGGED_DURATION=51840000 #60 days
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+KEEP_LOGGED_DURATION=5184000 #60 days
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000','https://matrigyan.com','https://www.matrigyan.com',"https://matrigyan972.pythonanywhere.com"]
 ALLOWED_HOSTS = [
-    'localhost',
-],
+    'localhost','matrigyan.com','www.matrigyan.com',"matrigyan972.pythonanywhere.com","*"
+]
+
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+
+    'http://localhost:3000','https://matrigyan.com',"https://www.matrigyan.com","https://matrigyan972.pythonanywhere.com"
 ]
 
 # Email
@@ -79,7 +81,7 @@ INSTALLED_APPS = [
 
 ]
 
-ALLOWED_HOSTS=['http://localhost:3000',"*"]
+
 
 # CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOW_ALL_ORIGINS = True
@@ -92,17 +94,19 @@ CORS_ALLOW_HEADERS=['accept',
 'dnt',
 'origin',
 'user-agent',
-'x-csrftoken',
+'X-Csrftoken',
 'x-requested-with',
+
 "Cookie"
 ]
 # CSRF_USE_SESSIONS=True
-CSRF_COOKIE_NAME="csrftoken"
+# CSRF_COOKIE_NAME="csrftoken"
 # CORS_ALLOW_CREDENTIALS=True
 CORS_EXPOSE_HEADERS=["*","Cookie"]
 CORS_ALLOW_ALL_ORIGINS  = True
 CORS_ORIGIN_WHITELIST = (
-       'http://localhost:3000',
+
+       'http://localhost:3000','https://matrigyan.com',"https://matrigyan972.pythonanywhere.com",'https://www.matrigyan.com'
 )
 CORS_ALLOW_CREDENTIALS = True
 
@@ -110,10 +114,12 @@ CORS_ALLOWED_ORIGINS = [
 "https://domain.com",
 "https://api.domain.com",
 "http://localhost:3000",
-"http://127.0.0.1:3000"
+"http://127.0.0.1:3000",
+"https://www.matrigyan.com",
+'https://matrigyan.com'
 ]# If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    'http://localhost:3000',
+    'http://localhost:3000','https://matrigyan.com','https://www.matrigyan.com'"https://matrigyan972.pythonanywhere.com"
 ]
 CORS_ALLOW_METHODS = [
 'DELETE',
@@ -123,11 +129,15 @@ CORS_ALLOW_METHODS = [
 'POST',
 'PUT',
 ]
-
+if PROD is True:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_SAMESITE = 'None'
+    SESSION_COOKIE_SAMESITE = 'None'
 MIDDLEWARE = [
 
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -137,10 +147,14 @@ MIDDLEWARE = [
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
 
+    ],
+
+    'DEFAULT_PERMISSION_CLASSES':[
+        'rest_framework.permissions.IsAuthenticated'
     ]
 }
 SIMPLE_JWT = {
@@ -231,5 +245,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # }
 
 # CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",
+#     'http://localhost:3000','https://matrigyan.com'
 # ]
+#test
+<<<<<<< HEAD
+CSRF_HEADER_NAME="HTTP_X_CSRFTOKEN"
+CSRF_COOKIE_DOMAIN=".matrigyan.com"
+CSRF_COOKIE_HTTPONLY=False
+# CSRF_USE_SESSIONS=True
+
+=======
+
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
+>>>>>>> 70e40b8146b4406056b70bc1df91a0457e429972

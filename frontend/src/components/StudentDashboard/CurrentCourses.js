@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const CurrentCourses = (props) => {
   const ref = useRef(null);
   var type = props.type;
-  console.log(props, "current course");
   const [slides, setSlides] = useState(0);
   // var courses;
   // if(props.courses)
@@ -44,7 +43,6 @@ const CurrentCourses = (props) => {
     setSlides(() => {
       // let width = ref.current.offsetWidth;
       let width = window.innerWidth;
-      console.log(width);
       if (width < 500) return 1;
       else if (width < 750) return 2;
       else if (width < 1500) return 2.3;
@@ -118,7 +116,6 @@ const CurrentCourses = (props) => {
                   };
                 })
                 .map((el) => {
-                  console.log(el, "courses of educator");
                   return (
                     <swiper-slide>
                       <Link to={`/course/${el.id}`}>

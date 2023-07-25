@@ -29,8 +29,33 @@ import ProfilePage from "./pages/ProfilePage";
 import EditProfile from "./pages/EditProfile";
 import CreateCourse from "./pages/CreateCourse";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { getUser } from "./utils/getUser";
+import { useEffect, useRef, useState } from "react";
 
 function App() {
+  const user = useRef(false);
+  const [loader, setLoader] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getUser();
+        user.current = result;
+        setLoader(false);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData();
+    console.log(user.current);
+  }, [loader]);
+
+  console.log(user.current);
+
+  useEffect(() => {
+    console.log("USER::::::  ", user.current);
+  }, [user.current]);
+
   return (
     <Router>
       <div>
@@ -38,41 +63,93 @@ function App() {
 
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
-          {/* <Route path="/search" element={<SearchLanding />} /> */}
-          <Route path="/login" element={<LoginSignup />} />
-          <Route path="/signup" element={<LoginSignup />} />
-          {/* <Route
-            path="/student/profile"
-            element={<ProfilePage userType={1} />}
-          /> */}
-          <Route
-            path="/profile"
-            element={<ProfilePage  />}
-          />
-          <Route path="/student" element={<StudentDashboard />} />
-          <Route path="/courses" element={<CoursePage />} />
-          <Route path="/educator/contents" element={<MyContents />} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/educator" element={<EducatorDashboard />} />
-          <Route path="/course/:ID/edit" element={<EditCourse />} />
-          <Route path="/course/new" element={<CreateCourse />} />
-          <Route path="/student/calendar" element={<StudentCalendarPage />} />
-          <Route path="/educator/calendar" element={<EducatorCalendarPage />} />
-          <Route path="/quiz/:ID/edit" element={<EditQuizPage />} />
-          <Route path="/quiz/new" element={<NewQuizPage />} />
-          <Route path="/live/:ID" element={<Liveclass />} />
-          <Route path="/quiz/:ID" element={<Quiz />} />
-          <Route path="/quiz/:ID/start" element={<PreQuiz />} />
-          <Route path="/quiz/:ID/end" element={<PostQuiz />} />
-          <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
-          <Route path="/course/:id" element={<CoursePreview />} />
-          <Route path="/resourceview/:ID" element={<ResourceView />} />
-          <Route path="/developing" element={<InDev />} />
-          <Route path="/resourceview" element={<ResourceView />}/>
-          <Route path="/edit/profile" element={<EditProfile />} />
+          {loader ? (
+            <Route exact path="*" element={<Loader />} />
+          ) : (
+            <>
+              <Route
+                path="/login"
+                element={<LoginSignup user={user} setLoader={setLoader} />}
+              />
+              <Route
+                path="/signup"
+                element={<LoginSignup user={user} setLoader={setLoader} />}
+              />
+              {/* <Route
+                path="/student/profile"
+                element={<ProfilePage user={user} />}
+              /> */}
+              <Route
+                path="/profile"
+                element={<ProfilePage user={user} setLoader={setLoader} />}
+              />
+              <Route
+                path="/student"
+                element={<StudentDashboard user={user} setLoader={setLoader} />}
+              />
+              <Route path="/courses" element={<CoursePage user={user} />} />
+              <Route
+                path="/educator/contents"
+                element={<MyContents user={user} />}
+              />
+              <Route path="/resources" element={<Resources user={user} />} />
+              <Route
+                path="/educator"
+                element={
+                  <EducatorDashboard user={user} setLoader={setLoader} />
+                }
+              />
+              <Route
+                path="/course/:ID/edit"
+                element={<EditCourse user={user} />}
+              />
+              <Route
+                path="/course/add"
+                element={<CreateCourse user={user} />}
+              />
+              
+              <Route
+                path="/calendar"
+                element={
+                  user.current.code === 1 ? (
+                    <StudentCalendarPage user={user} />
+                  ) : (
+                    <EducatorCalendarPage user={user} />
+                  )
+                }
+              />
+              <Route
+                path="/quiz/:ID/edit"
+                element={<EditQuizPage user={user} />}
+              />
+              <Route
+                path="/quiz/new"
+                element={
+                  <NewQuizPage user={user} userID={user.current?.user?.id} />
+                }
+              />
+              <Route path="/live/:ID" element={<InDev />} />
+              <Route path="/quiz/:ID" element={<Quiz />} />
+              <Route path="/quiz/:ID/start" element={<PreQuiz />} />
+              <Route path="/quiz/:ID/end" element={<PostQuiz />} />
+              <Route path="/quiz/:ID/review" element={<ReviewQuiz />} />
+              <Route
+                path="/course/:id"
+                element={<CoursePreview user={user} />}
+              />
+              <Route
+                path="/resourceview/:ID"
+                element={<ResourceView user={user} />}
+              />
+              <Route path="/resourceview" element={<ResourceView />} />
 
-          <Route path="/not-found" element={<Page404 />} />
-          <Route path="*" element={<Page404 />} /> . 
+              <Route path="/edit/profile" element={<EditProfile />} />
+
+              <Route path="/not-found" element={<Page404 />} />
+              <Route path="/developing" element={<InDev />} />
+              <Route path="/*" element={<Page404 />} />
+            </>
+          )}
         </Routes>
       </div>
     </Router>

@@ -5,10 +5,12 @@ import { Menu, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import data from "./quiz-answered.json";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const ReviewQuiz = () => {
+  const nav = useNavigate();
   const { ID } = useParams();
   const [data, setData] = useState({});
   useEffect(() => {
@@ -16,6 +18,15 @@ const ReviewQuiz = () => {
       .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz-response/${ID}/`)
       .then((res) => {
         console.log(res);
+
+        if (res.data.message === "Quiz not attempted!") {
+          toast("Quiz not attempted!");
+          nav(`/quiz/${ID}/start`);
+        } else if (res.data.message === "Not logged in") {
+          toast("Please Login First!");
+          nav("/login");
+        }
+
         setData({
           name: res.data.response.quiz.name,
           topic: res.data.response.quiz.topic,

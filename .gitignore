@@ -5,5 +5,7 @@ backend/db.sqlite3
 */__pycache__
 *.pyc
 templates/
+frontend/build
 # *.env_dev
 # *.env_prod
+frontend/build

@@ -5,7 +5,6 @@ import VisibilitySensor from "react-visibility-sensor";
 const StatCard = (props) => {
   let value = props.value;
   let subtitle = props.subtitle;
-  console.log(props);
   return (
     <div className="card justify-between px-4 py-3 m-0 bg-white h-32">
       <p className="font-medium">{props.title}</p>
