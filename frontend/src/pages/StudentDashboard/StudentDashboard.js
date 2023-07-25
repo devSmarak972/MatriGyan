@@ -25,7 +25,23 @@ const StudentDashboard = (props) => {
   const [Data, setData] = useState({});
   const mounted = useRef(false);
   const [loader, setLoader] = useState(true);
-  console.log(props);
+/*
+  const [courses,setCourses] = useState([]);
+  const getCourses = async ()=>{
+    try{
+      const res = await axios.get('http://127.0.0.1:8000/get-courses/')
+      const data = res.data
+      console.log(res.data);
+      setCourses(data.data);
+    } catch(error){
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
+    getCourses();
+  }, [])
+*/
+
   useEffect(() => {
     setLoader(false);
   }, []);
@@ -74,6 +90,7 @@ const StudentDashboard = (props) => {
       <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900 tw-dash-page">
         <Sidebar user={props.user} tab={0} />
         <main className="main-content w-full pb-8 ml-5">
+
           <Welcome
             name={Data.name}
             user={props.user}

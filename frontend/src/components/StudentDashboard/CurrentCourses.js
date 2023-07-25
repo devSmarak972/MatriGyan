@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Course from "./Course";
-
+import { Link } from "react-router-dom";
 const CurrentCourses = (props) => {
   const ref = useRef(null);
   var type = props.type;
@@ -79,12 +79,14 @@ const CurrentCourses = (props) => {
         >
           My Courses
         </motion.p>
+        <Link to="/courses">
         <a
-          href="/educator/contents"
+          href="/courses"
           class="pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70"
         >
           View All
         </a>
+        </Link>
       </div>
       <div className="flex">
         <div
@@ -105,7 +107,7 @@ const CurrentCourses = (props) => {
                     ongoing: el.ongoing,
                     coursename: el.title,
                     percent: parseInt(Math.random() * 90 + 10),
-                    educator: el.educator.name,
+                    // educator: el.educator.name,
                     image: el.image
                       ? el.image
                       : "https://i.ytimg.com/vi/dfUDCgaFOBE/maxresdefault.jpg",
@@ -116,11 +118,13 @@ const CurrentCourses = (props) => {
                 .map((el) => {
                   return (
                     <swiper-slide>
+                      <Link to={`/course/${el.id}`}>
                       <Course
                         key={el.coursename + "_" + el.id}
                         {...el}
                         type={type}
                       />
+                      </Link>
                     </swiper-slide>
                   );
                 })

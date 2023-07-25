@@ -22,10 +22,10 @@ const PreQuiz = (props) => {
           .then((res) => {
             console.log("Quiz questions: ", res.quiz);
             setData({
-              name: res.quiz.name,
-              topic: res.quiz.topic,
-              mins: res.quiz.time,
-              questions: res.quiz.questions.map((q) => ({
+              name: res.data.quiz.name,
+              topic: res.data.quiz.topic,
+              mins: res.data.quiz.time,
+              questions: res.data.quiz.questions.map((q) => ({
                 question: q.question,
                 options: q.options,
                 type: q.type === "SINGLE" ? "single" : "multi",

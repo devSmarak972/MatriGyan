@@ -142,6 +142,7 @@ const Sidebar = (props) => {
 
           <div className="flex flex-col items-center space-y-3 py-3">
             {/* <!-- Settings --> */}
+
             <Menu position="right-start" shadow="xl">
               <Menu.Target>
                 <button

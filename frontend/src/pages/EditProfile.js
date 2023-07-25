@@ -25,7 +25,8 @@ const EditProfile = (props) => {
   const [lname,setLname] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
-  const [phone,setPhone] = useState("");
+  const [phone, setPhone] = useState(userDetails.is_student ? userDetails.student.phone : "");
+
 
   const handleFname = (event) =>{
     setFname(event.target.value);
@@ -54,6 +55,7 @@ const EditProfile = (props) => {
 
   const handleSubmit = ()=>{
     if(userDetails.is_student){
+
         console.log(fname,lname,email,username,phone);
         axios.post(`${process.env.REACT_APP_BACKEND_URL}/edit-student/2/`,{
             first_name:fname,
@@ -69,6 +71,7 @@ const EditProfile = (props) => {
             console.log(err);
         })
     }else{
+
         console.log(fname,lname,email,username);
         axios.post(`${process.env.REACT_APP_BACKEND_URL}/edit-educator/1/`, {
             first_name:fname,
@@ -100,7 +103,13 @@ const EditProfile = (props) => {
   }, [])
 
   useEffect(()=>{
-    console.log(userDetails);
+    setFname(userDetails.user.first_name);
+    setLname(userDetails.user.last_name);
+    setEmail(userDetails.user.email);
+    setUsername(userDetails.user.username);
+    if(userDetails.is_student){
+      setPhone(userDetails.student.phone);
+    }
   }, [userDetails])
 
   const initials = (name) => {
@@ -226,7 +235,7 @@ const EditProfile = (props) => {
           )}
         </div>
         <Link
-          to={props.userType === 1 ? "/student" : "/educator"}
+          to={userDetails.is_student ? "/student" : "/educator"}
           className="fixed bottom-8 group flex gap-2 items-center"
         >
           <span className="font-semibold text-[15px] group-hover:text-[var(--primary)] ease-in-out duration-300">

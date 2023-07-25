@@ -1143,6 +1143,9 @@ def editStudent(request,id):
 	user.email = email
 	user.username = username
 	student.phone=phone
+	student.first_name = first_name
+	student.last_name = last_name
+	student.full_name = first_name+" "+last_name
 	user.save()
 	student.save()
 	ser_user = UserSerializer(user, many=False)
