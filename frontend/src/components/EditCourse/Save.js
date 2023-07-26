@@ -5,6 +5,8 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {toast} from "react-toastify"
+import {axios} from "axios"
+
 const Save = (props) => {
   const title= props.name;
   const description = props.desc;
@@ -13,12 +15,11 @@ const Save = (props) => {
   const params = useParams();
   const nagivate = useNavigate();
   const handlesave = () =>{
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/edit-course/${params.ID}/`,{
-        method:"post",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({title, description, category, tags}),
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/edit-course/${params.ID}/`,{
+       "title":title, 
+       "description":description, 
+       "category":category, 
+       "tags":tags
       })
       .then((result)=>{
         console.log(result);
@@ -27,9 +28,7 @@ const Save = (props) => {
       })
   };
   const handledelete = ()=>{
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/delete-course/${params.ID}/`,{
-        method:"delete",
-      })
+    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/delete-course/${params.ID}/`)
       .then((result)=>{
         console.log(result);
         alert("Saved Successfully");

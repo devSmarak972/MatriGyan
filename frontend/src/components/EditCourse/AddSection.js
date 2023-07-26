@@ -13,7 +13,10 @@ const AddSection = (props) => {
     if (props.form.isValid()) {
       const title = props.form.values.sectionName;
       const order_id= props.sections.length + 1;
-      axios.post(`${process.env.REACT_APP_BACKEND_URL}/add-section/${params.ID}/`)
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/add-section/${params.ID}/`,{
+        "title":title,
+        "order_id":order_id
+      })
            .then((result)=>{
         console.log(result);
         toast("Section added")

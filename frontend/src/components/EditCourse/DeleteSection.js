@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, TextInput, Button, Select, PasswordInput } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
+import {axios} from "axios"
 const DeleteSection = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const nagivate = useNavigate();
@@ -11,9 +12,7 @@ const DeleteSection = (props) => {
       const sectionName = props.form.values.sectionName;
       
       // Make the API call to delete the section
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/delete-section/${sectionName}`, {
-        method: "delete"
-      })
+      axios.delete(`${process.env.REACT_APP_BACKEND_URL}/delete-section/${sectionName}`)
         .then((result) => {
           props.setSections(() =>
               props.sections.filter(
