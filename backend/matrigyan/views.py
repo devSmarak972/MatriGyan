@@ -81,7 +81,7 @@ def login_user(request):
 	authentic_user =  request.user.is_authenticated
 	print(request.user)
 	if authentic_user:
-		return HttpResponse(json.dumps({'redirect': True}), content_type="application/json")
+		return HttpResponse(json.dumps({'redirect': True,'success':True}), content_type="application/json")
 	data = check_to_login_registered_user(request)
 	response = JsonResponse(
 		data
@@ -1100,7 +1100,7 @@ def getUser(request):
 		if stu is None:
 			educator = Educator.objects.filter(user__id=id).first()
 			if educator is None:
-				return Response({"success":False,"message":"No educator found."})
+				return JsonResponse({"success":False,"message":"No educator found."})
 			ser_educator = EducatorSerializer(educator, many=False)
 			return JsonResponse({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data,"code":2})
 			# student = Student.objects.get(user__id=user.id)
