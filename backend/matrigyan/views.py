@@ -225,7 +225,7 @@ def create_student(user, first_name, last_name, email, phone, password, city="",
 		guser.user = user
 		guser.user_type = user_type
 		guser_created = True
-	guser.email = email
+	# guser.email = email
 
 	if phone:
 		guser.phone = phone

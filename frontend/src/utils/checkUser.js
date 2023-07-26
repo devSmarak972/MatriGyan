@@ -2,7 +2,7 @@ import axios from "axios";
 
 const getUser = async () => {
   try {
-    const res = await axios.get(`http://localhost:8000/get-user/`);
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-user/`);
     return res.data;
   } catch (e) {
     console.log(e);

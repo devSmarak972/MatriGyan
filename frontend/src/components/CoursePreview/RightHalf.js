@@ -9,13 +9,15 @@ function RightHalf(props) {
   console.log(props, "right");
   return (
     <div class="col-lg-4 text-left">
-      {props.isEnrolled ? (
+      { props.isEnrolled ? (
         <></>
       ) : (
         <>
           <div class="card">
             <div class="card-body py-16pt text-center">
-              <span class="icon-holder icon-holder--outline-secondary rounded-circle d-inline-flex mb-8pt">
+              {
+          props?.user?.current?.code===2?<>Welcome {props?.user?.current?.educator?.name}</>:<>
+          <span class="icon-holder icon-holder--outline-secondary rounded-circle d-inline-flex mb-8pt">
                 <i class="material-icons">timer</i>
               </span>
               <h4 class="card-title">
@@ -24,6 +26,10 @@ function RightHalf(props) {
               <p class="card-subtitle text-70 mb-24pt">
                 Get access to all videos in the library
               </p>
+          </>
+
+              }
+              
               {props.user?.current?.code === 0 && (
                 <div>
                   <Link to="/signup" class="btn btn-accent mb-8pt">
@@ -34,7 +40,7 @@ function RightHalf(props) {
                   </p>
                 </div>
               )}
-              {props.user?.current?.code !== 0 && (
+              {props.user?.current?.code === 1 && !props.user?.current?.enrolled_course?.includes(props.id) && (
                 <div>
                   <button
                     onClick={async () => {
@@ -53,6 +59,18 @@ function RightHalf(props) {
                   </button>
                 </div>
               )}
+              {(props.user?.current?.code === 2 && props.educator_id===props?.user?.current?.educator?.id) && (
+              <Link to ={`/course/`+props.id+`/edit`}>
+                <div>
+                  <button
+                    
+                    class="btn btn-accent mb-8pt"
+                  >
+                    Edit
+                  </button>
+                </div>
+                 </Link>
+              )}
             </div>
           </div>
         </>
@@ -62,7 +80,7 @@ function RightHalf(props) {
         <div className="page-separator__text">Course</div>
       </div>
 
-      <Link to="/coursepage/angular" className="d-flex flex-nowrap mb-24pt">
+      <Link to="/courses" className="d-flex flex-nowrap mb-24pt">
         <span className="mr-16pt">
           <FontAwesomeIcon icon="book" size="xl" />
         </span>

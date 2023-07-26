@@ -17,7 +17,7 @@ const Quiz = () => {
   useEffect(() => {
     const allowedCheck = async () => {
       await axios
-        .get(`http://localhost:8000/get-quiz-response/${ID}/`)
+        .get(`${process.env.REACT_APP_BACKEND_URL}/get-quiz-response/${ID}/`)
         .then((res) => {
           const mes = res.data.message;
           if (mes === "Quiz Response Found") {

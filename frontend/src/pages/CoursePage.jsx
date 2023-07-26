@@ -59,7 +59,7 @@ function CoursePage(props) {
       <div className="container page__container pt-6">
         {courses  ? (
           <>
-            <Header onButtonClick={handleclick} user={props.user}>}</Header>
+            <Header onButtonClick={handleclick} user={props.user}></Header>
             <Courses title="All Courses" courses={courses}></Courses>
             <Courses title="Recent Courses" courses={courses}></Courses>
             <Courses title="Popular Courses" courses={courses}></Courses>

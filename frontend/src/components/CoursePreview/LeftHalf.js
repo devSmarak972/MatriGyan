@@ -20,7 +20,7 @@ function LeftHalf(props) {
   console.log(!props.isEnrolled);
 
   const [videoURL, setvideoURL] = useState(
-    "https://player.vimeo.com/video/97243285?title=0&amp;byline=0&amp;portrait=0"
+    ""
   );
   const [isPlaying, setIsPlaying] = useState(false);
   const handlePlay = (url) => {

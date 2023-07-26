@@ -43,7 +43,7 @@ const UploadAvatar = (props) => {
             props.setAvatar(null);
             await axios
               .post(
-                `http://localhost:8000/edit-${
+                `${process.env.REACT_APP_BACKEND_URL}/edit-${
                   props.data.code === 1 ? "student" : "educator"
                 }/${props.data.user.id}/`,
                 {
@@ -68,7 +68,7 @@ const UploadAvatar = (props) => {
             props.setAvatar(preview);
             await axios
               .post(
-                `http://localhost:8000/edit-${
+                `${process.env.REACT_APP_BACKEND_URL}/edit-${
                   props.data.code === 1 ? "student" : "educator"
                 }/${props.data.user.id}/`,
                 {

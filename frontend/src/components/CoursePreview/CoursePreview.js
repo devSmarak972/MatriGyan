@@ -12,7 +12,6 @@ import axios from "axios";
 function CoursePreview(props) {
   const params = useParams();
   const [details, setDetails] = useState(false);
-
   const getCourse = async () => {
     // const navigate=useNavigate();
     await axios
