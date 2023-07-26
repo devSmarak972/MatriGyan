@@ -515,7 +515,7 @@ def addTask(request):
 	if not request.user.is_authenticated:
 			return Response({"success":False,"message":"Not logged in"})
 	
-	request.data._mutable = True
+	# request.data._mutable = True
 	request.data["user"]=request.user.id
 	task = TaskSerializer(data=request.data)
 	# print(course.data)
