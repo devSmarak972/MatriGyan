@@ -42,7 +42,7 @@ function  setSections(callback){
       // videofile:"",
     },
   });
-  console.log("Sections added", sections);
+  // console.log("Sections added", sections);
   // const useStyles = createStyles((theme) => ({
   //   root: {
   //     borderRadius: theme.radius.sm,
