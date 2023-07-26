@@ -591,8 +591,8 @@ def enrollCourse(request, id):
 
 @api_view(['POST'])
 def addSection(request, id):
-	print("course exist")
 	course = Course.objects.filter(id=id).first()
+	print("course exist")
 	if not course:
 		return Response({"success":False,"message":"course does not exist"})
 	sec = SectionSerializer(data=request.data)

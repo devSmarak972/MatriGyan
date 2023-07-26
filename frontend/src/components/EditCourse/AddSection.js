@@ -3,6 +3,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { Modal, TextInput, Button } from "@mantine/core";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import {toast} from "react-toastify"
+import axios from "axios"
 const AddSection = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const params = useParams();
@@ -11,17 +13,14 @@ const AddSection = (props) => {
     if (props.form.isValid()) {
       const title = props.form.values.sectionName;
       const order_id= props.sections.length + 1;
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/add-section/${params.ID}/`,{
-        method:"post",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({title, order_id}),
-      })
-      .then((result)=>{
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/add-section/${params.ID}/`)
+           .then((result)=>{
         console.log(result);
+        toast("Section added")
         close();
-        nagivate(`/course/${params.ID}/edit`);
+        // nagivate(`/course/${params.ID}/edit`);
+      }).catch(err=>{
+        toast(err.message)
       })
       
     }
