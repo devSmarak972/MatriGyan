@@ -1092,15 +1092,15 @@ def getUser(request):
 			return JsonResponse({"success":False,"message":"Not Logged in","code":0})
 		id=request.user.id
 		user = User.objects.get(id=id)
-		print(user)
+		print(user,"getuser")
 		print(user.id)
 		ser_user = UserSerializer(user, many=False)
-		stu = Student.objects.filter(user__id=id).first()
+		stu = Student.objects.filter(user=request.user).first()
 		# print(stu.DoesNotExist)
 		if stu is None:
-			educator = Educator.objects.filter(user__id=id).first()
+			educator = Educator.objects.filter(user=request.user).first()
 			if educator is None:
-				return JsonResponse({"success":False,"message":"No educator found."})
+				return JsonResponse({"success":False,"message":"No user found."})
 			ser_educator = EducatorSerializer(educator, many=False)
 			return JsonResponse({"success":True, "is_student":False, "user":ser_user.data,"educator":ser_educator.data,"code":2})
 			# student = Student.objects.get(user__id=user.id)

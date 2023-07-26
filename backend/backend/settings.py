@@ -96,13 +96,14 @@ CORS_ALLOW_HEADERS=['accept',
 'user-agent',
 'X-Csrftoken',
 'x-requested-with',
+"Set-Cookie",
 
 "Cookie"
 ]
 # CSRF_USE_SESSIONS=True
 # CSRF_COOKIE_NAME="csrftoken"
 # CORS_ALLOW_CREDENTIALS=True
-CORS_EXPOSE_HEADERS=["*","Cookie"]
+CORS_EXPOSE_HEADERS=["*","Cookie","set-cookie","Set-Cookie"]
 CORS_ALLOW_ALL_ORIGINS  = True
 CORS_ORIGIN_WHITELIST = (
 
@@ -249,9 +250,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ]
 #test
 CSRF_HEADER_NAME="HTTP_X_CSRFTOKEN"
-CSRF_COOKIE_NAME="xcsrftoken"
-# CSRF_COOKIE_DOMAIN="matrigyan.com"
-# SESSION_COOKIE_DOMAIN="matrigyan.com"
+CSRF_COOKIE_NAME="csrftoken"
+CSRF_COOKIE_DOMAIN=".matrigyan972.pythonanywhere.com"
+SESSION_COOKIE_DOMAIN=".matrigyan972.pythonanywhere.com"
 CSRF_COOKIE_HTTPONLY=False
 SESSION_COOKIE_HTTPONLY=False
 # CSRF_COOKIE_SECURE=True
