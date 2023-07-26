@@ -21,7 +21,7 @@ const AddSection = (props) => {
         console.log(result);
         toast("Section added")
         close();
-        // nagivate(`/course/${params.ID}/edit`);
+        nagivate(`/course/${params.ID}/edit`);
       }).catch(err=>{
         toast(err.message)
       })

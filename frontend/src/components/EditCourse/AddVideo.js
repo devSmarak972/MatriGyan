@@ -47,7 +47,7 @@ async function handleVideoSubmit(values){
           console.log(err.message);
         });
       props.setSections((prev) =>
-        prev.map((section) => {
+        prev?.map((section) => {
           if (section.title === values.sectionName) {
             let sec = values.timesecs;
             let min = values.timemins;

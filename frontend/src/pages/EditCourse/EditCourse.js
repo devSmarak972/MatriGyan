@@ -18,7 +18,13 @@ const EditCourse = (props) => {
   const [details, setDetails] = useState(null);
   const [cdata, setData] = useState(false);
 
-  const [sections, setSections] = useState([]);
+  // const [sections, setSections] = useState([]);
+function  setSections(callback){
+  var tmp={...cdata.sections}
+  tmp["sections"]=callback(cdata.sections)
+  setData(tmp);
+
+}
   const [category, setcategory] = useState([]);
   const [tags, settags] = useState([]);
   const [desc, setDesc] = useState("");

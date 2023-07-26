@@ -10,7 +10,7 @@ const DeleteVideo = (props) => {
       ? []
       : props.sections
           .find((section) => section.title === props.form.values.sectionName)
-          .videos.map((subsection) => subsection.title)
+          .videos?.map((subsection) => subsection.title)
   );
   return (
     <div>
@@ -33,7 +33,7 @@ const DeleteVideo = (props) => {
           onSubmit={props.form.onSubmit((values) => {
             console.log(values);
             props.setSections((prev) =>
-              prev.map((section) => {
+              prev?.map((section) => {
                 if (section.title === values.sectionName) {
                   return {
                     title: section.title,
