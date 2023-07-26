@@ -5,7 +5,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {toast} from "react-toastify"
-import {axios} from "axios"
+import axios from "axios"
 
 const Save = (props) => {
   const title= props.name;

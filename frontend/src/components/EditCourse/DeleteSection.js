@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, TextInput, Button, Select, PasswordInput } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
-import {axios} from "axios"
+import axios from "axios"
 const DeleteSection = (props) => {
   const [opened, { open, close }] = useDisclosure(false);
   const nagivate = useNavigate();
