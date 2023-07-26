@@ -260,6 +260,51 @@ def create_student(user, first_name, last_name, email, phone, password, city="",
 	update_first_and_last_name(guser)
 	return guser.email
 
+def create_educator(user, first_name, last_name, email, phone, password, city="", state="", 
+	country="", zipcode="", user_type='educator'):
+	guser = Educator.objects.filter(user=user).first()
+	guser_created = False
+	if not guser:
+		guser = Educator()
+		guser.user = user
+		guser.user_type = user_type
+		guser_created = True
+	# guser.email = email
+
+	# if phone:
+	# 	guser.phone = phone
+	first_name = first_name.title().strip()
+	last_name = last_name.title().strip()
+	# guser.first_name = first_name
+	# guser.last_name = last_name
+	
+	# save full name
+	guser.name = first_name + " " + last_name
+	# guser.client_code = create_client_code(first_name, last_name)
+	# guser.freelance = freelance
+	# guser.content_type = content_type
+	guser.save()
+
+	# save user address if provided
+	# save_guser_address(guser, street_address, city, state, country, zipcode)
+	# if guser_created:
+		# send welcome email on signup/create client
+		# try:
+
+		#     if user_type == "client":
+		#         if not cws_reg:
+		#             send_freelance_client_welcome_email(guser)
+		#         else:
+		#             # TBD: CWS welcome email
+		#             pass
+		# except Exception as e:
+		#     # print(e)
+		#     pass
+	# update first name and last name to User model
+	# update_first_and_last_name(guser)
+
+	return guser
+
 @api_view(['GET'])
 def getTags(request):
 	tags = CourseTag.objects.all()
