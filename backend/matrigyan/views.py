@@ -527,9 +527,9 @@ def addTask(request):
 		task.save()
 		print(task.data)
 		taskobj=Task.objects.get(id=task.data.get("id"))
-		user=Student.objects.get(user_id=taskobj.user)
+		user=Student.objects.filter(user__id=taskobj.user).first()
 		if not user:
-			user=Educator.objects.get(user_id=taskobj.user)
+			user=Educator.objects.filter(user__id=taskobj.user).first()
 			if not user:		
 				return Response({"success":False,"message":"Not a student or educator"})
 		user.task.add(taskobj)
