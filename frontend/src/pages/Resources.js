@@ -89,7 +89,7 @@ const Resources = (props) => {
               onSubmit={form.onSubmit(async (values) => {
                 let resourceID = await axios
                   .post(
-                    `${process.env.REACT_APP_BACKEND_URL}/add-resource/${props.user?.current?.user?.id}/`,
+                    `${process.env.REACT_APP_BACKEND_URL}/add-resource/`,
                     {
                       title: values.name,
                       description: values.desc,
@@ -106,9 +106,9 @@ const Resources = (props) => {
                       resources: [...prev.resources, res.data.resource],
                     }));
                     console.log(educatorRes);
-                    return res.data.resource.id;
+                    return res.data?.resource?.id;
                   })
-                  .catch((e) => console.log(e));
+                  .catch((e) => toast(e.message));
                 await setResources((prev) => {
                   if (
                     !prev

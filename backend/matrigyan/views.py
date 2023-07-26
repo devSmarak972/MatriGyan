@@ -1042,7 +1042,7 @@ def getEducatorResource(request, id):
 	return Response({"success":True,"resources":resourceserialized.data})
 
 @api_view(['POST'])
-def addResource(request, id):
+def addResource(request):
 	data=request.data
 	print(request.user)
 	tag_name = data['tagname']
@@ -1067,7 +1067,7 @@ def addResource(request, id):
 		return Response({"success":True, "resource":ser_res.data,"tag":ser_tag.data})
 	old_tag = ResourceTag.objects.filter(name=tag_name)[0]
 	resource = Resource(image=data['image'],description=data['description'],title=data['title'],file_url=data['file_url'])
-	creator = Educator.objects.filter(id=id).first()
+	creator = Educator.objects.filter(user__id=request.user.id).first()
 	if creator is None:
 		return Response({"success":False,"message":"No educator."})
 	resource.creator = creator

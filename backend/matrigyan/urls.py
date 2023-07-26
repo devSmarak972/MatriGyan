@@ -64,7 +64,7 @@ urlpatterns = [
     path('get-resources/', views.getResources),
     path('educator-resource/<int:id>/', views.getEducatorResource),
     path('get-resource/<int:id>/', views.getParticularResource),
-    path('add-resource/<int:id>/', views.addResource),
+    path('add-resource/', views.addResource),
     path('delete-resource/<int:id>/', views.deleteResource),
     path('get-user/', views.getUser),
     path('get-educators/', views.getEducators),
