@@ -5,9 +5,9 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import axios from 'axios';
 import { getCookie } from "./utils/apiCaller";
+axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
-axios.defaults.withCredentials = true;
 // axios.defaults.headers.common['Cookie'] = "csrftoken="+getCookie("csrftoken");
 
 // axios.interceptors.request.use(

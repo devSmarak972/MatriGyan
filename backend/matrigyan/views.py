@@ -122,11 +122,12 @@ def check_to_login_registered_user(request):
 		if auth_user.is_active:
 			login(request, auth_user)
 			msg = "Signed in successfully!"
-		   
+			print(msg)
 			redirect = True
 			request.session.set_expiry(matrigyan_settings.KEEP_LOGGED_DURATION)
-			educator=Educator.objects.filter(user=auth_user.id).first()
-			student=Student.objects.filter(user=auth_user.id).first()
+			educator=Educator.objects.filter(user__id=auth_user.id).first()
+			student=Student.objects.filter(user__id=auth_user.id).first()
+			print(auth_user,educator,student)
 			if educator:
 				utype="educator"
 			elif student:
@@ -1033,7 +1034,7 @@ def getParticularResource(request, id):
 
 @api_view(['GET'])
 def getEducatorResource(request, id):
-    
+	
 	eresources = Resource.objects.filter(creator__id=id)
 	if eresources is None:
 		return Response({"success":False,"message":"No resources."})

@@ -95,6 +95,7 @@ CORS_ALLOW_HEADERS=['accept',
 'origin',
 'user-agent',
 'X-Csrftoken',
+'X-CSRFTOKEN',
 'x-requested-with',
 "Set-Cookie",
 
