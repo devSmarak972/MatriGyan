@@ -43,7 +43,9 @@ const Resources = (props) => {
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BACKEND_URL}/get-resources/`)
-      .then((res) => {
+      .then(res=>{
+        return res.data
+      }).then((res) => {
         console.log(res.data.sections, " RES.DATA");
         setResources(res.data.sections);
         console.log(resources, "resources");
