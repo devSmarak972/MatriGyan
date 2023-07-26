@@ -501,7 +501,7 @@ def addCourse(request):
 	if not educator:
 			return Response({"success":False,"message":"Not an Educator"})
 		 
-	request.data._mutable = True
+	# request.data._mutable = True
 	request.data["educator_id"]=request.user.id
 	course = CourseSerializer(data=request.data)
 	# print(course.data)
