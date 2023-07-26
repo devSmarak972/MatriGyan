@@ -19,7 +19,7 @@ const Resources = (props) => {
 
   const [educatorRes, setEducatorRes] = useState({});
 
-  const [userID, setUserID] = useState();
+  // const [userID, setUserID] = useState();
 
   const form = useForm({
     initialValues: {
@@ -53,19 +53,19 @@ const Resources = (props) => {
       });
   }, []);
 
-  useEffect(() => {
-    setUserID(props.user?.current?.user?.id);
-  });
+  // useEffect(() => {
+  //   setUserID(props.user?.current?.user?.id);
+  // });
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/educator-resource/${userID}/`)
+      .get(`${process.env.REACT_APP_BACKEND_URL}/educator-resource/${props.user.current?.educator?.id}/`)
       .then((res) => {
         console.log("DEL DATA: ", res.data);
         setEducatorRes(res.data);
       })
       .catch((e) => console.log(e));
-  }, [userID]);
+  }, []);
 
   const handleSearch = (event) => {
     setSearch(event.target.value);

@@ -493,6 +493,15 @@ def deleteCourse(request, id):
 @api_view(['POST'])
 def addCourse(request):
 	# print(request.data)
+	print(request.user)
+	if not request.user.is_authenticated:
+			return Response({"success":False,"message":"Not logged in"})
+	educator=Educator.objects.filter(user=request.user).first()
+	if not educator:
+			return Response({"success":False,"message":"Not an Educator"})
+		 
+	request.data._mutable = True
+	request.data["educator_id"]=request.user.id
 	course = CourseSerializer(data=request.data)
 	# print(course.data)
 	if course.is_valid():
@@ -1024,6 +1033,7 @@ def getParticularResource(request, id):
 
 @api_view(['GET'])
 def getEducatorResource(request, id):
+    
 	eresources = Resource.objects.filter(creator__id=id)
 	if eresources is None:
 		return Response({"success":False,"message":"No resources."})

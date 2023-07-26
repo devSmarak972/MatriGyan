@@ -51,7 +51,7 @@ const DeleteVideo = (props) => {
             <Select
               label="Choose section to delete from"
               placeholder="Choose Section"
-              data={props.sections.map((section) => section.title)}
+              data={props.sections?.map((section) => section.title)}
               withAsterisk
               {...props.form.getInputProps("sectionName")}
               transitionProps={{

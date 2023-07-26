@@ -19,7 +19,7 @@ function CoursePreview(props) {
       .get(`${process.env.REACT_APP_BACKEND_URL}/get-course/${params.id}`)
       .then((res) => {
         if (!res.data?.success) {
-          window.location.href = "http://localhost:3000/not-found";
+          window.location.href = "/not-found";
           const notify = () => toast("Course not found!");
           notify();
         } else {

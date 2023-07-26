@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { MultiSelect, Select } from "@mantine/core";
 
 const Options = (props) => {
-  const options = props.optionscategory.map((section) => ({
+  const options = props.optionscategory?.map((section) => ({
     value: section.category,
     label: section.category,
   }));
-  const options1 = props.optionstags.map((section) => ({
+  const options1 = props.optionstags?.map((section) => ({
     value: section.tagname,
     label: section.tagname,
   }));
@@ -19,8 +19,8 @@ const Options = (props) => {
   };
   
   const getoptions1 = (selectedOptions) => {
-    const selectedTags = selectedOptions.map((option) => option);
-    const updatedTags = selectedTags.map((tag) => ({ tagname : tag}));
+    const selectedTags = selectedOptions?.map((option) => option);
+    const updatedTags = selectedTags?.map((tag) => ({ tagname : tag}));
     props.settags(updatedTags);
   };
   

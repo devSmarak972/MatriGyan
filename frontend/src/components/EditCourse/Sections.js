@@ -14,7 +14,7 @@ const Sections = (props) => {
     initialValues: { sectionName: "" },
     validate: {
       sectionName: (value) =>
-        value.length < 2 ? "Name must have at least 2 letters" : null,
+        value?.length < 2 ? "Name must have at least 2 letters" : null,
     },
   });
 
@@ -22,7 +22,7 @@ const Sections = (props) => {
     initialValues: { sectionName: "", password: "" },
     validate: {
       sectionName: (value) =>
-        value.length === 0 ? "Please choose a section" : null,
+        value?.length === 0 ? "Please choose a section" : null,
       password: (value) =>
         value === ""
           ? "Please enter your password to confirm"
@@ -43,9 +43,9 @@ const Sections = (props) => {
     },
     validate: {
       sectionName: (value) =>
-        value.length === 0 ? "Please choose a section" : null,
+        value?.length === 0 ? "Please choose a section" : null,
       name: (value) =>
-        value.length < 2
+        value?.length < 2
           ? "Subsection name must have atlease 2 characters"
           : null,
       timemins: (value) =>
@@ -77,7 +77,7 @@ const Sections = (props) => {
           : null,
     },
   });
-  if (props.sections.length === 0) {
+  if (props.sections?.length === 0) {
     return (
       <div>
         <p>No sections available</p>
@@ -99,7 +99,7 @@ const Sections = (props) => {
       </div>
       <div id="accordion-collapse" data-accordion="collapse">
         <Accordion
-          defaultValue={props.sections[0].title}
+          defaultValue={props.sections?props.sections[0].title:false}
           // classNames={props.classes}
           // className={props.classes.root}
         >

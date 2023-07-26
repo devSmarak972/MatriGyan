@@ -1,8 +1,10 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faSliders} from "@fortawesome/free-solid-svg-icons";
-
-function Header({ onButtonClick }) {
+import { Button } from '@mantine/core';
+import { Link } from "react-router-dom";
+function Header({ onButtonClick,user }) {
+  console.log(user)
   return (
     <div
       className="d-flex flex-column flex-sm-row align-items-sm-center mb-24pt"
@@ -12,6 +14,14 @@ function Header({ onButtonClick }) {
        
       </small>
       <div className="w-auto ml-sm-auto table d-flex align-items-center mb-2 mb-sm-0">
+          <Link to="/course/add">
+            {
+              user.current.educator? <button color="indigo" className="btn btn-primary">
+              Create
+            </button>:""
+            }
+   
+    </Link>
         <form
           className="search-form navbar-search d-none d-lg-flex mr-16pt"
           action="index.html"

@@ -16,6 +16,8 @@ const EditCourse = (props) => {
   const user = useRef(false);
   const params = useParams();
   const [details, setDetails] = useState(null);
+  const [cdata, setData] = useState(false);
+
   const [sections, setSections] = useState([]);
   const [category, setcategory] = useState([]);
   const [tags, settags] = useState([]);
@@ -67,11 +69,9 @@ const EditCourse = (props) => {
   const getCourse = () => {
 
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/get-course/${params.ID}`, {
-      method: "get",
-    })
-      .then((response) => response.json())
+     axios.get(`${process.env.REACT_APP_BACKEND_URL}/get-course/${params.ID}`)
       .then((data) => {
+        setData(data.data.data);
         setSections(data.data.sections);
         setname(data.data.title);
         setDesc(data.data.description);
@@ -87,19 +87,18 @@ const EditCourse = (props) => {
 
   useEffect(() => {
     (async () => {
-      user.current = await getUser();
-      if (user.current.code === 0) {
+      if (props.user.current.code === 0) {
         toast("Login to access course");
         window.location.href = "/login";
       }
-      if (user.current.code === 1) {
+      if (props.user.current.code === 1) {
         toast("Unauthorized access");
         window.location.href = "/student";
       }
     })();
     getCourse();
   }, []);
-  console.log({ category, tags });
+  console.log(cdata);
 
   // if(sections.length==0 || tags.length==0 || category.length==0){
   //   return toast("Course has no sections");
@@ -110,7 +109,11 @@ const EditCourse = (props) => {
   // }
 
   const handleTitleChange = (value) => {
-    setname(value);
+    setData(state=>{
+      var tmp={...state};
+      tmp["name"]=value;
+    })
+    // setname(value);
   };
   return (
     <div className="container p-8">
@@ -118,7 +121,8 @@ const EditCourse = (props) => {
         <Sidebar user={props.user} tab={1} />
         <main className="main-content w-full pb-8">
           <Title />
-          <div className="grid gap-[var(--margin-x)] grid-cols-1 sm:grid-cols-5 px-[var(--margin-x)]">
+          {
+            cdata? <div className="grid gap-[var(--margin-x)] grid-cols-1 sm:grid-cols-5 px-[var(--margin-x)]">
             <div className="col-span-1 sm:col-span-3">
               <div>
                 <div className="page-separator">
@@ -130,14 +134,14 @@ const EditCourse = (props) => {
 
                 <EditTitle
                   form={form}
-                  name={name}
+                  name={cdata.title}
                   onTitlechange={handleTitleChange}
                 />
-                <Quill setDesc={setDesc} desc={desc} />
+                <Quill setDesc={setDesc} desc={cdata.description} />
               </div>
 
               <Sections
-                sections={sections}
+                sections={cdata.sections}
                 setSections={setSections}
                 // classes={useStyles().classes}
               />
@@ -146,23 +150,25 @@ const EditCourse = (props) => {
             <div className="col-span-1 sm:col-span-2">
               <Save
                 form={form}
-                name={name}
-                desc={desc}
-                category={category}
-                tags={tags}
+                name={cdata.name}
+                desc={cdata.desc}
+                category={cdata.category}
+                tags={cdata.tags}
               />
               {/* <Video form={form} /> */}
               <Options
                 form={form}
-                category={category}
-                tags={tags}
-                optionscategory={optionscategory}
-                optionstags={optionstags}
-                setcategory={setcategory}
-                settags={settags}
+                category={cdata.category}
+                tags={cdata.tags}
+                optionscategory={cdata.category}
+                optionstags={cdata.tags}
+                setcategory={cdata.category}
+                settags={cdata.tags}
               />
             </div>
-          </div>
+          </div>:<p>Loading ...</p>
+          }
+         
         </main>
       </div>
     </div>

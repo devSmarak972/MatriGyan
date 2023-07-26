@@ -97,7 +97,7 @@ async function handleVideoSubmit(values){
             <Select
               label="Choose section to add video to"
               placeholder="Choose Section"
-              data={props.sections.map((section) => section.title)}
+              data={props.sections?.map((section) => section.title)}
               withAsterisk
               {...props.form.getInputProps("sectionName")}
               transitionProps={{

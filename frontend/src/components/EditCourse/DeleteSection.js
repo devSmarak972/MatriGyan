@@ -31,7 +31,7 @@ const DeleteSection = (props) => {
   };
   
   
-  const options = props.sections.map((section) => ({
+  const options = props.sections?.map((section) => ({
     value: section.id,
     label: section.title,
   }));

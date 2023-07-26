@@ -20,7 +20,7 @@ const EditTitle = (props) => {
       </div>
       <div className="form-group mb-24pt">
         <TextInput
-          placeholder="ReactJS"
+          placeholder="Course name"
           {...props.form.getInputProps("name")}
           onChange={handleChange}
           value={props.name}

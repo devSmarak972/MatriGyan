@@ -20,6 +20,10 @@ const Create = (props) => {
         category:props.category,
         tags:props.tags,
         educator:props.id
+    }).then(res=>{
+      toast("Course created successfully!")
+    }).catch(err=>{
+      toast(err.message)
     })
   };
   return (

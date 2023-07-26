@@ -57,7 +57,7 @@ const SearchLanding = (props) => {
   }, [props.search]);
 
   const [resources, setResources] = useState({
-    sections: ResourceData.sections.map((section) => ({
+    sections: ResourceData.sections?.map((section) => ({
       ...section,
       cards: section.cards.filter((card) =>
         card.name.toLowerCase().includes(props.search.toLowerCase())
@@ -66,7 +66,7 @@ const SearchLanding = (props) => {
   });
   useEffect(() => {
     setResources({
-      sections: ResourceData.sections.map((section) => ({
+      sections: ResourceData.sections?.map((section) => ({
         ...section,
         cards: section.cards.filter((card) => {
           console.log(card.name.toLowerCase(), props.search.toLowerCase());
@@ -205,7 +205,7 @@ const SearchLanding = (props) => {
           </OwlCarousel>
         )}
         {props.category === "Materials" &&
-          resources.sections.map((el) => (
+          resources.sections?.map((el) => (
             <div class="mt-4 transition-all duration-[.25s] sm:mt-5 lg:mt-6">
               <div class="flex h-8 items-center justify-between">
                 <span class="text-base font-medium tracking-wide text-slate-700 dark:text-navy-100">
