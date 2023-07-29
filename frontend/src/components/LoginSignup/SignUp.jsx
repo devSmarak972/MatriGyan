@@ -463,7 +463,7 @@ const SignUp = (props) => {
                 )}
                 {active !== 3 && (
                   <Button
-                    className="signup-next"
+                    className="signup-next btn btn-primary"
                     // onClick={nextStep}
                     onClick={funcBtn}
                   >

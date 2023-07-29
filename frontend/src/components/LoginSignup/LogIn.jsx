@@ -134,13 +134,13 @@ const LogIn = (props) => {
               <a href="">Forgot Password?</a>
             </div>
             <div>
-              <Button className="submit" onClick={handleLogin} type="submit">
+              <Button className="submit btn btn-primary" onClick={handleLogin} type="submit">
                 Sign in
               </Button>
-              <Button className="google" mt="sm">
+              {/* <Button className="google" mt="sm">
                 <img src="/google.svg" />
                 Sign in with Google
-              </Button>
+              </Button> */}
             </div>
           </form>
           <div className="switch">
