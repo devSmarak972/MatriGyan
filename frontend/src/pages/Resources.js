@@ -46,8 +46,8 @@ const Resources = (props) => {
       .then(res=>{
         return res.data
       }).then((res) => {
-        console.log(res.data.sections, " RES.DATA");
-        setResources(res.data.sections);
+        console.log(res.sections, " RES.DATA");
+        setResources(res.sections);
         console.log(resources, "resources");
       })
       .catch((err) => {
